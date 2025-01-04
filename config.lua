@@ -1,5 +1,6 @@
 return {
 	["SFXWhenAdding"] = true,
 	["SFXWhenRemoving"] = false,
-	["SFXWhenTrigger"] = true
+	["SFXWhenTrigger"] = true,
+	["JokeJokersActive"] = false
 }
