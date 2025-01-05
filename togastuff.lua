@@ -1015,7 +1015,8 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 4,
 	in_pool = function()
-		return #SMODS.find_card('j_toga_pso2ironwill', true) > 0
+		if #SMODS.find_card('j_toga_pso2ironwill', true) > 0 then return false
+		else return true end
 	end,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 0, y = 2 },
@@ -1101,7 +1102,8 @@ SMODS.Joker{
 	end,
 	unlocked = true,
 	in_pool = function()
-		return #SMODS.find_card('j_toga_winupdate', true) > 0
+		if #SMODS.find_card('j_toga_winupdate', true) > 0 then return false
+		else return true end
 	end,
 	rarity = 4,
 	atlas = 'TOGAJokersUpdate',
