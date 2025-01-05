@@ -2,11 +2,11 @@
 	"id": "TOGAPack",
 	"name": "TOGA's Stuff",
 	"author": ["TheOneGoofAli"],
-	"description": "e",
+	"description": "hm. Jokers.",
 	"prefix": "toga",
 	"main_file": "togastuff.lua",
 	"priority": 0,
 	"badge_colour": "fd9712",
-	"version": "1.0.0",
+	"version": "1.0.0-InPoolFix",
 	"dependencies": ["Steamodded (>=1.0.0*~)", "Talisman (>=2.0.0*~)"]
 }
