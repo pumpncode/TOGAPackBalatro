@@ -804,7 +804,7 @@ end
 
 SMODS.Joker{
 	key = 'jokersrb2kart',
-	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.67, shortcutfailmult = 0.5, maxchance = 10, toexactchance = 4} },
+	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.5, shortcutfailmult = 0.67, maxchance = 10, toexactchance = 4} },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.Xmult_current, card.ability.extra.add_shop, card.ability.extra.addshortcut, (1-card.ability.extra.shortcutfailmult)*100,
 						  (G.GAME.probabilities.normal or 1) * card.ability.extra.toexactchance, card.ability.extra.maxchance } }
