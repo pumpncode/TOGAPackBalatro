@@ -589,13 +589,13 @@ SMODS.Joker{
 	cost = 7,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.other_consumeable then
-			return {
-				chips = card.ability.extra.chips,
-				mult = card.ability.extra.mult
-				--x_chips = card.ability.extra.x_chips > 1 and card.ability.extra.x_chips or nil,
-				--xchip_message = card.ability.extra.x_chips > 1 and {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.x_chips } }, colour = G.C.CHIPS, sound = "talisman_xchip"} or nil,
-			}
+		if context.joker_main then
+			if G.consumeables then
+				for i, v in pairs(G.consumeables.cards) do
+					if togabalatro.config.DoMoreLogging then sendInfoMessage("Consumable "..i.." trigger.", "TOGAPack") end
+					SMODS.calculate_effect({chips = card.ability.extra.chips, mult = card.ability.extra.mult}, G.consumeables.cards[i])
+				end
+			end
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
