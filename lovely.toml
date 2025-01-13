@@ -3,14 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = 1
 
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "if extra.edition then"
-position = "before"
-payload = "sound = extra.sound or sound"
-match_indent = true
-
 # Was not sure where else to put this...
 [[patches]]
 [patches.pattern]

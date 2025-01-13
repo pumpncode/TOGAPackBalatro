@@ -139,8 +139,9 @@ return {
 			j_toga_jokersrb2kart = {
 				name = 'Karting Joker',
 				text = {
-					"Gains {X:mult,C:white}X#2#{} Mult when {C:attention}cards{} are",
-					"{C:money}bought{}/{C:money}sold{}/{C:attention}used{} or when {C:attention}leaving{} shop.",
+					"Gains {X:mult,C:white}X#2#{} Mult when {C:attention}getting{},",
+					"{C:attention}using{} or {C:money}selling{} {C:attention}cards{} or {C:attention}leaving{} shop.",
+					--"{C:attention}obtained{}/{C:money}sold{}/{C:attention}used{} or when {C:attention}leaving{} shop.",
 					"{C:green}#5# in #6#{} chance to gain {X:mult,C:white}X#3#{} Mult",
 					"when a {C:attention}Blind{} or {C:attention}Booster Pack{}",
 					"is skipped instead of {C:attention}losing{} {C:red}#4#%{}",
@@ -168,7 +169,7 @@ return {
 					"{C:attention}Numerical{} values of a random Joker",
 					"are increased by {C:attention}#1#%{} when a playing",
 					"card is added to deck while active.",
-					"{s:0.9}Becomes active after a {C:attention,s:0.9{}Boss Blind{}{s:0.9}.{}",
+					"{s:0.9}Becomes active after when defeating a {C:attention,s:0.9}Blind{s:0.9}.{}",
 					"{C:inactive}#2#{}",
 					"{C:inactive,s:0.8}Cannot affect self or copies of self.{}"
 				}
@@ -221,7 +222,9 @@ return {
 				name = 'Computer Lock',
 				text = {
 					"When sold, adjacent",
-                    "{C:attention}Jokers{} become {C:dark_edition}Eternal{}"
+                    "{C:attention}Jokers{} become {C:dark_edition}Eternal{}.",
+					"If {C:attention}already{} {C:dark_edition}Eternal{},",
+					"remove instead."
 				}
 			},
 			j_toga_bonusducks = {
@@ -241,6 +244,15 @@ return {
 					"becomes {C:attention}inactive{}. Recharges after",
 					"defeating a {C:attention}Boss Blind{}.",
 					"{C:inactive,s:0.8}Currently: #2#{}"
+				}
+			},
+			j_toga_systemrestore = {
+				name = 'System Restore',
+				text = {
+					"When {C:attention}playing cards{} are {C:red}destroyed{}, copy the",
+					"{C:attention}first{} destroyed card into the deck with",
+					"additional duplicates of it for",
+					"{C:attention}each{} other destroyed card.",
 				}
 			},
         },
@@ -326,6 +338,7 @@ return {
 			toga_pso2ironwillsave = "Iron Will was triggered.",
 			-- toga_recyclebinclean = "Trashing...",
 			toga_userlocked = "Locked!",
+			toga_userunlocked = "Unlocked!",
 			toga_spbavoidfail = "Hit!",
 			toga_bonusapply = "Bonus!",
 			toga_anviltrigger = "Hit it!",
