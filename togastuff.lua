@@ -11,6 +11,7 @@ SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 72, py 
 SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAConsumables", path = "togacons.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGADeckBack", path = "togadeck.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGATags", path = "togatags.png", px = 34, py = 34}
 SMODS.Atlas({key = "modicon", path = "togaicon.png", px = 32, py = 32}):register()
 
 -- Hear me scream!
@@ -366,7 +367,7 @@ SMODS.Joker{
 	cost = 3,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		card.ability.extra.curchips = G.GAME.consumeable_usage_total.all * card.ability.extra.bonuschips
+		card.ability.extra.curchips = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.all or 0) * card.ability.extra.bonuschips
 		
 		if context.using_consumeable and not context.blueprint then
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = { card.ability.extra.curchips } }, colour = G.C.CHIPS })
@@ -378,6 +379,9 @@ SMODS.Joker{
 			}
 		end
 	end,
+	update = function(self, card, context)
+		card.ability.extra.curchips = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.all or 0) * card.ability.extra.bonuschips
+	end
 }
 
 SMODS.Joker{
@@ -722,7 +726,8 @@ SMODS.Joker{
 			return {
 				message = localize('k_again_ex'),
 				repetitions = repeats,
-				sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_officehammer"
+				sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_officehammer",
+				card = card
 			}
 		else
 			if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and G.GAME.blind.boss and card.ability.extra.bosshandsizegiven then
@@ -1000,12 +1005,12 @@ SMODS.Joker{
 	cost = 40,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if card.ability.extra.skillactive and context.end_of_round and context.game_over and not context.repetition and not context.individual and G.GAME.dollars > 0 then
+		if card.ability.extra.skillactive and context.end_of_round and context.game_over and not context.repetition and not context.individual and to_big(G.GAME.dollars) > to_big(0) then
 			card.ability.extra.skillactive = false
 			card.ability.extra.skillactivetext = localize('toga_pso2ironwillrecharge')
 			G.GAME.current_round.usesavedtext = true
 			G.GAME.current_round.savedtext = localize('toga_pso2ironwillsave')
-            ease_dollars(-G.GAME.dollars, true)
+            ease_dollars(to_big(-G.GAME.dollars), true)
 			return {
 				message = localize('toga_pso2ironwillproc'),
 				saved = true,
@@ -1270,7 +1275,7 @@ SMODS.Consumable{
 	atlas = "TOGAConsumables",
 	pos = {x = 0, y = 0},
 	cost = 10,
-	config = {extra = { cardlimit = 15, odds = 4, activated = false } },
+	config = {extra = { cardlimit = 20, odds = 4, activated = false } },
 	loc_vars = function(self, info_queue, card)
 		return {vars = { math.floor(card.ability.extra.cardlimit), card.ability.extra.odds, (G.GAME and G.GAME.probabilities.normal or 1) } }
 	end,
@@ -1340,13 +1345,201 @@ SMODS.Booster{
 	end,
 }
 
+SMODS.Tag{
+	key = "togajokershop",
+	atlas = "TOGATags",
+	pos = { x = 0, y = 0 },
+	config = { type = "store_joker_create" },
+	in_pool = function(self, args)
+		return true
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_create" then
+			local card = create_card("TOGAJKR", context.area, nil, nil, nil, nil, nil, "togajokertag")
+			create_shop_card_ui(card, "Joker", context.area)
+			card.states.visible = false
+			tag:yep("+", G.C.RED, function()
+				card:start_materialize()
+				card.ability.couponed = true
+                card:set_cost()
+				return true
+			end)
+			tag.triggered = true
+			return card
+		end
+	end,
+}
+
+SMODS.Tag{
+	key = "togajokerbooster",
+	atlas = "TOGATags",
+	pos = { x = 1, y = 0 },
+	config = { type = "new_blind_choice" },
+	in_pool = function(self, args)
+		return true
+	end,
+	apply = function(self, tag, context)
+		local lock = tag.ID
+		if context.type == "new_blind_choice" then
+			G.CONTROLLER.locks[lock] = true
+			tag:yep('+', G.C.ORANGE,function() 
+				local key = 'p_toga_togazipboosterpack'
+				local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+				G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+				card.cost = 0
+				card.from_tag = true
+				G.FUNCS.use_card({config = {ref_table = card}})
+				card:start_materialize()
+				G.CONTROLLER.locks[lock] = nil
+				return true
+			end)
+			tag.triggered = true
+			return true
+		end
+	end,
+}
+
+SMODS.Tag{
+	key = "togajokerziparchive",
+	atlas = "TOGATags",
+	pos = { x = 6, y = 0 },
+	config = { type = "new_blind_choice" },
+	in_pool = function(self, args)
+		return true
+	end,
+	apply = function(self, tag, context)
+		local lock = tag.ID
+		if context.type == "new_blind_choice" then
+			G.CONTROLLER.locks[lock] = true
+			tag:yep('+', G.C.ORANGE,function() 
+				local key = 'p_toga_togaziparchivepack'
+				local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+				G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+				card.cost = 0
+				card.from_tag = true
+				G.FUNCS.use_card({config = {ref_table = card}})
+				card:start_materialize()
+				G.CONTROLLER.locks[lock] = nil
+				return true
+			end)
+			tag.triggered = true
+			return true
+		end
+	end,
+}
+
+SMODS.Tag{
+	key = "thespbroll",
+	atlas = "TOGATags",
+	pos = { x = 2, y = 0 },
+	config = { type = "immediate" },
+	in_pool = function(self, args)
+		return true
+	end,
+	apply = function(self, tag, context)
+		local lock = tag.ID
+		if context.type == "immediate" then
+			G.CONTROLLER.locks[lock] = true
+			tag:yep('+', G.C.ORANGE,function() 
+				local card = create_card('Spectral', G.consumables, nil, nil, nil, nil, "c_toga_selfpropelledbomb", "thespbrun")
+				card:add_to_deck()
+				G.consumeables:emplace(card)
+				G.CONTROLLER.locks[lock] = nil
+				return true
+			end)
+			tag.triggered = true
+			return true
+		end
+	end,
+}
+
+SMODS.Tag{
+	key = "guaranteedice",
+	atlas = "TOGATags",
+	pos = { x = 3, y = 0 },
+	config = { type = "store_joker_create" },
+	in_pool = function(self, args)
+		return true
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_create" then
+			local card = create_card("Joker", context.area, nil, nil, nil, nil, "j_oops")
+			create_shop_card_ui(card, "Joker", context.area)
+			card.states.visible = false
+			tag:yep("+", G.C.RED, function()
+				card:start_materialize()
+                card:set_cost()
+				return true
+			end)
+			tag.triggered = true
+			return card
+		end
+	end,
+}
+
+SMODS.Tag{
+	key = "thenet",
+	atlas = "TOGATags",
+	pos = { x = 4, y = 0 },
+	config = { type = "immediate" },
+	in_pool = function(self, args)
+		return true
+	end,
+	apply = function(self, tag, context)
+		local lock = tag.ID
+		if context.type == "immediate" then
+			G.CONTROLLER.locks[lock] = true
+			tag:yep('+', G.C.ORANGE,function() 
+				local card = create_card('Spectral', G.consumables, nil, nil, nil, nil, "c_black_hole", "internetexplorer")
+				card:add_to_deck()
+				G.consumeables:emplace(card)
+				G.CONTROLLER.locks[lock] = nil
+				return true
+			end)
+			tag.triggered = true
+			return true
+		end
+	end,
+}
+
+SMODS.Tag{
+	key = "controlexe",
+	atlas = "TOGATags",
+	pos = { x = 5, y = 0 },
+	config = { type = "immediate" },
+	in_pool = function(self, args)
+		return true
+	end,
+	apply = function(self, tag, context)
+		local lock = tag.ID
+		if context.type == "immediate" then
+			if #G.jokers.cards > 0 then
+				local jokerlist = G.jokers.cards
+				pseudoshuffle(jokerlist, pseudoseed('controlpanel'))
+				
+				G.CONTROLLER.locks[lock] = true
+				tag:yep('+', G.C.ORANGE,function() 
+					local seledition = poll_edition('98se', nil, false, true)
+					pseudorandom_element(jokerlist, pseudoseed('controlpanel')):set_edition(seledition, true)
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+			else
+				tag:nope()
+			end
+			tag.triggered = true
+			return true
+		end
+	end,
+}
+
 SMODS.Back{
 	key = "frogdeck",
 	pos = { x = 0, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
 	discovered = true,
-	config = {ante_scaling = 1.25, hands = -1, discards = -1, joker_slot = 1, consumable_slot = 1, hand_size = 3},
+	config = {ante_scaling = 1.25, hands = -1, discards = -1, joker_slot = 1, consumable_slot = 1, hand_size = 3, dollars = 6},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { self.config.hands, self.config.discards, self.config.joker_slot, self.config.consumable_slot, self.config.ante_scaling, self.config.hand_size } }
 	end

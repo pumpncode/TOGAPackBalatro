@@ -20,7 +20,8 @@ return {
 					"{C:attention}+#4#{} Consumable slot",
 					"{C:attention}+#6#{} hand size",
 					"{C:red}#1#{} hand, {C:red}#2#{} discard",
-					"{C:red}X#5#{} Blind size{}",
+					"{C:red}X#5#{} Blind size",
+					"Start with {C:money}$6{} more",
 					"{C:inactive,s:0.8}What secrets does the frog hold?{}"
 				}
 			}
@@ -271,13 +272,61 @@ return {
 					"If sold or destroyed, {C:green}#3# in #2#{}",
 					"chance to trigger anyway.",
 				}
-		},
+			},
         },
         Packet = {
             -- oops, nothing!
         },
         Tag = {
-            -- oops, nothing!
+            tag_toga_togajokershop = {
+				name = "Spare CD Tag",
+                text = {
+                    "Shop has a free",
+                    "{C:attention}TOGA Joker{}",
+                },
+			},
+			tag_toga_togajokerbooster = {
+				name = "Application Tag",
+                text = {
+                    "Gives a free",
+                    "{C:attention}ZIP Package{}",
+                },
+			},
+			tag_toga_togajokerziparchive = {
+				name = "Joker.ZIP Tag",
+                text = {
+                    "Gives a free",
+                    "{C:attention}Joker.ZIP{}",
+                },
+			},
+			tag_toga_thespbroll = {
+				name = "SPB Tag",
+                text = {
+                    "Get a",
+                    "{C:attention}Self-Propelled Bomb{}",
+                },
+			},
+			tag_toga_guaranteedice = {
+				name = "D20 Tag",
+                text = {
+                    "Shop has an",
+                    "{C:attention}Oops, all 6s{}",
+                },
+			},
+			tag_toga_thenet = {
+				name = "Globe Tag",
+                text = {
+                    "Gives a free",
+                    "{C:spectral}Black Hole{}",
+                },
+			},
+			tag_toga_controlexe = {
+				name = "Settings Tag",
+                text = {
+                    "Applies a random {C:dark_edition}edition{}",
+                    "to a random {C:attention}Joker{}",
+                },
+			},
         },
         Sleeve = {
 			-- oops, nothing!
