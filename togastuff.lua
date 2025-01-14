@@ -5,12 +5,12 @@ sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
 
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
-SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 72, py = 95}
-SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 72, py = 95}
-SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 72, py = 95}
-SMODS.Atlas{key = "TOGAConsumables", path = "togacons.png", px = 72, py = 95}
-SMODS.Atlas{key = "TOGADeckBack", path = "togadeck.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGAConsumables", path = "togacons.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGADeckBack", path = "togadeck.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGATags", path = "togatags.png", px = 34, py = 34}
 SMODS.Atlas({key = "modicon", path = "togaicon.png", px = 32, py = 32}):register()
 
