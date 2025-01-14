@@ -212,12 +212,8 @@ SMODS.Joker{
 		end
 		
 		if context.remove_playing_cards then
-			for i = 1, #context.removed do
-				G.E_MANAGER:add_event(Event({trigger = "after", func = function()
-					ease_dollars(card.ability.extra.money)
-					card_eval_status_text(card, 'extra', nil, nil, nil, {message = '$'..card.ability.extra.money, colour = G.C.GOLD})
-				return true end }))
-			end
+			ease_dollars(card.ability.extra.money*#context.removed)
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = '$'..card.ability.extra.money*#context.removed, colour = G.C.GOLD})
 		end
 		
 		if context.discard and not context.blueprint then
@@ -335,8 +331,8 @@ SMODS.Joker{
 				else
 					card.ability.extra.xchip_mod = card.ability.extra.xchip_mod+card.ability.extra.xchip_increase
 				end
-				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_recyclebinsfx"})
 			end
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_recyclebinsfx"})
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -481,6 +477,7 @@ SMODS.Joker{
 				table.insert(G.playing_cards, _card)
 				G.deck:emplace(_card)
 			end
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_systemrestore1')})
 		end
 	end
 }
@@ -1251,6 +1248,8 @@ local function toga_spbdeckwreck(card, failedchance)
 		play_sound('tarot1')
 		card:juice_up(0.3, 0.5)
 	return true end }))
+	
+	SMODS.calculate_context({remove_playing_cards = true, removed = destroyed_cards})
 	
 	G.E_MANAGER:add_event(Event({
 		trigger = 'after',
