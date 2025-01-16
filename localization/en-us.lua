@@ -24,6 +24,15 @@ return {
 					"Start with {C:money}$6{} more",
 					"{C:inactive,s:0.8}What secrets does the frog hold?{}"
 				}
+			},
+			b_toga_spacedeck = {
+				name = 'Space Deck',
+				text = {
+					"Start the run",
+					"with a {C:planet}Space Joker{}",
+					"{C:planet}Planet Merchant{},",
+					"{C:planet}Planet Tycoon{}"
+				}
 			}
         },
         Joker = {
@@ -256,6 +265,16 @@ return {
 					"{C:attention}each{} other destroyed card.",
 				}
 			},
+			j_toga_spacecadetpinball = {
+				name = 'Space Cadet',
+				text = {
+					"{C:green}#3# in 2{} chance to {C:attention}rescore{}",
+                    "a random scoring card.",
+					"For every {C:money}$#1#{} held,",
+					"try to {C:attention}rescore{} again.",
+					"{C:inactive,s:0.8}Currently #2# attempts.{}",
+				}
+			},
         },
         Enhanced = {
             -- oops, nothing!
@@ -303,7 +322,8 @@ return {
 				name = "SPB Tag",
                 text = {
                     "Get a",
-                    "{C:attention}Self-Propelled Bomb{}",
+                    "{C:attention}Self-Propelled{}",
+					"{C:attention}Bomb{}"
                 },
 			},
 			tag_toga_guaranteedice = {
@@ -311,6 +331,8 @@ return {
                 text = {
                     "Shop has an",
                     "{C:attention}Oops, all 6s{}",
+					"{C:inactive,s:0.8}If one is held already,{}",
+					"{C:inactive,s:0.8}the tag is destroyed.{}"
                 },
 			},
 			tag_toga_thenet = {
@@ -385,6 +407,7 @@ return {
 			toga_pso2ironwillproc = "Procced!",
 			toga_pso2ironwillrecharge = "Recharging...",
 			toga_pso2ironwillsave = "Iron Will was triggered.",
+			toga_systemrestore1 = "Duplicated!",
 			-- toga_recyclebinclean = "Trashing...",
 			toga_userlocked = "Locked!",
 			toga_userunlocked = "Unlocked!",
