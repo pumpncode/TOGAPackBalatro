@@ -1605,7 +1605,6 @@ SMODS.Tag{
 		if context.type == "immediate" then
 			if #G.jokers.cards > 0 then
 				local jokerlist = G.jokers.cards
-				pseudoshuffle(jokerlist, pseudoseed('controlpanel'))
 				
 				G.CONTROLLER.locks[lock] = true
 				tag:yep('+', G.C.ORANGE,function() 

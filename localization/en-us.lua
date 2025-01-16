@@ -331,8 +331,6 @@ return {
                 text = {
                     "Shop has an",
                     "{C:attention}Oops, all 6s{}",
-					"{C:inactive,s:0.8}If one is held already,{}",
-					"{C:inactive,s:0.8}the tag is destroyed.{}"
                 },
 			},
 			tag_toga_thenet = {
@@ -347,6 +345,8 @@ return {
                 text = {
                     "Applies a random {C:dark_edition}edition{}",
                     "to a random {C:attention}Joker{}",
+					"{C:inactive,s:0.8}Will replace current edition{}",
+					"{C:inactive,s:0.8}if one is present.{}"
                 },
 			},
         },
