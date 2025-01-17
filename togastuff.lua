@@ -985,7 +985,7 @@ SMODS.Joker{
 	key = 'spacecadetpinball',
 	config = { extra = { cashpoint = 20, alltrig = 1 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.cashpoint, card.ability.extra.alltrig, (G.GAME and G.GAME.probabilities.normal or 1) } }
+		return { vars = { card.ability.extra.cashpoint, card.ability.extra.alltrig-1, (G.GAME and G.GAME.probabilities.normal or 1) } }
 	end,
 	unlocked = true,
 	rarity = 3,
