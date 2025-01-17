@@ -647,7 +647,6 @@ SMODS.Joker{
 		-- Inspired by Simplified Joker from MoreFluff.
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
 			return {
-				--message = localize({type = 'variable', key = 'a_chips', vars = { card.ability.extra.totalbonus }}),
 				card = context.other_joker,
 				chips = card.ability.extra.totalbonus,
 			}
@@ -776,7 +775,6 @@ SMODS.Joker{
 		
 		if context.joker_main then
 			return {
-				--message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
 				chips = card.ability.extra.chips
 			}
 		end
@@ -846,9 +844,7 @@ SMODS.Joker{
 		elseif context.joker_main then
 			if card.ability.extra.Xmult_current > 1 then
 				return {
-					--message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult_current } }),
 					x_mult = card.ability.extra.Xmult_current,
-					--colour = G.C.MULT
 				}
 			end
 		end
@@ -875,10 +871,7 @@ SMODS.Joker{
 		
 		if context.joker_main and card.ability.extra.curmult > 0 then
 			return {
-				--message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.curmult } }),
 				mult = card.ability.extra.curmult,
-				--colour = G.C.MULT,
-				--card = card
 			}
 		end
 	end
@@ -982,51 +975,6 @@ SMODS.Joker{
 	end
 }
 
--- Rescoring a card from a Joker.
-local function toga_rescorecard(icard)
-	--local scoring_hand = context.scoring_hand
-	icard.extra_enhancements = nil
-	local reps = SMODS.calculate_repetitions(icard, {cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = icard, repetition = true, card_effects = effects}, {1})
-	for j=1,#reps do
-		percent = percent + percent_delta
-		if reps[j] ~= 1 then
-			local _, eff = next(reps[j])
-			card_eval_status_text(eff.card, 'jokers', nil, nil, nil, eff)
-		end
-		
-		--calculate the hand effects
-		local effects = {eval_card(icard, {main_scoring = true, cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands})}
-		SMODS.calculate_quantum_enhancements(icard, effects, {main_scoring = true, cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands})
-		for k=1, #G.jokers.cards + #G.consumeables.cards do
-			local _card = G.jokers.cards[k] or G.consumeables.cards[k - #G.jokers.cards]
-			--calculate the joker individual card effects
-			local eval, post = eval_card(_card, {cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = icard, individual = true})
-			if next(eval) then 
-				table.insert(effects, eval)
-				if next(post) then 
-					for _, v in ipairs(post) do
-						table.insert(effects, v) 
-					end
-				end
-				if eval.retriggers then
-					for rt = 1, #eval.retriggers do
-						local rt_eval, rt_post = eval_card(_card, {cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = icard, individual = true, retrigger_joker = true})
-						table.insert(effects, {eval.retriggers[rt]})
-						table.insert(effects, rt_eval)
-						if next(rt_post) then table.insert(effects, rt_post) end
-					end
-				end
-			end
-		end
-		-- Base game calculation removed
-		SMODS.trigger_effects(effects, icard)
-		local deck_effect = G.GAME.selected_back:trigger_effect({cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = icard, individual = true})
-		if deck_effect then SMODS.calculate_effect(deck_effect, G.deck.cards[1] or G.deck) end
-		icard.lucky_trigger = nil
-	end
-	icard.extra_enhancements = nil
-end
-
 -- Get repeats, up to 1000.
 local function toga_cashpointmulitple(cashpoint)
 	local getmultiples = to_big(G.GAME.dollars)/to_big(cashpoint)
@@ -1037,7 +985,7 @@ SMODS.Joker{
 	key = 'spacecadetpinball',
 	config = { extra = { cashpoint = 20, alltrig = 1 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.cashpoint, card.ability.extra.alltrig-1, (G.GAME and G.GAME.probabilities.normal or 1) } }
+		return { vars = { card.ability.extra.cashpoint, card.ability.extra.alltrig, (G.GAME and G.GAME.probabilities.normal or 1) } }
 	end,
 	unlocked = true,
 	rarity = 3,
@@ -1050,9 +998,7 @@ SMODS.Joker{
 			card.ability.extra.alltrig = toga_cashpointmulitple(card.ability.extra.cashpoint) or 1
 			for i = 1, card.ability.extra.alltrig do
 				if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/2 then -- hard cap.
-					toga_rescorecard(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')))
-					--toga_rescorecard(1, context)
-					--toga_rescorecard(#context.scoring_hand, context)
+					SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
 				end
 			end
 		end

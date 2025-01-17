@@ -7,6 +7,6 @@
 	"main_file": "togastuff.lua",
 	"priority": 0,
 	"badge_colour": "fd9712",
-	"version": "1.0.0a-BetterCalcDev",
+	"version": "1.0.0a-BetterCalcDev-1701",
 	"dependencies": ["Steamodded (>=1.0.0*~)", "Talisman (>=2.1.0*~)"]
 }
