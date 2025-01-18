@@ -624,6 +624,14 @@ SMODS.Joker{
 	end
 }
 
+local function toga_vouchcount()
+	local vouchercount = 0
+	for i, v in pairs(G.GAME.used_vouchers) do
+		if v == true then vouchercount = vouchercount + 1 end
+	end
+	return vouchercount
+end
+
 SMODS.Joker{
 	key = 'winmillenium',
 	config = { extra = { chips = 15, chipbonus = 15, totalbonus = 15 } },
@@ -637,12 +645,7 @@ SMODS.Joker{
 	cost = 7,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		-- Update values.
-		local vouchercount = 0
-		for i, v in pairs(G.GAME.used_vouchers) do
-			if v == true then vouchercount = vouchercount + 1 end
-		end
-		card.ability.extra.totalbonus = card.ability.extra.chips + card.ability.extra.chips*vouchercount
+		card.ability.extra.totalbonus = card.ability.extra.chips + card.ability.extra.chips*toga_vouchcount()
 		
 		-- Inspired by Simplified Joker from MoreFluff.
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
@@ -662,6 +665,9 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_winmeshutdown")
 			else play_sound("toga_chord") end
 		end
+	end,
+	update = function(self, card, context)
+		card.ability.extra.totalbonus = card.ability.extra.chips + card.ability.extra.chips*toga_vouchcount()
 	end
 }
 
