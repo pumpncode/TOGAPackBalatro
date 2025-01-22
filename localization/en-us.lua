@@ -22,7 +22,7 @@ return {
 					"{C:red}#1#{} hand, {C:red}#2#{} discard",
 					"{C:red}X#5#{} Blind size",
 					"Start with {C:money}$6{} more",
-					"{C:inactive,s:0.8}What secrets does the frog hold?{}"
+					"{C:inactive,s:0.8}What {C:spectral,s:0.8}secrets{C:inactive,s:0.8} does the frog hold?{}"
 				}
 			},
 			b_toga_spacedeck = {
@@ -31,7 +31,9 @@ return {
 					"Start the run",
 					"with a {C:planet}Space Joker{}",
 					"{C:planet}Planet Merchant{},",
-					"{C:planet}Planet Tycoon{}"
+					"{C:planet}Planet Tycoon{}",
+					"{C:spectral,s:0.8}Spectral{s:0.8} cards",
+					"{s:0.8}may appear in shop"
 				}
 			}
         },
@@ -146,16 +148,25 @@ return {
 					"{C:inactive,s:0.6}backwards Sock and Buskin!{}"
 				}
 			},
+			j_toga_win2000 = {
+				name = 'Windows 2000',
+				text = {
+					"Generates a random {C:attention}Tag{}",
+					"when completing {C:attention}Blinds{}"
+				}
+			},
+			j_toga_winxp = {
+				name = 'Windows XP',
+				text = {
+					"Balances",
+					"{C:chips}Chips{} and {C:mult}Mult{}",
+				}
+			},
 			j_toga_jokersrb2kart = {
 				name = 'Karting Joker',
 				text = {
-					"Gains {X:mult,C:white}X#2#{} Mult when {C:attention}getting{},",
-					"{C:attention}using{} or {C:money}selling{} {C:attention}cards{} or {C:attention}leaving{} shop.",
-					--"{C:attention}obtained{}/{C:money}sold{}/{C:attention}used{} or when {C:attention}leaving{} shop.",
-					"{C:green}#5# in #6#{} chance to gain {X:mult,C:white}X#3#{} Mult",
-					"when a {C:attention}Blind{} or {C:attention}Booster Pack{}",
-					"is skipped instead of {C:attention}losing{} {C:red}#4#%{}",
-					"of currently accumulated {X:mult,C:white}XMult{}.",
+					"Gains {X:mult,C:white}XMult{} when",
+					"performing {C:attention}certain actions{}.",
 					"{C:red,s:0.8}Self debuffs if {X:mult,C:white,s:0.8}XMult{C:red,s:0.8} goes below {X:mult,C:white,s:0.8}X1{}{C:red,s:0.8}.{}",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
 					"{C:inactive,s:0.7}I am literally a racer, what's your excuse?{}"
@@ -208,7 +219,7 @@ return {
 					"Retrigger all card {C:attention}held in hand{}",
 					"abilities {C:attention}#1#{} times. {C:red}-#2#{} hand size",
 					"During {C:attention}Boss Blinds{}, {C:attention}+#3#{} hand size.",
-					"{C:attention,s:0.9}Warning: {C:legendary,s:0.9}this Joker is slightly janky.{}",
+					--"{C:attention,s:0.9}Warning: {C:legendary,s:0.9}this Joker is slightly janky.{}",
 				}
 			},
 			j_toga_asterism = {
@@ -349,6 +360,13 @@ return {
 					"{C:inactive,s:0.8}if one is present.{}"
                 },
 			},
+			tag_toga_thelegend = {
+				name = "Dragon Tag",
+                text = {
+                    "Shop has a",
+                    "{C:dark_edition}Legendary{} Joker",
+                },
+			},
         },
         Sleeve = {
 			-- oops, nothing!
@@ -359,6 +377,39 @@ return {
                 text = {
                     "{C:attention}+#1#%{} {C:inactive}(of current){} hand size",
 					"{C:inactive,s:0.8}(Rounded up.){}"
+                },
+            },
+			v_toga_hardwarewizard = {
+                name = "Hardware Wizard",
+                text = {
+                    "Doubles all {C:attention}listed{} {C:green}probabilities{}",
+					"for the rest of the run",
+					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}2 in 3{}{C:inactive}){}"
+                },
+            },
+			v_toga_diskdefrag = {
+                name = "Disk Defragmenter",
+                text = {
+                    "{C:red}-#1#{} discard each round.",
+					"{C:red}+#1#{} discard after",
+					"playing any hand."
+                },
+            },
+			v_toga_mspaint = {
+                name = "Microsoft Paint",
+                text = {
+					"{C:red}-#2#{} {C:attention}Joker{} slot",
+                    "Right most {C:attention}held in hand{}",
+					"cards give {X:dark_edition,C:white}^#1#{} Chips",
+					"this run"
+                },
+            },
+			v_toga_dataflush = {
+                name = "ipconfig /flushdns",
+                text = {
+					"{C:red}-#2#{} {C:attention}Consumable{} slot",
+					"Each {C:attention}Consumable{} held gives",
+					"{X:dark_edition,C:white}^#1#{} Mult"
                 },
             },
 		},
@@ -384,6 +435,32 @@ return {
 					"name, yes.",
                 },
             },
+			toga_kartjokerlist = {
+				name = "Eligible Actions:",
+                text = {
+                    "{C:attention}Buying{}, {C:money}selling{}, {C:attention}using{},",
+					"{C:attention}adding{} cards to deck;",
+					"{C:attention}opening{} booster packs;",
+					"{C:attention}rerolling{} shop; ({X:mult,C:white}X#1#{})",
+					"{C:attention}leaving{} shop. ({X:mult,C:white}X#2#{})",
+                },
+			},
+			toga_kartjokershortcut = {
+				name = "Shortcut:",
+                text = {
+                    "Skipping {C:attention}blinds{} or {C:attention}booster packs{}",
+					"has a {C:green}#1# in #2#{} chance to gain",
+					"{X:mult,C:white}X#3#{} instead of {C:attention}losing{} {C:red}#4#%{}",
+					"of currently accumulated {X:mult,C:white}XMult{}."
+                },
+			},
+			toga_useraccountsinfo = {
+				name = "Formula",
+                text = {
+                    "({C:attention}Joker slots{} + {C:attention}Consumable{} slots",
+					"+ {C:blue}hands{} left + {C:red}discards{} left) / 4"
+                },
+			}
         }
     },
     misc = {
