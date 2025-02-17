@@ -1,4 +1,4 @@
-# TOGAPackBalatro
+# TOGA's Stuff
 A personal timewaster project that is a mod for Balatro.
 
 Uses Steamodded 1.0.0-ALPHA with the BetterCalc 2.2 changes and a few Lovely-based patches.
