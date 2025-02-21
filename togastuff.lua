@@ -154,7 +154,7 @@ local function toga_y2kcheck(context)
 			twopresent = twopresent+1
 		end
 		if SMODS.Ranks[context.full_hand[i].base.value].key == "King" then
-			kingpresent = twopresent+1
+			kingpresent = kingpresent+1
 		end
 	end
 	return twopresent, kingpresent
