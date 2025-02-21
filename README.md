@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://files.catbox.moe/vo9000.png">
+</p>
+
 # TOGA's Stuff
 A personal timewaster project that is a mod for Balatro.
 
