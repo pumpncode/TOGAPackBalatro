@@ -1446,6 +1446,9 @@ SMODS.Joker{
 		local frame_amount = #winupdateframes
 		local wrapped_value = (math.floor(timer) - 1) % frame_amount + 1
 		card.children.center:set_sprite_pos({x = winupdateframes[wrapped_value], y = 0})
+	end,
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end
 }
 
