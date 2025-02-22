@@ -71,8 +71,7 @@ return {
 				name = 'Task Manager',
 				text = {
 					"On {C:attention}last discard{}, {C:red}destroy{}",
-					"{C:attention}all{} discarded cards. Gain {C:money}$#1#{} when",
-					"a playing card is destroyed.",
+					"{C:attention}all{} discarded cards."
 				}
 			},
 			-- Old Task Manager ability, tweaked.
@@ -125,8 +124,10 @@ return {
 			j_toga_win98 = {
 				name = 'Windows 98',
 				text = {
-					"Each {C:attention}Consumable{} held gives",
-					"{C:chips}+#1#{} Chips & {C:red}+#2#{} Mult"
+					"When a card {C:attention}scores{}, {C:attention}#3#%{} of total sell value",
+					"of all current Jokers is given as {C:red}Mult{}. {C:inactive,s:0.8}(Currently {C:money,s:0.8}$#4#{C:inactive,s:0.8}){}",
+					"Held {C:attention}Consumables{} increase given {C:red}Mult{} by {C:attention}#1#%{} each.",
+					"{C:inactive,s:0.8}(Currently #2#%){}"
 				}
 			},
 			j_toga_winmillenium = {
@@ -173,24 +174,30 @@ return {
 				}
 			},
 			j_toga_whatisthis = {
-				name = '???',
+				name = '65 52 72 6F 52',
 				text = {
-					"{X:dark_edition,C:white}???^^#1#{}"
+					-- "{X:dark_edition,C:white}???^^#1#{}"
+					"Held {C:attention}Consumables{} give",
+					"{X:dark_edition,C:white}^^#1#{} Mult each.",
+					"{C:inactive,s:0.8}What is this?!{}"
 				}
 			},
 			j_toga_quacksoft = {
-				name = 'Duck',
+				name = 'Duck?',
 				text = {
-					"{X:dark_edition,C:white}Quack^#1#{}"
+					--"{X:dark_edition,C:white}Quack^#1#{}"
+					"{X:dark_edition,C:white}^0.01{} Chips for each",
+					"remaining card in the {C:attention}deck{}",
+					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}"
 				}
 			},
 			j_toga_winupdate = {
 				name = 'Joker Update',
 				text = {
 					"{C:attention}Numerical{} values of a random Joker",
-					"are increased by {C:attention}#1#%{} when a playing",
-					"card is added to deck while active.",
-					"{s:0.9}Becomes active after when defeating a {C:attention,s:0.9}Blind{s:0.9}.{}",
+					"are increased by {C:attention}#1#%{} when a card",
+					"is {C:money}sold{} while active.",
+					"{s:0.9}Becomes active after defeating a {C:attention,s:0.9}Blind{s:0.9}.{}",
 					"{C:inactive}#2#{}",
 					"{C:inactive,s:0.8}Cannot affect self or copies of self.{}"
 				}
@@ -216,9 +223,9 @@ return {
 			j_toga_clippit = {
 				name = 'Clippit',
 				text = {
-					"Retrigger all card {C:attention}held in hand{}",
-					"abilities {C:attention}#1#{} times. {C:red}-#2#{} hand size",
-					"During {C:attention}Boss Blinds{}, {C:attention}+#3#{} hand size.",
+					"Retrigger all card",
+					"{C:attention}held in hand{}",
+					"abilities {C:attention}#1#{} times."
 					--"{C:attention,s:0.9}Warning: {C:legendary,s:0.9}this Joker is slightly janky.{}",
 				}
 			},
@@ -279,11 +286,48 @@ return {
 			j_toga_spacecadetpinball = {
 				name = 'Space Cadet',
 				text = {
-					"{C:green}#3# in 2{} chance to {C:attention}rescore{}",
+					"{C:green}#3# in 3{} chance to {C:attention}rescore{}",
                     "a random scoring card.",
 					"For every {C:money}$#1#{} held,",
 					"try to {C:attention}rescore{} again.",
 					"{C:inactive,s:0.8}Currently #2# attempts.{}",
+				}
+			},
+			j_toga_heartyspades = {
+				name = 'Hearty Spades',
+				text = {
+					"{C:hearts}Hearts{} and {C:spades}Spades{}",
+					"count as the same suit"
+				}
+			},
+			j_toga_rover = {
+				name = 'Rover',
+				text = {
+					"Each card in the {C:attention}deck{} has a",
+					"{C:green}#1# in #2#{} chance to be {C:attention}scored{}",
+					"by this Joker"
+				}
+			},
+			j_toga_binaryjkr = {
+				name = 'Binary Joker',
+				text = {
+					"{C:attention}10s{} are",
+					"considered as {C:attention}2s{}"
+				}
+			},
+			j_toga_hexadecimaljkr = {
+				name = 'Hexadecimal Joker',
+				text = {
+					"{C:attention}Aces{} are",
+					"considered as {C:attention}10s{}"
+				}
+			},
+			j_toga_michaelrosen = {
+				name = 'Michael Rosen',
+				text = {
+					"{C:attention}Each effect{} has a {C:green}#1# in #2#{} chance",
+					"to be given by cards {C:attention}held in hand{}.",
+					"{C:inactive,s:0.8}*click* Nice.{}"
 				}
 			},
         },
@@ -382,9 +426,17 @@ return {
 			v_toga_hardwarewizard = {
                 name = "Hardware Wizard",
                 text = {
-                    "Doubles all {C:attention}listed{} {C:green}probabilities{}",
+                    "Doubles all {C:attention}listed{} {E:1,C:green}probabilities{}",
 					"for the rest of the run",
 					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}2 in 3{}{C:inactive}){}"
+                },
+            },
+			v_toga_hardwarewizardxp = {
+                name = "Hardware Wizard (XP)",
+                text = {
+                    "Doubles all {C:attention}listed{} {E:1,C:green}probabilities{}",
+					"for the rest of the run again",
+					"{C:inactive}(ex: {}{C:green}2 in 3{}{C:inactive} -> {}{C:green}4 in 3{}{C:inactive}){}"
                 },
             },
 			v_toga_diskdefrag = {
@@ -407,9 +459,26 @@ return {
 			v_toga_dataflush = {
                 name = "ipconfig /flushdns",
                 text = {
-					"{C:red}-#2#{} {C:attention}Consumable{} slot",
-					"Each {C:attention}Consumable{} held gives",
-					"{X:dark_edition,C:white}^#1#{} Mult"
+					"Discarding hands containing a {C:attention}Flush{}",
+					"creates a {C:dark_edition}Negative{} copy of a random",
+					"{C:attention}consumable{} card currently held."
+                },
+            },
+			v_toga_wormsninjarope = {
+                name = "Ninja Rope",
+                text = {
+					"{C:attention}+#1#{} card selection limit",
+					"{C:inactive,s:0.8}Hey, this is familiar...{}",
+                },
+            },
+			v_toga_wormsscalesofjustice = {
+                name = "Scales of Justice",
+                text = {
+					-- "Joker and Consumable {C:attention}slots{}, as well",
+					-- "as {C:attention}hand size{} and {C:attention}card selection limit{}",
+					-- "are set to their {E:1,C:attention}calculated average{}.",
+					"Even the scales.",
+					"{C:inactive,s:0.8}Use wisely.{}"
                 },
             },
 		},
@@ -460,7 +529,43 @@ return {
                     "({C:attention}Joker slots{} + {C:attention}Consumable{} slots",
 					"+ {C:blue}hands{} left + {C:red}discards{} left) / 4"
                 },
-			}
+			},
+			toga_roseneffects = {
+				name = "Possible effects:",
+                text = {
+                    "{C:money}$#1#{}, {X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#3#{} Mult"
+                },
+			},
+			toga_rosentalismanextra = {
+				name = "With Talisman installed",
+                text = {
+                    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^^#2#{} Chips, {X:dark_edition,C:white}^^^#3#{} Chips",
+					"{X:dark_edition,C:white}^#4#{} Mult, {X:dark_edition,C:white}^^#5#{} Mult, {X:dark_edition,C:white}^^^#6#{} Mult",
+					"{C:inactive,s:0.7}(10x, 20x and 40x less likely to be rolled respectively.){}",
+                },
+				-- text = {
+					-- "{E:1,C:dark_edition,s:4}:3"
+				-- },
+			},
+			toga_scales1 = {
+				name = "Averages:",
+                text = {
+                    "Joker & Consumable {C:attention}slots{},",
+					"{C:attention}hand size{} and {C:attention}card selection limit{}."
+                },
+			},
+			toga_scales2 = {
+				name = "Averages:",
+                text = {
+                    "{C:attention}Poker hand{} {C:planet}levels{}.",
+                },
+			},
+			toga_scales3 = {
+				name = "Averages:",
+                text = {
+                    "{C:blue}Hands{} and {C:red}discards{}."
+                },
+			},
         }
     },
     misc = {
@@ -491,6 +596,7 @@ return {
 			toga_spbavoidfail = "Hit!",
 			toga_bonusapply = "Bonus!",
 			toga_anviltrigger = "Hit it!",
+			toga_32bits = "32-bit!",
 			toga_jimbo95txt1 = "Run!",
 			toga_jimbo95txt2 = "Again?",
 			toga_jimbo95txt3 = "Another one!",
@@ -506,7 +612,6 @@ return {
 			-- oops, nothing!
         },
         v_dictionary = {
-			a_xchips = {"X#1# Chips"},
 			toga_Echip = {"^#1# Chips"},
 			toga_EEchip = {"^^#1# Chips"},
 			toga_EEEchip = {"^^^#1# Chips"},

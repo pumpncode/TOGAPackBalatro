@@ -8,6 +8,7 @@ SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGAJokerRover", path = "togarover.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAConsumables", path = "togacons.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGADeckBack", path = "togadeck.png", px = 71, py = 95}
@@ -47,6 +48,11 @@ SMODS.Sound({key = "spb", path = "kc57.ogg"}) -- Unused in Knuckles Chaotix, Sel
 SMODS.Sound({key = "anviluse", path = "mcanviluse.ogg"}) -- Snippet of block.anvil.use.
 SMODS.Sound({key = "pinballstart", path = "SOUND4.WAV"}) -- Round Start, Plus! 98 - Space Cadet Pinball Demo
 SMODS.Sound({key = "pinballloseball", path = "SOUND27.WAV"}) -- Lose Ball, Plus! 98 - Space Cadet Pinball Demo
+SMODS.Sound({key = "rosenclick", path = "rosenclick.ogg"}) -- *click* Nice. - Michael Rosen
+SMODS.Sound({key = "rosenhello", path = "rosenhello.ogg"}) -- self explanatory, same as above.
+SMODS.Sound({key = "rosenbye", path = "rosenthatsashame.ogg"}) -- self explanatory, same as above.
+SMODS.Sound({key = "rosenah", path = "rosenah.ogg"}) -- self explanatory, same as above.
+SMODS.Sound({key = "scalesofjustice", path = "ScalesOfJustice.wav"}) -- self explanatory, Worms Armageddon/World Party.
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
@@ -73,7 +79,8 @@ SMODS.ObjectType{
 		["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
 		["j_toga_win2000"] = true, ["j_toga_useraccounts"] = true, ["j_toga_virtualmemory"] = true,
 		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
-		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true
+		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
+		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true
 	}
 }
 
@@ -139,6 +146,28 @@ togabalatro.optional_features = function()
 	}
 end
 
+local canplayref = G.FUNCS.can_play
+G.FUNCS.can_play = function(e)
+	canplayref(e) -- execute original first before we do anything.
+	if #G.hand.highlighted <= G.hand.config.highlighted_limit then
+		if #G.hand.highlighted >= 52 then -- Cryptid?
+			e.config.colour = G.C.EDITION
+			e.config.button = 'play_cards_from_highlighted'
+		elseif #G.hand.highlighted >= 10 and #G.hand.highlighted < 52 then -- 2x the base.
+			e.config.colour = G.C.DARK_EDITION
+			e.config.button = 'play_cards_from_highlighted'
+		elseif #G.hand.highlighted > 5 and #G.hand.highlighted < 10 then -- more than base.
+			e.config.colour = G.C.PURPLE
+			e.config.button = 'play_cards_from_highlighted'
+		end
+	end
+end
+
+-- As Talisman is now optional and we have some items using this, best keep this.
+to_big = to_big or function(a)
+  return a
+end
+
 local function toga_randompitch()
 	local genvalue = math.random(75, 125)/100
 	if togabalatro.config.DoMoreLogging then sendInfoMessage("Random pitch of "..genvalue.." returned.", "TOGAPack") end
@@ -160,6 +189,57 @@ local function toga_y2kcheck(context)
 	return twopresent, kingpresent
 end
 
+local rosensfxtable = { chips1 = true, multhit1 = true, multhit2 = true, coin1 = true, generic1 = true, foil2 = true, xchips = true,
+						talisman_xchip = true, talisman_echip = true, talisman_eechip = true, talisman_eeechip = true, talisman_emult = true, talisman_eemult = true, talisman_eeemult = true }
+local playsoundref = play_sound
+function play_sound(sound_code, per, vol)
+	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and rosensfxtable[sound_code] then sound_code = 'toga_rosenclick' end
+	
+	playsoundref(sound_code, per, vol)
+end
+
+-- Hexa & Binary Joker yoink.
+local getidref = Card.get_id
+function Card:get_id()
+    local id = getidref(self) or 2
+	if next(SMODS.find_card('j_toga_hexadecimaljkr')) and id == 14 then id = 10 end
+	if next(SMODS.find_card('j_toga_binaryjkr')) and id == 10 then id = 2 end
+	return id
+end
+
+-- This still feels hacky, tbh.
+local issuitref = Card.is_suit
+function Card:is_suit(suit, bypass_debuff, flush_calc)
+	if flush_calc then
+		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared'))
+		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs')
+		and not SMODS.has_no_rank(self) then
+			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades + Smeared Joker flush pass.", "TOGAPack") end
+			return true
+		end
+        if next(SMODS.find_card('j_toga_heartyspades')) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades')
+		and not SMODS.has_no_rank(self) then
+			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades flush pass.", "TOGAPack") end
+            return true
+        end
+        return issuitref(self, suit, bypass_debuff, flush_calc)
+    else
+        if self.debuff and not bypass_debuff then return end
+		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared'))
+		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs')
+		and not SMODS.has_no_rank(self) then
+			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades + Smeared Joker pass.", "TOGAPack") end
+			return true
+		end
+        if next(SMODS.find_card('j_toga_heartyspades')) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades')
+		and not SMODS.has_no_rank(self) then
+			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades pass.", "TOGAPack") end
+            return true
+        end
+        return issuitref(self, suit, bypass_debuff, flush_calc)
+    end
+end
+
 SMODS.Joker{
 	key = 'y2kbug',
 	config = { extra = { chips = 25, mult = 4 } },
@@ -177,7 +257,7 @@ SMODS.Joker{
 		if context.individual and context.cardarea == G.play then
 			local twos, kings = toga_y2kcheck(context)
 			if twos > 0 and kings > 0 then
-				return {chips = card.ability.extra.chips, mult = card.ability.extra.mult, card = card}
+				return {chips = card.ability.extra.chips, mult = card.ability.extra.mult}
 			end
 		end
 	end
@@ -214,7 +294,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'taskmgr',
-	config = { extra = { money = 2 } },
+	config = { extra = { money = 1, wiggling = false } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.money } }
 	end,
@@ -228,11 +308,6 @@ SMODS.Joker{
 		if G.GAME.current_round.discards_left == 2 then
 			local eval = function() return G.GAME.current_round.discards_left == 1 end
 			juice_card_until(card, eval, true)
-		end
-		
-		if context.remove_playing_cards then
-			ease_dollars(card.ability.extra.money*#context.removed)
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = '$'..card.ability.extra.money*#context.removed, colour = G.C.GOLD})
 		end
 		
 		if context.discard and not context.blueprint then
@@ -256,6 +331,7 @@ SMODS.Joker{
 	end
 }
 
+-- Add up our 4 values and divide by 4 for their average.
 local function toga_multaverage(card)
 	local hleft, dleft, jslots, cslots = G.GAME.current_round.hands_left or 4, G.GAME.current_round.discards_left or 3, G.jokers and G.jokers.config.card_limit or 5, G.consumeables and G.consumeables.config.card_limit or 2
 	card.ability.extra.baseXmult = math.max(card.ability.extra.baseXmult, 1)
@@ -266,7 +342,7 @@ end
 -- Was previously Task Manager.
 SMODS.Joker{
 	key = 'useraccounts',
-	config = { extra = { baseXmult = 1, totalXmult = 1, odds = 3 } },
+	config = { extra = { baseXmult = 1, totalXmult = 1, odds = 4 } },
 	loc_vars = function(self, info_queue, card)
 		if self.discovered then
 			info_queue[#info_queue + 1] = {key = "toga_useraccountsinfo", set = 'Other'}
@@ -286,10 +362,7 @@ SMODS.Joker{
 		
 		if context.individual and context.cardarea == G.play then
 			if context.other_card and pseudorandom("toga_useraccounts") < G.GAME.probabilities.normal/card.ability.extra.odds then
-				return {
-					x_mult = card.ability.extra.totalXmult,
-					card = card
-				}
+				return { x_mult = card.ability.extra.totalXmult }
 			end
 		end
 	end,
@@ -313,10 +386,14 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			if pseudorandom("toga_virtualmemory") < G.GAME.probabilities.normal/card.ability.extra.odds then
-				local chipswap, multswap = hand_chips, mult
-				hand_chips, mult = mod_chips(multswap), mod_mult(chipswap)
-				update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
-				card_eval_status_text(card, 'extra', nil, percent, nil, {message = localize('toga_pagefileuse'), colour = G.C.PURPLE, sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_mmeclap", pitch = 1})
+				return {
+					swap = true,
+					message = localize('toga_pagefileuse'),
+					colour = G.C.PURPLE,
+					sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_mmeclap",
+					pitch = not silent and togabalatro.config.SFXWhenTriggered and toga_randompitch(),
+					message_card = context.other_card
+				}
 			end
 		end
 	end,
@@ -341,7 +418,7 @@ SMODS.Joker{
 			if context.other_card == context.scoring_hand[#context.scoring_hand] then
 				return {
 					x_chips = card.ability.extra.xchip_mod > 1 and card.ability.extra.xchip_mod or nil,
-					xchip_message = card.ability.extra.xchip_mod > 1 and {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.xchip_mod } }, colour = G.C.CHIPS, sound = "talisman_xchip"} or nil,
+					xchip_message = card.ability.extra.xchip_mod > 1 and {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.xchip_mod } }, colour = G.C.CHIPS, sound = "xchips"} or nil,
 					card = card
 				}
 			end
@@ -453,7 +530,7 @@ end
 
 SMODS.Joker{
 	key = 'drivespace',
-	config = { extra = { reduce = 0.99 }, bypasswu = true },
+	config = { extra = { reduce = 0.97 }, bypasswu = true },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.reduce } }
 	end,
@@ -464,6 +541,8 @@ SMODS.Joker{
 	cost = 25,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
+		if card.ability.extra.reduce > 1 then card.ability.extra.reduce = 1 end -- catch.
+		
 		if context.cardarea == G.play then
 			if context.other_card and not context.before and not context.after and not context.repetition and not context.repetition_only then
 				-- card_eval_status_text(card, 'extra', nil, nil, nil, {message = 'Compress!', colour = G.C.FILTER})
@@ -503,18 +582,16 @@ SMODS.Joker{
 				table.insert(addedcards, _card)
 			end
 			playing_card_joker_effects(addedcards)
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_systemrestore1')})
+			return { message = localize('toga_systemrestore1') }
 		end
 	end
 }
 
--- Random text.
 local function toga_randomruntext()
 	local stringtable = { localize('toga_jimbo95txt1'), localize('k_again_ex'), localize('toga_jimbo95txt2'), localize('toga_jimbo95txt3'), localize('toga_jimbo95txt4') }
 	return stringtable[math.random(#stringtable)]
 end
 
--- Talisman used here for multiplication of chips.
 SMODS.Joker{
 	key = 'jimbo95',
 	config = { extra = { h_size = 2, retriggers = 1, x_chips = 1.25, x_mult = 1.25} },
@@ -529,6 +606,7 @@ SMODS.Joker{
 	soul_pos = { x = 4, y = 0 },
 	cost = 25,
 	blueprint_compat = true,
+	perishable_compat = false,
 	add_to_deck = function(self, card, from_debuff)
 		G.hand:change_size(card.ability.extra.h_size)
 	end,
@@ -542,7 +620,7 @@ SMODS.Joker{
 
 			return {
 				x_chips = card.ability.extra.x_chips > 1 and card.ability.extra.x_chips or nil,
-				xchip_message = card.ability.extra.x_chips > 1 and {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.x_chips } }, colour = G.C.CHIPS, sound = "talisman_xchip"} or nil,
+				xchip_message = card.ability.extra.x_chips > 1 and {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.x_chips } }, colour = G.C.CHIPS, sound = "xchips"} or nil,
 				x_mult = card.ability.extra.x_mult > 1 and card.ability.extra.x_mult or nil
 			}
 		end
@@ -573,12 +651,13 @@ SMODS.Joker{
 	rarity = 2,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 0 },
-	cost = 8,
-	blueprint_compat = false,
+	cost = 7,
+	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.setting_blind and not (context.blueprint_card or card).getting_sliced and not context.blueprint then
+		if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
 			ease_hands_played(card.ability.extra.hands)
 			ease_discard(card.ability.extra.discards)
+			return { message = localize('toga_32bits') }
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
@@ -603,26 +682,38 @@ SMODS.Joker{
 	end
 }
 
+local function toga_gettotaljokervalue()
+	local value = 0
+	if G.jokers then
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].ability.set == 'Joker' then
+				value = value + G.jokers.cards[i].sell_cost
+			end
+		end
+	end
+	return value
+end
+
 SMODS.Joker{
 	key = 'win98',
-	config = { extra = { chips = 50, mult = 4 } },
+	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.125 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.chips, card.ability.extra.mult } }
+		return { vars = { card.ability.extra.consslotbonus*100, card.ability.extra.totalconsslotbonus*100, card.ability.extra.percentage*100, toga_gettotaljokervalue()*card.ability.extra.percentage } }
 	end,
 	unlocked = true,
 	rarity = 2,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 1, y = 0 },
-	cost = 7,
+	cost = 5,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.joker_main then
-			if G.consumeables then
-				for i, v in pairs(G.consumeables.cards) do
-					if togabalatro.config.DoMoreLogging then sendInfoMessage("Consumable "..i.." trigger.", "TOGAPack") end
-					SMODS.calculate_effect({chips = card.ability.extra.chips, mult = card.ability.extra.mult}, G.consumeables.cards[i])
-				end
-			end
+		--if context.joker_main then
+		if context.individual and context.cardarea == G.play then
+			local sellvalues = toga_gettotaljokervalue()*card.ability.extra.percentage
+			local slotbonus = sellvalues*#G.consumeables.cards*card.ability.extra.consslotbonus or 0
+			return {
+				mult = sellvalues + slotbonus
+			}
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -635,6 +726,9 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_win98tada")
 			else play_sound("toga_chord") end
 		end
+	end,
+	update = function(self, card, context)
+		card.ability.extra.totalconsslotbonus = G.consumeables and #G.consumeables.cards*card.ability.extra.consslotbonus or 0
 	end
 }
 
@@ -648,24 +742,22 @@ end
 
 SMODS.Joker{
 	key = 'winmillenium',
-	config = { extra = { chips = 20, chipbonus = 20, totalbonus = 20 } },
+	config = { extra = { basechips = 25, chipbonus = 25, totalbonus = 25 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.chips, card.ability.extra.chipbonus, card.ability.extra.totalbonus } }
+		return { vars = { card.ability.extra.basechips, card.ability.extra.chipbonus, card.ability.extra.totalbonus } }
 	end,
 	unlocked = true,
 	rarity = 2,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 2, y = 0 },
-	cost = 7,
+	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		card.ability.extra.totalbonus = card.ability.extra.chips + card.ability.extra.chips*toga_vouchcount()
+		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.basechips*toga_vouchcount()
 		
-		-- Inspired by Simplified Joker from MoreFluff.
-		if context.other_joker and context.other_joker.ability.set == "Joker" then
+		if context.other_joker then
 			return {
-				card = context.other_joker,
-				chips = card.ability.extra.totalbonus,
+				chips = card.ability.extra.totalbonus
 			}
 		end
 	end,
@@ -681,7 +773,7 @@ SMODS.Joker{
 		end
 	end,
 	update = function(self, card, context)
-		card.ability.extra.totalbonus = card.ability.extra.chips + card.ability.extra.chips*toga_vouchcount()
+		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.basechips*toga_vouchcount()
 	end
 }
 
@@ -695,7 +787,7 @@ SMODS.Joker{
 	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 1 },
-	cost = 15,
+	cost = 10,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.repetition and not context.repetition_only then
@@ -728,7 +820,7 @@ SMODS.Joker{
 	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 1, y = 1 },
-	cost = 15,
+	cost = 10,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) then
@@ -765,9 +857,9 @@ SMODS.Joker{
 	cost = 20,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.final_scoring_step and hand_chips and mult then
+		if context.joker_main and hand_chips and mult and not context.retrigger_joker then
 			local tot = hand_chips + mult
-			if not tot.array or #tot.array < 2 or tot.array[2] < 2 then
+			if not Talisman or (not tot.array or #tot.array < 2 or tot.array[2] < 2) then
 				hand_chips = mod_chips(math.floor(tot / 2))
 				mult = mod_mult(math.floor(tot / 2))
 			else
@@ -803,7 +895,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'clippit',
-	config = { extra = { repetitions = 3, handsize = 1, bosshandsize = 3 } },
+	config = { extra = { repetitions = 3 } },
 	loc_vars = function(self, info_queue, card)
 		if self.discovered then
 			info_queue[#info_queue + 1] = {key = "toga_clippyorigin", set = 'Other'}
@@ -818,10 +910,6 @@ SMODS.Joker{
 	cost = 25,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.setting_blind and G.GAME.blind.boss and not context.blueprint and not card.ability.extra.bosshandsizegiven then
-			G.hand:change_size(card.ability.extra.bosshandsize)
-			card.ability.extra.bosshandsizegiven = true
-		end
 		local repeats = card.ability.extra.repetitions
 		if context.cardarea == G.hand and context.repetition then
 			return {
@@ -830,25 +918,81 @@ SMODS.Joker{
 				sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_officehammer",
 				card = card
 			}
-		else
-			if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and G.GAME.blind.boss and card.ability.extra.bosshandsizegiven then
-				G.hand:change_size(-card.ability.extra.bosshandsize)
-				card.ability.extra.bosshandsizegiven = nil
-			end
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.hand:change_size(-card.ability.extra.handsize)
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
 			play_sound("toga_o97doorbell")
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(card.ability.extra.handsize)
 		if not from_debuff and togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
 			play_sound("toga_o97glide")
 		end
 	end,
+}
+
+SMODS.Joker{
+	key = 'rover',
+	config = { extra = { odds = 8, curstate = "shop" }, bypasswu = true },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds } }
+	end,
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokerRover',
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 1, y = 0 },
+	cost = 15,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			for i = 1, #G.deck.cards do
+				if pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds then
+					SMODS.score_card(G.deck.cards[i], {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
+				end
+			end
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		card.ability.extra.animated = true
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		card.ability.extra.animated = nil
+	end,
+	update = function(self, card)
+		if not card.ability.extra.animated then return end
+		
+		if G.STATE == G.STATES.GAME_OVER then
+			card.ability.extra.curstate = "loss"
+			card.children.floating_sprite:set_sprite_pos({x = 7, y = 0})
+		elseif G.GAME.won and G.OVERLAY_MENU and G.OVERLAY_MENU.config.no_esc then
+			card.ability.extra.curstate = "win"
+			card.children.floating_sprite:set_sprite_pos({x = 4, y = 0})
+		elseif G.shop then
+			card.ability.extra.curstate = "shop"
+			card.children.floating_sprite:set_sprite_pos({x = 3, y = 0})
+		elseif G.round_eval then
+			card.ability.extra.curstate = "roundeval"
+			card.children.floating_sprite:set_sprite_pos({x = 2, y = 0})
+		elseif G.booster_pack then
+			card.ability.extra.curstate = "booster"
+			card.children.floating_sprite:set_sprite_pos({x = 3, y = 0})
+		elseif G.blind_select then
+			card.ability.extra.curstate = "blindselect"
+			card.children.floating_sprite:set_sprite_pos({x = 5, y = 0})
+		elseif G.GAME.blind then
+			card.ability.extra.curstate = "inblind"
+			if G.GAME.blind.boss then
+				card.children.floating_sprite:set_sprite_pos({x = 6, y = 0})
+			else
+				card.children.floating_sprite:set_sprite_pos({x = 1, y = 0})
+			end
+		else -- Just so we don't crash.
+			card.ability.extra.curstate = "fallback"
+			card.children.floating_sprite:set_sprite_pos({x = 1, y = 0})
+		end
+	end
 }
 
 SMODS.Joker{
@@ -874,26 +1018,22 @@ SMODS.Joker{
 			ease_hands_played(-card.ability.extra.hands)
 		end
 		
-		if context.joker_main then
-			return {
-				chips = card.ability.extra.chips
-			}
-		end
+		if context.joker_main then return { chips = card.ability.extra.chips } end
 	end
 }
 
 local function toga_checkxmultsafe(card)
-	local xmultcheck = card.ability.extra.Xmult_current * card.ability.extra.shortcutfailmult
+	local xmultcheck = card.ability.extra.Xmult_current / card.ability.extra.shortcutfailmult
 	if xmultcheck < 1 then return false else return true end
 end
 
 SMODS.Joker{
 	key = 'jokersrb2kart',
-	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.75, shortcutfailmult = 0.67, maxchance = 5, toexactchance = 4} },
+	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.75, shortcutfailmult = 1.33, maxchance = 5, toexactchance = 4} },
 	loc_vars = function(self, info_queue, card)
 		if self.discovered then
 			info_queue[#info_queue + 1] = {key = "toga_kartjokerlist", set = 'Other', vars = { card.ability.extra.add_shop, card.ability.extra.add_shop*8 } }
-			info_queue[#info_queue + 1] = {key = "toga_kartjokershortcut", set = 'Other', vars = { (G.GAME.probabilities.normal or 1) * card.ability.extra.toexactchance, card.ability.extra.maxchance, card.ability.extra.addshortcut, (1-card.ability.extra.shortcutfailmult)*100 } }
+			info_queue[#info_queue + 1] = {key = "toga_kartjokershortcut", set = 'Other', vars = { (G.GAME.probabilities.normal or 1) * card.ability.extra.toexactchance, card.ability.extra.maxchance, card.ability.extra.addshortcut, math.abs((1-card.ability.extra.shortcutfailmult)*100) } }
 		end
 		return { vars = { card.ability.extra.Xmult_current } }
 						--{ card.ability.extra.Xmult_current, card.ability.extra.add_shop, card.ability.extra.addshortcut, (1-card.ability.extra.shortcutfailmult)*100,
@@ -905,6 +1045,7 @@ SMODS.Joker{
 	pos = { x = 1, y = 0 },
 	cost = 10,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		if not card then return end
 		if card.ability.extra.eliminated or card.debuff then return end
@@ -929,38 +1070,36 @@ SMODS.Joker{
 			if pseudorandom('j_toga_jokersrb2kart') > (G.GAME.probabilities.normal * card.ability.extra.toexactchance) / card.ability.extra.maxchance then
 				if not toga_checkxmultsafe(card) then
 					-- Eliminated!
-					if not silent and togabalatro.config.SFXWhenTriggered then card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_karteliminated'), colour = G.C.RED, sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_ssb64crowdohh'}) end
+					-- if not silent and togabalatro.config.SFXWhenTriggered then card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_karteliminated'), colour = G.C.RED, sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_ssb64crowdohh'}) end
 					card.ability.extra.Xmult_current = 0
 					card.ability.extra.eliminated = true
 					SMODS.debuff_card(card, true, card)
-					return true
+					return {message = localize('toga_karteliminated'), colour = G.C.RED, sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_ssb64crowdohh'}
 				else
-					card.ability.extra.Xmult_current = card.ability.extra.Xmult_current * card.ability.extra.shortcutfailmult
-					G.E_MANAGER:add_event(Event({func = function()
-						card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_kartouch'), colour = G.C.RED});
-						return true
-					end}))
+					card.ability.extra.Xmult_current = card.ability.extra.Xmult_current / card.ability.extra.shortcutfailmult
+					-- G.E_MANAGER:add_event(Event({func = function()
+						-- card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_kartouch'), colour = G.C.RED});
+						-- return true
+					-- end}))
+					return {message = localize('toga_kartouch'), colour = G.C.RED}
 				end
 			else
 				card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + card.ability.extra.addshortcut
-				G.E_MANAGER:add_event(Event({func = function()
-					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')});
-					return true
-				end}))
+				-- G.E_MANAGER:add_event(Event({func = function()
+					-- card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')});
+					-- return true
+				-- end}))
+				return {message = localize('k_upgrade_ex')}
 			end
 		elseif context.joker_main then
-			if card.ability.extra.Xmult_current > 1 then
-				return {
-					x_mult = card.ability.extra.Xmult_current,
-				}
-			end
+			if card.ability.extra.Xmult_current > 1 then return { x_mult = card.ability.extra.Xmult_current } end
 		end
 	end,
 }
 
 SMODS.Joker{
 	key = 'asterism',
-	config = { extra = { curmult = 0, bonusmult = 4 } },
+	config = { extra = { curmult = 0, bonusmult = 5 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.curmult, card.ability.extra.bonusmult } }
 	end,
@@ -976,11 +1115,7 @@ SMODS.Joker{
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_mult', vars = { card.ability.extra.curmult } } })
 		end
 		
-		if context.joker_main and card.ability.extra.curmult > 0 then
-			return {
-				mult = card.ability.extra.curmult,
-			}
-		end
+		if context.joker_main and card.ability.extra.curmult > 0 then return { mult = card.ability.extra.curmult } end
 	end
 }
 
@@ -988,7 +1123,7 @@ SMODS.Joker{
 	key = 'bonusducks',
 	unlocked = true,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonushat
 	end,
 	rarity = 2,
 	atlas = 'TOGAJokersOther',
@@ -1040,7 +1175,7 @@ local function toga_gettotalsteelcount()
 	local allsteel = 0
 	if G.playing_cards then
 		for k, v in pairs(G.playing_cards) do
-			if v.config.center == G.P_CENTERS.m_steel then allsteel = allsteel+1 end
+			if SMODS.has_enhancement(v, "m_steel") then allsteel = allsteel+1 end
 		end
 	end
 	return math.floor(allsteel/4)
@@ -1070,7 +1205,7 @@ SMODS.Joker{
 		if context.cardarea == G.play and context.repetition and not context.repetition_only and card.ability.extra.totalrepetitions >= 1 then
 			return {
 				message = localize('toga_anviltrigger'),
-				repetitions = card.ability.extra.totalrepetitions,
+				repetitions = math.floor(card.ability.extra.totalrepetitions),
 				card = card,
 				sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_anviluse',
 				pitch = not silent and togabalatro.config.SFXWhenTriggered and toga_randompitch()
@@ -1082,10 +1217,10 @@ SMODS.Joker{
 	end
 }
 
--- Get repeats, up to 65536.
+-- Get repeats, up to 65536. Will use Talisman functions if present.
 local function toga_cashpointmulitple(cashpoint)
-	local getmultiples = to_big(G.GAME.dollars)/to_big(cashpoint)
-	return math.min(math.floor(getmultiples:to_number()), 65535) + 1
+	local getmultiples = Talisman and (to_big(G.GAME.dollars)/to_big(cashpoint)):to_number() or G.GAME.dollars/cashpoint
+	return math.min(math.floor(getmultiples, 65535)) + 1
 end
 
 SMODS.Joker{
@@ -1104,7 +1239,7 @@ SMODS.Joker{
 		if context.joker_main then
 			card.ability.extra.alltrig = toga_cashpointmulitple(card.ability.extra.cashpoint) or 1
 			for i = 1, card.ability.extra.alltrig do
-				if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/2 then -- hard cap.
+				if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 then -- hard cap.
 					SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
 				end
 			end
@@ -1123,6 +1258,37 @@ SMODS.Joker{
 	update = function(self, card, context)
 		card.ability.extra.alltrig = toga_cashpointmulitple(card.ability.extra.cashpoint) + 1 or 1
 	end
+}
+
+SMODS.Joker{
+	key = 'heartyspades',
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 2, y = 2 },
+	cost = 5,
+	blueprint_compat = false,
+	pixel_size = { w = 69, h = 74 }
+}
+
+SMODS.Joker{
+	key = 'binaryjkr',
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 0, y = 3 },
+	cost = 9,
+	blueprint_compat = false
+}
+
+SMODS.Joker{
+	key = 'hexadecimaljkr',
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 1, y = 3 },
+	cost = 9,
+	blueprint_compat = false
 }
 
 SMODS.Joker{
@@ -1166,14 +1332,16 @@ SMODS.Joker{
 	end
 }
 
-local function toga_subtable(ttable, found, increase)
+local function toga_subtable(ttable, found, increase, depthiter)
+	depthiter = depthiter or 1
+	if depthiter > 32 then return end -- Just in case.
 	for k, v in pairs(ttable) do
 		if type(v) == 'number' then
 			local rplc = v*(1+increase)
 			ttable[k] = rplc
 			foundmodified = true
 		elseif type(v) == 'table' then
-			toga_subtable(v, found, increase) -- This is a bit dangerous...
+			toga_subtable(v, found, increase, depthiter) -- This is a bit dangerous...
 		end
 	end
 end
@@ -1230,27 +1398,27 @@ local function toga_rndvaluetarget(origcard, increase, curiter)
 end
 local winupdateframes = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1}
 
+-- Now considering this to be a Joke Joker.
 SMODS.Joker{
 	key = 'winupdate',
-	config = { extra = { plusval = 0.5, canupgrade = false, active = localize('toga_inactive') }, },
+	config = { extra = { plusval = 0.25, canupgrade = false, active = localize('toga_inactive') }, },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.plusval*100, card.ability.extra.active } }
 	end,
 	unlocked = true,
 	in_pool = function()
-		if #SMODS.find_card('j_toga_winupdate', true) > 0 then return false
-		else return true end
+		if not togabalatro.config.JokeJokersActive or #SMODS.find_card('j_toga_winupdate', true) > 0 then return false else return true end
 	end,
 	rarity = 4,
 	atlas = 'TOGAJokersUpdate',
 	pos = { x = 0, y = 0 },
-	cost = 30,
+	cost = 25,
 	blueprint_compat = false,
 	perishable_compat = false,
 	calculate = function(self, card, context)
 		if context.blueprint then return end
 		
-		if context.playing_card_added and not card.getting_sliced and card.ability.extra.canupgrade and #G.jokers.cards > 1 then
+		if context.selling_card and not card.getting_sliced and card.ability.extra.canupgrade and #G.jokers.cards > 1 then
 			--if toga_rndvaluetarget(card, card.ability.extra.plusval) then card.ability.extra.canupgrade = false end
 			toga_rndvaluetarget(card, card.ability.extra.plusval)
 		end
@@ -1272,67 +1440,28 @@ SMODS.Joker{
 		if card.ability.extra.canupgrade then card.ability.extra.active = localize('toga_active') else card.ability.extra.active = localize('toga_inactive') end
 		
 		if not card.ability.extra.animated then return end
-		if G.jokers.config.card_limit < 0 then G.jokers.config.card_limit = 1 end -- Just in case.
-		local timer = (G.TIMERS.REAL * 4)
+		if G.jokers and G.jokers.config and G.jokers.config.card_limit < 0 then G.jokers.config.card_limit = 1 end -- Just in case.
+		local timer = (G.TIMERS.REAL * 4) 
 		local frame_amount = #winupdateframes
 		local wrapped_value = (math.floor(timer) - 1) % frame_amount + 1
 		card.children.center:set_sprite_pos({x = winupdateframes[wrapped_value], y = 0})
 	end
 }
 
--- Joke Joker. Originally had 'whatthefuck' as key.
+-- The plumtastic man himself. Joke Joker.
 SMODS.Joker{
-	key = 'whatisthis',
-	config = { extra = { part = 1.05 } },
+	key = 'michaelrosen',
+	config = { extra = { heldmoney = 10, heldxchip = 1.75, heldxmult = 2, heldechip = 1.3, heldeechip = 1.1, heldeeechip = 1.05, heldemult = 1.2, heldeemult = 1.08, heldeeemult = 1.04, odds = 25 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.part } }
-	end,
-	unlocked = true,
-	in_pool = function()
-		return togabalatro.config.JokeJokersActive -- Should only spawn if allowed to via config!
-	end,
-	rarity = 4,
-	atlas = 'TOGAJokersMain',
-	pos = { x = 0, y = 2 },
-	soul_pos = { x = 4, y = 1 },
-	cost = 40,
-	blueprint_compat = true,
-	calculate = function(self, card, context)
-		card.sell_cost = 0
-		if context.joker_main then
-			return {
-				-- EEmult_mod = card.ability.extra.part,
-				-- message = localize({ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }),
-				-- colour = G.C.DARK_EDITION
-				
-				ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
-				eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
-			}
+		if not card.debuff then
+			info_queue[#info_queue + 1] = {key = "toga_roseneffects", set = 'Other', vars = { card.ability.extra.heldmoney, card.ability.extra.heldxchip, card.ability.extra.heldxmult }}
+			if Talisman then
+				info_queue[#info_queue + 1] = {key = "toga_rosentalismanextra", set = 'Other', vars = {
+					card.ability.extra.heldechip, card.ability.extra.heldeechip, card.ability.extra.heldeeechip, card.ability.extra.heldemult, card.ability.extra.heldeemult, card.ability.extra.heldeeemult
+				}}
+			end
 		end
-	end,
-	add_to_deck = function(self, card, from_debuff)
-		if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
-		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
-			play_sound("toga_ie31")
-		end
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
-		if not from_debuff and togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
-			play_sound("toga_access97")
-		end
-	end,
-	set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
- 	end
-}
-
--- Joke Joker. Bit of an inside funny.
-SMODS.Joker{
-	key = 'quacksoft',
-	config = { extra = { part = 1.25 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.part } }
+		return { vars = { (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
 	end,
 	unlocked = true,
 	in_pool = function()
@@ -1340,39 +1469,142 @@ SMODS.Joker{
 	end,
 	rarity = 4,
 	atlas = 'TOGAJokersOther',
-	pos = { x = 2, y = 0 },
-	soul_pos = { x = 4, y = 0 },
-	cost = 32,
+	pos = { x = 2, y = 3 },
+	soul_pos = { x = 4, y = 3 },
+	cost = 33,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		card.sell_cost = 0
-		if context.joker_main then
+		if context.cardarea == G.hand and context.other_card and not context.repetition and not context.repetition_only and not context.end_of_round then
+			-- Dear god.
 			return {
-				-- Echip_mod = card.ability.extra.part,
-				-- --message = localize({ type = "variable", key = "toga_Echip", vars = { card.ability.extra.part } }),
-				-- colour = G.C.DARK_EDITION
-				
-				e_chips = card.ability.extra.part > 1 and card.ability.extra.part or nil,
-				echip_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
+				dollars = pseudorandom("michaelrosen_money") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldmoney or nil,
+				x_chips = pseudorandom("michaelrosen_xchips") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldxchip or nil,
+				xchip_message = {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.heldxchip } }, colour = G.C.CHIPS, sound = "xchips"} or nil,
+				x_mult = pseudorandom("michaelrosen_xmult") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldxmult or nil,
+				e_chips = Talisman and pseudorandom("michaelrosen_echips") < G.GAME.probabilities.normal/(card.ability.extra.odds*10) and card.ability.extra.heldechip or nil,
+				echip_message = Talisman and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.heldechip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
+				ee_chips = Talisman and pseudorandom("michaelrosen_eechips") < G.GAME.probabilities.normal/(card.ability.extra.odds*20) and card.ability.extra.heldeechip or nil,
+				eechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEchip", vars = { card.ability.extra.heldeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eechip"} or nil,
+				eee_chips = Talisman and pseudorandom("michaelrosen_eeechips") < G.GAME.probabilities.normal/(card.ability.extra.odds*40) and card.ability.extra.heldeeechip or nil,
+				eeechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEchip", vars = { card.ability.extra.heldeeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eeechip"} or nil,
+				e_mult = Talisman and pseudorandom("michaelrosen_emult") < G.GAME.probabilities.normal/(card.ability.extra.odds*10) and card.ability.extra.heldemult or nil,
+				emult_message = Talisman and {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.heldemult } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
+				ee_mult = Talisman and pseudorandom("michaelrosen_eemult") < G.GAME.probabilities.normal/(card.ability.extra.odds*20) and card.ability.extra.heldeemult or nil,
+				eemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.heldeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
+				eee_mult = Talisman and pseudorandom("michaelrosen_eeemult") < G.GAME.probabilities.normal/(card.ability.extra.odds*40) and card.ability.extra.heldeeemult or nil,
+				eeemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEmult", vars = { card.ability.extra.heldeeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eeemult"} or nil,
 			}
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
-			play_sound("toga_duck")
+			play_sound("toga_rosenhello")
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
-		if not from_debuff and togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
-			play_sound("toga_kcud")
+		if togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			play_sound(from_debuff and "toga_rosenah" or "toga_rosenbye")
 		end
 	end,
 	set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
- 	end
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+	end
 }
+
+-- Joke Joker. Originally had 'whatthefuck' as key.
+if Talisman then
+	SMODS.Joker{
+		key = 'whatisthis',
+		config = { extra = { part = 1.05 } },
+		loc_vars = function(self, info_queue, card)
+			return { vars = { card.ability.extra.part } }
+		end,
+		unlocked = true,
+		in_pool = function()
+			return togabalatro.config.JokeJokersActive -- Should only spawn if allowed to via config!
+		end,
+		rarity = 4,
+		atlas = 'TOGAJokersMain',
+		pos = { x = 0, y = 2 },
+		soul_pos = { x = 4, y = 1 },
+		cost = 40,
+		blueprint_compat = true,
+		calculate = function(self, card, context)
+			if context.other_consumeable then
+				return {
+					ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
+					eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
+				}
+			end
+		end,
+		add_to_deck = function(self, card, from_debuff)
+			if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
+			if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+				play_sound("toga_ie31")
+			end
+		end,
+		remove_from_deck = function(self, card, from_debuff)
+			if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
+			if not from_debuff and togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+				play_sound("toga_access97")
+			end
+		end,
+		set_badges = function(self, card, badges)
+			badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+		end
+	}
+end
+
+-- Joke Joker. Bit of an inside funny.
+if Talisman then
+	SMODS.Joker{
+		key = 'quacksoft',
+		config = { extra = { baseechip = 1, cardechip = 0.01 } },
+		loc_vars = function(self, info_queue, card)
+			return { vars = { card.ability.extra.cardechip, G.deck and G.deck.cards and card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards) or card.ability.extra.baseechip } }
+		end,
+		unlocked = true,
+		in_pool = function()
+			return togabalatro.config.JokeJokersActive -- Should only spawn if allowed to via config!
+		end,
+		rarity = 4,
+		atlas = 'TOGAJokersOther',
+		pos = { x = 2, y = 0 },
+		soul_pos = { x = 4, y = 0 },
+		cost = 32,
+		blueprint_compat = true,
+		calculate = function(self, card, context)
+			if context.joker_main then
+				return {
+					-- Echip_mod = card.ability.extra.part,
+					-- message = localize({ type = "variable", key = "toga_Echip", vars = { card.ability.extra.part } }),
+					-- colour = G.C.DARK_EDITION
+					
+					e_chips = (card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards)) > 1 or nil,
+					echip_message = (card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards)) > 1 and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards) } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil
+				}
+			end
+		end,
+		add_to_deck = function(self, card, from_debuff)
+			if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
+			if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+				play_sound("toga_duck")
+			end
+		end,
+		remove_from_deck = function(self, card, from_debuff)
+			if G.STAGE == G.STAGES.RUN and not G.screenwipe then card.sell_cost = 0 end
+			if not from_debuff and togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+				play_sound("toga_kcud")
+			end
+		end,
+		set_badges = function(self, card, badges)
+			badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+		end,
+		update = function(self, card, context)
+			if card.ability.extra.baseechip < 1 then card.ability.extra.baseechip = 1 end
+		end
+	}
+end
 
 local function toga_spbdeckwreck(card, failedchance)
 	if not (G.deck and G.deck.cards and #G.deck.cards > 0) then return end
@@ -1745,7 +1977,7 @@ SMODS.Voucher{
     end,
     requires = {'v_paint_brush'},
     redeem = function(self)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by"..math.ceil(G.hand.config.card_limit*self.config.extra.h_size_scale)..".", "TOGAPack") end
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by "..math.ceil(G.hand.config.card_limit*self.config.extra.h_size_scale)..".", "TOGAPack") end
         G.hand:change_size(math.ceil(G.hand.config.card_limit*self.config.extra.h_size_scale))
     end,
 }
@@ -1777,42 +2009,136 @@ SMODS.Voucher{
 	pos = { x = 2, y = 1 },
 	atlas = 'TOGAConsumables',
 	unlocked = true,
-	cost = 20,
+	cost = 15,
 	rarity = 3,
     config = { rarity = 3, extra = { probabilitymult = 2 } },
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.probabilitymult}}
     end,
     redeem = function(self)
-        G.GAME.probabilities.normal = G.GAME.probabilities.normal*self.config.extra.probabilitymult
+		for k, v in pairs(G.GAME.probabilities) do 
+			G.GAME.probabilities[k] = v*self.config.extra.probabilitymult
+		end
     end,
 }
 
 SMODS.Voucher{
-    key = 'mspaint',
-	pos = { x = 3, y = 1 },
+    key = 'hardwarewizardxp',
+	pos = { x = 2, y = 2 },
 	atlas = 'TOGAConsumables',
 	unlocked = true,
-	cost = 20,
-	rarity = 3,
-    config = { rarity = 3, extra = { echip = 1.25, jokerslot = 1 } },
+	cost = 15,
+	rarity = 4,
+    config = { rarity = 4, extra = { probabilitymult = 2 } },
     loc_vars = function(self, info_queue, card)
-        return {vars = { card.ability.extra.echip, card.ability.extra.jokerslot }}
+        return {vars = {card.ability.extra.probabilitymult}}
     end,
-	redeem = function(self)
-        G.jokers.config.card_limit = G.jokers.config.card_limit - self.config.extra.jokerslot
-    end,
-	requires = {'v_paint_brush'},
-	calculate = function(self, card, context)
-		if context.cardarea == G.hand and context.other_card and context.other_card == G.hand.cards[#G.hand.cards] and not context.repetition and not context.repetition_only and not context.end_of_round then
-			return {
-				card = context.other_card,
-				echips = card.ability.extra.echip,
-				echip_message = {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.echip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"}
-			}
+	requires = {'v_toga_hardwarewizard'},
+    redeem = function(self)
+        for k, v in pairs(G.GAME.probabilities) do 
+			G.GAME.probabilities[k] = v*self.config.extra.probabilitymult
 		end
+    end,
+}
+
+SMODS.Voucher{
+    key = 'wormsninjarope',
+	pos = { x = 0, y = 2 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 10,
+	rarity = 3,
+    config = { rarity = 3, extra = { moreselect = 1 } },
+    loc_vars = function(self, info_queue, card)
+        return {vars = {math.max(1, math.floor(card.ability.extra.moreselect))}}
+    end,
+    redeem = function(self)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor(card.ability.extra.moreselect))..".", "TOGAPack") end
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(self.config.extra.moreselect))
 	end,
 }
+
+SMODS.Voucher{
+    key = 'wormsscalesofjustice',
+	pos = { x = 1, y = 2 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 15,
+	rarity = 3,
+    config = { rarity = 3 },
+	loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {key = "toga_scales1", set = 'Other'}
+		info_queue[#info_queue + 1] = {key = "toga_scales2", set = 'Other'}
+		info_queue[#info_queue + 1] = {key = "toga_scales3", set = 'Other'}
+    end,
+	requires = {'v_toga_ninjarope'},
+    redeem = function(self)
+		-- do the sound!
+		play_sound('toga_scalesofjustice')
+		-- Joker slots, Consumable slots, hand size, card selection limit.
+		local cardlimitavrg = math.floor(((G.jokers and G.jokers.config.card_limit or 5) + (G.hand and G.hand.config.card_limit or 8) + (G.hand and G.hand.config.highlighted_limit or 5) + (G.consumeables and G.consumeables.config.card_limit or 2))/4)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Resulted average is "..cardlimitavrg..".", "TOGAPack") end
+		G.jokers.config.card_limit = cardlimitavrg
+		G.consumeables.config.card_limit = cardlimitavrg
+		G.hand.config.card_limit = cardlimitavrg
+		G.hand.config.highlighted_limit = cardlimitavrg
+		-- poker hand levels.
+		local totallevel = 0
+		for _, v in ipairs(G.handlist) do
+			totallevel = totallevel + G.GAME.hands[v].level
+		end
+		local averagelevel = math.ceil(totallevel / #G.handlist)
+		for _, v in ipairs(G.handlist) do
+			G.GAME.hands[v].level = math.max(0, averagelevel)
+			G.GAME.hands[v].mult = math.max(G.GAME.hands[v].s_mult + G.GAME.hands[v].l_mult*(G.GAME.hands[v].level - 1), 1)
+			G.GAME.hands[v].chips = math.max(G.GAME.hands[v].s_chips + G.GAME.hands[v].l_chips*(G.GAME.hands[v].level - 1), 0)
+		end
+		-- hands and discards
+		local dishand = math.floor((G.GAME.round_resets.discards + G.GAME.round_resets.hands)/2)
+		
+		G.GAME.round_resets.hands = dishand
+		local handdiff = math.floor(G.GAME.round_resets.hands-dishand)
+		local hand_UI = G.HUD:get_UIE_by_ID('hand_UI_count')
+		G.GAME.current_round.hands_left = dishand
+        hand_UI.config.object:update()
+		
+		G.GAME.round_resets.discards = dishand
+		local disdiff = math.floor(G.GAME.round_resets.discards-dishand)
+		local discard_UI = G.HUD:get_UIE_by_ID('discard_UI_count')
+		G.GAME.current_round.discards_left = dishand
+		discard_UI.config.object:update()
+		
+		G.HUD:recalculate()
+	end,
+}
+
+if Talisman then
+	SMODS.Voucher{
+		key = 'mspaint',
+		pos = { x = 3, y = 1 },
+		atlas = 'TOGAConsumables',
+		unlocked = true,
+		cost = 20,
+		rarity = 3,
+		config = { rarity = 3, extra = { echip = 1.25, jokerslot = 1 } },
+		loc_vars = function(self, info_queue, card)
+			return {vars = { card.ability.extra.echip, card.ability.extra.jokerslot }}
+		end,
+		redeem = function(self)
+			G.jokers.config.card_limit = G.jokers.config.card_limit - self.config.extra.jokerslot
+		end,
+		requires = {'v_paint_brush'},
+		calculate = function(self, card, context)
+			if context.cardarea == G.hand and context.other_card and context.other_card == G.hand.cards[#G.hand.cards] and not context.repetition and not context.repetition_only and not context.end_of_round then
+				return {
+					card = context.other_card,
+					echips = card.ability.extra.echip,
+					echip_message = {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.echip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"}
+				}
+			end
+		end,
+	}
+end
 
 SMODS.Voucher{
     key = 'dataflush',
@@ -1821,20 +2147,21 @@ SMODS.Voucher{
 	unlocked = true,
 	cost = 20,
 	rarity = 3,
-    config = { rarity = 3, extra = { emulty = 1.15, consslot = 1 } },
-    loc_vars = function(self, info_queue, card)
-        return {vars = { card.ability.extra.emulty, card.ability.extra.consslot }}
-    end,
-	redeem = function(self)
-        G.consumeables.config.card_limit = G.consumeables.config.card_limit - self.config.extra.consslot
-    end,
-	requires = {'v_crystal_ball'},
+    config = { rarity = 3 },
 	calculate = function(self, card, context)
-		if context.other_consumeable then
-			return {
-				emult = card.ability.extra.emulty,
-				emult_message = {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.emulty } }, colour = G.C.DARK_EDITION, sound = "talisman_emult"}
-			}
+		if context.pre_discard then
+			local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+			if next(pokerhands['Flush']) and G.consumeables.cards[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function() 
+						local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed('dnsflush')), nil)
+						card:set_edition({negative = true}, true)
+						card:add_to_deck()
+						G.consumeables:emplace(card) 
+						return true
+					end})
+				)
+			end
 		end
 	end,
 }
