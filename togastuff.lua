@@ -1579,13 +1579,14 @@ if Talisman then
 		blueprint_compat = true,
 		calculate = function(self, card, context)
 			if context.joker_main then
+				local echipcalc = (card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards))
 				return {
 					-- Echip_mod = card.ability.extra.part,
 					-- message = localize({ type = "variable", key = "toga_Echip", vars = { card.ability.extra.part } }),
 					-- colour = G.C.DARK_EDITION
 					
-					e_chips = (card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards)) > 1 or nil,
-					echip_message = (card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards)) > 1 and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards) } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil
+					e_chips = echipcalc > 1 and echipcalc or nil,
+					echip_message = echipcalc > 1 and {message = localize{ type = "variable", key = "toga_Echip", vars = { echipcalc } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil
 				}
 			end
 		end,
