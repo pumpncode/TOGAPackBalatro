@@ -45,6 +45,7 @@ SMODS.Sound({key = "mmeclap", path = "CLAP.WAV"}) -- clap.wav from Windows 3.0 M
 SMODS.Sound({key = "officehammer", path = "HAMMER.WAV"}) -- hammer.wav from Microsoft Office sounds
 SMODS.Sound({key = "mscmenucmd", path = "Musica Menu Command.ogg"}) -- Musica Sound Scheme (95 & NT4)
 SMODS.Sound({key = "spb", path = "kc57.ogg"}) -- Unused in Knuckles Chaotix, Self-Propelled Bomb targeting first place in SRB2Kart/Dr. Robotnik's Ring Racers.
+SMODS.Sound({key = "thundershield", path = "DSZIO3.ogg"}) -- Thunder Shield
 SMODS.Sound({key = "anviluse", path = "mcanviluse.ogg"}) -- Snippet of block.anvil.use.
 SMODS.Sound({key = "pinballstart", path = "SOUND4.WAV"}) -- Round Start, Plus! 98 - Space Cadet Pinball Demo
 SMODS.Sound({key = "pinballloseball", path = "SOUND27.WAV"}) -- Lose Ball, Plus! 98 - Space Cadet Pinball Demo
@@ -1009,15 +1010,13 @@ SMODS.Joker{
 	blueprint_compat = true,
 	add_to_deck = function(self, card, from_debuff)
 		G.hand:change_size(card.ability.extra.h_size)
+		G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.extra.hands
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		G.hand:change_size(-card.ability.extra.h_size)
+		G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.extra.hands
 	end,
 	calculate = function(self, card, context)
-		if context.setting_blind and not (context.blueprint_card or card).getting_sliced and not context.blueprint then
-			ease_hands_played(-card.ability.extra.hands)
-		end
-		
 		if context.joker_main then return { chips = card.ability.extra.chips } end
 	end
 }
@@ -1029,10 +1028,10 @@ end
 
 SMODS.Joker{
 	key = 'jokersrb2kart',
-	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.75, shortcutfailmult = 1.33, maxchance = 5, toexactchance = 4} },
+	config = { extra = { Xmult_current = 1, add_shop = 0.04, addshortcut = 0.75, shortcutfailmult = 1.33, maxchance = 3, toexactchance = 1} },
 	loc_vars = function(self, info_queue, card)
 		if self.discovered then
-			info_queue[#info_queue + 1] = {key = "toga_kartjokerlist", set = 'Other', vars = { card.ability.extra.add_shop, card.ability.extra.add_shop*8 } }
+			info_queue[#info_queue + 1] = {key = "toga_kartjokerlist", set = 'Other', vars = { card.ability.extra.add_shop, card.ability.extra.add_shop*5 } }
 			info_queue[#info_queue + 1] = {key = "toga_kartjokershortcut", set = 'Other', vars = { (G.GAME.probabilities.normal or 1) * card.ability.extra.toexactchance, card.ability.extra.maxchance, card.ability.extra.addshortcut, math.abs((1-card.ability.extra.shortcutfailmult)*100) } }
 		end
 		return { vars = { card.ability.extra.Xmult_current } }
@@ -1061,7 +1060,7 @@ SMODS.Joker{
 		
 		if (context.buying_card or context.selling_card or context.playing_card_added or context.ending_shop or context.using_consumeable or context.open_booster or context.reroll_shop or context.ending_shop)
 		and not context.individual and not context.blueprint then
-			card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + (context.ending_shop and card.ability.extra.add_shop*8 or context.playing_card_added and context.cards and #context.cards and card.ability.extra.add_shop*#context.cards or card.ability.extra.add_shop)
+			card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + (context.ending_shop and card.ability.extra.add_shop*5 or context.playing_card_added and context.cards and #context.cards and card.ability.extra.add_shop*#context.cards or card.ability.extra.add_shop)
 			G.E_MANAGER:add_event(Event({func = function()
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')});
 				return true
@@ -1110,8 +1109,9 @@ SMODS.Joker{
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
+		card.ability.extra.curmult = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.planet or 0) * card.ability.extra.bonusmult
+		
 		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == 'Planet' then
-			card.ability.extra.curmult = card.ability.extra.curmult + card.ability.extra.bonusmult
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_mult', vars = { card.ability.extra.curmult } } })
 		end
 		
@@ -1671,6 +1671,8 @@ SMODS.Consumable{
 	remove_from_deck = function(self, card, from_debuff)
 		if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds and not card.ability.extra.activated then
 			toga_spbdeckwreck(card, true)
+		else
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_safe_ex'), sound = togabalatro.config.SFXWhenRemoving and 'toga_thundershield'})
 		end
 	end,
 }

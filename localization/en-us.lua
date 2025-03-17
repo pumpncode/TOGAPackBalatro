@@ -99,8 +99,7 @@ return {
 				text = {
 					"{C:attention}+#1#{} hand size",
 					"{C:chips}+#2#{} Chips",
-					"Lose {C:chips}#3#{} hand(s)",
-					"at start of round.",
+					"{C:chips}-#3#{} hand per round",
 					"{C:inactive,s:0.8}An Office regular.{}"
 				}
 			},
@@ -233,7 +232,8 @@ return {
 				name = 'Asterism',
 				text = {
 					"{C:mult}+#2#{} Mult per",
-					"{C:planet}Planet{} card used",
+					"{C:planet}Planet{} card",
+					"used this run",
 					"{C:inactive}(Currently {}{C:mult}+#1#{}{C:inactive}){}"
 				}
 			},
@@ -594,6 +594,7 @@ return {
 			toga_userlocked = "Locked!",
 			toga_userunlocked = "Unlocked!",
 			toga_spbavoidfail = "Hit!",
+			toga_spbavoidsuccess = "Safe!",
 			toga_bonusapply = "Bonus!",
 			toga_anviltrigger = "Hit it!",
 			toga_32bits = "32-bit!",
