@@ -1,7 +1,8 @@
 return {
 	["SFXWhenAdding"] = true,
-	["SFXWhenRemoving"] = false,
-	["SFXWhenTrigger"] = true,
+	["SFXWhenRemoving"] = true,
+	["SFXWhenTriggered"] = true,
 	["JokeJokersActive"] = false,
-	["DoMoreLogging"] = false
+	["DoMoreLogging"] = false,
+	["Experimentals"] = true
 }

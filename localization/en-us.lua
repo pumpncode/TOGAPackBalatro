@@ -16,26 +16,64 @@ return {
 			b_toga_frogdeck = {
 				name = 'Frog Deck',
 				text = {
-					"{C:attention}+#3#{} Joker slot",
+					"{C:attention}+#3#{} {C:attention}Joker{} slot",
 					"{C:attention}+#4#{} Consumable slot",
-					"{C:attention}+#6#{} hand size",
+					"{C:attention}+#6#{} hand size, +{C:money}$6{} on start",
 					"{C:red}#1#{} hand, {C:red}#2#{} discard",
-					"{C:red}X#5#{} Blind size",
-					"Start with {C:money}$6{} more",
+					"{C:red}X#5#{} base Blind size",
+					--"Start with {C:money}$6{} more",
 					"{C:inactive,s:0.8}What {C:spectral,s:0.8}secrets{C:inactive,s:0.8} does the frog hold?{}"
 				}
 			},
 			b_toga_spacedeck = {
-				name = 'Space Deck',
+				name = 'Spaceman Deck',
 				text = {
 					"Start the run",
-					"with a {C:planet}Space Joker{}",
-					"{C:planet}Planet Merchant{},",
-					"{C:planet}Planet Tycoon{}",
+					"with a {C:planet,T:j_space}Space Joker{}",
+					"{C:planet,T:v_planet_merchant}Planet Merchant{},",
+					"{C:planet,T:v_planet_tycoon}Planet Tycoon{}",
 					"{C:spectral,s:0.8}Spectral{s:0.8} cards",
 					"{s:0.8}may appear in shop"
 				}
-			}
+			},
+			b_toga_srb2kartdeck = {
+				name = 'Karting Deck',
+				text = {
+					"Start run with",
+					"a special {C:attention,T:j_toga_jokersrb2kart}Karting Joker{}",
+					--"{C:red}X#1#{} base Blind size",
+					"{C:red}#2#{} {C:attention}Joker{} slots",
+					"{C:spectral,s:0.8}Spectral{s:0.8} cards",
+					"{s:0.8}may appear in shop"
+				}
+			},
+			b_toga_againdeck = {
+				name = 'Deck! Deck! Deck!',
+				text = {
+					"{C:attention}Retrigger{} scoring cards",
+					"once for every {C:attention}Joker{} held.",
+					"{C:red}#2#{} {C:attention}Joker{} slots",
+					"{C:red}X#1#{} base Blind size"
+				}
+			},
+			b_toga_311deck = {
+				name = 'WinDeck 3.11',
+				text = {
+					"{C:attention}+#2#{} hand size, +{C:money}$#1#{} on start",
+					"{C:planet}+#5#{} level to all {C:attention}poker hands{}",
+					"{C:red}#3#{} card selection limit",
+					"{C:attention}+#4#{} Ante to win"
+				}
+			},
+			b_toga_screamingdeck = {
+				name = 'AAAAAAAAAAA',
+				text = {
+					"Start run with only",
+					"{C:attention}Aces{} left in the deck",
+					"and a {C:attention,T:tag_coupon}Coupon{} Tag.",
+					"{C:red}X#1#{} base Blind size"
+				}
+			},
         },
         Joker = {
             j_toga_y2kbug = {
@@ -158,15 +196,16 @@ return {
 			j_toga_winxp = {
 				name = 'Windows XP',
 				text = {
-					"Balances",
-					"{C:chips}Chips{} and {C:mult}Mult{}",
+					"Retrigger {C:attention}scored{} cards,",
+					"{C:attention}held in hand{} card abilities",
+					"and {C:attention}Jokers{} #1# time."
 				}
 			},
 			j_toga_jokersrb2kart = {
 				name = 'Karting Joker',
 				text = {
 					"Gains {X:mult,C:white}XMult{} when",
-					"performing {C:attention}certain actions{}.",
+					"performing {C:attention}actions{}.",
 					"{C:red,s:0.8}Self debuffs if {X:mult,C:white,s:0.8}XMult{C:red,s:0.8} goes below {X:mult,C:white,s:0.8}X1{}{C:red,s:0.8}.{}",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
 					"{C:inactive,s:0.7}I am literally a racer, what's your excuse?{}"
@@ -175,7 +214,6 @@ return {
 			j_toga_whatisthis = {
 				name = '65 52 72 6F 52',
 				text = {
-					-- "{X:dark_edition,C:white}???^^#1#{}"
 					"Held {C:attention}Consumables{} give",
 					"{X:dark_edition,C:white}^^#1#{} Mult each.",
 					"{C:inactive,s:0.8}What is this?!{}"
@@ -184,7 +222,6 @@ return {
 			j_toga_quacksoft = {
 				name = 'Duck?',
 				text = {
-					--"{X:dark_edition,C:white}Quack^#1#{}"
 					"{X:dark_edition,C:white}^0.01{} Chips for each",
 					"remaining card in the {C:attention}deck{}",
 					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}"
@@ -194,10 +231,8 @@ return {
 				name = 'Joker Update',
 				text = {
 					"{C:attention}Numerical{} values of a random Joker",
-					"are increased by {C:attention}#1#%{} when a card",
-					"is {C:money}sold{} while active.",
-					"{s:0.9}Becomes active after defeating a {C:attention,s:0.9}Blind{s:0.9}.{}",
-					"{C:inactive}#2#{}",
+					"are increased by {C:attention}#1#%{} when a",
+					"{C:attention,s:0.9}Boss Blind{} is defeated.",
 					"{C:inactive,s:0.8}Cannot affect self or copies of self.{}"
 				}
 			},
@@ -214,8 +249,8 @@ return {
 				name = 'Recycle Bin',
 				text = {
 					"Right most {C:attention}scoring{} card gives {X:chips,C:white}X#2#{} Chips.",
-					"When a {C:attention}playing card{} is destroyed, increase",
-					"{X:chips,C:white}XChips{} by {X:chips,C:white}X#1#{} or {X:chips,C:white}X#3#{} if destroyed",
+					"Destroying {C:attention}playing cards{} increases {X:chips,C:white}XChips{}",
+					"by {X:chips,C:white}X#1#{} or {X:chips,C:white}X#3#{} if destroyed",
 					"card is {C:attention}enhanced{}."
 				}
 			},
@@ -322,6 +357,14 @@ return {
 					"considered as {C:attention}10s{}"
 				}
 			},
+			j_toga_y2ksticker = {
+				name = 'Y2K Sticker',
+				text = {
+					"{C:attention}2s{} are",
+					"considered as",
+					"{C:attention}face cards{}"
+				}
+			},
 			j_toga_michaelrosen = {
 				name = 'Michael Rosen',
 				text = {
@@ -330,9 +373,44 @@ return {
 					"{C:inactive,s:0.8}*click* Nice.{}"
 				}
 			},
+			j_toga_jimboplus = {
+				name = 'JimboPlus!',
+				text = {
+					"Scoring cards give {X:mult,C:white}XMult{}",
+					"depending on {C:attention}Jokers{} currently held.",
+					"{C:attention}Jimbos{} give {X:mult,C:white}X#1#{} Mult instead of",
+					"{X:mult,C:white}X#2#{} Mult for every other Joker.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
+					"{C:inactive,s:0.8}Copies of this Joker{}",
+					"{C:inactive,s:0.8}do not contribute to XMult.{}"
+				}
+			},
+			j_toga_speedsneakers = {
+				name = 'Speed Shoes',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for every {C:money}$#2#{} you have",
+                    "{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
+				}
+			},
+			j_toga_tomscott = {
+				name = 'Tom Scott',
+				text = {
+					"Gives {X:mult,C:white}X#1#{} Mult for every",
+					"{C:attention}copy{} of itself held",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{} {C:inactive}Mult){}",
+					"{C:inactive,s:0.8}Stacks multiplicatively.{}",
+				}
+			},
         },
         Enhanced = {
-            -- oops, nothing!
+            m_toga_notification = {
+				name = "Notification",
+				text = {
+					"{s:0.9}Wherever applicable,",
+					"{C:attention,s:0.9}always{s:0.9} gets drawn",
+					"{s:0.9}to hand.{}",
+				},
+			},
         },
         Tarot = {
             -- oops, nothing!
@@ -345,6 +423,21 @@ return {
 					"in the {C:attention}deck{}.",
 					"If sold or destroyed, {C:green}#3# in #2#{}",
 					"chance to trigger anyway.",
+				}
+			},
+			c_toga_sealingaround = {
+				name = "Sealing Around",
+				text = {
+					"Add a {C:attention}Seal^2{}",
+					"to #1# selected",
+					"card in your hand"
+				}
+			},
+			c_toga_filesource = {
+				name = "Source",
+				text = {
+					"Enhances #1# selected card",
+					"into a {C:attention}Notification{} card",
 				}
 			},
         },
@@ -400,7 +493,7 @@ return {
                 text = {
                     "Applies a random {C:dark_edition}edition{}",
                     "to a random {C:attention}Joker{}",
-					"{C:inactive,s:0.8}Will replace current edition{}",
+					"{C:inactive,s:0.8}May replace current edition{}",
 					"{C:inactive,s:0.8}if one is present.{}"
                 },
 			},
@@ -451,9 +544,8 @@ return {
                 name = "Microsoft Paint",
                 text = {
 					"{C:red}-#2#{} {C:attention}Joker{} slot",
-                    "Right most {C:attention}held in hand{}",
-					"cards give {X:dark_edition,C:white}^#1#{} Chips",
-					"this run"
+                    "{C:attention}Held in hand{} cards give",
+					"{X:dark_edition,C:white}^#1#{} Chips this run"
                 },
             },
 			v_toga_dataflush = {
@@ -483,6 +575,13 @@ return {
             },
 		},
         Other = {
+			toga_sealseal_seal = {
+				name = "Seal^2",
+				text = {
+					"Creates an {C:attention,T:j_egg}Egg",
+					"when scored"
+				},
+			},
             p_toga_togazipboosterpack = {
 				name = "ZIP Package",
 				text = {
@@ -500,7 +599,7 @@ return {
 			toga_clippyorigin = {
                 name = "Clippit?",
                 text = {
-                    "That's his original",
+                    "That's his {C:attention}original{}",
 					"name, yes.",
                 },
             },
@@ -521,6 +620,14 @@ return {
 					"has a {C:green}#1# in #2#{} chance to gain",
 					"{X:mult,C:white}X#3#{} instead of {C:attention}losing{} {C:red}#4#%{}",
 					"of currently accumulated {X:mult,C:white}XMult{}."
+                },
+			},
+			toga_kartjokershortcutspecial = {
+				name = "Cutting ahead:",
+                text = {
+					"Gain {X:mult,C:white}X#1#{} when skipping",
+                    "{C:attention}blinds{} or {C:attention}booster packs{}",
+					"{E:1,C:inactive,s:0.8}Careful to not hit that tree!",
                 },
 			},
 			toga_useraccountsinfo = {
@@ -566,6 +673,13 @@ return {
                     "{C:blue}Hands{} and {C:red}discards{}."
                 },
 			},
+			toga_experimentalstuffdisabled = {
+				name = "Disabled by config",
+                text = {
+                    "Should {C:red}not{} appear naturally",
+					"or {C:attention}execute{} functionality."
+                },
+			},
         }
     },
     misc = {
@@ -590,7 +704,6 @@ return {
 			toga_pso2ironwillrecharge = "Recharging...",
 			toga_pso2ironwillsave = "Iron Will was triggered.",
 			toga_systemrestore1 = "Duplicated!",
-			-- toga_recyclebinclean = "Trashing...",
 			toga_userlocked = "Locked!",
 			toga_userunlocked = "Unlocked!",
 			toga_spbavoidfail = "Hit!",
@@ -598,6 +711,7 @@ return {
 			toga_bonusapply = "Bonus!",
 			toga_anviltrigger = "Hit it!",
 			toga_32bits = "32-bit!",
+			toga_jimbo = "...",
 			toga_jimbo95txt1 = "Run!",
 			toga_jimbo95txt2 = "Again?",
 			toga_jimbo95txt3 = "Another one!",
@@ -608,11 +722,13 @@ return {
 			toga_Emultmod = "^#1# Mult",
 			toga_EEmultmod = "^^#1# Mult",
 			toga_EEEmultmod = "^^^#1# Mult",
+			toga_experimental = "Experimental",
         },
         labels = {
-			-- oops, nothing!
-        },
+			toga_sealseal_seal = "Seal^2"
+		},
         v_dictionary = {
+			toga_psychictext = {"Must play #1# cards"},
 			toga_Echip = {"^#1# Chips"},
 			toga_EEchip = {"^^#1# Chips"},
 			toga_EEEchip = {"^^^#1# Chips"},
