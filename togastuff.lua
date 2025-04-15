@@ -1188,13 +1188,19 @@ SMODS.Joker{
 }
 
 -- Count steel card amount in full deck and round down the returned result.
+local _counting_steel = false
 local function toga_gettotalsteelcount()
+	-- If we're already counting steel, return 0 to break the recursion
+	if _counting_steel then return 0 end
+	
+	_counting_steel = true
 	local allsteel = 0
 	if G.playing_cards then
 		for k, v in pairs(G.playing_cards) do
 			if SMODS.has_enhancement(v, "m_steel") then allsteel = allsteel+1 end
 		end
 	end
+	_counting_steel = false
 	return math.floor(allsteel/4)
 end
 
