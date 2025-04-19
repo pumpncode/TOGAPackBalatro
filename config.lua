@@ -4,5 +4,6 @@ return {
 	["SFXWhenTriggered"] = true,
 	["JokeJokersActive"] = false,
 	["DoMoreLogging"] = false,
-	["Experimentals"] = true
+	["StartUpSound"] = true,
+	["BoosterPackMusic"] = true,
 }
