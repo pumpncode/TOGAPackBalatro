@@ -1154,21 +1154,17 @@ SMODS.Joker{
 }
 
 local function toga_gethowmuch(div, inputxmult)
-	-- Whatever Bootstraps was doing with Talisman... this works well enough instead.
 	local dol, dolbuffer = G.GAME.dollars, G.GAME.dollar_buffer and G.GAME.dollar_buffer > 0 and G.GAME.dollar_buffer or 0
-	local amount, count = to_big(dol) + to_big(dolbuffer), 0
-	while to_big(amount) - to_big(div) > to_big(0) do
-		count = count + 1
-		amount = to_big(amount) - to_big(div)
-	end
-	return count and count > 0 and 1 + (inputxmult * count) or 1
+	local amount = to_big(dol) + to_big(dolbuffer)
+	return math.floor(to_big(amount)/to_big(div))
 end
 
 SMODS.Joker{
 	key = 'speedsneakers',
 	config = { extra = { xmultpart = 0.1, dollars = 5 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.xmultpart, card.ability.extra.dollars, toga_gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart) } }
+		local total = toga_gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart)*card.ability.extra.xmultpart
+		return { vars = { card.ability.extra.xmultpart, card.ability.extra.dollars, to_big(1)+to_big(total) > to_big(1) and to_big(1)+to_big(total) or to_big(1) } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -1179,7 +1175,8 @@ SMODS.Joker{
 	pixel_size = { w = 69, h = 74 },
 	calculate = function(self, card, context)
 		if context.joker_main then
-			return { xmult = toga_gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart) }
+			local total = toga_gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart)*card.ability.extra.xmultpart
+			return { xmult = to_big(1)+to_big(total) > to_big(1) and to_big(1)+to_big(total) or to_big(1) }
 		end
 	end
 }

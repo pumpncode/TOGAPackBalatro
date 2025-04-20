@@ -56,19 +56,22 @@ SMODS.Back{
 	pos = { x = 3, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
-	config = {joker_slot = -2, ante_scaling = 1.33},
+	config = {joker_slot = -2, ante_scaling = 1.33, repeatamount = 0},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { self.config.ante_scaling, self.config.joker_slot } }
 	end,
-	calculate = function(self, card, context)
+	calculate = function(self, back, context)
+		if context.before then back.effect.config.repeatamount = G.jokers.cards and #G.jokers.cards or 0 end
+		
 		if context.cardarea == G.play and context.repetition and not context.repetition_only
-		and context.other_card and G.jokers.cards and #G.jokers.cards >= 1 then
+		and context.other_card and back.effect.config.repeatamount and back.effect.config.repeatamount > 0 then
 			return {
-				repetitions = #G.jokers.cards,
+				repetitions = back.effect.config.repeatamount,
 				message = localize('k_again_ex'),
-				card = context.other_card
 			}
 		end
+		
+		if context.after then back.effect.config.repeatamount = 0 end
 	end,
 }
 
