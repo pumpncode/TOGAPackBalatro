@@ -8,7 +8,7 @@ return {
 					"with a few {C:dark_edition}references{}",
 					"here and there.",
 					" ",
-					"{C:inactive,s:0.8}Another what-if that became an actual thing...{}"
+					"{C:inactive,s:0.8,E:1}Another what-if that became an actual thing...{}"
 				}
 			}
 		},
@@ -260,7 +260,6 @@ return {
 					"Retrigger all card",
 					"{C:attention}held in hand{}",
 					"abilities {C:attention}#1#{} times."
-					--"{C:attention,s:0.9}Warning: {C:legendary,s:0.9}this Joker is slightly janky.{}",
 				}
 			},
 			j_toga_asterism = {
@@ -411,9 +410,110 @@ return {
 					"{s:0.9}to hand.{}",
 				},
 			},
+			m_toga_coalcoke = {
+				name = "Coal Coke Card",
+				text = {
+					"{C:chips}+#1#{} Chips",
+					"while this card",
+					"stays in hand",
+					"No rank or suit"
+				},
+			},
+			m_toga_iron = {
+				name = "Iron Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"while this card",
+					"stays in hand",
+				},
+			},
+			m_toga_silver = {
+				name = "Silver Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+				},
+			},
+			m_toga_electrum = {
+				name = "Electrum Card",
+				text = {
+					"Earn {C:money}$#1#{} and",
+					"{X:mult,C:white}X#2#{} Mult",
+					"when scored"
+				},
+			},
+			m_toga_copper = {
+				name = "Copper Card",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"while this card",
+					"stays in hand",
+				},
+			},
+			m_toga_tin = {
+				name = "Tin Card",
+				text = {
+					"Always scores",
+				},
+			},
+			m_toga_bronze = {
+				name = "Bronze Card",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"while this card",
+					"stays in hand",
+				},
+			},
+			m_toga_osmium = {
+				name = "Osmium Card",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+				},
+			},
         },
         Tarot = {
-            -- oops, nothing!
+            c_toga_furnace = {
+				name = "Smeltery",
+				text = {
+					"Processes specific recipes",
+					"depending on cards selected",
+					"Cost per use: {C:money}$#2#{}",
+					"{C:inactive,s:0.8}If you can pay for another{}",
+					"{C:inactive,s:0.8}use, keep on use.{}"
+				}
+			},
+			c_toga_furnace_ready = {
+				name = "Smeltery",
+				text = {
+					"Processes specific recipes",
+					"depending on cards selected",
+					"Current recipe found:",
+					"{C:attention,s:0.9}#1#{}",
+					" ",
+					"Cost per use: {C:money}$#2#{}",
+					"{C:inactive,s:0.8}If you can pay for another{}",
+					"{C:inactive,s:0.8}use, keep on use.{}"
+				}
+			},
+			c_toga_furnace_novalidrecipe = {
+				name = "Smeltery",
+				text = {
+					"Processes specific recipes",
+					"depending on cards selected",
+					"{C:inactive,s:0.9}#1#{}",
+					"{C:inactive,s:0.8}If you can pay for another{}",
+					"{C:inactive,s:0.8}use, keep on use.{}"
+				}
+			},
+			c_toga_miningprospect = {
+				name = "Prospect",
+				text = {
+					"Destroys {T:m_stone,C:attention}Stone Cards{} in the {C:attention}full deck{}.",
+					"{C:green}#1# in #2#{} chance for a {T:m_stone,C:attention}Stone Card{} to",
+					"convert into a {C:attention}Mineral{} card instead.",
+					"{C:inactive,s:0.9}Examples: Copper, Iron, Tin...{}",
+					"{C:inactive,s:0.8}Don't forget a torch with you!{}",
+				}
+			},
         },
         Spectral = {
 			c_toga_selfpropelledbomb = {
@@ -440,9 +540,6 @@ return {
 					"into a {C:attention}Notification{} card",
 				}
 			},
-        },
-        Packet = {
-            -- oops, nothing!
         },
         Tag = {
             tag_toga_togajokershop = {
@@ -504,9 +601,27 @@ return {
                     "{C:dark_edition}Legendary{} Joker",
                 },
 			},
-        },
-        Sleeve = {
-			-- oops, nothing!
+			tag_toga_togarararchive = {
+				name = "RAR Tag",
+                text = {
+                    "Gives a free",
+                    "{C:attention}CONSUMAB.RAR{}",
+                },
+			},
+			tag_toga_togacardcabarchive = {
+				name = "Solitaire Tag",
+                text = {
+                    "Gives a free",
+                    "{C:attention}PLAYCARD.CAB{}",
+                },
+			},
+			tag_toga_togaxcopydnaarchive = {
+				name = "XCOPY Tag",
+                text = {
+                    "Gives a free",
+                    "{C:attention}XCOPY.DNA{}",
+                },
+			},
         },
 		Voucher = {
             v_toga_fat32 = {
@@ -543,7 +658,7 @@ return {
 			v_toga_mspaint = {
                 name = "Microsoft Paint",
                 text = {
-					"{C:red}-#2#{} {C:attention}Joker{} slot",
+					"{C:red}#2#{} {C:attention}Joker{} slots",
                     "{C:attention}Held in hand{} cards give",
 					"{X:dark_edition,C:white}^#1#{} Chips this run"
                 },
@@ -566,20 +681,47 @@ return {
 			v_toga_wormsscalesofjustice = {
                 name = "Scales of Justice",
                 text = {
-					-- "Joker and Consumable {C:attention}slots{}, as well",
-					-- "as {C:attention}hand size{} and {C:attention}card selection limit{}",
-					-- "are set to their {E:1,C:attention}calculated average{}.",
 					"Even the scales.",
 					"{C:inactive,s:0.8}Use wisely.{}"
                 },
             },
+			v_toga_sealegg = {
+                name = "Sealing Egg",
+                text = {
+					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} have a",
+					"{C:green}#1# in #2#{} chance to be {C:dark_edition}Negative{}.",
+                },
+            },
+			v_toga_caniofferyouanegg = {
+                name = "Can I Offer You An Egg In These Times",
+                text = {
+					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} {E:1,C:green}will{} be {C:dark_edition}Negative{}.",
+					--"{E:1,C:green}will{} be {C:dark_edition}Negative{}.",
+                },
+            },
 		},
         Other = {
-			toga_sealseal_seal = {
+			toga_sealseal = {
 				name = "Seal^2",
 				text = {
 					"Creates an {C:attention,T:j_egg}Egg",
-					"when scored"
+					"when scored",
+					"{C:inactive}(Must have room){}"
+				},
+			},
+			toga_sealseal_alt1 = {
+				name = "Seal^2 - Upgraded",
+				text = {
+					"Creates an {C:attention,T:j_egg}Egg{} when scored",
+					"{C:green}#1# in #2#{} chance to be {C:dark_edition}Negative{}",
+					"{C:inactive}(Must have room){}",
+				},
+			},
+			toga_sealseal_alt2 = {
+				name = "Seal^2 - Upgraded",
+				text = {
+					"Creates a {C:dark_edition}Negative{}",
+					"{C:attention,T:j_egg}Egg{} when scored",
 				},
 			},
             p_toga_togazipboosterpack = {
@@ -593,7 +735,29 @@ return {
 				name = "Joker.ZIP",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{} random Jokers",
+					"{C:attention}#2#{} random {C:attention}Jokers{}",
+				},
+			},
+			p_toga_togararpack = {
+				name = "CONSUMAB.RAR",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{} random {C:attention}Consumables{}",
+				},
+			},
+			p_toga_togacardcabpack = {
+				name = "PLAYCARD.CAB",
+				text = {
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{} {C:attention}Playing{} cards to",
+					"add to your deck"
+				},
+			},
+			p_toga_togaxcopydnapack = {
+				name = "XCOPY.DNA",
+				text = {
+					"Choose {C:attention}#1#{} of up to {C:attention}#2#{} {C:attention}copies{} of",
+					"{C:attention}Playing{} cards in your deck"
 				},
 			},
 			toga_clippyorigin = {
@@ -650,9 +814,6 @@ return {
 					"{X:dark_edition,C:white}^#4#{} Mult, {X:dark_edition,C:white}^^#5#{} Mult, {X:dark_edition,C:white}^^^#6#{} Mult",
 					"{C:inactive,s:0.7}(10x, 20x and 40x less likely to be rolled respectively.){}",
                 },
-				-- text = {
-					-- "{E:1,C:dark_edition,s:4}:3"
-				-- },
 			},
 			toga_scales1 = {
 				name = "Averages:",
@@ -673,13 +834,6 @@ return {
                     "{C:blue}Hands{} and {C:red}discards{}."
                 },
 			},
-			toga_experimentalstuffdisabled = {
-				name = "Disabled by config",
-                text = {
-                    "Should {C:red}not{} appear naturally",
-					"or {C:attention}execute{} functionality."
-                },
-			},
         }
     },
     misc = {
@@ -692,6 +846,9 @@ return {
         dictionary = {
             togazipboosterpack = "ZIP Package",
 			togaziparchivepack = "Joker.ZIP",
+			togararpack = "CONSUMAB.RAR",
+			togacardcabpack = "PLAYCARD.CAB",
+			togaxcopydnapack = "XCOPY.DNA",
 			toga_kartouch = "Ouch!",
 			toga_karteliminated = "Eliminated!",
 			toga_pagefileuse = "Swapped!",
@@ -710,6 +867,19 @@ return {
 			toga_spbavoidsuccess = "Safe!",
 			toga_bonusapply = "Bonus!",
 			toga_anviltrigger = "Hit it!",
+			--
+			toga_furnaceprocess = "Smelted...",
+			toga_novalidrecipe = "No recipes match selected cards.",
+			toga_unknownvalidrecipe = "Unknown valid recipe.",
+			toga_steelrecipe = "1x Iron + 1x Coal Coke (consumed) = 1x Steel",
+			toga_electrumrecipe = "1x Gold + 1x Silver = 2x Electrum",
+			toga_bronzerecipe = "3x Copper + Tin = 4x Bronze",
+			toga_alloy = "Alloy",
+			toga_crafttarot = "Crafting Tarot",
+			toga_minetarot = "Mining Tarot",
+			toga_stonenothing = "Nothing...",
+			toga_stonefound = "!",
+			--
 			toga_32bits = "32-bit!",
 			toga_jimbo = "...",
 			toga_jimbo95txt1 = "Run!",
@@ -722,13 +892,18 @@ return {
 			toga_Emultmod = "^#1# Mult",
 			toga_EEmultmod = "^^#1# Mult",
 			toga_EEEmultmod = "^^^#1# Mult",
-			toga_experimental = "Experimental",
+			toga_sfxwhenadd = "SFX when getting some of the mods' Jokers",
+			toga_sfxwhendel = "SFX when removing some of the mods' Jokers",
+			toga_sfxwhenuse = "SFX when some Jokers from this mod are triggered",
+			toga_musicpacks = "Custom music for own Booster Packs",
+			toga_jokejokers = "Allow 'Joke' items to appear in pool",
+			toga_verboselog = "Enable extra logs",
+			toga_startupsfx = "Enable mod startup sound on initial load",
         },
         labels = {
 			toga_sealseal_seal = "Seal^2"
 		},
         v_dictionary = {
-			toga_psychictext = {"Must play #1# cards"},
 			toga_Echip = {"^#1# Chips"},
 			toga_EEchip = {"^^#1# Chips"},
 			toga_EEEchip = {"^^^#1# Chips"},

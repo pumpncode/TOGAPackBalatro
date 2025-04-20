@@ -32,3 +32,11 @@ position = 'after'
 # match_indent = true
 line_prepend = ''
 payload = ''')'''
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "play_sound('whoosh1', 0.4, 0.8)"
+position = "before"
+payload = "play_sound(togabalatro and not togabalatro.has_tried_startup and togabalatro.config.StartUpSound and 'toga_w96', 1, 0.3);if togabalatro then togabalatro.has_tried_startup = true end"
+match_indent = true
