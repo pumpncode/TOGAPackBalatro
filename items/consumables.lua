@@ -100,13 +100,10 @@ SMODS.Consumable{
 			if found then break end
 			
 			cando, cardtable, enhancement = togabalatro.validsmeltrecipes[i](G.hand.highlighted)
-			if togabalatro.config.DoMoreLogging then sendDebugMessage(cando.." "..cardtable.." "..enhancement, "TOGAPack") end
 			if cando and cardtable and enhancement and G.P_CENTERS[enhancement] then found = true end
 		end
-		if togabalatro.config.DoMoreLogging then sendDebugMessage(cando.." "..found, "TOGAPack") end
 		if not (cando or found) then return end
 		
-		if togabalatro.config.DoMoreLogging then sendDebugMessage(cardtable.cards.." "..#cardtable.cards, "TOGAPack") end
 		if cardtable.cards and #cardtable.cards > 0 then
 			for i, v in ipairs(cardtable.cards) do
 				if v and G.P_CENTERS[enhancement] then
@@ -115,6 +112,7 @@ SMODS.Consumable{
 				end
 			end
 		end
+		
 		if cardtable.destroycard and #cardtable.destroycard > 0 then
 			local destroyed_cards = {}
 			for k, dcard in ipairs(G.hand.cards) do
@@ -269,8 +267,6 @@ SMODS.Consumable{
 	end,
 	use = function(self, card)
 		card.ability.extra.activated = true
-		toga_spbdeckwreck(card)
-		delay(0.5)
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
@@ -278,7 +274,7 @@ SMODS.Consumable{
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds and not card.ability.extra.activated then
+		if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds or card.ability.extra.activated then
 			toga_spbdeckwreck(card, true)
 		else
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_safe_ex'), sound = togabalatro.config.SFXWhenRemoving and 'toga_thundershield'})

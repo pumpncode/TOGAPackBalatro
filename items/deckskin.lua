@@ -22,64 +22,28 @@ for i, suit in ipairs(suits) do
 	SMODS.DeckSkin {
 		key = "oldschool_"..suit,
 		suit = suit,
-		loc_txt = "Classic Windows Cards",
+		loc_txt = {
+			['default'] = "Classic Windows Cards"
+		},
 		palettes = {},
 	}
 	
-	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_oldschool_'..suit], {
-		key = 'toga_oldschool_og', ranks = ranks, display_ranks = dranks, atlas = rog.key,
-		loc_txt = {
-			['en-us'] = "Original"
-		},
-	})
-
-	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_oldschool_'..suit], {
-		key = 'toga_oldschool_lc', ranks = ranks, display_ranks = dranks, atlas = rlc.key,
-		loc_txt = {
-			['en-us'] = "Low Contrast (Recoloured)"
-		},
-	})
-
-	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_oldschool_'..suit], {
-		key = 'toga_oldschool_hc', ranks = ranks, display_ranks = dranks, atlas = rhc.key,
-		loc_txt = {
-			['en-us'] = "High Contrast (Recoloured)"
-		},
-	})
+	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_oldschool_'..suit], {key = 'toga_oldschool_og', ranks = ranks, display_ranks = dranks, atlas = rog.key,})
+	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_oldschool_'..suit], {key = 'toga_oldschool_lc', ranks = ranks, display_ranks = dranks, atlas = rlc.key,})
+	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_oldschool_'..suit], {key = 'toga_oldschool_hc', ranks = ranks, display_ranks = dranks, atlas = rhc.key,})
 	
 	-- Modern cards.
 	SMODS.DeckSkin {
 		key = "modern_"..suit,
 		suit = suit,
-		loc_txt = "Modern Windows Cards",
+		loc_txt = {
+			['default'] = "Modern Windows Cards"
+		},
 		palettes = {},
 	}
 	
-	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {
-		key = 'toga_modern_default', ranks = ranks, display_ranks = dranks, atlas = mclassic.key,
-		loc_txt = {
-			['en-us'] = "Classic"
-		},
-	})
-	
-	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {
-		key = 'toga_modern_hearts', ranks = ranks, display_ranks = dranks, atlas = mhearts.key,
-		loc_txt = {
-			['en-us'] = "Hearts Deck"
-		},
-	})
-	
-	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {
-		key = 'toga_modern_seasons', ranks = ranks, display_ranks = dranks, atlas = mseason.key,
-		loc_txt = {
-			['en-us'] = "Seasons Deck"
-		},
-	})
-	
-	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {
-		key = 'toga_modern_largeprint', ranks = ranks, display_ranks = dranks, atlas = mlargep.key,
-		loc_txt = {
-			['en-us'] = "Large Print Deck"
-		},
-	})
+	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {key = 'toga_modern_default', ranks = ranks, display_ranks = dranks, atlas = mclassic.key,})
+	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {key = 'toga_modern_hearts', ranks = ranks, display_ranks = dranks, atlas = mhearts.key,})
+	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {key = 'toga_modern_seasons', ranks = ranks, display_ranks = dranks, atlas = mseason.key,})
+	SMODS.DeckSkin.add_palette(SMODS.DeckSkins['toga_modern_'..suit], {key = 'toga_modern_largeprint', ranks = ranks, display_ranks = dranks, atlas = mlargep.key,})
 end

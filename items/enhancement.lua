@@ -1,22 +1,9 @@
 sendInfoMessage("Loading Enhancements...", "TOGAPack")
 
--- save_run() go brr.
 SMODS.Enhancement{
 	key = 'notification',
 	atlas = "TOGAEnhancements",
-	pos = { x = 0, y = 0 },
-	calculate = function(self, card, context)
-		if ((context.other_drawn and (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or (G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER.config.center.draw_hand)))
-		or (context.first_hand_drawn or context.hand_drawn)) and G.deck and #G.deck.cards > 0 and card and context.cardarea == G.deck then
-			draw_card(G.deck, G.hand, nil, "up", true, card)
-			G.E_MANAGER:add_event(Event({
-				func = function() 
-					save_run() -- god.
-					return true
-				end})
-			)
-		end
-	end
+	pos = { x = 0, y = 0 }
 }
 
 SMODS.Enhancement{

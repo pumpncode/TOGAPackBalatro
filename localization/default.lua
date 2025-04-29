@@ -75,7 +75,29 @@ return {
 				}
 			},
         },
-        Joker = {
+        Blind = {
+			bl_toga_dialupmodem = {
+				name = "The Dial-Up",
+				text = {
+					"#1# card selection limit"
+				}
+			},
+			bl_toga_worldwideweb = {
+				name = "The World Wide Web",
+				text = {
+					"+#1# card selection limit",
+					"and hand size"
+				}
+			},
+			bl_toga_worldwideweb_collection = {
+				name = "The World Wide Web",
+				text = {
+					"The world is at your fingertips",
+					"{s:0.8}(Appears if The Dial-Up is cleared){}"
+				}
+			},
+		},
+		Joker = {
             j_toga_y2kbug = {
 				name = 'Y2K Bug',
 				text = {
@@ -400,6 +422,49 @@ return {
 					"{C:inactive,s:0.8}Stacks multiplicatively.{}",
 				}
 			},
+			j_toga_megasxlr = {
+				name = 'Megas XLR',
+				text = {
+					"Each {C:attention}8{} {C:red}discarded{} this round",
+					"or in the remaining {C:attention}deck{}",
+					"gives {X:mult,C:white}X#1#{} Mult"
+				}
+			},
+			j_toga_jarate = {
+				name = 'Jarate',
+				text = {
+					"{C:attention}#1#% Blind{} requirements",
+					"when selecting a {C:attention}Boss Blind{}.",
+					"Scored cards {C:attention}lose{} their",
+					"enhancements, editions and seals.",
+					"Recharges when {C:attention}entering{} shop.",
+					"{C:inactive,s:0.8}#2#"
+				}
+			},
+			j_toga_goldenwrench = {
+				name = 'Golden Wrench',
+				text = {
+					"Does nothing...",
+					"{C:inactive,s:0.8}Wonder what happens if this{}",
+					"{C:inactive,s:0.8}happened to be destroyed...{}",
+				}
+			},
+			j_toga_virtualpc = {
+				name = 'Virtual PC',
+				text = {
+					"{C:green}#1# in #2#{} chance to copy",
+					"ability of {C:attention}any{} other",
+					"compatible {C:attention}Joker{} held"
+				}
+			},
+			j_toga_ie = {
+				name = 'Internet Explorer',
+				text = {
+					"When {C:attention}leaving{} shop, {C:attention}upgrade per-level{} {C:blue}Chips{} and {C:red}Mult{}",
+					"of a {C:attention}random{} poker hand by {C:blue}#1#%{} and {C:red}#2#%{} of {C:attention}base{}",
+					"{C:blue}Chips{} and {C:red}Mult{} of said poker hand respectively.",
+				}
+			},
         },
         Enhanced = {
             m_toga_notification = {
@@ -536,8 +601,8 @@ return {
 			c_toga_filesource = {
 				name = "Source",
 				text = {
-					"Enhances #1# selected card",
-					"into a {C:attention}Notification{} card",
+					"Enhances up to #1# selected cards",
+					"to {C:attention}Notification{} cards",
 				}
 			},
         },
@@ -892,6 +957,11 @@ return {
 			toga_Emultmod = "^#1# Mult",
 			toga_EEmultmod = "^^#1# Mult",
 			toga_EEEmultmod = "^^^#1# Mult",
+			toga_jaraterecharging = "Waiting for resupply...",
+			toga_jaraterestocked = "Resupplied!",
+			toga_jarateready = "Ready!",
+			toga_jarated = "Washed!",
+			toga_perlevel = "per-level",
 			toga_sfxwhenadd = "SFX when getting some of the mods' Jokers",
 			toga_sfxwhendel = "SFX when removing some of the mods' Jokers",
 			toga_sfxwhenuse = "SFX when some Jokers from this mod are triggered",
@@ -910,6 +980,16 @@ return {
 			toga_Emult = {"^#1# Mult"},
 			toga_EEmult = {"^^#1# Mult"},
 			toga_EEEmult = {"^^^#1# Mult"},
-        }
+        },
+		collab_palettes = {
+			toga_oldschool_Spades = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
+			toga_oldschool_Hearts = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
+			toga_oldschool_Clubs = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
+			toga_oldschool_Diamonds = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
+			toga_modern_Spades = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
+			toga_modern_Hearts = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
+			toga_modern_Clubs = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
+			toga_modern_Diamonds = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
+		}
     }
 }

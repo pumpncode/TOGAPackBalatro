@@ -7,6 +7,7 @@ sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGAJokersOtherDiffSize", path = "togajokersothersize.png", px = 71, py = 95, disable_mipmap = true}
 SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokerRover", path = "togarover.png", px = 71, py = 95}
@@ -16,9 +17,11 @@ SMODS.Atlas{key = "TOGADeckBack", path = "togadeck.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGATags", path = "togatags.png", px = 34, py = 34}
 SMODS.Atlas{key = "TOGASeals", path = "togaseal.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAEnhancements", path = "togaenh.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGADialUpBlind", path = "togadialupblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 24}
+SMODS.Atlas{key = "TOGAWWWBlind", path = "togawwwblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 32}
 SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 32, py = 32}
 
--- Hear me scream!
+-- Hear me scream.
 SMODS.Sound({key = "win95start", path = "win95start.ogg"}) -- The Microsoft Sound (95 & NT4)
 SMODS.Sound({key = "win95tada", path = "win95tada.ogg"}) -- tada.wav (3.x, 95 & NT4)
 SMODS.Sound({key = "w96", path = "w96.wav"}) -- Custom Windows Startup
@@ -60,6 +63,9 @@ SMODS.Sound({key = "rosenhello", path = "rosenhello.ogg"}) -- self explanatory, 
 SMODS.Sound({key = "rosenbye", path = "rosenthatsashame.ogg"}) -- self explanatory, same as above.
 SMODS.Sound({key = "rosenah", path = "rosenah.ogg"}) -- self explanatory, same as above.
 SMODS.Sound({key = "scalesofjustice", path = "ScalesOfJustice.wav"}) -- self explanatory, Worms Armageddon/World Party.
+SMODS.Sound({key = "failsfx", path = "comedicfail.ogg"}) -- fart.mp3
+SMODS.Sound({key = "goldenhit", path = "Saxxy_impact_gen_06.ogg"}) -- getting a kill with a Golden Wrench, Saxxy or Golden Frying Pan, TF2
+SMODS.Sound({key = "jaratehit", path = "jar_explode.ogg"}) -- Jarate hitting something, TF2
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
@@ -100,7 +106,8 @@ SMODS.ObjectType{
 		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
 		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
 		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true, ["j_toga_mcanvil"] = true, 
-		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true
+		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
+		["j_toga_megasxlr"] = true
 	}
 }
 
@@ -177,12 +184,12 @@ end
 
 togabalatro.optional_features = function()
 	return {
-		cardareas = { deck = true },
+		cardareas = { deck = true, discard = true },
 		retrigger_joker = true
 	}
 end
 
-togabalatro.getrandcons = get_random_consumable or function(seed)
+togabalatro.getrandcons = function(seed)
 	seed = seed or 'grep'
 	local getconspool = get_current_pool('Consumeables')
 	local curcons, iter, iterlimit = nil, 0, 2222
@@ -193,6 +200,7 @@ togabalatro.getrandcons = get_random_consumable or function(seed)
 	if curcons and curcons ~= "UNAVAILABLE" then return curcons else return "c_tower" end
 end
 
+sendInfoMessage("Hooking G.FUNCS.can_play...", "TOGAPack")
 local canplayref = G.FUNCS.can_play
 function G.FUNCS.can_play(e)
 	canplayref(e) -- execute original first before we do anything.
@@ -210,8 +218,12 @@ function G.FUNCS.can_play(e)
 	end
 end
 
--- As Talisman is now optional and we have some items using this, best keep this.
+-- As Talisman is now optional and we have some items using this, best keep these.
 to_big = to_big or function(a)
+	return a
+end
+
+to_number = to_number or function(a)
 	return a
 end
 
@@ -223,30 +235,33 @@ togabalatro.randompitch = function()
 end
 
 -- Rosen sound swap stuff.
-local rosensfxtable = { chips1 = true, multhit1 = true, multhit2 = true, coin1 = true, generic1 = true, foil2 = true, xchips = true,
+togabalatro.rosensfx = { chips1 = true, multhit1 = true, multhit2 = true, coin1 = true, generic1 = true, foil2 = true, xchips = true,
 						talisman_xchip = true, talisman_echip = true, talisman_eechip = true, talisman_eeechip = true,
 						talisman_emult = true, talisman_eemult = true, talisman_eeemult = true }
 
+sendInfoMessage("Hooking play_sound...", "TOGAPack")
 local playsoundref = play_sound
 function play_sound(sound_code, per, vol)
 	-- ...only if config is set to allow it.
-	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and rosensfxtable[sound_code] then sound_code = 'toga_rosenclick' end
+	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and togabalatro.rosensfx[sound_code] then sound_code = 'toga_rosenclick' end
 	
 	playsoundref(sound_code, per, vol)
 end
 
 -- Y2K Sticker yoink.
+sendInfoMessage("Hooking Card:is_face...", "TOGAPack")
 local isfaceref = Card.is_face
 function Card:is_face(from_boss)
-    if self.debuff and not from_boss then return end
-    local id = self:get_id()
-    if next(SMODS.find_card('j_toga_y2ksticker')) and id == 2 or next(find_joker("Pareidolia")) then
-        return true
-    end
+	if self.debuff and not from_boss then return end
+	local id = self:get_id()
+	if next(SMODS.find_card('j_toga_y2ksticker')) and id == 2 or next(find_joker("Pareidolia")) then
+		return true
+	end
 	return isfaceref(self, from_boss)
 end
 
 -- Hexa & Binary Joker yoink.
+sendInfoMessage("Hooking Card:get_id...", "TOGAPack")
 local getidref = Card.get_id
 function Card:get_id()
 	local id = getidref(self) or 2
@@ -256,6 +271,7 @@ function Card:get_id()
 end
 
 -- This still feels hacky, tbh.
+sendInfoMessage("Hooking Card:is_suit...", "TOGAPack")
 local issuitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
 	if flush_calc then
@@ -288,8 +304,53 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 	end
 end
 
+-- hooking draw_from_deck_to_hand to remove the 'calculate' from Notification enhancement, replicating it in this hook.
+sendInfoMessage("Hooking G.FUNCS.draw_from_deck_to_hand...", "TOGAPack")
+local dfwdthref = G.FUNCS.draw_from_deck_to_hand
+function G.FUNCS.draw_from_deck_to_hand(e)
+	dfwdthref(e)
+	if togabalatro.config.DoMoreLogging then sendInfoMessage("Executed original function or (potential) hook.", "TOGAPack") end
+	G.E_MANAGER:add_event(Event({
+		func = function()
+			local allnotifcards = {}
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i].config.center_key == 'm_toga_notification' then
+					allnotifcards[#allnotifcards+1] = G.deck.cards[i]
+				end
+			end
+			if #allnotifcards > 0 then
+				for i = 1, #G.deck.cards do
+					for v = 1, #allnotifcards do
+						if G.deck.cards[i].config.center_key == 'm_toga_notification' and allnotifcards[v] == G.deck.cards[i] then
+							if togabalatro.config.DoMoreLogging then sendInfoMessage("Additionally drawing Notification Card "..i.." ("..G.deck.cards[i].config.card.name..") from the deck...", "TOGAPack") end
+							draw_card(G.deck, G.hand, 1, 'up', true, G.deck.cards[i])
+						end
+					end
+				end
+				
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						if togabalatro.config.DoMoreLogging then sendInfoMessage("save_run() so the additionally drawn "..#allnotifcards.." cards are set...", "TOGAPack") end
+						save_run() -- god.
+						return true
+					end}))
+			end
+			return true
+		end
+	}))
+end
+
+-- for Jarate & a Boss & Showdown Blind...
+sendInfoMessage("Hooking Blind:defeat...", "TOGAPack")
+local blindkillref = Blind.defeat
+function Blind:defeat(silent)
+	blindkillref(self, silent)
+	G.GAME.blind.jarated = nil
+	if not G.GAME.dialupmodem and self.name == 'bl_toga_dialupmodem' then G.GAME.dialupmodem = true end
+end
+
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
-for _, file in ipairs{"joker.lua", "deck.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "crossmod.lua"} do
+for _, file in ipairs{"joker.lua", "deck.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "crossmod.lua"} do
 	sendDebugMessage("Executing items/"..file, "TOGAPack")
 	assert(SMODS.load_file("items/"..file))()
 end
