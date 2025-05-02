@@ -1311,7 +1311,7 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.joker_main then
 			local total = toga_gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart)*card.ability.extra.xmultpart
-			return { xmult = to_big(1)+to_big(total) > to_big(1) and to_big(1)+to_big(total) or to_big(1) }
+			return { xmult = to_big(1)+to_big(total) > to_big(1) and to_number(to_big(1)+to_big(total)) or 1 }
 		end
 	end
 }
@@ -1409,7 +1409,7 @@ SMODS.Joker{
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					for i = 1, #G.playing_cards do
-						G.playing_cards[i]:set_ability('m_gold')
+						G.playing_cards[i]:set_ability(G.P_CENTERS.m_gold)
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								G.playing_cards[i]:juice_up()
