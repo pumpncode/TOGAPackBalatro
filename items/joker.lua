@@ -1409,7 +1409,7 @@ SMODS.Joker{
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					for i = 1, #G.playing_cards do
-						G.playing_cards[i]:set_ability(G.P.CENTERS.m_gold)
+						G.playing_cards[i]:set_ability('m_gold')
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								G.playing_cards[i]:juice_up()
