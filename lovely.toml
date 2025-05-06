@@ -16,24 +16,6 @@ G.GAME.current_round.savedtext = ""
 match_indent = true
 
 [[patches]]
-[patches.regex]
-target = "functions/common_events.lua"
-pattern = '''localize\('ph_mr_bones'\)'''
-position = 'before'
-# match_indent = true
-line_prepend = ''
-payload = '''(G.GAME.current_round.usesavedtext and G.GAME.current_round.savedtext or '''
-
-[[patches]]
-[patches.regex]
-target = "functions/common_events.lua"
-pattern = '''localize\('ph_mr_bones'\)'''
-position = 'after'
-# match_indent = true
-line_prepend = ''
-payload = ''')'''
-
-[[patches]]
 [patches.pattern]
 target = "game.lua"
 pattern = "play_sound('whoosh1', 0.4, 0.8)"
