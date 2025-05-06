@@ -1,5 +1,5 @@
 return {
-    descriptions = {
+	descriptions = {
 		Mod = {
 			TOGAPack = {
 				name = "TOGA's Stuff",
@@ -12,7 +12,7 @@ return {
 				}
 			}
 		},
-        Back = {
+		Back = {
 			b_toga_frogdeck = {
 				name = 'Frog Deck',
 				text = {
@@ -74,8 +74,8 @@ return {
 					"{C:red}X#1#{} base Blind size"
 				}
 			},
-        },
-        Blind = {
+		},
+		Blind = {
 			bl_toga_dialupmodem = {
 				name = "The Dial-Up",
 				text = {
@@ -98,7 +98,7 @@ return {
 			},
 		},
 		Joker = {
-            j_toga_y2kbug = {
+			j_toga_y2kbug = {
 				name = 'Y2K Bug',
 				text = {
 					"If the played hand contains a",
@@ -306,7 +306,7 @@ return {
 				name = 'Computer Lock',
 				text = {
 					"When sold, adjacent",
-                    "{C:attention}Jokers{} become {C:dark_edition}Eternal{}.",
+					"{C:attention}Jokers{} become {C:dark_edition}Eternal{}.",
 					"If {C:attention}already{} {C:dark_edition}Eternal{},",
 					"remove instead."
 				}
@@ -315,7 +315,7 @@ return {
 				name = 'Bonus Ducks',
 				text = {
 					"All played {C:attention}face{}",
-                    "cards become",
+					"cards become",
 					"{C:chips}Bonus{} cards",
 					"when scored",
 				}
@@ -343,7 +343,7 @@ return {
 				name = 'Space Cadet',
 				text = {
 					"{C:green}#3# in 3{} chance to {C:attention}rescore{}",
-                    "a random scoring card.",
+					"a random scoring card.",
 					"For every {C:money}$#1#{} held,",
 					"try to {C:attention}rescore{} again.",
 					"{C:inactive,s:0.8}Currently #2# attempts.{}",
@@ -410,7 +410,7 @@ return {
 				name = 'Speed Shoes',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for every {C:money}$#2#{} you have",
-                    "{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
 				}
 			},
 			j_toga_tomscott = {
@@ -425,9 +425,9 @@ return {
 			j_toga_megasxlr = {
 				name = 'Megas XLR',
 				text = {
-					"Each {C:attention}8{} {C:red}discarded{} this round",
-					"or in the remaining {C:attention}deck{}",
-					"gives {X:mult,C:white}X#1#{} Mult"
+					"{C:attention}8s{} are",
+					"considered",
+					"as {C:attention}Kings{}"
 				}
 			},
 			j_toga_jarate = {
@@ -465,9 +465,35 @@ return {
 					"{C:blue}Chips{} and {C:red}Mult{} of said poker hand respectively.",
 				}
 			},
-        },
-        Enhanced = {
-            m_toga_notification = {
+			j_toga_winvista = {
+				name = 'Windows Vista',
+				text = {
+					"If the played hand contains",
+					"a single {C:attention}6{}, {C:red}destroy{} it and",
+					"convert the existing {C:attention}Edition{} of",
+					"a {C:attention}random{} Joker to {C:dark_edition}Negative{}",
+					"{C:inactive,s:0.8}(Cannot target already {C:dark_edition,s:0.8}Negative{C:inactive,s:0.8} Jokers.){}",
+				}
+			},
+			j_toga_win7 = {
+				name = 'Windows 7',
+				text = {
+					"Cards {C:attention}held in hand{}",
+					"give {X:mult,C:white}X#1#{} Mult for",
+					"every {C:blue}Common{} Joker held",
+				}
+			},
+			j_toga_win8 = {
+				name = 'Windows 8',
+				text = {
+					"Each {C:attention}8{} {C:red}discarded{} this round",
+					"or in the remaining {C:attention}deck{}",
+					"gives {X:mult,C:white}X#1#{} Mult",
+				}
+			},
+		},
+		Enhanced = {
+			m_toga_notification = {
 				name = "Notification",
 				text = {
 					"{s:0.9}Wherever applicable,",
@@ -534,9 +560,9 @@ return {
 					"{X:chips,C:white}X#1#{} Chips",
 				},
 			},
-        },
-        Tarot = {
-            c_toga_furnace = {
+		},
+		Tarot = {
+			c_toga_furnace = {
 				name = "Smeltery",
 				text = {
 					"Processes specific recipes",
@@ -579,8 +605,8 @@ return {
 					"{C:inactive,s:0.8}Don't forget a torch with you!{}",
 				}
 			},
-        },
-        Spectral = {
+		},
+		Spectral = {
 			c_toga_selfpropelledbomb = {
 				name = "Self-Propelled Bomb",
 				text = {
@@ -605,167 +631,175 @@ return {
 					"to {C:attention}Notification{} cards",
 				}
 			},
-        },
-        Tag = {
-            tag_toga_togajokershop = {
+		},
+		Tag = {
+			tag_toga_togajokershop = {
 				name = "Spare CD Tag",
-                text = {
-                    "Shop has a free",
-                    "{C:attention}TOGA Joker{}",
-                },
+				text = {
+					"Shop has a free",
+					"{C:attention}TOGA Joker{}",
+				},
 			},
 			tag_toga_togajokerbooster = {
 				name = "Application Tag",
-                text = {
-                    "Gives a free",
-                    "{C:attention}ZIP Package{}",
-                },
+				text = {
+					"Gives a free",
+					"{C:attention}ZIP Package{}",
+				},
 			},
 			tag_toga_togajokerziparchive = {
 				name = "Joker.ZIP Tag",
-                text = {
-                    "Gives a free",
-                    "{C:attention}Joker.ZIP{}",
-                },
+				text = {
+					"Gives a free",
+					"{C:attention}Joker.ZIP{}",
+				},
 			},
 			tag_toga_thespbroll = {
 				name = "SPB Tag",
-                text = {
-                    "Get a",
-                    "{C:attention}Self-Propelled{}",
+				text = {
+					"Get a",
+					"{C:attention}Self-Propelled{}",
 					"{C:attention}Bomb{}"
-                },
+				},
 			},
 			tag_toga_guaranteedice = {
 				name = "D20 Tag",
-                text = {
-                    "Shop has an",
-                    "{C:attention}Oops, all 6s{}",
-                },
+				text = {
+					"Shop has an",
+					"{C:attention}Oops, all 6s{}",
+				},
 			},
 			tag_toga_thenet = {
 				name = "Globe Tag",
-                text = {
-                    "Gives a free",
-                    "{C:spectral}Black Hole{}",
-                },
+				text = {
+					"Gives a free",
+					"{C:spectral}Black Hole{}",
+				},
 			},
 			tag_toga_controlexe = {
 				name = "Settings Tag",
-                text = {
-                    "Applies a random {C:dark_edition}edition{}",
-                    "to a random {C:attention}Joker{}",
+				text = {
+					"Applies a random {C:dark_edition}edition{}",
+					"to a random {C:attention}Joker{}",
 					"{C:inactive,s:0.8}May replace current edition{}",
 					"{C:inactive,s:0.8}if one is present.{}"
-                },
+				},
 			},
 			tag_toga_thelegend = {
 				name = "Dragon Tag",
-                text = {
-                    "Shop has a",
-                    "{C:dark_edition}Legendary{} Joker",
-                },
+				text = {
+					"Shop has a",
+					"{C:dark_edition}Legendary{} Joker",
+				},
 			},
 			tag_toga_togarararchive = {
 				name = "RAR Tag",
-                text = {
-                    "Gives a free",
-                    "{C:attention}CONSUMAB.RAR{}",
-                },
+				text = {
+					"Gives a free",
+					"{C:attention}CONSUMAB.RAR{}",
+				},
 			},
 			tag_toga_togacardcabarchive = {
 				name = "Solitaire Tag",
-                text = {
-                    "Gives a free",
-                    "{C:attention}PLAYCARD.CAB{}",
-                },
+				text = {
+					"Gives a free",
+					"{C:attention}PLAYCARD.CAB{}",
+				},
 			},
 			tag_toga_togaxcopydnaarchive = {
 				name = "XCOPY Tag",
-                text = {
-                    "Gives a free",
-                    "{C:attention}XCOPY.DNA{}",
-                },
+				text = {
+					"Gives a free",
+					"{C:attention}XCOPY.DNA{}",
+				},
 			},
-        },
+		},
 		Voucher = {
-            v_toga_fat32 = {
-                name = "FAT32 Converter",
-                text = {
-                    "{C:attention}+#1#%{} {C:inactive}(of current){} hand size",
+			v_toga_fat32 = {
+				name = "FAT32 Converter",
+				text = {
+					"{C:attention}+#1#%{} {C:inactive}(of current){} hand size",
 					"{C:inactive,s:0.8}(Rounded up.){}"
-                },
-            },
+				},
+			},
 			v_toga_hardwarewizard = {
-                name = "Hardware Wizard",
-                text = {
-                    "Doubles all {C:attention}listed{} {E:1,C:green}probabilities{}",
-					"for the rest of the run",
+				name = "Hardware Wizard",
+				text = {
+					"Multiplies all {C:attention}listed{} {E:1,C:green}probabilities{}",
+					"for the rest of the run by {X:attention,C:white}X#1#{}",
 					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}2 in 3{}{C:inactive}){}"
-                },
-            },
+				},
+			},
 			v_toga_hardwarewizardxp = {
-                name = "Hardware Wizard (XP)",
-                text = {
-                    "Doubles all {C:attention}listed{} {E:1,C:green}probabilities{}",
-					"for the rest of the run again",
+				name = "Hardware Wizard (XP)",
+				text = {
+					"Multiplies all {C:attention}listed{} {E:1,C:green}probabilities{}",
+					"for the rest of the run by {X:attention,C:white}X#1#{}",
 					"{C:inactive}(ex: {}{C:green}2 in 3{}{C:inactive} -> {}{C:green}4 in 3{}{C:inactive}){}"
-                },
-            },
+				},
+			},
 			v_toga_diskdefrag = {
-                name = "Disk Defragmenter",
-                text = {
-                    "{C:red}-#1#{} discard each round.",
+				name = "Disk Defragmenter",
+				text = {
+					"{C:red}-#1#{} discard each round.",
 					"{C:red}+#1#{} discard after",
 					"playing any hand."
-                },
-            },
+				},
+			},
 			v_toga_mspaint = {
-                name = "Microsoft Paint",
-                text = {
+				name = "Microsoft Paint",
+				text = {
 					"{C:red}#2#{} {C:attention}Joker{} slots",
-                    "{C:attention}Held in hand{} cards give",
+					"{C:attention}Held in hand{} cards give",
 					"{X:dark_edition,C:white}^#1#{} Chips this run"
-                },
-            },
+				},
+			},
 			v_toga_dataflush = {
-                name = "ipconfig /flushdns",
-                text = {
+				name = "ipconfig /flushdns",
+				text = {
 					"Discarding hands containing a {C:attention}Flush{}",
 					"creates a {C:dark_edition}Negative{} copy of a random",
 					"{C:attention}consumable{} card currently held."
-                },
-            },
+				},
+			},
+			v_toga_dataflush_multiple = {
+				name = "ipconfig /flushdns",
+				text = {
+					"Discarding hands containing a {C:attention}Flush{}",
+					"creates #1# {C:dark_edition}Negative{} copies of a random",
+					"{C:attention}consumable{} card currently held."
+				},
+			},
 			v_toga_wormsninjarope = {
-                name = "Ninja Rope",
-                text = {
+				name = "Ninja Rope",
+				text = {
 					"{C:attention}+#1#{} card selection limit",
 					"{C:inactive,s:0.8}Hey, this is familiar...{}",
-                },
-            },
+				},
+			},
 			v_toga_wormsscalesofjustice = {
-                name = "Scales of Justice",
-                text = {
+				name = "Scales of Justice",
+				text = {
 					"Even the scales.",
 					"{C:inactive,s:0.8}Use wisely.{}"
-                },
-            },
+				},
+			},
 			v_toga_sealegg = {
-                name = "Sealing Egg",
-                text = {
+				name = "Sealing Egg",
+				text = {
 					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} have a",
 					"{C:green}#1# in #2#{} chance to be {C:dark_edition}Negative{}.",
-                },
-            },
+				},
+			},
 			v_toga_caniofferyouanegg = {
-                name = "Can I Offer You An Egg In These Times",
-                text = {
+				name = "Can I Offer You An Egg In These Times",
+				text = {
 					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} {E:1,C:green}will{} be {C:dark_edition}Negative{}.",
 					--"{E:1,C:green}will{} be {C:dark_edition}Negative{}.",
-                },
-            },
+				},
+			},
 		},
-        Other = {
+		Other = {
 			toga_sealseal = {
 				name = "Seal^2",
 				text = {
@@ -789,7 +823,7 @@ return {
 					"{C:attention,T:j_egg}Egg{} when scored",
 				},
 			},
-            p_toga_togazipboosterpack = {
+			p_toga_togazipboosterpack = {
 				name = "ZIP Package",
 				text = {
 					"Choose {C:attention}#1#{} of up to",
@@ -826,90 +860,90 @@ return {
 				},
 			},
 			toga_clippyorigin = {
-                name = "Clippit?",
-                text = {
-                    "That's his {C:attention}original{}",
+				name = "Clippit?",
+				text = {
+					"That's his {C:attention}original{}",
 					"name, yes.",
-                },
-            },
+				},
+			},
 			toga_kartjokerlist = {
 				name = "Eligible Actions:",
-                text = {
-                    "{C:attention}Buying{}, {C:money}selling{}, {C:attention}using{},",
+				text = {
+					"{C:attention}Buying{}, {C:money}selling{}, {C:attention}using{},",
 					"{C:attention}adding{} cards to deck;",
 					"{C:attention}opening{} booster packs;",
 					"{C:attention}rerolling{} shop; ({X:mult,C:white}X#1#{})",
 					"{C:attention}leaving{} shop. ({X:mult,C:white}X#2#{})",
-                },
+				},
 			},
 			toga_kartjokershortcut = {
 				name = "Shortcut:",
-                text = {
-                    "Skipping {C:attention}blinds{} or {C:attention}booster packs{}",
+				text = {
+					"Skipping {C:attention}blinds{} or {C:attention}booster packs{}",
 					"has a {C:green}#1# in #2#{} chance to gain",
 					"{X:mult,C:white}X#3#{} instead of {C:attention}losing{} {C:red}#4#%{}",
 					"of currently accumulated {X:mult,C:white}XMult{}."
-                },
+				},
 			},
 			toga_kartjokershortcutspecial = {
 				name = "Cutting ahead:",
-                text = {
+				text = {
 					"Gain {X:mult,C:white}X#1#{} when skipping",
-                    "{C:attention}blinds{} or {C:attention}booster packs{}",
+					"{C:attention}blinds{} or {C:attention}booster packs{}",
 					"{E:1,C:inactive,s:0.8}Careful to not hit that tree!",
-                },
+				},
 			},
 			toga_useraccountsinfo = {
 				name = "Formula",
-                text = {
-                    "({C:attention}Joker slots{} + {C:attention}Consumable{} slots",
+				text = {
+					"({C:attention}Joker slots{} + {C:attention}Consumable{} slots",
 					"+ {C:blue}hands{} left + {C:red}discards{} left) / 4"
-                },
+				},
 			},
 			toga_roseneffects = {
 				name = "Possible effects:",
-                text = {
-                    "{C:money}$#1#{}, {X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#3#{} Mult"
-                },
+				text = {
+					"{C:money}$#1#{}, {X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#3#{} Mult"
+				},
 			},
 			toga_rosentalismanextra = {
 				name = "With Talisman installed",
-                text = {
-                    "{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^^#2#{} Chips, {X:dark_edition,C:white}^^^#3#{} Chips",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^^#2#{} Chips, {X:dark_edition,C:white}^^^#3#{} Chips",
 					"{X:dark_edition,C:white}^#4#{} Mult, {X:dark_edition,C:white}^^#5#{} Mult, {X:dark_edition,C:white}^^^#6#{} Mult",
 					"{C:inactive,s:0.7}(10x, 20x and 40x less likely to be rolled respectively.){}",
-                },
+				},
 			},
 			toga_scales1 = {
 				name = "Averages:",
-                text = {
-                    "Joker & Consumable {C:attention}slots{},",
+				text = {
+					"Joker & Consumable {C:attention}slots{},",
 					"{C:attention}hand size{} and {C:attention}card selection limit{}."
-                },
+				},
 			},
 			toga_scales2 = {
 				name = "Averages:",
-                text = {
-                    "{C:attention}Poker hand{} {C:planet}levels{}.",
-                },
+				text = {
+					"{C:attention}Poker hand{} {C:planet}levels{}.",
+				},
 			},
 			toga_scales3 = {
 				name = "Averages:",
-                text = {
-                    "{C:blue}Hands{} and {C:red}discards{}."
-                },
+				text = {
+					"{C:blue}Hands{} and {C:red}discards{}."
+				},
 			},
-        }
-    },
-    misc = {
-        suits_singular = {
-            -- oops, nothing!
-        },
-        suits_plural = {
+		}
+	},
+	misc = {
+		suits_singular = {
 			-- oops, nothing!
-        },
-        dictionary = {
-            togazipboosterpack = "ZIP Package",
+		},
+		suits_plural = {
+			-- oops, nothing!
+		},
+		dictionary = {
+			togazipboosterpack = "ZIP Package",
 			togaziparchivepack = "Joker.ZIP",
 			togararpack = "CONSUMAB.RAR",
 			togacardcabpack = "PLAYCARD.CAB",
@@ -969,18 +1003,18 @@ return {
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
 			toga_verboselog = "Enable extra logs",
 			toga_startupsfx = "Enable mod startup sound on initial load",
-        },
-        labels = {
+		},
+		labels = {
 			toga_sealseal_seal = "Seal^2"
 		},
-        v_dictionary = {
+		v_dictionary = {
 			toga_Echip = {"^#1# Chips"},
 			toga_EEchip = {"^^#1# Chips"},
 			toga_EEEchip = {"^^^#1# Chips"},
 			toga_Emult = {"^#1# Mult"},
 			toga_EEmult = {"^^#1# Mult"},
 			toga_EEEmult = {"^^^#1# Mult"},
-        },
+		},
 		collab_palettes = {
 			toga_oldschool_Spades = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
 			toga_oldschool_Hearts = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
@@ -991,5 +1025,5 @@ return {
 			toga_modern_Clubs = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 			toga_modern_Diamonds = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 		}
-    }
+	}
 }

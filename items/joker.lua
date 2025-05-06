@@ -79,6 +79,7 @@ SMODS.Joker{
 	pos = { x = 0, y = 1 },
 	cost = 8,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		if G.GAME.current_round.discards_left == 2 then
 			local eval = function() return G.GAME.current_round.discards_left == 1 end
@@ -263,7 +264,10 @@ SMODS.Joker{
 	pos = { x = 0, y = 0 },
 	cost = 10,
 	blueprint_compat = false,
+	eternal_compat = false,
 	calculate = function(self, card, context)
+		if card.ability.eternal then card:set_eternal(false); card.ability.eternal = false end
+		
 		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
@@ -292,9 +296,6 @@ SMODS.Joker{
 				end
 			end
 		end
-	end,
-	update = function(self, card, context)
-		if card.ability.eternal then card:set_eternal(false); card.ability.eternal = false end
 	end
 }
 
@@ -435,6 +436,7 @@ SMODS.Joker{
 	pos = { x = 0, y = 4 },
 	cost = 12,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		if context.remove_playing_cards then
 			local addedcards = {}
@@ -681,11 +683,13 @@ SMODS.Joker{
 SMODS.Joker{
 	key = 'win2000',
 	unlocked = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 1, y = 1 },
-	cost = 10,
+	cost = 8,
 	blueprint_compat = true,
+	perishable_compat = false,
+	eternal_compat = false,
 	calculate = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) then
 			G.E_MANAGER:add_event(Event({
@@ -751,6 +755,132 @@ SMODS.Joker{
 	end
 }
 
+SMODS.Joker{
+	key = 'winvista',
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokersWindows',
+	pos = { x = 0, y = 2 },
+	cost = 10,
+	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6 and not context.blueprint then
+			return {
+				remove = true,
+				func = function()
+					if #G.jokers.cards > 1 then
+						local iter, iterlimit, seljoker = 0, 10*#G.jokers.cards, nil
+						repeat
+							iter = iter + 1
+							seljoker = pseudorandom_element(G.jokers.cards, pseudoseed('notverywow'))
+							if seljoker and seljoker.edition and not seljoker.edition.negative then break end
+						until seljoker and seljoker.edition and not seljoker.edition.negative or iter >= iterlimit
+						if seljoker and seljoker.edition and not seljoker.edition.negative then
+							G.E_MANAGER:add_event(Event({func = function()
+								if seljoker and seljoker.edition and not seljoker.edition.negative then
+									local curcard = context.blueprint_card or card
+									curcard:juice_up()
+									seljoker:set_edition('e_negative')
+								end
+							return true end }))
+						end
+					end
+					return true
+				end
+			}
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			play_sound("toga_winvista78logon")
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			if not from_debuff then play_sound("toga_winvista78logoff")
+			else play_sound("toga_winvista7critstop") end
+		end
+	end
+}
+
+SMODS.Joker{
+	key = 'win7',
+	config = { extra = { x_mult = 1.15 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.x_mult } }
+	end,
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokersWindows',
+	pos = { x = 1, y = 2 },
+	cost = 8,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.hand and context.other_card and not context.end_of_round and not context.repetition and not context.repetition_only then
+			local houseofcommons = {}
+			if G.jokers and #G.jokers.cards > 1 then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].config.center.rarity == 1 then houseofcommons[#houseofcommons+1] = G.jokers.cards[i] end
+				end
+			end
+			if #houseofcommons > 0 then
+				local result = { x_mult = card.ability.extra.x_mult, card = houseofcommons[1] }
+				if #houseofcommons >= 2 then
+					local return_table = result
+					for i = 2, #houseofcommons do
+						return_table.extra = { x_mult = card.ability.extra.x_mult, card = houseofcommons[i] }
+						return_table = return_table.extra
+					end
+				end
+				return result
+			end
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			play_sound("toga_winvista78logon")
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			if not from_debuff then play_sound("toga_winvista78logoff")
+			else play_sound("toga_winvista7critstop") end
+		end
+	end
+}
+
+SMODS.Joker{
+	key = 'win8',
+	config = { extra = { xmult = 1.8 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmult } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersWindows',
+	pos = { x = 2, y = 2 },
+	cost = 8,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.individual and (context.cardarea == G.deck or context.cardarea == G.discard) and context.other_card:get_id() == 8
+		and not context.other_card.debuff and not context.end_of_round then
+			return { xmult = card.ability.extra.xmult }
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			play_sound("toga_winvista78logon")
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			if not from_debuff then play_sound("toga_winvista78logoff")
+			else play_sound("toga_win8error") end
+		end
+	end,
+	pixel_size = { w = 70, h = 84 }
+}
+
 -- Random SFX.
 local function toga_plus95rndsfx()
 	return 'toga_win95pluscmd'..math.random(1, 12)
@@ -814,6 +944,7 @@ SMODS.Joker{
 	soul_pos = { x = 4, y = 2 },
 	cost = 25,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		local repeats = card.ability.extra.repetitions
 		if context.cardarea == G.hand and context.repetition then
@@ -1210,9 +1341,9 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'pso2ironwill',
-	config = { extra = { skillactive = true, skillactivetext = localize('toga_pso2ironwillready') or "Ready!" } },
+	config = { extra = { skillactive = true } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.skillactive, card.ability.extra.skillactivetext } }
+		return { vars = { card.ability.extra.skillactive, card.ability.extra.skillactive and localize('toga_pso2ironwillready') or localize('toga_pso2ironwillrecharge') } }
 	end,
 	unlocked = true,
 	rarity = 4,
@@ -1227,13 +1358,10 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if card.ability.extra.skillactive and context.end_of_round and context.game_over and not context.repetition and not context.individual and to_big(G.GAME.dollars) > to_big(0) then
 			card.ability.extra.skillactive = false
-			card.ability.extra.skillactivetext = localize('toga_pso2ironwillrecharge')
-			G.GAME.current_round.usesavedtext = true
-			G.GAME.current_round.savedtext = localize('toga_pso2ironwillsave')
 			ease_dollars(to_big(-G.GAME.dollars), true)
 			return {
 				message = localize('toga_pso2ironwillproc'),
-				saved = true,
+				saved = 'toga_pso2ironwillsave', -- no longer needing Lovely patches for this, but it is a bit backwards with implementation.
 				colour = G.C.RED
 			}
 		end
@@ -1243,10 +1371,6 @@ SMODS.Joker{
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pso2ironwillready')})
 		end
 	end,
-	update = function(self, card)
-		if card.ability.extra.skillactive == true then card.ability.extra.skillactivetext = localize('toga_pso2ironwillready')
-		else card.ability.extra.skillactivetext = localize('toga_pso2ironwillrecharge') end
-	end
 }
 
 local function toga_jimbopluscalc(card)
@@ -1318,22 +1442,12 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'megasxlr',
-	config = { extra = { xmult = 1.88 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.xmult } }
-	end,
 	unlocked = true,
 	rarity = 3,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 0, y = 4 },
 	cost = 8,
-	blueprint_compat = true,
-	calculate = function(self, card, context)
-		if context.individual and (context.cardarea == G.deck or context.cardarea == G.discard) and context.other_card:get_id() == 8
-		and not context.other_card.debuff and not context.end_of_round then
-			return { xmult = card.ability.extra.xmult }
-		end
-	end
+	blueprint_compat = false,
 }
 
 SMODS.Joker{
@@ -1348,6 +1462,8 @@ SMODS.Joker{
 	pos = { x = 3, y = 0 },
 	cost = 5,
 	blueprint_compat = false,
+	perishable_compat = false,
+	eternal_compat = false,
 	pixel_size = { w = 69, h = 73 },
 	calculate = function(self, card, context)
 		if context.blueprint then return end
@@ -1403,6 +1519,8 @@ SMODS.Joker{
 	pos = { x = 4, y = 0 },
 	cost = 2,
 	blueprint_compat = false,
+	perishable_compat = false,
+	eternal_compat = false,
 	pixel_size = { w = 69, h = 87 },
 	remove_from_deck = function(self, card, from_debuff)
 		if not from_debuff and G.STAGE == G.STAGES.RUN and not G.screenwipe and card.getting_sliced then
@@ -1635,6 +1753,7 @@ if Talisman then
 		soul_pos = { x = 4, y = 1 },
 		cost = 40,
 		blueprint_compat = true,
+		perishable_compat = false,
 		calculate = function(self, card, context)
 			if context.other_consumeable then
 				local effects = {
@@ -1684,6 +1803,7 @@ if Talisman then
 		soul_pos = { x = 4, y = 0 },
 		cost = 32,
 		blueprint_compat = true,
+		perishable_compat = false,
 		calculate = function(self, card, context)
 			if context.joker_main then
 				local echipcalc = (card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards))

@@ -38,6 +38,10 @@ SMODS.Sound({key = "winxplogoff", path = "Windows XP Logoff Sound.wav"}) -- Wind
 SMODS.Sound({key = "winxpyesyoucan", path = "theexperience.ogg"}) -- Snippet from Windows XP Tour
 SMODS.Sound({key = "winxpcritstop", path = "Windows XP Critical Stop.wav"}) -- Critical Stop, XP
 SMODS.Sound({key = "winxpballoon", path = "Windows XP Balloon.wav"}) -- Critical Stop, XP
+SMODS.Sound({key = "winvista78logon", path = "winvista78logon.wav"}) -- Startup/Logon, Vista, 7 & 8.x
+SMODS.Sound({key = "winvista78logoff", path = "winvista78logoff.wav"}) -- Logoff, Vista, 7 & 8.x
+SMODS.Sound({key = "winvista7critstop", path = "winvista7critstop.wav"}) -- Critical Stop, Vista, 7
+SMODS.Sound({key = "win8error", path = "win8bg.wav"}) -- Windows Background, 8.x
 SMODS.Sound({key = "ssb64crowdohh", path = "Crowd Ohhh.ogg"}) -- Crowd Ohhh from Super Smash Bros 64
 SMODS.Sound({key = "duck", path = "duck.ogg"}) -- Mac OS 9 Quack
 SMODS.Sound({key = "kcud", path = "kcud.ogg"}) -- kcauQ 9 SO caM
@@ -265,6 +269,7 @@ sendInfoMessage("Hooking Card:get_id...", "TOGAPack")
 local getidref = Card.get_id
 function Card:get_id()
 	local id = getidref(self) or 2
+	if next(SMODS.find_card('j_toga_megasxlr')) and id == 8 then id = 13 end
 	if next(SMODS.find_card('j_toga_hexadecimaljkr')) and id == 14 then id = 10 end
 	if next(SMODS.find_card('j_toga_binaryjkr')) and id == 10 then id = 2 end
 	return id

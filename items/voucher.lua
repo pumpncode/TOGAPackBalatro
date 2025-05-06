@@ -12,9 +12,9 @@ SMODS.Voucher{
 		return {vars = {card.ability.extra.h_size_scale*100}}
 	end,
 	requires = {'v_paint_brush'},
-	redeem = function(self)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by "..math.ceil(G.hand.config.card_limit*self.config.extra.h_size_scale)..".", "TOGAPack") end
-		G.hand:change_size(math.ceil(G.hand.config.card_limit*self.config.extra.h_size_scale))
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by "..math.ceil(G.hand.config.card_limit*card.ability.extra.h_size_scale)..".", "TOGAPack") end
+		G.hand:change_size(math.ceil(G.hand.config.card_limit*card.ability.extra.h_size_scale))
 	end,
 }
 
@@ -34,9 +34,9 @@ SMODS.Voucher{
 			ease_discard(card.ability.extra.discards)
 		end
 	end,
-	redeem = function(self)
-		G.GAME.round_resets.discards = G.GAME.round_resets.discards - self.config.extra.discards
-		ease_discard(-self.config.extra.discards)
+	redeem = function(self, card)
+		G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.extra.discards
+		ease_discard(-card.ability.extra.discards)
 	end,
 }
 
@@ -51,9 +51,10 @@ SMODS.Voucher{
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra.probabilitymult}}
 	end,
-	redeem = function(self)
-		for k, v in pairs(G.GAME.probabilities) do 
-			G.GAME.probabilities[k] = v*self.config.extra.probabilitymult
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..card.ability.extra.probabilitymult..".", "TOGAPack") end
+		for k, v in pairs(G.GAME.probabilities) do
+			G.GAME.probabilities[k] = v*card.ability.extra.probabilitymult
 		end
 	end,
 }
@@ -70,9 +71,10 @@ SMODS.Voucher{
 		return {vars = {card.ability.extra.probabilitymult}}
 	end,
 	requires = {'v_toga_hardwarewizard'},
-	redeem = function(self)
-		for k, v in pairs(G.GAME.probabilities) do 
-			G.GAME.probabilities[k] = v*self.config.extra.probabilitymult
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..card.ability.extra.probabilitymult..".", "TOGAPack") end
+		for k, v in pairs(G.GAME.probabilities) do
+			G.GAME.probabilities[k] = v*card.ability.extra.probabilitymult
 		end
 	end,
 }
@@ -88,9 +90,9 @@ SMODS.Voucher{
 	loc_vars = function(self, info_queue, card)
 		return {vars = {math.max(1, math.floor(card.ability.extra.moreselect))}}
 	end,
-	redeem = function(self)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor(self.config.extra.moreselect))..".", "TOGAPack") end
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(self.config.extra.moreselect))
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor(card.ability.extra.moreselect))..".", "TOGAPack") end
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(card.ability.extra.moreselect))
 	end,
 }
 
@@ -108,7 +110,7 @@ SMODS.Voucher{
 		info_queue[#info_queue + 1] = {key = "toga_scales3", set = 'Other'}
 	end,
 	requires = {'v_toga_ninjarope'},
-	redeem = function(self)
+	redeem = function(self, card)
 		-- do the sound!
 		play_sound('toga_scalesofjustice')
 		-- Joker slots, Consumable slots, hand size, card selection limit.
@@ -160,8 +162,8 @@ if Talisman then
 		loc_vars = function(self, info_queue, card)
 			return {vars = { card.ability.extra.echip, card.ability.extra.jokerslot }}
 		end,
-		redeem = function(self)
-			G.jokers.config.card_limit = G.jokers.config.card_limit + self.config.extra.jokerslot
+		redeem = function(self, card)
+			G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.jokerslot
 		end,
 		requires = {'v_paint_brush'},
 		calculate = function(self, card, context)
@@ -183,20 +185,28 @@ SMODS.Voucher{
 	unlocked = true,
 	cost = 20,
 	rarity = 3,
-	config = { rarity = 3 },
+	config = { rarity = 3, extra = { copies = 1 } },
+	loc_vars = function(self, info_queue, card)
+		local actualcopies = math.floor(card.ability.extra.copies)
+		return { key = actualcopies > 1 and self.key..'_multiple' or self.key, vars = { actualcopies > 1 and actualcopies or 1 } }
+	end,
 	calculate = function(self, card, context)
+		if card.ability.extra.copies < 1 then card.ability.extra.copies = 1 end -- at least one.
+		
 		if context.pre_discard then
 			local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
 			if next(pokerhands['Flush']) and G.consumeables.cards[1] then
-				G.E_MANAGER:add_event(Event({
-					func = function() 
-						local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed('dnsflush')), nil)
-						card:set_edition({negative = true}, true)
-						card:add_to_deck()
-						G.consumeables:emplace(card)
-						return true
-					end})
-				)
+				for i = 1, card.ability.extra.copies do
+					G.E_MANAGER:add_event(Event({
+						func = function() 
+							local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed('dnsflush')), nil)
+							card:set_edition({negative = true}, true, true)
+							card:add_to_deck()
+							G.consumeables:emplace(card)
+							return true
+						end})
+					)
+				end
 			end
 		end
 	end,
