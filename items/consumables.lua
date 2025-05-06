@@ -157,7 +157,9 @@ SMODS.Consumable{
 	set_badges = function(self, card, badges)
         badges[#badges] = create_badge(localize('toga_crafttarot'), G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1.2)
     end,
-	pixel_size = { w = 71, h = 77 }
+	pixel_size = { w = 71, h = 77 },
+	perishable_compat = false,
+	eternal_compat = false
 }
 
 -- Set up a global pool of 'minerals'.
@@ -214,7 +216,9 @@ SMODS.Consumable {
 	set_badges = function(self, card, badges)
         badges[#badges] = create_badge(localize('toga_minetarot'), G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1.2)
     end,
-	pixel_size = { w = 71, h = 77 }
+	pixel_size = { w = 71, h = 77 },
+	perishable_compat = false,
+	eternal_compat = false
 }
 
 -- SPB function.
@@ -280,6 +284,8 @@ SMODS.Consumable{
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_safe_ex'), sound = togabalatro.config.SFXWhenRemoving and 'toga_thundershield'})
 		end
 	end,
+	perishable_compat = false,
+	eternal_compat = false
 }
 
 SMODS.Consumable {

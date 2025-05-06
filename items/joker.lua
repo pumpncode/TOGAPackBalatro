@@ -79,6 +79,7 @@ SMODS.Joker{
 	pos = { x = 0, y = 1 },
 	cost = 8,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		if G.GAME.current_round.discards_left == 2 then
 			local eval = function() return G.GAME.current_round.discards_left == 1 end
@@ -263,7 +264,10 @@ SMODS.Joker{
 	pos = { x = 0, y = 0 },
 	cost = 10,
 	blueprint_compat = false,
+	eternal_compat = false,
 	calculate = function(self, card, context)
+		if card.ability.eternal then card:set_eternal(false); card.ability.eternal = false end
+		
 		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
@@ -292,9 +296,6 @@ SMODS.Joker{
 				end
 			end
 		end
-	end,
-	update = function(self, card, context)
-		if card.ability.eternal then card:set_eternal(false); card.ability.eternal = false end
 	end
 }
 
@@ -435,6 +436,7 @@ SMODS.Joker{
 	pos = { x = 0, y = 4 },
 	cost = 12,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		if context.remove_playing_cards then
 			local addedcards = {}
@@ -686,6 +688,8 @@ SMODS.Joker{
 	pos = { x = 1, y = 1 },
 	cost = 10,
 	blueprint_compat = true,
+	perishable_compat = false,
+	eternal_compat = false,
 	calculate = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) then
 			G.E_MANAGER:add_event(Event({
@@ -814,6 +818,7 @@ SMODS.Joker{
 	soul_pos = { x = 4, y = 2 },
 	cost = 25,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		local repeats = card.ability.extra.repetitions
 		if context.cardarea == G.hand and context.repetition then
@@ -1348,6 +1353,8 @@ SMODS.Joker{
 	pos = { x = 3, y = 0 },
 	cost = 5,
 	blueprint_compat = false,
+	perishable_compat = false,
+	eternal_compat = false,
 	pixel_size = { w = 69, h = 73 },
 	calculate = function(self, card, context)
 		if context.blueprint then return end
@@ -1403,6 +1410,8 @@ SMODS.Joker{
 	pos = { x = 4, y = 0 },
 	cost = 2,
 	blueprint_compat = false,
+	perishable_compat = false,
+	eternal_compat = false,
 	pixel_size = { w = 69, h = 87 },
 	remove_from_deck = function(self, card, from_debuff)
 		if not from_debuff and G.STAGE == G.STAGES.RUN and not G.screenwipe and card.getting_sliced then
@@ -1635,6 +1644,7 @@ if Talisman then
 		soul_pos = { x = 4, y = 1 },
 		cost = 40,
 		blueprint_compat = true,
+		perishable_compat = false,
 		calculate = function(self, card, context)
 			if context.other_consumeable then
 				local effects = {
@@ -1684,6 +1694,7 @@ if Talisman then
 		soul_pos = { x = 4, y = 0 },
 		cost = 32,
 		blueprint_compat = true,
+		perishable_compat = false,
 		calculate = function(self, card, context)
 			if context.joker_main then
 				local echipcalc = (card.ability.extra.baseechip + (card.ability.extra.cardechip*#G.deck.cards))
