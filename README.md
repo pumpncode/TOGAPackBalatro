@@ -7,7 +7,7 @@ A personal timewaster project that is a mod for Balatro.
 
 [Download the latest public release here.](https://github.com/TheOneGoofAli/TOGAPackBalatro/archive/refs/heads/main.zip)
 
-Uses Steamodded 1.0.0-BETA and a few Lovely-based patches.
+Uses Steamodded 1.0.0-BETA and a bit of Lovely patching.
 https://github.com/Steamodded/smods
 
 Talisman 2.2.0 (development builds work too) is an optional dependency as of 1.0.2.
