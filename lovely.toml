@@ -3,18 +3,7 @@ version = "1.0.0"
 dump_lua = true
 priority = 1
 
-# Was not sure where else to put this...
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = "if G.blind_select then"
-position = "before"
-payload = '''
-G.GAME.current_round.usesavedtext = false
-G.GAME.current_round.savedtext = ""
-'''
-match_indent = true
-
+# Is this my only patch now? Yes, yes it is.
 [[patches]]
 [patches.pattern]
 target = "game.lua"
