@@ -23,13 +23,13 @@ SMODS.Blind{
 	disable = function(self)
 		if self.vars.activated then
 			self.vars.activated = false
-			G.hand.config.highlighted_limit = math.min(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
+			G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Disabled, card selection limit is "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 		end
 	end,
 	defeat = function(self)
 		if self.vars.activated then
-			G.hand.config.highlighted_limit = math.min(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
+			G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Defeated, card selection limit is "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 		end
 	end
