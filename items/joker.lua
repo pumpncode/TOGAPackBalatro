@@ -1761,9 +1761,13 @@ if Talisman then
 					eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
 				}
 				if Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
-					for i = 1, context.other_consumeable.ability.qty do
-						SMODS.calculate_individual_effect(effects, context.other_consumeable, 'ee_mult', effects.ee_mult, false)
-					end
+					return {
+						func = function()
+							for i = 1, context.other_consumeable.ability.qty do
+								SMODS.calculate_individual_effect(effects, context.other_consumeable, 'ee_mult', effects.ee_mult, false)
+							end
+						end
+					}
 				else return effects end
 			end
 		end,
