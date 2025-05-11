@@ -13,6 +13,7 @@ SMODS.Voucher{
 	end,
 	requires = {'v_paint_brush'},
 	redeem = function(self, card)
+		local card = card and card.ability and card or self and self.ability and self
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by "..math.ceil(G.hand.config.card_limit*card.ability.extra.h_size_scale)..".", "TOGAPack") end
 		G.hand:change_size(math.ceil(G.hand.config.card_limit*card.ability.extra.h_size_scale))
 	end,
@@ -35,6 +36,7 @@ SMODS.Voucher{
 		end
 	end,
 	redeem = function(self, card)
+		local card = card and card.ability and card or self and self.ability and self
 		G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.extra.discards
 		ease_discard(-card.ability.extra.discards)
 	end,
@@ -52,6 +54,7 @@ SMODS.Voucher{
 		return {vars = {card.ability.extra.probabilitymult}}
 	end,
 	redeem = function(self, card)
+		local card = card and card.ability and card or self and self.ability and self
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..card.ability.extra.probabilitymult..".", "TOGAPack") end
 		for k, v in pairs(G.GAME.probabilities) do
 			G.GAME.probabilities[k] = v*card.ability.extra.probabilitymult
@@ -72,6 +75,7 @@ SMODS.Voucher{
 	end,
 	requires = {'v_toga_hardwarewizard'},
 	redeem = function(self, card)
+		local card = card and card.ability and card or self and self.ability and self
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..card.ability.extra.probabilitymult..".", "TOGAPack") end
 		for k, v in pairs(G.GAME.probabilities) do
 			G.GAME.probabilities[k] = v*card.ability.extra.probabilitymult
@@ -91,6 +95,7 @@ SMODS.Voucher{
 		return {vars = {math.max(1, math.floor(card.ability.extra.moreselect))}}
 	end,
 	redeem = function(self, card)
+		local card = card and card.ability and card or self and self.ability and self
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor(card.ability.extra.moreselect))..".", "TOGAPack") end
 		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(card.ability.extra.moreselect))
 	end,
@@ -163,6 +168,7 @@ if Talisman then
 			return {vars = { card.ability.extra.echip, card.ability.extra.jokerslot }}
 		end,
 		redeem = function(self, card)
+			local card = card and card.ability and card or self and self.ability and self
 			G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.jokerslot
 		end,
 		requires = {'v_paint_brush'},
