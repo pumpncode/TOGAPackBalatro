@@ -13,8 +13,8 @@ SMODS.Voucher{
 	end,
 	requires = {'v_paint_brush'},
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by "..math.ceil(G.hand.config.card_limit*card.ability.extra.h_size_scale)..".", "TOGAPack") end
-		G.hand:change_size(math.ceil(G.hand.config.card_limit*card.ability.extra.h_size_scale))
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by "..math.ceil(G.hand.config.card_limit*(card and card.ability.extra or self.config.extra).h_size_scale)..".", "TOGAPack") end
+		G.hand:change_size(math.ceil(G.hand.config.card_limit*(card and card.ability.extra or self.config.extra).h_size_scale))
 	end,
 }
 
@@ -35,8 +35,8 @@ SMODS.Voucher{
 		end
 	end,
 	redeem = function(self, card)
-		G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.extra.discards
-		ease_discard(-card.ability.extra.discards)
+		G.GAME.round_resets.discards = G.GAME.round_resets.discards - (card and card.ability.extra or self.config.extra).discards
+		ease_discard(-(card and card.ability.extra or self.config.extra).discards)
 	end,
 }
 
@@ -52,9 +52,9 @@ SMODS.Voucher{
 		return {vars = {card.ability.extra.probabilitymult}}
 	end,
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..card.ability.extra.probabilitymult..".", "TOGAPack") end
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
 		for k, v in pairs(G.GAME.probabilities) do
-			G.GAME.probabilities[k] = v*card.ability.extra.probabilitymult
+			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
 		end
 	end,
 }
@@ -72,9 +72,10 @@ SMODS.Voucher{
 	end,
 	requires = {'v_toga_hardwarewizard'},
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..card.ability.extra.probabilitymult..".", "TOGAPack") end
+		local card = card and card.ability and card or self and self.ability and self
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
 		for k, v in pairs(G.GAME.probabilities) do
-			G.GAME.probabilities[k] = v*card.ability.extra.probabilitymult
+			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
 		end
 	end,
 }
@@ -91,8 +92,9 @@ SMODS.Voucher{
 		return {vars = {math.max(1, math.floor(card.ability.extra.moreselect))}}
 	end,
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor(card.ability.extra.moreselect))..".", "TOGAPack") end
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor(card.ability.extra.moreselect))
+		local card = card and card.ability and card or self and self.ability and self
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))..".", "TOGAPack") end
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))
 	end,
 }
 
@@ -163,7 +165,8 @@ if Talisman then
 			return {vars = { card.ability.extra.echip, card.ability.extra.jokerslot }}
 		end,
 		redeem = function(self, card)
-			G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.jokerslot
+			local card = card and card.ability and card or self and self.ability and self
+			G.jokers.config.card_limit = G.jokers.config.card_limit + (card and card.ability.extra or self.config.extra).jokerslot
 		end,
 		requires = {'v_paint_brush'},
 		calculate = function(self, card, context)
@@ -194,20 +197,17 @@ SMODS.Voucher{
 		if card.ability.extra.copies < 1 then card.ability.extra.copies = 1 end -- at least one.
 		
 		if context.pre_discard then
-			local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-			if next(pokerhands['Flush']) and G.consumeables.cards[1] then
-				for i = 1, card.ability.extra.copies do
-					G.E_MANAGER:add_event(Event({
-						func = function() 
-							local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed('dnsflush')), nil)
-							card:set_edition({negative = true}, true, true)
-							card:add_to_deck()
-							G.consumeables:emplace(card)
-							return true
-						end})
-					)
+			return { func = function()
+				local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+				if next(pokerhands['Flush']) and G.consumeables.cards[1] then
+					for i = 1, math.floor(card.ability.extra.copies) do
+						local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed('dnsflush')), nil)
+						card:set_edition({negative = true}, true)
+						card:add_to_deck()
+						G.consumeables:emplace(card)
+					end
 				end
-			end
+			end }
 		end
 	end,
 }
