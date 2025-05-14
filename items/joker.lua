@@ -149,7 +149,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'virtualmemory',
-	config = { extra = { odds = 4 } },
+	config = { extra = { odds = 4 }, bypasswu = true },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
 	end,
@@ -301,7 +301,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'virtualpc',
-	config = { extra = { odds = 25 } },
+	config = { extra = { odds = 25 }, bypasswu = true },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds } }
 	end,
@@ -316,12 +316,12 @@ SMODS.Joker{
 		
 		if context.blueprint then return end
 		
-		if pseudorandom("virtualpc2004sp1") < G.GAME.probabilities.normal/card.ability.extra.odds then
+		if context then
 			-- Larswijn was here.
 			local returns = nil
 			for i = 1, #G.jokers.cards do
 				local other_joker = G.jokers.cards[i]
-				if other_joker and other_joker:can_calculate() and other_joker.config.center.key ~= self.key then
+				if other_joker and other_joker:can_calculate() and other_joker.config.center.key ~= self.key and pseudorandom("virtualpc2004sp1") < G.GAME.probabilities.normal/card.ability.extra.odds then
 					local other_joker_effect = SMODS.blueprint_effect(card, other_joker, context)
 					if other_joker_effect and not other_joker_effect.was_blueprinted then
 						other_joker_effect.was_blueprinted = true
@@ -353,7 +353,7 @@ SMODS.Joker{
 					}
 				end
 			end
-			if returns then
+			if returns and next(returns) ~= nil then
 				return returns
 			end
 		end
@@ -366,7 +366,6 @@ SMODS.Joker{
 togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult)
 	lchips, lmult = lchips or 0, lmult or 0
 	if not (instant or Talisman and Talisman.config_file.disable_anims) then
-		--update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'),chips = to_number(to_big(G.GAME.hands[hand].l_chips) - to_big(lchips)), mult = to_number(to_big(G.GAME.hands[hand].l_mult) - to_big(lmult)), level=''})
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'),chips = to_number(G.GAME.hands[hand].l_chips), mult = to_number(G.GAME.hands[hand].l_mult), level=''})
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 			play_sound('tarot1')
@@ -386,6 +385,9 @@ togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult)
 			return true end }))
 		delay(1.3)
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0}, {handname='',chips = 0, mult = 0, level=''})
+	else
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'),chips = to_number(to_big(G.GAME.hands[hand].l_chips) + to_big(lchips)), mult = to_number(to_big(G.GAME.hands[hand].l_mult) + to_big(lmult)), level=''})
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.5}, {handname='',chips = 0, mult = 0, level=''})
 	end
 	
 	if Talisman and Talisman.config_file.disable_anims then
@@ -394,6 +396,7 @@ togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult)
 		return true end }))
 	end
 	
+	if togabalatro.config.DoMoreLogging then sendInfoMessage(localize('toga_perlevel').." "..localize(hand, 'poker_hands'), "TOGAPack") end
 	G.GAME.hands[hand].l_chips = to_big(G.GAME.hands[hand].l_chips) + to_big(lchips)
 	G.GAME.hands[hand].l_mult = to_big(G.GAME.hands[hand].l_mult) + to_big(lmult)
 	G.GAME.hands[hand].mult = math.max(to_big(G.GAME.hands[hand].s_mult) + to_big(G.GAME.hands[hand].l_mult)*(to_big(G.GAME.hands[hand].level) - to_big(1)), to_big(1))
@@ -414,14 +417,15 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.ending_shop then
+			local curcard = context.blueprint_card or card
 			return {
 				func = function()
 					local names = {}
 					for k, v in ipairs(G.handlist) do
-						if G.GAME.hands[v] then names[#names+1] = v end
+						if G.GAME.hands[v] and G.GAME.hands[v].visible then names[#names+1] = v end
 					end
 					local hand = pseudorandom_element(names, pseudoseed('ie'))
-					togabalatro.modifylevelchipsmult(context.blueprint_card or card, hand, false, to_number(G.GAME.hands[hand].s_chips)/card.ability.extra.phchips, to_number(G.GAME.hands[hand].s_mult)/card.ability.extra.phmult)
+					togabalatro.modifylevelchipsmult(curcard, hand, false, to_number(G.GAME.hands[hand].s_chips)/card.ability.extra.phchips, to_number(G.GAME.hands[hand].s_mult)/card.ability.extra.phmult)
 				end
 			}
 		end
@@ -464,7 +468,7 @@ SMODS.Joker{
 	key = 'jimbo95',
 	config = { extra = { h_size = 2, retriggers = 1, x_chips = 1.5, x_mult = 1.5} },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.h_size, card.ability.extra.retriggers, card.ability.extra.x_chips, card.ability.extra.x_mult } }
+		return { vars = { card.ability.extra.h_size, math.floor(card.ability.extra.retriggers), card.ability.extra.x_chips, card.ability.extra.x_mult } }
 	end,
 	unlocked = true,
 	discovered = true,
@@ -496,7 +500,7 @@ SMODS.Joker{
 			if card.ability.extra.retriggers < 1 then card.ability.extra.retriggers = 1 end -- always at least once.
 			return {
 				message = toga_randomruntext(),
-				repetitions = card.ability.extra.retriggers,
+				repetitions = math.floor(card.ability.extra.retriggers),
 				card = context.blueprint_card or card,
 			}
 		end
@@ -692,17 +696,19 @@ SMODS.Joker{
 	eternal_compat = false,
 	calculate = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) then
-			G.E_MANAGER:add_event(Event({
-				func = (function()
-					local gettag = get_next_tag_key()
-					if gettag == 'tag_orbital' then gettag = 'tag_negative' end
-					add_tag(Tag(gettag))
-					card:juice_up(0.3, 0.4)
-					play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-					play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
-					return true
-				end)
-			}))
+			return { func = function()
+				G.E_MANAGER:add_event(Event({
+					func = (function()
+						local gettag = get_next_tag_key()
+						if gettag == 'tag_orbital' then gettag = 'tag_negative' end
+						add_tag(Tag(gettag))
+						card:juice_up(0.3, 0.4)
+						play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
+						play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+						return true
+					end)
+				}))
+			end }
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -816,7 +822,7 @@ SMODS.Joker{
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.cardarea == G.hand and context.other_card and not context.end_of_round and not context.repetition and not context.repetition_only then
+		if context.cardarea == G.hand and context.other_card and not context.end_of_round and not context.repetition and not context.repetition_only and not context.other_card.debuff then
 			local houseofcommons = {}
 			if G.jokers and #G.jokers.cards > 1 then
 				for i = 1, #G.jokers.cards do
@@ -826,6 +832,7 @@ SMODS.Joker{
 			if #houseofcommons > 0 then
 				local result = { x_mult = card.ability.extra.x_mult, card = houseofcommons[1] }
 				if #houseofcommons >= 2 then
+					-- nh6574 was here.
 					local return_table = result
 					for i = 2, #houseofcommons do
 						return_table.extra = { x_mult = card.ability.extra.x_mult, card = houseofcommons[i] }
@@ -899,7 +906,7 @@ SMODS.Joker{
 	cost = 25,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if card.ability.extra.reduce > 1 then card.ability.extra.reduce = 1 end -- catch.
+		if card.ability.extra.reduce > 1 then card.ability.extra.reduce = 0.97 end -- catch.
 		
 		if context.cardarea == G.play then
 			if context.other_card and not context.before and not context.after and not context.repetition and not context.repetition_only and to_big(G.GAME.blind.chips) > to_big(0) then
@@ -916,7 +923,7 @@ SMODS.Joker{
 						G.HUD_blind:recalculate()
 						G.hand_text_area.blind_chips:juice_up()
 						card:juice_up()
-		
+						
 						if not silent and togabalatro.config.SFXWhenTriggered then play_sound(toga_plus95rndsfx()) end
 					return true end }))
 				end
@@ -924,7 +931,7 @@ SMODS.Joker{
 		end
 	end,
 	update = function(self, card, context)
-		if card.ability.extra.reduce > 1 then card.ability.extra.reduce = 1 end -- catch.
+		if card.ability.extra.reduce > 1 then card.ability.extra.reduce = 0.97 end -- catch.
 	end
 }
 
@@ -983,11 +990,14 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main then
-			for i = 1, #G.deck.cards do
-				if pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds then
-					SMODS.score_card(G.deck.cards[i], {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
+			local context = context
+			return { func = function()
+				for i = 1, #G.deck.cards do
+					if pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds then
+						SMODS.score_card(G.deck.cards[i], {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
+					end
 				end
-			end
+			end }
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -1274,12 +1284,17 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main then
-			card.ability.extra.alltrig = toga_cashpointmulitple(card.ability.extra.cashpoint) or 1
-			for i = 1, card.ability.extra.alltrig do
-				if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 then -- hard cap.
-					SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
+			local context = context
+			return {
+				func = function()
+					card.ability.extra.alltrig = toga_cashpointmulitple(card.ability.extra.cashpoint) or 1
+					for i = 1, card.ability.extra.alltrig do
+						if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 then -- hard cap.
+							SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
+						end
+					end
 				end
-			end
+			}
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -1604,8 +1619,8 @@ local function toga_rndvaluetarget(origcard, increase, curiter)
 		end
 	end
 end
-local winupdateframes = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1}
 
+local winupdateframes = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1}
 SMODS.Joker{
 	key = 'winupdate',
 	config = { extra = { plusval = 0.25 }, },
@@ -1621,7 +1636,9 @@ SMODS.Joker{
 	perishable_compat = false,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.repetition and not context.individual and G.GAME.blind.boss then
-			toga_rndvaluetarget(card, card.ability.extra.plusval)
+			return { func = function()
+				toga_rndvaluetarget(card, card.ability.extra.plusval)
+			end }
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -1672,11 +1689,24 @@ SMODS.Joker{
 	end
 }
 
+local function toga_rosencheck(card)
+	card.ability.extra.heldmoney = math.max(card.ability.extra.heldmoney, 10)
+	card.ability.extra.heldxchip = math.max(card.ability.extra.heldxchip, 1.75)
+	card.ability.extra.heldxmult = math.max(card.ability.extra.heldxmult, 2)
+	card.ability.extra.heldechip = math.max(card.ability.extra.heldxchip, 1.3)
+	card.ability.extra.heldeechip = math.max(card.ability.extra.heldxchip, 1.1)
+	card.ability.extra.heldeeechip = math.max(card.ability.extra.heldxchip, 1.05)
+	card.ability.extra.heldemult = math.max(card.ability.extra.heldxchip, 1.2)
+	card.ability.extra.heldeemult = math.max(card.ability.extra.heldxchip, 1.08)
+	card.ability.extra.heldeeemult = math.max(card.ability.extra.heldxchip, 1.04)
+end
+
 -- The plumtastic man himself. Joke Joker.
 SMODS.Joker{
 	key = 'michaelrosen',
 	config = { extra = { heldmoney = 10, heldxchip = 1.75, heldxmult = 2, heldechip = 1.3, heldeechip = 1.1, heldeeechip = 1.05, heldemult = 1.2, heldeemult = 1.08, heldeeemult = 1.04, odds = 25 } },
 	loc_vars = function(self, info_queue, card)
+		toga_rosencheck(card)
 		if not card.debuff then
 			info_queue[#info_queue + 1] = {key = "toga_roseneffects", set = 'Other', vars = { card.ability.extra.heldmoney, card.ability.extra.heldxchip, card.ability.extra.heldxmult }}
 			if Talisman then
@@ -1699,23 +1729,25 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.cardarea == G.hand and context.other_card and not context.other_card.debuff and not context.repetition and not context.repetition_only and not context.end_of_round then
-			-- Dear god.
+			-- Making sure we don't give less than default should we be Glitched or something else changes our values...
+			toga_rosencheck(card)
+			-- Still, dear god...
 			return {
 				dollars = pseudorandom("michaelrosen_money") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldmoney or nil,
-				x_chips = pseudorandom("michaelrosen_xchips") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldxchip or nil,
+				x_chips = pseudorandom("michaelrosen_xchips") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldxchip > 1 and card.ability.extra.heldxchip or nil,
 				xchip_message = {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.heldxchip } }, colour = G.C.CHIPS, sound = "xchips"} or nil,
-				x_mult = pseudorandom("michaelrosen_xmult") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldxmult or nil,
-				e_chips = Talisman and pseudorandom("michaelrosen_echips") < G.GAME.probabilities.normal/(card.ability.extra.odds*10) and card.ability.extra.heldechip or nil,
+				x_mult = pseudorandom("michaelrosen_xmult") < G.GAME.probabilities.normal/card.ability.extra.odds and card.ability.extra.heldxmult > 1 and card.ability.extra.heldxmult or nil,
+				e_chips = Talisman and pseudorandom("michaelrosen_echips") < G.GAME.probabilities.normal/(card.ability.extra.odds*10) and card.ability.extra.heldechip > 1 and card.ability.extra.heldechip or nil,
 				echip_message = Talisman and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.heldechip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
-				ee_chips = Talisman and pseudorandom("michaelrosen_eechips") < G.GAME.probabilities.normal/(card.ability.extra.odds*20) and card.ability.extra.heldeechip or nil,
+				ee_chips = Talisman and pseudorandom("michaelrosen_eechips") < G.GAME.probabilities.normal/(card.ability.extra.odds*20) and card.ability.extra.heldeechip > 1 and card.ability.extra.heldeechip or nil,
 				eechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEchip", vars = { card.ability.extra.heldeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eechip"} or nil,
-				eee_chips = Talisman and pseudorandom("michaelrosen_eeechips") < G.GAME.probabilities.normal/(card.ability.extra.odds*40) and card.ability.extra.heldeeechip or nil,
+				eee_chips = Talisman and pseudorandom("michaelrosen_eeechips") < G.GAME.probabilities.normal/(card.ability.extra.odds*40) and card.ability.extra.heldeeechip > 1 and card.ability.extra.heldeeechip or nil,
 				eeechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEchip", vars = { card.ability.extra.heldeeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eeechip"} or nil,
-				e_mult = Talisman and pseudorandom("michaelrosen_emult") < G.GAME.probabilities.normal/(card.ability.extra.odds*10) and card.ability.extra.heldemult or nil,
+				e_mult = Talisman and pseudorandom("michaelrosen_emult") < G.GAME.probabilities.normal/(card.ability.extra.odds*10) and card.ability.extra.heldemult > 1 and card.ability.extra.heldemult or nil,
 				emult_message = Talisman and {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.heldemult } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
-				ee_mult = Talisman and pseudorandom("michaelrosen_eemult") < G.GAME.probabilities.normal/(card.ability.extra.odds*20) and card.ability.extra.heldeemult or nil,
+				ee_mult = Talisman and pseudorandom("michaelrosen_eemult") < G.GAME.probabilities.normal/(card.ability.extra.odds*20) and card.ability.extra.heldeemult > 1 and card.ability.extra.heldeemult or nil,
 				eemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.heldeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
-				eee_mult = Talisman and pseudorandom("michaelrosen_eeemult") < G.GAME.probabilities.normal/(card.ability.extra.odds*40) and card.ability.extra.heldeeemult or nil,
+				eee_mult = Talisman and pseudorandom("michaelrosen_eeemult") < G.GAME.probabilities.normal/(card.ability.extra.odds*40) and card.ability.extra.heldeeemult > 1 and card.ability.extra.heldeeemult or nil,
 				eeemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEmult", vars = { card.ability.extra.heldeeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eeemult"} or nil,
 			}
 		end

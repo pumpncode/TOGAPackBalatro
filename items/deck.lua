@@ -119,9 +119,9 @@ SMODS.Back{
 	pos = { x = 5, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
-	config = {ante_scaling = 1.25, extraante = 3},
+	config = {ante_scaling = 1.25},
 	loc_vars = function(self, info_queue, center)
-		return { vars = { self.config.ante_scaling, self.config.extraante } }
+		return { vars = { self.config.ante_scaling } }
 	end,
 	apply = function(self, back)
 		G.E_MANAGER:add_event(Event({

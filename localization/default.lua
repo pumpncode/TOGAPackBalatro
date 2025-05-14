@@ -41,7 +41,6 @@ return {
 				text = {
 					"Start run with",
 					"a special {C:attention,T:j_toga_jokersrb2kart}Karting Joker{}",
-					--"{C:red}X#1#{} base Blind size",
 					"{C:red}#2#{} {C:attention}Joker{} slots",
 					"{C:spectral,s:0.8}Spectral{s:0.8} cards",
 					"{s:0.8}may appear in shop"
@@ -342,9 +341,9 @@ return {
 			j_toga_spacecadetpinball = {
 				name = 'Space Cadet',
 				text = {
-					"{C:green}#3# in 3{} chance to {C:attention}rescore{}",
-					"a random scoring card.",
-					"For every {C:money}$#1#{} held,",
+					"{C:green}#3# in 3{} chance to {C:attention}rescore{} a",
+					"random scoring card by this",
+					"{C:attention}Joker{}. For every {C:money}$#1#{} held,",
 					"try to {C:attention}rescore{} again.",
 					"{C:inactive,s:0.8}Currently #2# attempts.{}",
 				}
@@ -453,7 +452,7 @@ return {
 				name = 'Virtual PC',
 				text = {
 					"{C:green}#1# in #2#{} chance to copy",
-					"ability of {C:attention}any{} other",
+					"an ability of {C:attention}any{}",
 					"compatible {C:attention}Joker{} held"
 				}
 			},
@@ -601,8 +600,16 @@ return {
 					"Destroys {T:m_stone,C:attention}Stone Cards{} in the {C:attention}full deck{}.",
 					"{C:green}#1# in #2#{} chance for a {T:m_stone,C:attention}Stone Card{} to",
 					"convert into a {C:attention}Mineral{} card instead.",
-					"{C:inactive,s:0.9}Examples: Copper, Iron, Tin...{}",
-					"{C:inactive,s:0.8}Don't forget a torch with you!{}",
+					"{C:inactive,s:0.8}Hold Left SHIFT before hovering over{}",
+					"{C:inactive,s:0.8}this card to show the Mineral pool.{}"
+				}
+			},
+			c_toga_miningprospect_showminerals = {
+				name = "Prospect",
+				text = {
+					"Destroys {T:m_stone,C:attention}Stone Cards{} in the {C:attention}full deck{}.",
+					"{C:green}#1# in #2#{} chance for a {T:m_stone,C:attention}Stone Card{} to",
+					"convert into a {C:attention}Mineral{} card instead.",
 				}
 			},
 		},
@@ -882,7 +889,7 @@ return {
 					"Skipping {C:attention}blinds{} or {C:attention}booster packs{}",
 					"has a {C:green}#1# in #2#{} chance to gain",
 					"{X:mult,C:white}X#3#{} instead of {C:attention}losing{} {C:red}#4#%{}",
-					"of currently accumulated {X:mult,C:white}XMult{}."
+					"of currently accumulated {X:mult,C:white}XMult{}.",
 				},
 			},
 			toga_kartjokershortcutspecial = {
@@ -897,13 +904,13 @@ return {
 				name = "Formula",
 				text = {
 					"({C:attention}Joker slots{} + {C:attention}Consumable{} slots",
-					"+ {C:blue}hands{} left + {C:red}discards{} left) / 4"
+					"+ {C:blue}hands{} left + {C:red}discards{} left) / 4",
 				},
 			},
 			toga_roseneffects = {
 				name = "Possible effects:",
 				text = {
-					"{C:money}$#1#{}, {X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#3#{} Mult"
+					"{C:money}$#1#{}, {X:chips,C:white}X#2#{} Chips, {X:mult,C:white}X#3#{} Mult",
 				},
 			},
 			toga_rosentalismanextra = {
@@ -918,7 +925,7 @@ return {
 				name = "Averages:",
 				text = {
 					"Joker & Consumable {C:attention}slots{},",
-					"{C:attention}hand size{} and {C:attention}card selection limit{}."
+					"{C:attention}hand size{} and {C:attention}card selection limit{}.",
 				},
 			},
 			toga_scales2 = {
@@ -930,9 +937,65 @@ return {
 			toga_scales3 = {
 				name = "Averages:",
 				text = {
-					"{C:blue}Hands{} and {C:red}discards{}."
+					"{C:blue}Hands{} and {C:red}discards{}.",
 				},
 			},
+			toga_alloysteel = {
+				name = "Steel Card Recipe",
+				text = {
+					"1x Iron + 1x Coal Coke (consumed) = 1x Steel",
+				},
+			},
+			toga_alloyelectrum = {
+				name = "Electrum Card Recipe",
+				text = {
+					"1x Gold + 1x Silver = 2x Electrum",
+				},
+			},
+			toga_alloybronze = {
+				name = "Bronze Card Recipe",
+				text = {
+					"3x Copper + 1x Tin = 4x Bronze",
+				},
+			},
+		},
+		Partner = {
+			pnr_toga_startupdisk={
+                name = "Startup Diskette",
+                text = {
+                    "Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
+                    "when {C:attention}Blind{} is selected.",
+                },
+                unlock={
+                    "Used a {C:attention}Windows OS{} Joker",
+                    "to win on {C:attention}Gold",
+                    "{C:attention}Stake{} difficulty",
+                },
+            },
+			pnr_toga_startupdisk_buff={
+                name = "Startup Diskette",
+                text = {
+                    "Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
+                    "when {C:attention}Blind{} is selected, with additional {C:attention}#3#%{}",
+					"provided by currently held {C:attention}Windows OS Jokers{}.",
+					"{C:inactive}(Currently {C:attention}#1#%{C:inactive})"
+                },
+                unlock={
+                    "Used a {C:attention}Windows OS{} Joker",
+                    "to win on {C:attention}Gold",
+                    "{C:attention}Stake{} difficulty",
+                },
+            },
+			pnr_toga_amongusplushie={
+                name = "Among Us Plushie",
+                text = {
+                    "{C:green}#1# in #2#{} chance to give {C:attention}bonus{}",
+					"{C:money}money{} at end of round.",
+					"{C:inactive,s:0.8}#3#% of currently held money or $10,{}",
+					"{C:inactive,s:0.8}whichever is higher.{}",
+					"{C:inactive,s:0.75}Spin speed is tied to money held.{}"
+                },
+            },
 		}
 	},
 	misc = {
@@ -966,13 +1029,15 @@ return {
 			toga_spbavoidsuccess = "Safe!",
 			toga_bonusapply = "Bonus!",
 			toga_anviltrigger = "Hit it!",
+			toga_floppypartner = "Floppy!",
+			toga_suspartner = "amogus.",
 			--
 			toga_furnaceprocess = "Smelted...",
 			toga_novalidrecipe = "No recipes match selected cards.",
 			toga_unknownvalidrecipe = "Unknown valid recipe.",
 			toga_steelrecipe = "1x Iron + 1x Coal Coke (consumed) = 1x Steel",
 			toga_electrumrecipe = "1x Gold + 1x Silver = 2x Electrum",
-			toga_bronzerecipe = "3x Copper + Tin = 4x Bronze",
+			toga_bronzerecipe = "3x Copper + 1x Tin = 4x Bronze",
 			toga_alloy = "Alloy",
 			toga_crafttarot = "Crafting Tarot",
 			toga_minetarot = "Mining Tarot",
@@ -996,12 +1061,16 @@ return {
 			toga_jarateready = "Ready!",
 			toga_jarated = "Washed!",
 			toga_perlevel = "per-level",
-			toga_sfxwhenadd = "SFX when getting some of the mods' Jokers",
-			toga_sfxwhendel = "SFX when removing some of the mods' Jokers",
-			toga_sfxwhenuse = "SFX when some Jokers from this mod are triggered",
+			toga_configtab = "Mod Settings",
+			toga_logtab = "Logging Settings",
+			toga_sfxwhenadd = "SFX when getting some of the mods' items",
+			toga_sfxwhendel = "SFX when removing some of the mods' items",
+			toga_sfxwhenuse = "SFX when some of the mods' items trigger",
 			toga_musicpacks = "Custom music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
-			toga_verboselog = "Enable extra logs",
+			toga_verboselog = "Enable extra logs - [INFO]",
+			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
+			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",
 			toga_startupsfx = "Enable mod startup sound on initial load",
 		},
 		labels = {

@@ -19,6 +19,9 @@ SMODS.Atlas{key = "TOGASeals", path = "togaseal.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAEnhancements", path = "togaenh.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGADialUpBlind", path = "togadialupblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 24}
 SMODS.Atlas{key = "TOGAWWWBlind", path = "togawwwblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 32}
+SMODS.Atlas{key = "TOGAMoreIcons", path = "togamoricons.png", px = 36, py = 36, disable_mipmap = true}
+SMODS.Atlas{key = "TOGAFunny", path = "togazefunny.png", px = 64, py = 64, atlas_table = 'ANIMATION_ATLAS', frames = 9}
+SMODS.Atlas{key = "TOGAFunnyStatic", path = "togazefunny.png", px = 64, py = 64}
 SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 32, py = 32}
 
 -- Hear me scream.
@@ -70,6 +73,8 @@ SMODS.Sound({key = "scalesofjustice", path = "ScalesOfJustice.wav"}) -- self exp
 SMODS.Sound({key = "failsfx", path = "comedicfail.ogg"}) -- fart.mp3
 SMODS.Sound({key = "goldenhit", path = "Saxxy_impact_gen_06.ogg"}) -- getting a kill with a Golden Wrench, Saxxy or Golden Frying Pan, TF2
 SMODS.Sound({key = "jaratehit", path = "jar_explode.ogg"}) -- Jarate hitting something, TF2
+SMODS.Sound({key = "w95restup", path = "Windows 95 restore up.ogg"}) -- Plus! 95, Windows 95 restore up.wav
+SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
@@ -118,65 +123,117 @@ SMODS.ObjectType{
 
 -- I think, therefore, I am.
 togabalatro = SMODS.current_mod
-togabalatro.config_tab = function() -- didn't expect it to be THIS convoluted... but other mods sure were going this route.
-	return {n = G.UIT.ROOT, config = {r = 0.1, align = "cm", padding = 0.1, colour = G.C.BLACK, minw = 7, minh = 2}, nodes = {
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+
+togabalatro.config_tab = function()
+	return {n = G.UIT.ROOT, config = {align = "cl", outline = 0.5, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 7, minh = 2}, nodes = {
+		{n = G.UIT.R, config = {align = "cl", outline = 0.35, outline_colour = HEX('C3C3C3'), colour = HEX('000082')}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.75, w = 0, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenAdding" },
+				{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 0, y = 0 }) } },
 			}},
-			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
-				{ n = G.UIT.T, config = { text = localize('toga_sfxwhenadd'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+			{n = G.UIT.C, config = { align = "cl", padding = 0 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_configtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+		}},
+		{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenAdding" },
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_sfxwhenadd'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.75, w = 0, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenRemoving" },
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenRemoving" },
 			}},
-			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
-				{ n = G.UIT.T, config = { text = localize('toga_sfxwhendel'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.75, w = 0, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenTriggered" },
-			}},
-			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
-				{ n = G.UIT.T, config = { text = localize('toga_sfxwhenuse'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_sfxwhendel'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.75, w = 0, shadow = true, ref_table = togabalatro.config, ref_value = "BoosterPackMusic" },
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenTriggered" },
 			}},
-			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
-				{ n = G.UIT.T, config = { text = localize('toga_musicpacks'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.75, w = 0, shadow = true, ref_table = togabalatro.config, ref_value = "JokeJokersActive" },
-			}},
-			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
-				{ n = G.UIT.T, config = { text = localize('toga_jokejokers'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_sfxwhenuse'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.75, w = 0, shadow = true, ref_table = togabalatro.config, ref_value = "DoMoreLogging" },
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "BoosterPackMusic" },
 			}},
-			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
-				{ n = G.UIT.T, config = { text = localize('toga_verboselog'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_musicpacks'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.75, w = 0, shadow = true, ref_table = togabalatro.config, ref_value = "StartUpSound" },
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "JokeJokersActive" },
 			}},
-			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
-				{ n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_jokejokers'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+		}},
+		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "StartUpSound" },
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
 	}}
+end
+
+togabalatro.extra_tabs = function()
+	return {
+		{ label = 'Logging', tab_definition_function = function()
+			return {n = G.UIT.ROOT, config = {align = "cl", outline = 0.65, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 7, minh = 2}, nodes = {
+				{n = G.UIT.R, config = {align = "cl", outline = 0.35, outline_colour = HEX('C3C3C3'), colour = HEX('000082')}, nodes = {
+					{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
+						{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 2, y = 0 }) } },
+					}},
+					{n = G.UIT.C, config = { align = "cl", padding = 0 }, nodes = {
+						{n = G.UIT.T, config = { text = localize('toga_logtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+					}},
+				}},
+				{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
+					{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+						create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "DoMoreLogging" },
+					}},
+					{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.T, config = { text = localize('toga_verboselog'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+					}},
+				}},
+				{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
+					{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+						create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "DoEvenMoreLogging" },
+					}},
+					{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.T, config = { text = localize('toga_extraverboselog'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+					}},
+				}},
+				{n = G.UIT.R, config = {align = "cm", padding = 0, outline = 0.5, outline_colour = HEX('491A19'), colour = HEX('7A2D29')}, nodes = {
+					{n = G.UIT.C, config = { align = "cm", padding = 0}, nodes = {
+						{n = G.UIT.O, config = { w = 0.66, h = 0.66, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 1, y = 0 }) } },
+					}},
+					{n = G.UIT.C, config = { align = "cm", padding = 0.05 }, nodes = {
+						{n = G.UIT.T, config = { text = localize('toga_extraverboselogwarn'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+					}},
+				}},
+			}}
+		end}
+	}
+end
+
+togabalatro.custom_ui = function(modNodes)
+	if math.random(1, 10) == 5 then
+		table.insert(modNodes, #modNodes+1, {n = G.UIT.R, config = {r = 0.1, align = "cm", padding = 0.1}, nodes = {
+			{n = G.UIT.C, config = { align = "cm", padding = 0.05 }, nodes = {
+				{n = G.UIT.O, config = { w = 1, h = 1, object = AnimatedSprite(0, 0, 1, 1, G.ANIMATION_ATLAS['toga_TOGAFunny'], { x = 0, y = 0 }) } },
+			}},
+		}})
+	end
 end
 
 togabalatro.description_loc_vars = function(self)
@@ -205,9 +262,18 @@ togabalatro.getrandcons = function(seed)
 	if curcons and curcons ~= "UNAVAILABLE" then return curcons else return "c_tower" end
 end
 
+togabalatro.iswindows = function(card)
+	if card.config.center.key == 'j_toga_win95' or card.config.center.key == 'j_toga_win98'
+	or card.config.center.key == 'j_toga_win98' or card.config.center.key == 'j_toga_winmillenium'
+	or card.config.center.key == 'j_toga_win2000' or card.config.center.key == 'j_toga_winxp'
+	or card.config.center.key == 'j_toga_winvista' or card.config.center.key == 'j_toga_win7'
+	or card.config.center.key == 'j_toga_win8' then return true end
+end
+
 sendInfoMessage("Hooking G.FUNCS.can_play...", "TOGAPack")
 local canplayref = G.FUNCS.can_play
 function G.FUNCS.can_play(e)
+	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("G.FUNCS.can_play hook.", "TOGAPack") end
 	canplayref(e) -- execute original first before we do anything.
 	if #G.hand.highlighted <= G.hand.config.highlighted_limit then
 		if #G.hand.highlighted >= 52 then -- Cryptid?
@@ -248,6 +314,7 @@ sendInfoMessage("Hooking play_sound...", "TOGAPack")
 local playsoundref = play_sound
 function play_sound(sound_code, per, vol)
 	-- ...only if config is set to allow it.
+	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("play_sound hook.", "TOGAPack") end
 	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and togabalatro.rosensfx[sound_code] then sound_code = 'toga_rosenclick' end
 	
 	playsoundref(sound_code, per, vol)
@@ -257,6 +324,7 @@ end
 sendInfoMessage("Hooking Card:is_face...", "TOGAPack")
 local isfaceref = Card.is_face
 function Card:is_face(from_boss)
+	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:is_face hook.", "TOGAPack") end
 	if self.debuff and not from_boss then return end
 	local id = self:get_id()
 	if next(SMODS.find_card('j_toga_y2ksticker')) and id == 2 or next(find_joker("Pareidolia")) then
@@ -269,6 +337,7 @@ end
 sendInfoMessage("Hooking Card:get_id...", "TOGAPack")
 local getidref = Card.get_id
 function Card:get_id()
+	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:get_id hook.", "TOGAPack") end
 	local id = getidref(self) or 2
 	if next(SMODS.find_card('j_toga_megasxlr')) and id == 8 then id = 13 end
 	if next(SMODS.find_card('j_toga_hexadecimaljkr')) and id == 14 then id = 10 end
@@ -280,6 +349,7 @@ end
 sendInfoMessage("Hooking Card:is_suit...", "TOGAPack")
 local issuitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
+	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:get_is_suit hook.", "TOGAPack") end
 	if flush_calc then
 		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared'))
 		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs')
@@ -350,6 +420,7 @@ end
 sendInfoMessage("Hooking Blind:defeat...", "TOGAPack")
 local blindkillref = Blind.defeat
 function Blind:defeat(silent)
+	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Blind:defeat hook.", "TOGAPack") end
 	blindkillref(self, silent)
 	G.GAME.blind.jarated = nil
 	if not G.GAME.dialupmodem and self.name == 'bl_toga_dialupmodem' then G.GAME.dialupmodem = true end

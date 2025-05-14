@@ -3,14 +3,66 @@ sendInfoMessage("Loading Consumeables...", "TOGAPack")
 -- Initialize recipe table...
 togabalatro.validsmeltrecipes = {}
 
+-- Initialize our "OreDictionary".
+togabalatro.oredict = {}
+
+-- Vanilla...
+togabalatro.oredict.steel = {'m_steel'}
+togabalatro.oredict.gold = {'m_gold'}
+togabalatro.oredict.stone = {'m_stone'}
+
+-- Even these also count for OreDictionary.
+togabalatro.oredict.bonus = {'m_bonus'}
+togabalatro.oredict.mult = {'m_mult'}
+togabalatro.oredict.wild = {'m_wild'}
+togabalatro.oredict.glass = {'m_glass'}
+togabalatro.oredict.lucky = {'m_lucky'}
+
+-- Populate modded stuff...
+togabalatro.oredict.copper = {'m_toga_copper'}
+togabalatro.oredict.tin = {'m_toga_tin'}
+togabalatro.oredict.iron = {'m_toga_iron'}
+togabalatro.oredict.coalcoke = {'m_toga_coalcoke'}
+togabalatro.oredict.silver = {'m_toga_silver'}
+togabalatro.oredict.electrum = {'m_toga_electrum'}
+togabalatro.oredict.bronze = {'m_toga_bronze'}
+
+-- Set up a global pool of 'minerals' in our OreDictionary.
+togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium'}
+
+togabalatro.add_to_oredict = function(key, material, quiet)
+	quiet = quiet or false
+	if not (key or material) then sendErrorMessage("Key or material not defined: ["..tostring(key).."] ["..tostring(material).."]", "TOGAPack - OreDictionary"); return end
+	if type(key) ~= 'string' then sendErrorMessage("Key is not a string.", "TOGAPack - OreDictionary"); return end
+	if type(material) ~= 'string' then sendErrorMessage("Material is not a string.", "TOGAPack - OreDictionary"); return end
+	key, material = string.lower(key), string.lower(material)
+	if not togabalatro.oredict[material] then
+		if not quiet then sendInfoMessage("Registering new '"..material.."' type...", "TOGAPack - OreDictionary") end
+		togabalatro.oredict[material] = {}
+	end
+	if not quiet then sendInfoMessage("Adding '"..material.."' entry: "..key, "TOGAPack - OreDictionary") end
+	
+	table.insert(togabalatro.oredict[material], key)
+end
+
+-- Check if card matches specific OreDictionary entries...
+togabalatro.oredictcheck = function(card, pool)
+	if not (card or pool) then return end
+	if type(pool) == 'string' then pool = togabalatro.oredict[pool] end
+	if type(pool) ~= 'table' then return end
+	for i, v in ipairs(pool) do
+		if type(v) == 'string' and SMODS.has_enhancement(card, v) then return true end
+	end
+end
+
 -- Add recipe checks as functions.
 -- Iron + Coal Coke (consumed) to vanilla Steel
 togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
 	selcards = selcards or {}
 	local coalcoke, iron = nil, nil
 	for i, v in ipairs(selcards) do
-		if SMODS.has_enhancement(v, 'm_toga_coalcoke') then coalcoke = v end
-		if SMODS.has_enhancement(v, 'm_toga_iron') then iron = v end
+		if togabalatro.oredictcheck(v, togabalatro.oredict.coalcoke) then coalcoke = v end
+		if togabalatro.oredictcheck(v, togabalatro.oredict.iron) then iron = v end
 	end
 	return iron and coalcoke and iron ~= coalcoke, { cards = { iron }, destroycard = { coalcoke }, allcards = { iron, coalcoke } }, 'm_steel', localize('toga_steelrecipe')
 end
@@ -20,21 +72,10 @@ togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selca
 	selcards = selcards or {}
 	local gold, silver = nil, nil
 	for i, v in ipairs(selcards) do
-		if SMODS.has_enhancement(v, 'm_gold') then gold = v end
-		if SMODS.has_enhancement(v, 'm_toga_silver') then silver = v end
+		if togabalatro.oredictcheck(v, togabalatro.oredict.gold) then gold = v end
+		if togabalatro.oredictcheck(v, togabalatro.oredict.silver) then silver = v end
 	end
 	return gold and silver and gold ~= silver, { cards = { gold, silver } }, 'm_toga_electrum', localize('toga_electrumrecipe')
-end
-
--- Copper cards are not new... for this mod they are. However, other mods have
--- implemented Copper cards of their own. See crossmod.lua for compatibility.
-togabalatro.validcopper = {'m_toga_copper'}
-
--- Check if card has any of our Copper enhancements.
-togabalatro.validcoppercheck = function(card)
-	for i, v in ipairs(togabalatro.validcopper) do
-		if SMODS.has_enhancement(card, v) then return true end
-	end
 end
 
 -- 3x Copper + 1x Tin = 4x Bronze
@@ -46,10 +87,10 @@ togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selca
 	for i, v in ipairs(selcards) do
 		repeat -- scary jank, but works.
 			iter = iter + 1
-			if not copper1ok and togabalatro.validcoppercheck(v) then copper1 = v; copper1ok = true; break end
-			if not copper2ok and togabalatro.validcoppercheck(v) then copper2 = v; copper2ok = true; break end
-			if not copper3ok and togabalatro.validcoppercheck(v) then copper3 = v; copper3ok = true; break end
-			if not tinok and SMODS.has_enhancement(v, 'm_toga_tin') then tin = v; break end
+			if not copper1ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper1 = v; copper1ok = true; break end
+			if not copper2ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper2 = v; copper2ok = true; break end
+			if not copper3ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper3 = v; copper3ok = true; break end
+			if not tinok and togabalatro.oredictcheck(v, togabalatro.oredict.tin) then tin = v; break end
 		until (copper1ok and copper2ok and copper3ok and tinok) or iter > iterlimit
 	end
 	return copper1 and copper2 and copper3 and tin and copper1 ~= tin and copper1 ~= copper2 and copper2 ~= copper3 and copper1 ~= copper3, { cards = { copper1, copper2, copper3, tin } }, 'm_toga_bronze', localize('toga_bronzerecipe')
@@ -71,6 +112,9 @@ togabalatro.checkvalidrecipe = function()
 	return cando, found and userecipetxt and recipetxt or text
 end
 
+-- Valid recipe text stuff.
+togabalatro.currentrecipetxt = {"toga_alloysteel", "toga_alloyelectrum", "toga_alloybronze"}
+
 -- Feel the heat of the Smeltery.
 SMODS.Consumable{
 	key = 'furnace',
@@ -81,6 +125,13 @@ SMODS.Consumable{
 	config = { extra = { usecost = 4 } },
 	loc_vars = function(self, info_queue, card)
 		local cando, txt = togabalatro.checkvalidrecipe()
+		if not cando then
+			if togabalatro.currentrecipetxt and #togabalatro.currentrecipetxt > 0 then
+				for i = 1, #togabalatro.currentrecipetxt do
+					info_queue[#info_queue + 1] = {key = togabalatro.currentrecipetxt[i], set = 'Other'}
+				end
+			end
+		end
 		return { key = cando and self.key..'_ready' or G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and self.key.."_novalidrecipe" or self.key, vars = { txt, card.ability.extra.usecost } }
 	end,
 	can_use = function(self, card, area, copier)
@@ -162,25 +213,6 @@ SMODS.Consumable{
 	eternal_compat = false
 }
 
--- Set up a global pool of 'minerals'.
-togabalatro.validminerals = {'m_gold', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium'}
-
--- Init when necessary...
-togabalatro.mineralpool = {}
-
--- ...using this. May be crude, but works.
-togabalatro.initmineralpool = function()
-	togabalatro.mineralpool = {}
-	for k, v in pairs(togabalatro.validminerals) do
-		if G.P_CENTERS[v] then
-			local iweight = tonumber(G.P_CENTERS[v].weight) or 5
-			local itable = { key = v, weight = iweight >= 1 and iweight or 1 }
-			if togabalatro.config.DoMoreLogging then sendDebugMessage(itable.key.." "..itable.weight, "TOGAPack") end
-			table.insert(togabalatro.mineralpool, itable)
-		end
-	end
-end
-
 -- Find the metal pages... wait what?
 SMODS.Consumable {
 	key = 'miningprospect',
@@ -188,19 +220,24 @@ SMODS.Consumable {
 	atlas = "TOGAConsumables",
 	pos = {x = 4, y = 0},
 	cost = 5,
-	config = { extra = { odds = 8 } },
+	config = { extra = { odds = 3 } },
 	loc_vars = function(self, info_queue, card)
-		return {vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds }}
+		local minpool = togabalatro.oredict.minerals
+		if minpool and #minpool > 0 and love.keyboard.isDown("lshift") then
+			for k, v in pairs(minpool) do
+				info_queue[#info_queue + 1] = G.P_CENTERS[v]
+			end
+		end
+		return {key = love.keyboard.isDown("lshift") and self.key.."_showminerals" or self.key, vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds }}
 	end,
 	can_use = function(self, card, area, copier)
 		return G.playing_cards and #G.playing_cards > 1
 	end,
 	use = function(self, card, area, copier)
-		togabalatro.initmineralpool() -- recalc the pool.
 		for i, v in ipairs(G.playing_cards) do
 			if SMODS.has_enhancement(v, 'm_stone') then
 				if pseudorandom("toga_minediamonds") < G.GAME.probabilities.normal/card.ability.extra.odds then
-					local enhancement = SMODS.poll_enhancement({ guaranteed = true, options = togabalatro.validminerals, type_key = 'modmineral' })
+					local enhancement = SMODS.poll_enhancement({ guaranteed = true, options = togabalatro.oredict.minerals, type_key = 'modmineral' })
 					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
 						card:juice_up()
 						v:set_ability(G.P_CENTERS[enhancement])
@@ -271,6 +308,7 @@ SMODS.Consumable{
 	end,
 	use = function(self, card)
 		card.ability.extra.activated = true
+		toga_spbdeckwreck(card)
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
@@ -278,7 +316,8 @@ SMODS.Consumable{
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds or card.ability.extra.activated then
+		if card.ability.extra.activated then return end
+		if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds then
 			toga_spbdeckwreck(card, true)
 		else
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_safe_ex'), sound = togabalatro.config.SFXWhenRemoving and 'toga_thundershield'})
