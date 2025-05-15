@@ -1693,12 +1693,12 @@ local function toga_rosencheck(card)
 	card.ability.extra.heldmoney = math.max(card.ability.extra.heldmoney, 10)
 	card.ability.extra.heldxchip = math.max(card.ability.extra.heldxchip, 1.75)
 	card.ability.extra.heldxmult = math.max(card.ability.extra.heldxmult, 2)
-	card.ability.extra.heldechip = math.max(card.ability.extra.heldxchip, 1.3)
-	card.ability.extra.heldeechip = math.max(card.ability.extra.heldxchip, 1.1)
-	card.ability.extra.heldeeechip = math.max(card.ability.extra.heldxchip, 1.05)
-	card.ability.extra.heldemult = math.max(card.ability.extra.heldxchip, 1.2)
-	card.ability.extra.heldeemult = math.max(card.ability.extra.heldxchip, 1.08)
-	card.ability.extra.heldeeemult = math.max(card.ability.extra.heldxchip, 1.04)
+	card.ability.extra.heldechip = math.max(card.ability.extra.heldechip, 1.3)
+	card.ability.extra.heldeechip = math.max(card.ability.extra.heldeechip, 1.1)
+	card.ability.extra.heldeeechip = math.max(card.ability.extra.heldeeechip, 1.05)
+	card.ability.extra.heldemult = math.max(card.ability.extra.heldemult, 1.2)
+	card.ability.extra.heldeemult = math.max(card.ability.extra.heldeemult, 1.08)
+	card.ability.extra.heldeeemult = math.max(card.ability.extra.heldeeemult, 1.04)
 end
 
 -- The plumtastic man himself. Joke Joker.
