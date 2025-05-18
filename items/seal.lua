@@ -33,7 +33,6 @@ SMODS.Seal{
 								return true
 							end
 						}))
-					return true
 					end
 				end
 			}

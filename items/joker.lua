@@ -1497,31 +1497,39 @@ SMODS.Joker{
 		end
 		
 		if context.cardarea == G.jokers and context.before then
+			local australia = 0
 			for k, v in ipairs(context.scoring_hand) do
-				v.jarated = true
-				v:set_edition()
-				v:set_seal()
-				v:set_ability(G.P_CENTERS.c_base, nil, true)
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						v:juice_up()
-						v.jarated = nil
-						return true
-					end
-				}))
+				if v.config.center ~= G.P_CENTERS.c_base or v.seal or v.edition then
+					australia = australia + 1
+					v.jarated = true
+					v:set_edition()
+					v:set_seal()
+					v:set_ability(G.P_CENTERS.c_base, nil, true)
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							v:juice_up()
+							v.jarated = nil
+							return true
+						end
+					}))
+				end
 			end
-			return {
-				message = localize('toga_jarated'),
-				colour = G.C.RED,
-				card = card
-			}
+			if australia > 0 then
+				return {
+					message = localize('toga_jarated'),
+					colour = G.C.RED,
+					card = card
+				}
+			end
 		end
 		
 		if context.starting_shop then
-			if card.ability.extra.used then card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_jaraterestocked')}) end
+			if card.ability.extra.used then
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_jaraterestocked')})
+				local eval = function() return not (G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.jarated) end
+				juice_card_until(card, eval, true)
+			end
 			card.ability.extra.used = false
-			local eval = function() return not (G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.jarated) end
-			juice_card_until(card, eval, true)
 		end
 	end
 }

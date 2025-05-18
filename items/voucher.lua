@@ -72,7 +72,6 @@ SMODS.Voucher{
 	end,
 	requires = {'v_toga_hardwarewizard'},
 	redeem = function(self, card)
-		local card = card and card.ability and card or self and self.ability and self
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
 		for k, v in pairs(G.GAME.probabilities) do
 			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
@@ -92,7 +91,6 @@ SMODS.Voucher{
 		return {vars = {math.max(1, math.floor(card.ability.extra.moreselect))}}
 	end,
 	redeem = function(self, card)
-		local card = card and card.ability and card or self and self.ability and self
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))..".", "TOGAPack") end
 		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))
 	end,

@@ -19,6 +19,7 @@ togabalatro.oredict.glass = {'m_glass'}
 togabalatro.oredict.lucky = {'m_lucky'}
 
 -- Populate modded stuff...
+togabalatro.oredict.notification = {'m_toga_notification'}
 togabalatro.oredict.copper = {'m_toga_copper'}
 togabalatro.oredict.tin = {'m_toga_tin'}
 togabalatro.oredict.iron = {'m_toga_iron'}
