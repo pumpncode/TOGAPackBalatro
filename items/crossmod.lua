@@ -19,8 +19,10 @@ end
 if next(SMODS.find_mod('RevosVault')) then
 	sendInfoMessage("Adding Diamond cards of Revo's Vault to mineral pool...", "TOGAPack")
 	togabalatro.add_to_oredict('m_crv_diamondcard', 'minerals', true)
-	sendInfoMessage("Adding Quartz cards of Revo's Vault to mineral pool...", "TOGAPack")
-	togabalatro.add_to_oredict('m_crv_quartz', 'minerals', true)
+	if next(SMODS.find_mod('reverse_tarot')) then
+		sendInfoMessage("Adding Quartz cards of Revo's Vault to mineral pool...", "TOGAPack")
+		togabalatro.add_to_oredict('m_crv_quartz', 'minerals', true)
+	end
 end
 if next(SMODS.find_mod('Bunco')) then
 	sendInfoMessage("Adding Copper cards of Bunco to mineral pool...", "TOGAPack")
