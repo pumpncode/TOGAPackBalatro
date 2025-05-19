@@ -19,6 +19,7 @@ togabalatro.oredict.glass = {'m_glass'}
 togabalatro.oredict.lucky = {'m_lucky'}
 
 -- Populate modded stuff...
+togabalatro.oredict.notification = {'m_toga_notification'}
 togabalatro.oredict.copper = {'m_toga_copper'}
 togabalatro.oredict.tin = {'m_toga_tin'}
 togabalatro.oredict.iron = {'m_toga_iron'}
@@ -210,7 +211,8 @@ SMODS.Consumable{
     end,
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
-	eternal_compat = false
+	eternal_compat = false,
+	can_stack = false
 }
 
 -- Find the metal pages... wait what?
@@ -255,7 +257,8 @@ SMODS.Consumable {
     end,
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
-	eternal_compat = false
+	eternal_compat = false,
+	can_stack = false
 }
 
 -- SPB function.
@@ -324,7 +327,8 @@ SMODS.Consumable{
 		end
 	end,
 	perishable_compat = false,
-	eternal_compat = false
+	eternal_compat = false,
+	can_stack = false
 }
 
 SMODS.Consumable {

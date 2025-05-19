@@ -490,6 +490,51 @@ return {
 					"gives {X:mult,C:white}X#1#{} Mult",
 				}
 			},
+			j_toga_penwheel = {
+				name = 'Pen Wheel',
+				text = {
+					"Each {C:colourcard}Colour{} card held",
+					"gives {C:money}$#1#{} at end of round",
+				}
+			},
+			j_toga_displayproperties = {
+				name = 'Display Properties',
+				text = {
+					"At end of round, {C:attention}round increase{} of",
+					"held {C:colourcard}Colour{} cards is triggered again",
+				}
+			},
+			j_toga_colourfulprinter = {
+				name = 'Colourful Printer',
+				text = {
+					"When {C:attention}Blind{} is selected,",
+					"print a {C:colourcard}Colour{} card",
+				}
+			},
+			j_toga_internetspades = {
+				name = 'Internet Spades',
+				text = {
+					"If {C:attention}played hand{} contains",
+					"only {C:spades}Spades{}, each held",
+					"{C:attention}Consumeable{} gives {X:chips,C:white}X#1#{} Chips",
+					"per {C:attention}Ahead Joker{} held."
+				}
+			},
+			j_toga_spiceoflife = {
+				name = 'Spice of Life',
+				text = {
+					"For every {C:attention}unique{} {C:bakery}Bakery{} good",
+					"held, retrigger each one {C:attention}once{}."
+				}
+			},
+			j_toga_spiceoflife_rtrg = {
+				name = 'Spice of Life',
+				text = {
+					"For every {C:attention}unique{} {C:bakery}Bakery{} good",
+					"held, retrigger each one {C:attention}once{}.",
+					"{C:inactive}(Retriggers: {C:attention}#1#{C:inactive})"
+				}
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {
@@ -632,7 +677,7 @@ return {
 				}
 			},
 			c_toga_filesource = {
-				name = "Source",
+				name = "File Source",
 				text = {
 					"Enhances up to #1# selected cards",
 					"to {C:attention}Notification{} cards",
@@ -996,6 +1041,48 @@ return {
 					"{C:inactive,s:0.75}Spin speed is tied to money held.{}"
                 },
             },
+		},
+		Colour = {
+			c_toga_classic = {
+				name = "Classic",
+				text = {
+					"Create a {C:attention,t:tag_toga_togajokerziparchive}Joker.ZIP Tag{}",
+					"for every {C:attention}#4#{} rounds",
+					"this has been held",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+				},
+			},
+			c_toga_professional = {
+				name = "Professional",
+				text = {
+					"Create a {C:attention,t:tag_toga_togarararchive}RAR Tag{}",
+					"for every {C:attention}#4#{} rounds",
+					"this has been held",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+				},
+			},
+			c_toga_luna = {
+				name = "Luna",
+				text = {
+					"Create a {C:attention,t:tag_toga_togacardcabarchive}Solitaire Tag{}",
+					"for every {C:attention}#4#{} rounds",
+					"this has been held",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+				},
+			},
+			c_toga_aero = {
+				name = "Aero",
+				text = {
+					"Create a {C:attention,t:tag_toga_togaxcopydnaarchive}XCOPY Tag{}",
+					"for every {C:attention}#4#{} rounds",
+					"this has been held",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+				},
+			},
 		}
 	},
 	misc = {
@@ -1029,6 +1116,7 @@ return {
 			toga_spbavoidsuccess = "Safe!",
 			toga_bonusapply = "Bonus!",
 			toga_anviltrigger = "Hit it!",
+			toga_colourful = "Colourful!",
 			toga_floppypartner = "Floppy!",
 			toga_suspartner = "amogus.",
 			--

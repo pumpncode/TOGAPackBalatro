@@ -85,6 +85,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "thespbroll",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.c_toga_selfpropelledbomb
+	end,
 	atlas = "TOGATags",
 	pos = { x = 2, y = 0 },
 	config = { type = "immediate" },
