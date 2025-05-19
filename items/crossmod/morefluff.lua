@@ -11,6 +11,15 @@ togabalatro.mf_art_credit = function(name)
 	return "{s:0.8,C:inactive}Art by: "..name
 end
 
+togabalatro.mf_colours_held = function()
+	if G.consumeables and G.consumeables.cards then
+		for i = 1, #G.consumeables.cards do
+			if G.consumeables.cards[i].config.center.set == 'Colour' then return true end
+		end
+	end
+	return false
+end
+
 local atlastype = ".png"
 if mf_config["Programmer Art"] then atlastype = "progart.png" end
 

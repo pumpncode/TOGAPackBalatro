@@ -3,7 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = 1
 
-# Is this my only patch now? Yes, yes it is.
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -18,7 +17,7 @@ target = '=[SMODS MoreFluff "MoreFluff.lua"]'
 pattern = "G.do_colour_end_of_round_stuff = false"
 position = "before"
 payload = '''
-if next(SMODS.find_card('j_toga_displayproperties')) then
+if next(SMODS.find_card('j_toga_displayproperties')) and togabalatro.mf_colours_held() then
 	for i = 1, #SMODS.find_card('j_toga_displayproperties') do
 		card_eval_status_text(SMODS.find_card('j_toga_displayproperties')[i], 'extra', nil, nil, nil, {message = localize('toga_colourful'), sound = togabalatro.config.SFXWhenTriggered and 'toga_winxpinfobar'})
 		colour_end_of_round_effects()
