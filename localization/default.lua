@@ -1050,7 +1050,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
 				},
 			},
 			c_toga_professional = {
@@ -1060,7 +1060,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
 				},
 			},
 			c_toga_luna = {
@@ -1070,7 +1070,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
 				},
 			},
 			c_toga_aero = {
@@ -1080,7 +1080,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
 				},
 			},
 		}
