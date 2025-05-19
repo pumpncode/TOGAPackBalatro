@@ -211,7 +211,8 @@ SMODS.Consumable{
     end,
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
-	eternal_compat = false
+	eternal_compat = false,
+	can_stack = false
 }
 
 -- Find the metal pages... wait what?
@@ -256,7 +257,8 @@ SMODS.Consumable {
     end,
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
-	eternal_compat = false
+	eternal_compat = false,
+	can_stack = false
 }
 
 -- SPB function.
@@ -325,7 +327,8 @@ SMODS.Consumable{
 		end
 	end,
 	perishable_compat = false,
-	eternal_compat = false
+	eternal_compat = false,
+	can_stack = false
 }
 
 SMODS.Consumable {
