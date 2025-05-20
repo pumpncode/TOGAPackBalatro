@@ -60,7 +60,7 @@ Partner_API.Partner{
 	calculate = function(self, card, context)
 		if context.partner_end_of_round and pseudorandom("whenthemoneyissus") < G.GAME.probabilities.normal/card.ability.extra.odds then
 			local money = math.floor(math.abs(to_number(G.GAME.dollars)*card.ability.extra.mm))
-			money = money > 10 or 10
+			money = math.max(money, 10)
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_suspartner'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_bass"})
 			ease_dollars(money)
 		end
