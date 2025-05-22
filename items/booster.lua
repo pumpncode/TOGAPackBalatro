@@ -11,7 +11,7 @@ SMODS.Booster{
 	key = "togazipboosterpack",
 	atlas = 'TOGABoosterPack',
 	pos = {x = 0, y = 0},
-	weight = 0.7,
+	weight = 1,
 	cost = 10,
 	group_key = 'togazipboosterpack',
 	config = {extra = 3, choose = 1, name = "ZIP Package"},
@@ -25,6 +25,7 @@ SMODS.Booster{
 	create_card = function(self, card)
 		return create_card('TOGAJKR', G.pack_cards, nil, nil, nil, nil, nil, 'toga')
 	end,
+	kind = 'TOGABoostPack'
 }
 
 SMODS.Booster{
@@ -32,7 +33,7 @@ SMODS.Booster{
 	key = "togaziparchivepack",
 	atlas = 'TOGABoosterPack',
 	pos = {x = 1, y = 0},
-	weight = 0.6,
+	weight = 0.7,
 	cost = 20,
 	group_key = 'togaziparchivepack',
 	config = {extra = 10, choose = 2, name = "Joker.ZIP"},
@@ -46,6 +47,7 @@ SMODS.Booster{
 	create_card = function(self, card)
 		return create_card("Joker", G.pack_cards, nil, nil, true, true, nil, 'toga')
 	end,
+	kind = 'TOGABoostPack'
 }
 
 SMODS.Booster{
@@ -53,7 +55,7 @@ SMODS.Booster{
 	key = "togararpack",
 	atlas = 'TOGABoosterPack',
 	pos = {x = 2, y = 0},
-	weight = 0.6,
+	weight = 0.7,
 	cost = 15,
 	group_key = 'togararpack',
 	config = {extra = 10, choose = 2, name = "CONSUMAB.RAR"},
@@ -68,6 +70,7 @@ SMODS.Booster{
 	create_card = function(self, card)
 		return create_card("Consumeables", G.pack_cards, nil, nil, true, true, togabalatro.getrandcons('rar'), 'toga')
 	end,
+	kind = 'TOGABoostPack'
 }
 
 SMODS.Booster{
@@ -75,7 +78,7 @@ SMODS.Booster{
 	key = "togacardcabpack",
 	atlas = 'TOGABoosterPack',
 	pos = {x = 3, y = 0},
-	weight = 0.35,
+	weight = 0.6,
 	cost = 12,
 	group_key = 'togacardcabpack',
 	config = {extra = 8, choose = 3, name = "PLAYCARD.CAB"},
@@ -91,6 +94,7 @@ SMODS.Booster{
 		local _seal = SMODS.poll_seal({mod = 10})
 		return {set = (pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", edition = _edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "playcardcab"}
 	end,
+	kind = 'TOGABoostPack'
 }
 
 SMODS.Booster{
@@ -112,4 +116,5 @@ SMODS.Booster{
 	create_card = function(self, card)
 		return copy_card(pseudorandom_element(G.deck.cards, pseudoseed('xcopy')), nil, nil, G.playing_card)
 	end,
+	kind = 'TOGABoostPack'
 }
