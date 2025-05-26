@@ -3,7 +3,8 @@ sendInfoMessage("Loading Enhancements...", "TOGAPack")
 SMODS.Enhancement{
 	key = 'notification',
 	atlas = "TOGAEnhancements",
-	pos = { x = 0, y = 0 }
+	pos = { x = 0, y = 0 },
+	weight = 3
 }
 
 SMODS.Enhancement{
@@ -95,4 +96,11 @@ SMODS.Enhancement{
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_chips } }
 	end,
+}
+
+SMODS.Enhancement{
+	key = 'sms',
+	atlas = "TOGAEnhancements",
+	pos = { x = 9, y = 0 },
+	weight = 2
 }

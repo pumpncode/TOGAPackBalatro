@@ -13,6 +13,14 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
+target = "functions/state_events.lua"
+pattern = "check_for_unlock({type = 'run_card_replays'})"
+position = "before"
+payload = "if togabalatro then togabalatro.playextracards() end"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = '=[SMODS MoreFluff "MoreFluff.lua"]'
 pattern = "G.do_colour_end_of_round_stuff = false"
 position = "before"

@@ -95,6 +95,19 @@ return {
 					"{s:0.8}(Appears if The Dial-Up is cleared){}"
 				}
 			},
+			bl_toga_joystick = {
+				name = "The Joystick",
+				text = {
+					"First hand drawn is",
+					"automatically played"
+				}
+			},
+			bl_toga_xpboss = {
+				name = "The Experience",
+				text = {
+					"The Experience",
+				}
+			},
 		},
 		Joker = {
 			j_toga_y2kbug = {
@@ -535,6 +548,126 @@ return {
 					"{C:inactive}(Retriggers: {C:attention}#1#{C:inactive})"
 				}
 			},
+			j_toga_skype = {
+				name = 'Skype',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult per {C:attention}each mod{} among",
+					"held {C:attention}Jokers{} and {C:attention}Consumeables{}.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}, #3# mod.){}",
+					"{C:inactive,s:0.7}RIP Skype (2003 - 2025){}"
+				}
+			},
+			j_toga_skype_moremod = {
+				name = 'Skype',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult per {C:attention}each mod{} among",
+					"held {C:attention}Jokers{} and {C:attention}Consumeables{}.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}, #3# mods.){}",
+					"{C:inactive,s:0.7}RIP Skype (2003 - 2025){}"
+				}
+			},
+			j_toga_msn = {
+				name = 'MSN',
+				text = {
+					"This Joker gives",
+					"{C:attention}stacking{} {X:mult,C:white}X#1#{} Mult",
+					"per {C:attention}unique{} enhancement",
+					"in the {C:attention}full{} deck.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_albanianvirus = {
+				name = 'Albanian Virus',
+				text = {
+					"{s:0.9}Hi, I am an Albanian virus but because of poor technology in",
+					"{s:0.9}my country unfortunately I am not able to harm your run.",
+					"{s:0.9}Please be so kind to destroy one of your important",
+					"{s:0.9}cards yourself and then forward me to other users. Many thanks",
+					"{s:0.9}for your cooperation! Best regards,Albanian virus"
+				}
+			},
+			j_toga_mac_os_9 = {
+				name = 'Mac OS 9',
+				text = {
+					"Held in hand {C:clubs}Clubs{}",
+					"give {X:mult,C:white}X#1#{} Mult"
+				}
+			},
+			j_toga_mac_os_x = {
+				name = 'Mac OS X',
+				text = {
+					"Held in hand {C:attention}10s{}",
+					"give {X:chips,C:white}X#1#{} Chips"
+				}
+			},
+			j_toga_linux_ubuntu = {
+				name = 'Ubuntu',
+				text = {
+					"{C:attention}Jokers{} and {C:attention}Consumeables{} give {C:attention}#1#%{}",
+					"of their {C:money}sell value{} as {X:mult,C:white}XMult{} if",
+					"they can be sold for {C:money}$#2#{} or more."
+				}
+			},
+			j_toga_linux_debian = {
+				name= 'Debian',
+                text= {
+                    "Halves all {C:attention}listed",
+                    "{C:green,E:1,s:1.1}probabilities",
+                    "{C:inactive}(ex: {C:green}1 in 3{C:inactive} -> {C:green}0.5 in 3{C:inactive})",
+                },
+			},
+			j_toga_linux_slackware = {
+				name = 'Slackware Linux',
+				text = {
+					"If more than 2 suits are {C:attention}played{},",
+					"scoring cards give {X:mult,C:white}X#1#{} Mult per",
+					"{C:attention}additional{} suit in played hand.",
+					"{C:inactive,s:0.8}(Ignores Wild Card, Hearty Spades, etc.){}"
+				}
+			},
+			j_toga_linux_slackware_cardsel = {
+				name = 'Slackware Linux',
+				text = {
+					"If more than 2 suits are {C:attention}played{},",
+					"scoring cards give {X:mult,C:white}X#1#{} Mult per",
+					"{C:attention}additional{} suit in played hand.",
+					"{C:inactive,s:0.9}(Current card selection gives {}{X:mult,C:white,s:0.9}X#2#{}{C:inactive,s:0.9}){}",
+					"{C:inactive,s:0.8}(Ignores Wild Card, Hearty Spades, etc.){}"
+				}
+			},
+			j_toga_linux_redhat = {
+				name = 'Red Hat Linux',
+				text = {
+					"For every {C:attention}poker hand{} in",
+					"played hand, gain {X:mult,C:white}X#1#{} Mult.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+					"{C:inactive,s:0.8}(High Card excluded.){}"
+				}
+			},
+			j_toga_linux_redhat_cardsel = {
+				name = 'Red Hat Linux',
+				text = {
+					"For every {C:attention}poker hand{} in",
+					"played hand, gain {X:mult,C:white}X#1#{} Mult.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+					"{C:inactive,s:0.8}(Poker hands: #3#, High Card excluded.){}"
+				}
+			},
+			j_toga_horseconch = {
+				name = 'The Horse Conch',
+				text = {
+					"Held cards with {C:attention}Horse Seals{}",
+					"give {X:mult,C:white}X#1#{} Mult and {C:money}$#2#{}",
+				}
+			},
+			j_toga_gatosorrindo = {
+				name = 'Gato Sorrindo',
+				text = {
+					"Each held {C:attention}Cat Joker{}",
+					"gives {X:chips,C:white}X#1#{} Chips",
+					"{C:inactive,s:0.75}(Excluding self and copies of self.){}"
+				}
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {
@@ -543,6 +676,14 @@ return {
 					"{s:0.9}Wherever applicable,",
 					"{C:attention,s:0.9}always{s:0.9} gets drawn",
 					"{s:0.9}to hand.{}",
+				},
+			},
+			m_toga_sms = {
+				name = "SMS",
+				text = {
+					"{s:0.9}Deprioritized when {C:attention,s:0.9}drawing{s:0.9} cards.",
+					"{s:0.9}If in {C:attention,s:0.9}deck{s:0.9} and playing a hand,",
+					"{s:0.9}this card is {C:attention,s:0.9}forced{s:0.9} into play.",
 				},
 			},
 			m_toga_coalcoke = {
@@ -657,6 +798,18 @@ return {
 					"convert into a {C:attention}Mineral{} card instead.",
 				}
 			},
+			c_toga_bombshee = {
+				name = "Bomb?",
+				text = {
+					"Get him off?"
+				}
+			},
+			c_toga_bombshee_n = {
+				name = "Bomb?",
+				text = {
+					"Hi."
+				}
+			},
 		},
 		Spectral = {
 			c_toga_selfpropelledbomb = {
@@ -679,8 +832,15 @@ return {
 			c_toga_filesource = {
 				name = "File Source",
 				text = {
-					"Enhances up to #1# selected cards",
+					"Enhances #1# selected cards",
 					"to {C:attention}Notification{} cards",
+				}
+			},
+			c_toga_mobilephone = {
+				name = "Phone",
+				text = {
+					"Enhances #1# selected cards",
+					"to {C:attention}SMS{} cards",
 				}
 			},
 		},
@@ -779,7 +939,7 @@ return {
 				text = {
 					"Multiplies all {C:attention}listed{} {E:1,C:green}probabilities{}",
 					"for the rest of the run by {X:attention,C:white}X#1#{}",
-					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}2 in 3{}{C:inactive}){}"
+					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}#2# in 3{}{C:inactive}){}"
 				},
 			},
 			v_toga_hardwarewizardxp = {
@@ -787,7 +947,7 @@ return {
 				text = {
 					"Multiplies all {C:attention}listed{} {E:1,C:green}probabilities{}",
 					"for the rest of the run by {X:attention,C:white}X#1#{}",
-					"{C:inactive}(ex: {}{C:green}2 in 3{}{C:inactive} -> {}{C:green}4 in 3{}{C:inactive}){}"
+					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}#2# in 3{}{C:inactive}){}"
 				},
 			},
 			v_toga_diskdefrag = {
@@ -873,6 +1033,17 @@ return {
 				text = {
 					"Creates a {C:dark_edition}Negative{}",
 					"{C:attention,T:j_egg}Egg{} when scored",
+				},
+			},
+			toga_albavirusinfo = {
+				name = "Heads up!",
+				text = {
+					"Selling or destroying this card",
+					"without selling or destroying",
+					"a different one will actually",
+					"lose the run. If this tooltip",
+					"does not appear, it is",
+					"safe to remove."
 				},
 			},
 			p_toga_togazipboosterpack = {

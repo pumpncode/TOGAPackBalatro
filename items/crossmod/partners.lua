@@ -6,7 +6,7 @@ Partner_API.Partner{
 	discovered = true,
 	pos = {x = 0, y = 0},
 	atlas = "TOGAPartners",
-	config = {extra = {percent = 0.025}},
+	config = {extra = {basepercent = 0.05, extrapercent = 0.025}},
 	loc_vars = function(self, info_queue, card)
 		local winos = 0
 		if G.jokers and #G.jokers.cards > 0 then
@@ -14,7 +14,7 @@ Partner_API.Partner{
 				if togabalatro.iswindows(G.jokers.cards[i]) then winos = winos + 1 end
 			end
 		end
-		return { key = winos >= 1 and self.key.."_buff" or self.key, vars = {(100*card.ability.extra.percent)+(100*card.ability.extra.percent*winos), 100*card.ability.extra.percent, 100*card.ability.extra.percent*winos} }
+		return { key = winos >= 1 and self.key.."_buff" or self.key, vars = {(100*card.ability.extra.basepercent)+(100*card.ability.extra.extrapercent*winos), 100*card.ability.extra.basepercent, 100*card.ability.extra.extrapercent*winos} }
 	end,
 	calculate = function(self, card, context)
 		if context.partner_setting_blind and not context.retrigger_joker then
@@ -25,7 +25,7 @@ Partner_API.Partner{
 				end
 			end
 			G.E_MANAGER:add_event(Event({func = function()
-				G.GAME.blind.chips = math.floor(G.GAME.blind.chips*(1-(card.ability.extra.percent+card.ability.extra.percent*winos)))
+				G.GAME.blind.chips = math.floor(G.GAME.blind.chips*(1-(card.ability.extra.basepercent+card.ability.extra.extrapercent*winos)))
 				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 				G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)

@@ -30,8 +30,9 @@ SMODS.Joker{
 								xchip_message = card.ability.extra.xchip > 1 and {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.xchip } }, colour = G.C.CHIPS, sound = "xchips"} or nil,
 								card = aheads[i]
 							}
-							if Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
-								for i = 1, context.other_consumeable.ability.qty do
+							local stacked, stackamount = togabalatro.stackingcompat(context)
+							if stacked and stackamount then
+								for i = 1, stackamount do
 									SMODS.calculate_individual_effect(effects, context.other_consumeable, 'xchips', effects.x_chips, false)
 								end
 							else SMODS.calculate_individual_effect(effects, context.other_consumeable, 'xchips', effects.x_chips, false) end

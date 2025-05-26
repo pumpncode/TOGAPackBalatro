@@ -392,3 +392,37 @@ SMODS.Consumable {
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
 	end,
 }
+
+SMODS.Consumable {
+	key = 'mobilephone',
+	set = 'Spectral',
+	atlas = "TOGAConsumables",
+	pos = {x = 5, y = 0},
+	cost = 5,
+	config = { extra = { cards = 2 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_toga_sms
+		return { vars = { card.ability.extra.cards } }
+	end,
+	can_use = function(self, card)
+		if G and G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.cards then 
+			return true
+		end
+		return false
+	end,
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+		return true end }))
+		delay(0.2)
+		for i, v in pairs(G.hand.highlighted) do
+			local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() v:flip();play_sound('card1', percent, 1);v:juice_up(0.3, 0.3);return true end }))
+			G.E_MANAGER:add_event(Event({trigger = 'after',func = function() v:set_ability(G.P_CENTERS["m_toga_sms"]);return true end }))
+			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() v:flip();play_sound('tarot2', percent, 0.6);v:juice_up(0.3, 0.3);return true end }))
+		end
+		delay(0.2)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+	end,
+}
