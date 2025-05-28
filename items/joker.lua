@@ -994,7 +994,7 @@ SMODS.Joker{
 -- Get repeats, up to 65536. Will use Talisman functions if present.
 local function toga_cashpointmulitple(cashpoint)
 	local getmultiples = to_big(G.GAME.dollars)/to_big(cashpoint)
-	if Talisman then getmultiples = getmultiples:to_number() end
+	if Talisman and type(getmultiples) == 'table' then getmultiples = getmultiples:to_number() end
 	return math.min(math.floor(getmultiples), 65535) + 1
 end
 
