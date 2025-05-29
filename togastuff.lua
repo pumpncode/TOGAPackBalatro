@@ -1,14 +1,13 @@
--- Header be gone! Moved to togapack.json.
--- This version is for BetterCalc!
-
 -- We are loading...
 sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
 
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokersOtherDiffSize", path = "togajokersothersize.png", px = 71, py = 95, disable_mipmap = true}
+SMODS.Atlas{key = "TOGAJokersOtherDiffSize", path = "togajokersothersize.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGAJokersMac", path = "togamacos.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGAJokersLinux", path = "togalinuxos.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokerRover", path = "togarover.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 71, py = 95}
@@ -19,6 +18,7 @@ SMODS.Atlas{key = "TOGASeals", path = "togaseal.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAEnhancements", path = "togaenh.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGADialUpBlind", path = "togadialupblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 24}
 SMODS.Atlas{key = "TOGAWWWBlind", path = "togawwwblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 32}
+SMODS.Atlas{key = "TOGAJoyStickBlind", path = "togajoystickblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 1}
 SMODS.Atlas{key = "TOGAMoreIcons", path = "togamoricons.png", px = 36, py = 36, disable_mipmap = true}
 SMODS.Atlas{key = "TOGAFunny", path = "togazefunny.png", px = 64, py = 64, atlas_table = 'ANIMATION_ATLAS', frames = 9}
 SMODS.Atlas{key = "TOGAFunnyStatic", path = "togazefunny.png", px = 64, py = 64}
@@ -99,7 +99,7 @@ SMODS.Sound({
 		return togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
 		and (SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togazipboosterpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaziparchivepack'
 		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togararpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togacardcabpack'
-		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaxcopydnapack')
+		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaxcopydnapack') and 2
 	end,
 })
 
@@ -118,7 +118,9 @@ SMODS.ObjectType{
 		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
 		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true, ["j_toga_mcanvil"] = true, 
 		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
-		["j_toga_megasxlr"] = true
+		["j_toga_megasxlr"] = true, ["j_toga_mac_os_9"] = true, ["j_toga_mac_os_x"] = true,
+		["j_toga_linux_ubuntu"] = true, ["j_toga_linux_debian"] = true, ["j_toga_linux_slackware"] = true,
+		["j_toga_linux_redhat"] = true
 	}
 }
 
@@ -317,6 +319,7 @@ function play_sound(sound_code, per, vol)
 	-- ...only if config is set to allow it.
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("play_sound hook.", "TOGAPack") end
 	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and togabalatro.rosensfx[sound_code] then sound_code = 'toga_rosenclick' end
+	if G and G.GAME and G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == 'bl_toga_xpboss' then sound_code = 'toga_winxpcritstop' end
 	
 	playsoundref(sound_code, per, vol)
 end
@@ -381,6 +384,29 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 	end
 end
 
+-- This really shuffled my brain...
+sendInfoMessage("Hooking CardArea:shuffle...", "TOGAPack")
+local sonicshuffle = CardArea.shuffle
+function CardArea:shuffle(_seed)
+	local r = sonicshuffle(self, _seed)
+	if self == G.deck then
+		local otherc, smsc = {}, {}
+		for i, k in ipairs(self.cards) do
+			if k.config.center_key == 'm_toga_sms' then
+				smsc[#smsc+1] = k
+			else
+				otherc[#otherc+1] = k
+			end
+		end
+		for _, card in ipairs(otherc) do
+			table.insert(smsc, card)
+		end
+		self.cards = smsc
+		self:set_ranks()
+	end
+	return r
+end
+
 -- hooking draw_from_deck_to_hand to remove the 'calculate' from Notification enhancement, replicating it in this hook.
 sendInfoMessage("Hooking G.FUNCS.draw_from_deck_to_hand...", "TOGAPack")
 local dfwdthref = G.FUNCS.draw_from_deck_to_hand
@@ -417,7 +443,7 @@ function G.FUNCS.draw_from_deck_to_hand(e)
 	}))
 end
 
--- for Jarate & a Boss & Showdown Blind...
+-- for Jarate & a Boss/Showdown Blind...
 sendInfoMessage("Hooking Blind:defeat...", "TOGAPack")
 local blindkillref = Blind.defeat
 function Blind:defeat(silent)
@@ -425,6 +451,57 @@ function Blind:defeat(silent)
 	blindkillref(self, silent)
 	G.GAME.blind.jarated = nil
 	if not G.GAME.dialupmodem and self.name == 'bl_toga_dialupmodem' then G.GAME.dialupmodem = true end
+end
+
+-- no disabley. :)
+sendInfoMessage("Hooking Blind:disable...", "TOGAPack")
+local bldisref = Blind.disable
+function Blind:disable()
+    if self.debuff.toga_no_disable then
+        play_sound('toga_winxpcritstop', 1, 0.5)
+        return
+    end
+    return bldisref(self)
+end
+
+-- Play more cards! For the SMS enhancement.
+togabalatro.playextracards = function()
+	local sms_deck = {}
+	if G.deck.cards and #G.deck.cards > 0 then
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i].config.center_key == 'm_toga_sms' then
+				sms_deck[#sms_deck+1] = G.deck.cards[i]
+			end
+		end
+	end
+	if #sms_deck > 0 then
+		for i = 1, #G.deck.cards do
+			for v = 1, #sms_deck do
+				if G.deck.cards[i].config.center_key == 'm_toga_sms' and sms_deck[v] == G.deck.cards[i] then
+					if G.deck.cards[i]:is_face() then inc_career_stat('c_face_cards_played', 1) end
+					G.deck.cards[i].base.times_played = G.deck.cards[i].base.times_played + 1
+					G.deck.cards[i].ability.played_this_ante = true
+					G.GAME.round_scores.cards_played.amt = G.GAME.round_scores.cards_played.amt + 1
+					draw_card(G.deck, G.play, i*100/#sms_deck, 'up', nil, G.deck.cards[i])
+				end
+			end
+		end
+	end
+end
+
+togabalatro.stackingcompat = function(context)
+	-- The new and shiny Overflow!
+	if Overflow and context.other_consumable and context.other_consumable.ability.immutable and context.other_consumable.ability.immutable.overflow_amount then
+		return true, context.other_consumable.ability.immutable.overflow_amount
+	-- ...though, backwards compatibility wouldn't hurt...
+	elseif Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
+		return true, context.other_consumeable.ability.qty
+	end
+end
+
+-- In case Incantation is used, check if it is the specific fork version so that the consumeables don't do unintended things...
+if SMODS.Mods['incantation'] and not SMODS.Mods['incantation'].togafork and not string.find(SMODS.Mods['incantation'].version, '-TOGA_fork') then
+	error("Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables added by "..togabalatro.name, 0)
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!

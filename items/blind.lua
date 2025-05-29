@@ -82,3 +82,22 @@ SMODS.Blind{
 		ease_dollars(50)
 	end
 }
+
+SMODS.Blind{
+	key = 'joystick',
+	atlas = 'TOGAJoyStickBlind',
+	boss_colour = HEX('76992b'),
+	pos = { x = 0, y = 0 },
+	dollars = 8,
+	mult = 2.5,
+	boss = { min = 3 },
+	calculate = function(self, card, context)
+		if context.first_hand_drawn and not G.GAME.blind.disabled then
+			for i = 1, #G.hand.cards do
+				G.hand.highlighted[#G.hand.highlighted+1] = G.hand.cards[i]
+				G.hand.cards[i]:highlight(true)
+			end
+			G.FUNCS.play_cards_from_highlighted()
+		end
+	end,
+}
