@@ -1,5 +1,28 @@
 -- We are loading...
+sendInfoMessage("░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▐▓█▀▀▀▀▀▀▀▀█▓▌░▄▄▄▄▄░░", "TOGAPack")
+sendInfoMessage("░█░░░█▀█░█▀█░█▀▄░█░█▄░█░█▀▀░░░░░░░░▐▓█░░░░░░░░█▓▌░█▄▄▄█░░", "TOGAPack")
+sendInfoMessage("░█░░░█░█░█▀█░█░█░█░█░▀█░█░█░░░░░░░░▐▓█░░░░░░░░█▓▌░█▄▄▄█░░", "TOGAPack")
+sendInfoMessage("░▀▀▀░▀▀▀░▀░▀░▀▀░░▀░▀░░▀░▀▀▀░░▀░▀░▀░▐▓█▄▄▄▄▄▄▄▄█▓▌░█████░░", "TOGAPack")
+sendInfoMessage("░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄▄██▄▄░░░░░█████░░", "TOGAPack")
 sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
+sendWarnMessage("             ░░░               ", "TOGAPack")
+sendWarnMessage("           ░░░░░░██            ", "TOGAPack")
+sendWarnMessage("          ░░░░░░░░██           ", "TOGAPack")
+sendWarnMessage("         ░░░░░░░░░░██          ", "TOGAPack")
+sendWarnMessage("         ░░░░▒▓▒░░░▒██         ", "TOGAPack")
+sendWarnMessage("        ░░░░█████░░░▒██        ", "TOGAPack")
+sendWarnMessage("       ░░░░░█████░░░░▓██       ", "TOGAPack")
+sendWarnMessage("      ░░░░░░░███▒░░░░░▓██      ", "TOGAPack")
+sendWarnMessage("     ░░░░░░░░███░░░░░░░██      ", "TOGAPack")
+sendWarnMessage("    ░░░░░░░░░▒█▓░░░░░░░░██     ", "TOGAPack")
+sendWarnMessage("   ░░░░░░░░░░░█▒░░░░░░░░░██    ", "TOGAPack")
+sendWarnMessage("  ░░░░░░░░░░░░░░░░░░░░░░░░██   ", "TOGAPack")
+sendWarnMessage("  ░░░░░░░░░░▒███▓░░░░░░░░░▒██  ", "TOGAPack")
+sendWarnMessage(" ░▒░░░░░░░░░█████░░░░░░░░░░▒██ ", "TOGAPack")
+sendWarnMessage("░▒▒▒░░░░░░░░░▓█▓░░░░░░░░░▒▒▒███", "TOGAPack")
+sendWarnMessage(" ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████", "TOGAPack")
+sendWarnMessage("   ███████████████████████████ ", "TOGAPack")
+sendWarnMessage("WARNING! This is not a stable release and may contain unfinished, broken or unused content!", "TOGAPack")
 
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
@@ -273,6 +296,7 @@ togabalatro.iswindows = function(card)
 	or card.config.center.key == 'j_toga_win8' then return true end
 end
 
+-- Still kept for colouring the button with higher allowed amount of cards to play, but also backwards compat.
 sendInfoMessage("Hooking G.FUNCS.can_play...", "TOGAPack")
 local canplayref = G.FUNCS.can_play
 function G.FUNCS.can_play(e)
@@ -281,13 +305,13 @@ function G.FUNCS.can_play(e)
 	if #G.hand.highlighted <= G.hand.config.highlighted_limit then
 		if #G.hand.highlighted >= 52 then -- Cryptid?
 			e.config.colour = G.C.EDITION
-			e.config.button = 'play_cards_from_highlighted'
+			if not togabalatro.handlimitapi() then e.config.button = 'play_cards_from_highlighted' end
 		elseif #G.hand.highlighted >= 10 and #G.hand.highlighted < 52 then -- 2x the base and more.
 			e.config.colour = G.C.DARK_EDITION
-			e.config.button = 'play_cards_from_highlighted'
+			if not togabalatro.handlimitapi() then e.config.button = 'play_cards_from_highlighted' end
 		elseif #G.hand.highlighted > 5 and #G.hand.highlighted < 10 then -- more than base.
 			e.config.colour = G.C.PURPLE
-			e.config.button = 'play_cards_from_highlighted'
+			if not togabalatro.handlimitapi() then e.config.button = 'play_cards_from_highlighted' end
 		end
 	end
 end
@@ -325,28 +349,40 @@ function play_sound(sound_code, per, vol)
 end
 
 -- Y2K Sticker yoink.
+local ischecking2s = false
 sendInfoMessage("Hooking Card:is_face...", "TOGAPack")
 local isfaceref = Card.is_face
 function Card:is_face(from_boss)
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:is_face hook.", "TOGAPack") end
-	if self.debuff and not from_boss then return end
-	local id = self:get_id()
-	if next(SMODS.find_card('j_toga_y2ksticker')) and id == 2 or next(find_joker("Pareidolia")) then
-		return true
+	if next(SMODS.find_card('j_toga_y2ksticker')) then
+		if not ischecking2s then
+			ischecking2s = true
+			if self:get_id() == 2 then ischecking2s = false; return true end
+		end
+		ischecking2s = false
 	end
+	ischecking2s = false
 	return isfaceref(self, from_boss)
 end
 
 -- Hexa & Binary Joker yoink.
+local getiduse = false
 sendInfoMessage("Hooking Card:get_id...", "TOGAPack")
 local getidref = Card.get_id
 function Card:get_id()
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:get_id hook.", "TOGAPack") end
-	local id = getidref(self) or 2
-	if next(SMODS.find_card('j_toga_megasxlr')) and id == 8 then id = 13 end
-	if next(SMODS.find_card('j_toga_hexadecimaljkr')) and id == 14 then id = 10 end
-	if next(SMODS.find_card('j_toga_binaryjkr')) and id == 10 then id = 2 end
-	return id
+	if not getiduse then
+		getiduse = true
+		local id = getidref(self) or self.base.id
+		if next(SMODS.find_card('j_toga_megasxlr')) and id == 8 then id = 13 end
+		if next(SMODS.find_card('j_toga_hexadecimaljkr')) and id == 14 then id = 10 end
+		if next(SMODS.find_card('j_toga_binaryjkr')) and id == 10 then id = 2 end
+		getiduse = false
+		return id
+	else
+		getiduse = false
+		return getidref(self)
+	end
 end
 
 -- This still feels hacky, tbh.
@@ -464,6 +500,123 @@ function Blind:disable()
     return bldisref(self)
 end
 
+-- https://gist.github.com/balaam/3122129
+function ReverseTable(t)
+    local reversedTable = {}
+    local itemCount = #t
+    for k, v in ipairs(t) do
+        reversedTable[itemCount + 1 - k] = v
+    end
+    return reversedTable
+end
+
+-- emem eht era uoy :VOP --
+togabalatro.forcereverse = false
+togabalatro.preprocess = function(cards)
+	local output = cards
+	
+	if G.GAME.modifiers.toga_reversedscore then output = ReverseTable(output) end
+	if G.GAME.modifiers.toga_reversedscore_sleeve then output = ReverseTable(output) end
+	
+	return togabalatro.forcereverse and ReverseTable(cards) or output
+end
+
+-- Hooking to do more funky scoring shenanigans.
+sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
+local calcmainscoreref = SMODS.calculate_main_scoring
+function SMODS.calculate_main_scoring(context, scoring_hand)
+	calcmainscoreref(context, scoring_hand)
+	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
+		togabalatro.forcereverse = true
+		calcmainscoreref(context, scoring_hand)
+		togabalatro.forcereverse = false
+	end
+	if context.cardarea == G.play then
+		local spacecadet, rover = SMODS.find_card('j_toga_spacecadetpinball'), SMODS.find_card('j_toga_rover')
+		if next(spacecadet) then
+			for i = 1, #spacecadet do
+				context.main_scoring = true
+				local domessage = false
+				local card = spacecadet[i]
+				card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint)
+				for r = 1, card.ability.extra.alltrig do
+					if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 and scoring_hand then
+						if not domessage then domessage = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pinballing')}) end
+						SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), context)
+					end
+				end
+				context.main_scoring = nil
+			end
+		end
+		if next(rover) then
+			for r = 1, #rover do
+				context.main_scoring = true
+				local domessage = false
+				local card = rover[r]
+				for i = 1, #G.deck.cards do
+					if pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds then
+						if not domessage then domessage = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof')}) end
+						SMODS.score_card(G.deck.cards[i], context)
+					end
+				end
+				context.main_scoring = nil
+			end
+		end
+	end
+end
+
+-- Hooking to run it back.
+sendInfoMessage("Hooking SMODS.calculate_end_of_round_effects...", "TOGAPack")
+local calcendroundref = SMODS.calculate_end_of_round_effects
+function SMODS.calculate_end_of_round_effects(context)
+	calcendroundref(context)
+	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
+		togabalatro.forcereverse = true
+		calcendroundref(context)
+		togabalatro.forcereverse = false
+	end
+end
+
+-- Check for HandLimitAPI...
+togabalatro.handlimitapi = function()
+	return (SMODS.change_play_limit and SMODS.change_discard_limit and SMODS.update_hand_limit_text) or false
+end
+
+-- Using HandLimitAPI if possible.
+togabalatro.handlimitchange = function(val, set_to)
+	val = val or 0
+	if togabalatro.handlimitapi() then
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Using HandLimitAPI. "..tostring(set_to).." "..val, "TOGAPack") end
+		SMODS.change_play_limit(set_to and G.GAME.starting_params.play_limit - val or val)
+		SMODS.change_discard_limit(set_to and G.GAME.starting_params.discard_limit - val or val)
+	else
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Backwards compatibility... "..val, "TOGAPack") end
+		G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + val, val < 0 and 1 or 5)
+	end
+end
+
+-- Golden Wrench...
+local startdisref = Card.start_dissolve
+function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+	if self and self.config and self.config.center_key == 'j_toga_goldenwrench' and not self.ability.sold then togabalatro.goldenwrench(self) end
+	startdisref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
+end
+
+-- Golden Wrench destruction...
+togabalatro.goldenwrench = function(card)
+	if card and card.config and card.config.center_key ~= 'j_toga_goldenwrench' then return end
+	G.E_MANAGER:add_event(Event({
+		func = function()
+			for i = 1, #G.playing_cards do
+				G.playing_cards[i]:set_ability(G.P_CENTERS.m_gold)
+				G.playing_cards[i]:juice_up()
+			end
+			if togabalatro.config.SFXWhenTriggered and not silent then play_sound('toga_goldenhit', 1, 0.7) end -- insert sound here.
+			return true
+		end
+	}))
+end
+
 -- Play more cards! For the SMS enhancement.
 togabalatro.playextracards = function()
 	local sms_deck = {}
@@ -489,6 +642,7 @@ togabalatro.playextracards = function()
 	end
 end
 
+-- Check for Overflow or Incantation...
 togabalatro.stackingcompat = function(context)
 	-- The new and shiny Overflow!
 	if Overflow and context.other_consumable and context.other_consumable.ability.immutable and context.other_consumable.ability.immutable.overflow_amount then

@@ -97,7 +97,8 @@ SMODS.Back{
 				end
 				G.GAME.win_ante = G.GAME.win_ante + self.config.extraante
 				if G.hand then
-					G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + self.config.reducehandsel
+					togabalatro.handlimitchange(self.config.reducehandsel)
+					--G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + self.config.reducehandsel
 					return true
 				end
 			end,
@@ -141,5 +142,15 @@ SMODS.Back{
 				end
 			end,
 		}))
+	end
+}
+
+SMODS.Back{
+	key = "drunkdeck",
+	pos = { x = 6, y = 0 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.modifiers.toga_reversedscore = true
 	end
 }

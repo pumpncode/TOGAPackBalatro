@@ -17,19 +17,22 @@ SMODS.Blind{
 	end,
 	set_blind = function(self)
 		self.vars.activated = true
-		G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit - self.vars.reducedhandsel, 1)
+		togabalatro.handlimitchange(-self.vars.reducedhandsel)
+		--G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit - self.vars.reducedhandsel, 1)
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Decreased card selection limit to "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 	end,
 	disable = function(self)
 		if self.vars.activated then
 			self.vars.activated = false
-			G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
+			togabalatro.handlimitchange(self.vars.reducedhandsel)
+			--G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Disabled, card selection limit is "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 		end
 	end,
 	defeat = function(self)
 		if self.vars.activated then
-			G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
+			togabalatro.handlimitchange(self.vars.reducedhandsel)
+			--G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.reducedhandsel, 5)
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Defeated, card selection limit is "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 		end
 	end
@@ -55,7 +58,8 @@ SMODS.Blind{
 	end,
 	set_blind = function(self)
 		self.vars.activated = true
-		G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.increasehandsel, 1)
+		togabalatro.handlimitchange(self.vars.increasehandsel)
+		--G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + self.vars.increasehandsel, 1)
 		G.hand:change_size(self.vars.increasehandsel)
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Changed card selection limit to "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Changed hand size to "..G.hand.config.card_limit..".", "TOGAPack") end
@@ -63,7 +67,8 @@ SMODS.Blind{
 	disable = function(self)
 		if self.vars.activated then
 			self.vars.activated = false
-			G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit - self.vars.increasehandsel, 5)
+			togabalatro.handlimitchange(-self.vars.increasehandsel)
+			--G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit - self.vars.increasehandsel, 5)
 			G.hand:change_size(-self.vars.increasehandsel)
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Disabled, card selection limit is "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Disabled, changed hand size to "..G.hand.config.card_limit..".", "TOGAPack") end
@@ -74,7 +79,8 @@ SMODS.Blind{
 	defeat = function(self)
 		if self.vars.activated then
 			self.vars.activated = false
-			G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit - self.vars.increasehandsel, 5)
+			togabalatro.handlimitchange(-self.vars.increasehandsel)
+			--G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit - self.vars.increasehandsel, 5)
 			G.hand:change_size(-self.vars.increasehandsel)
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Defeated, card selection limit is "..G.hand.config.highlighted_limit..".", "TOGAPack") end
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Defeated, changed hand size to "..G.hand.config.card_limit..".", "TOGAPack") end

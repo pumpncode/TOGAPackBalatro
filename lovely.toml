@@ -33,3 +33,38 @@ if next(SMODS.find_card('j_toga_displayproperties')) and togabalatro.mf_colours_
 end
 '''
 match_indent = true
+
+# These feel a bit destructive because they are.
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "for _, card in ipairs(context.cardarea.cards) do"
+position = "before"
+payload = "local curcards = togabalatro.preprocess(context.cardarea.cards)"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "for _, card in ipairs(context.cardarea.cards) do"
+position = "at"
+payload = "for _, card in ipairs(curcards) do"
+overwrite = true
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "for i, card in ipairs(context.cardarea.cards) do"
+position = "before"
+payload = "local curcards = togabalatro.preprocess(context.cardarea.cards)"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "for i, card in ipairs(context.cardarea.cards) do"
+position = "at"
+payload = "for i, card in ipairs(curcards) do"
+overwrite = true
+match_indent = true
