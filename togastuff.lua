@@ -502,6 +502,7 @@ end
 
 -- https://gist.github.com/balaam/3122129
 function ReverseTable(t)
+	t = t or {}
     local reversedTable = {}
     local itemCount = #t
     for k, v in ipairs(t) do
@@ -528,7 +529,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 	calcmainscoreref(context, scoring_hand)
 	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
 		togabalatro.forcereverse = true
-		calcmainscoreref(context, scoring_hand)
+		calcmainscoreref(context, context.scoring_hand)
 		togabalatro.forcereverse = false
 	end
 	if context.cardarea == G.play then
