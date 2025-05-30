@@ -502,7 +502,7 @@ end
 
 -- https://gist.github.com/balaam/3122129
 function ReverseTable(t)
-	t = t or {}
+	if not t then return {} end
     local reversedTable = {}
     local itemCount = #t
     for k, v in ipairs(t) do
@@ -513,13 +513,14 @@ end
 
 -- emem eht era uoy :VOP --
 togabalatro.forcereverse = false
-togabalatro.preprocess = function(cards)
+togabalatro.preprocess = function(cards, context)
 	local output = cards
 	
 	if G.GAME.modifiers.toga_reversedscore then output = ReverseTable(output) end
 	if G.GAME.modifiers.toga_reversedscore_sleeve then output = ReverseTable(output) end
+	if togabalatro.forcereverse then output = ReverseTable(output) end
 	
-	return togabalatro.forcereverse and ReverseTable(cards) or output
+	return output
 end
 
 -- Hooking to do more funky scoring shenanigans.
@@ -529,8 +530,10 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 	calcmainscoreref(context, scoring_hand)
 	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
 		togabalatro.forcereverse = true
-		calcmainscoreref(context, context.scoring_hand)
+		context.main_scoring = true
+		calcmainscoreref(context, scoring_hand)
 		togabalatro.forcereverse = false
+		context.main_scoring = nil
 	end
 	if context.cardarea == G.play then
 		local spacecadet, rover = SMODS.find_card('j_toga_spacecadetpinball'), SMODS.find_card('j_toga_rover')

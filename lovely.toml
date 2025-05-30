@@ -40,7 +40,7 @@ match_indent = true
 target = '=[SMODS _ "src/utils.lua"]'
 pattern = "for _, card in ipairs(context.cardarea.cards) do"
 position = "before"
-payload = "local curcards = togabalatro.preprocess(context.cardarea.cards)"
+payload = "local curcards = togabalatro.preprocess(context.cardarea.cards, context)"
 match_indent = true
 
 [[patches]]
@@ -57,7 +57,7 @@ match_indent = true
 target = '=[SMODS _ "src/utils.lua"]'
 pattern = "for i, card in ipairs(context.cardarea.cards) do"
 position = "before"
-payload = "local curcards = togabalatro.preprocess(context.cardarea.cards)"
+payload = "local curcards = togabalatro.preprocess(context.cardarea.cards, context)"
 match_indent = true
 
 [[patches]]
