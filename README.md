@@ -5,7 +5,7 @@
 # TOGA's Stuff
 A personal timewaster project that is a mod for Balatro.
 
-[Download the latest public release here.](https://github.com/TheOneGoofAli/TOGAPackBalatro/archive/refs/heads/main.zip)
+[Download the latest commit here.](https://github.com/TheOneGoofAli/TOGAPackBalatro/archive/refs/heads/main.zip)
 
 Uses Steamodded 1.0.0-BETA and a bit of Lovely patching.
 https://github.com/Steamodded/smods
