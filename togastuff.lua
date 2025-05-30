@@ -325,12 +325,17 @@ function play_sound(sound_code, per, vol)
 end
 
 -- Y2K Sticker yoink.
+local ischecking2s = false
 sendInfoMessage("Hooking Card:is_face...", "TOGAPack")
 local isfaceref = Card.is_face
 function Card:is_face(from_boss)
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:is_face hook.", "TOGAPack") end
 	if self.debuff and not from_boss then return end
-	local id = self:get_id()
+	local id = 0
+	if not ischecking2s then
+		ischecking2s = true
+		id = self:get_id()
+	end
 	if next(SMODS.find_card('j_toga_y2ksticker')) and id == 2 or next(find_joker("Pareidolia")) then
 		return true
 	end
