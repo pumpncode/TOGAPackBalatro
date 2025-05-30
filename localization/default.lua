@@ -105,8 +105,8 @@ return {
 			bl_toga_joystick = {
 				name = "The Joystick",
 				text = {
-					"First hand drawn is",
-					"automatically played"
+					"The first drawn card",
+					"is automatically played"
 				}
 			},
 			bl_toga_xpboss = {
