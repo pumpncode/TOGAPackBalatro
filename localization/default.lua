@@ -73,6 +73,13 @@ return {
 					"{C:red}X#1#{} base Blind size"
 				}
 			},
+			b_toga_drunkdeck = {
+				name = 'Drunk',
+				text = {
+					"Playing cards are triggered",
+					"in reverse order.",
+				}
+			},
 		},
 		Blind = {
 			bl_toga_dialupmodem = {
@@ -256,7 +263,7 @@ return {
 			j_toga_quacksoft = {
 				name = 'Duck?',
 				text = {
-					"{X:dark_edition,C:white}^0.01{} Chips for each",
+					"{X:dark_edition,C:white}^#1#{} Chips for each",
 					"remaining card in the {C:attention}deck{}",
 					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}"
 				}
@@ -354,11 +361,16 @@ return {
 			j_toga_spacecadetpinball = {
 				name = 'Space Cadet',
 				text = {
-					"{C:green}#3# in 3{} chance to {C:attention}rescore{} a",
-					"random scoring card by this",
-					"{C:attention}Joker{}. For every {C:money}$#1#{} held,",
-					"try to {C:attention}rescore{} again.",
-					"{C:inactive,s:0.8}Currently #2# attempts.{}",
+					-- "{C:green}#3# in 3{} chance to {C:attention}rescore{} a",
+					-- "random scoring card by this",
+					-- "{C:attention}Joker{}. For every {C:money}$#1#{} held,",
+					-- "try to {C:attention}rescore{} again.",
+					-- "{C:inactive,s:0.8}Currently #2# attempts.{}",
+					"After the played cards are {C:attention}scored{},",
+					"{C:green}#3# in 3{} chance to perform {C:attention}additional scoring{}",
+					"of a {C:attention}random{} card in the scoring hand.",
+					"{s:0.9}For every {C:money,s:0.9}$20{s:0.9} held, this is done {C:attention,s:0.9}once{s:0.9} more.",
+					"{C:inactive,s:0.8}Currently #2# attempts.{}"
 				}
 			},
 			j_toga_heartyspades = {
@@ -371,9 +383,10 @@ return {
 			j_toga_rover = {
 				name = 'Rover',
 				text = {
-					"Each card in the {C:attention}deck{} has a",
+					"After scoring of {C:attention}played{} cards,",
+					"each card in the {C:attention}deck{} has a",
 					"{C:green}#1# in #2#{} chance to be {C:attention}scored{}",
-					"by this Joker"
+					"as well"
 				}
 			},
 			j_toga_binaryjkr = {
@@ -939,7 +952,7 @@ return {
 				text = {
 					"Multiplies all {C:attention}listed{} {E:1,C:green}probabilities{}",
 					"for the rest of the run by {X:attention,C:white}X#1#{}",
-					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}#2# in 3{}{C:inactive}){}"
+					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}#1# in 3{}{C:inactive}){}"
 				},
 			},
 			v_toga_hardwarewizardxp = {
@@ -947,7 +960,7 @@ return {
 				text = {
 					"Multiplies all {C:attention}listed{} {E:1,C:green}probabilities{}",
 					"for the rest of the run by {X:attention,C:white}X#1#{}",
-					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}#2# in 3{}{C:inactive}){}"
+					"{C:inactive}(ex: {}{C:green}1 in 3{}{C:inactive} -> {}{C:green}#1# in 3{}{C:inactive}){}"
 				},
 			},
 			v_toga_diskdefrag = {
@@ -1254,6 +1267,38 @@ return {
 					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
 				},
 			},
+		},
+		Sleeve = {
+			sleeve_toga_frog = {
+				name = "Frog Sleeve",
+				text = {
+					"{C:blue}+#1#{} hand, {C:red}+#2#{} discard,",
+					"{C:red}#3#{} hand size"
+				},
+			},
+			sleeve_toga_bluemountain = {
+				name = "Blue Mountain Sleeve",
+				text = {
+					"Playing cards are triggered",
+					"in reverse order.",
+				},
+			},
+			sleeve_toga_bluemountain_kart = {
+				name = "Run It Back Mountain Sleeve",
+				text = {
+					"Playing cards are also",
+					"triggered in reverse order.",
+					"{C:inactive,s:0.8}'Run it back!'{}"
+				},
+			},
+			sleeve_toga_bluemountain_drunk = {
+				name = "Blue Mountain Sleeve",
+				text = {
+					"Playing cards are triggered",
+					"in normal order.",
+					"{C:inactive,s:0.8}Wait...{}"
+				},
+			},
 		}
 	},
 	misc = {
@@ -1320,6 +1365,8 @@ return {
 			toga_jarateready = "Ready!",
 			toga_jarated = "Washed!",
 			toga_perlevel = "per-level",
+			toga_pinballing = "Score!",
+			toga_roverwoof = "Woof.",
 			toga_configtab = "Mod Settings",
 			toga_logtab = "Logging Settings",
 			toga_sfxwhenadd = "SFX when getting some of the mods' items",

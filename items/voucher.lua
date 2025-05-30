@@ -91,8 +91,9 @@ SMODS.Voucher{
 		return {vars = {math.max(1, math.floor(card.ability.extra.moreselect))}}
 	end,
 	redeem = function(self, card)
+		togabalatro.handlimitchange(math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect)))
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))..".", "TOGAPack") end
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))
+		--G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))
 	end,
 }
 
@@ -119,7 +120,8 @@ SMODS.Voucher{
 		G.jokers.config.card_limit = cardlimitavrg
 		G.consumeables.config.card_limit = cardlimitavrg
 		G.hand.config.card_limit = cardlimitavrg
-		G.hand.config.highlighted_limit = cardlimitavrg
+		togabalatro.handlimitchange(cardlimitavrg, true)
+		--G.hand.config.highlighted_limit = cardlimitavrg
 		-- poker hand levels.
 		local totallevel = 0
 		for _, v in ipairs(G.handlist) do
