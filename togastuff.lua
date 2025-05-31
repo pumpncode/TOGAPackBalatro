@@ -500,21 +500,25 @@ function Blind:disable()
     return bldisref(self)
 end
 
--- https://gist.github.com/balaam/3122129
 function ReverseTable(t)
-	if not t then return {} end
-    local reversedTable = {}
-    local itemCount = #t
-    for k, v in ipairs(t) do
-        reversedTable[itemCount + 1 - k] = v
-    end
-    return reversedTable
+	local rt = {}
+	for i = #t, 1, -1 do
+		rt[#rt+1] = t[i]
+	end
+	return rt
 end
 
 -- emem eht era uoy :VOP --
 togabalatro.forcereverse = false
-togabalatro.preprocess = function(cards, context)
-	local output = cards
+togabalatro.preprocess = function(context)
+	local output = context.cardarea and context.cardarea.cards or nil
+	if not output then
+		if context.cardarea == G.play then output = context.full_hand
+		elseif context.cardarea == G.hand then output = G.hand.cards
+		elseif context.cardarea == 'unscored' then output = context.full_hand end
+	end
+	
+	if not output then return end
 	
 	if G.GAME.modifiers.toga_reversedscore then output = ReverseTable(output) end
 	if G.GAME.modifiers.toga_reversedscore_sleeve then output = ReverseTable(output) end
