@@ -227,7 +227,7 @@ SMODS.Joker{
 		if card.ability.extra.repetitions < 1 then card.ability.extra.repetitions = 1 end -- always at least once.
 		
 		local othcrd = context.other_card
-		if (context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_winxp')
+		if (context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_winxp')
 		or ((context.cardarea == G.play or context.cardarea == G.hand) and context.repetition and not context.repetition_only) then
 			return {
 				message = localize('k_again_ex'),
