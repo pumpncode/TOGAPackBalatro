@@ -98,16 +98,15 @@ SMODS.Blind{
 	dollars = 8,
 	mult = 2.5,
 	boss = { min = 3 },
-	drawn_to_hand = function()
-		if G.hand and G.hand.cards and G.hand.cards[1] then
-			G.hand.cards[1].ability.forced_selection = true
-			G.hand:add_to_highlighted(G.hand.cards[1])
-			G.FUNCS.play_cards_from_highlighted()
-			for i = 1, #G.playing_cards do
-				G.playing_cards[i].ability.forced_selection = nil
+	calculate = function(self, card, context)
+		if not G.GAME.blind.disabled then
+			if context.first_hand_drawn then
+				for i = 1, #G.hand.cards do
+					G.hand.highlighted[#G.hand.highlighted+1] = G.hand.cards[i]
+					G.hand.cards[i]:highlight(true)
+				end
+				G.FUNCS.play_cards_from_highlighted()
 			end
 		end
-		G.GAME.blind:disable()
-		play_sound('timpani')
 	end,
 }

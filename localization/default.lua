@@ -105,8 +105,8 @@ return {
 			bl_toga_joystick = {
 				name = "The Joystick",
 				text = {
-					"The first drawn card",
-					"is automatically played"
+					"First hand drawn is",
+					"automatically played"
 				}
 			},
 			bl_toga_xpboss = {
@@ -1288,7 +1288,8 @@ return {
 				text = {
 					"Playing cards are also",
 					"triggered in reverse order.",
-					"{C:inactive,s:0.8}'Run it back!'{}"
+					"{C:inactive,s:0.8}'Run it back!'{}",
+					"{C:red,s:0.8}Buggy, please be warned.{}"
 				},
 			},
 			sleeve_toga_bluemountain_drunk = {
