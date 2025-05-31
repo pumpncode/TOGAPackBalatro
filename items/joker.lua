@@ -638,7 +638,7 @@ SMODS.Joker{
 			}
 		end
 		local othcrd = context.other_card
-		if context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_jimbo95' then
+		if context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_jimbo95' then
 			if card.ability.extra.retriggers < 1 then card.ability.extra.retriggers = 1 end -- always at least once.
 			return {
 				message = toga_randomruntext(),
