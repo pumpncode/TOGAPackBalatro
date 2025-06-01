@@ -714,6 +714,9 @@ SMODS.Joker{
 	soul_pos = { x = 1, y = 0 },
 	cost = 15,
 	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.after then card.ability.roverscore = nil end
+	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.animated = true
 	end,
@@ -995,6 +998,9 @@ SMODS.Joker{
 	pos = { x = 0, y = 2 },
 	cost = 15,
 	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.after then card.ability.pinballscore = nil end
+	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
 			play_sound("toga_pinballstart")

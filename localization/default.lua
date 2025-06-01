@@ -80,6 +80,13 @@ return {
 					"in reverse order.",
 				}
 			},
+			b_toga_waitthatsillegaldeck = {
+				name = "Wait. That's Illegal.",
+				text = {
+					"Playing cards are triggered",
+					"in random order.",
+				}
+			},
 		},
 		Blind = {
 			bl_toga_dialupmodem = {
