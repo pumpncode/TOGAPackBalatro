@@ -154,3 +154,13 @@ SMODS.Back{
 		G.GAME.modifiers.toga_reversedscore = true
 	end
 }
+
+SMODS.Back{
+	key = "waitthatsillegaldeck",
+	pos = { x = 7, y = 0 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.modifiers.toga_randomscore = true
+	end
+}
