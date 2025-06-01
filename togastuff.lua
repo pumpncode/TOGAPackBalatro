@@ -572,7 +572,6 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 				for i = 1, #G.deck.cards do
 					if pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds then
 						if not card.ability.roverscore then card.ability.roverscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof')}) end
-						scoredcards[#scoredcards+1] = G.deck.cards[i]
 						SMODS.score_card(G.deck.cards[i], context)
 					end
 				end
