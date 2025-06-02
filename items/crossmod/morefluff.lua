@@ -40,11 +40,16 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		blueprint_compat = true,
 		calculate = function(self, card, context)
 			if context.end_of_round and not context.repetition and not context.individual and not context.game_over then
-				local effects = { dollars = card.ability.extra.percolormoney, card = card}
 				return { func = function()
 					for i = 1, #G.consumeables.cards do
 						if G.consumeables.cards[i].config.center.set == 'Colour' then
-							SMODS.calculate_individual_effect(effects, G.consumeables.cards[i], 'dollars', effects.dollars, false)
+							local effects = { dollars = card.ability.extra.percolormoney, message_card = G.consumeables.cards[i]}
+							local stacked, stackamount = togabalatro.stackingcompat(G.consumeables.cards[i])
+							if stacked then
+								for i = 1, stackamount do
+									SMODS.calculate_individual_effect(effects, G.consumeables.cards[i], 'dollars', effects.dollars, false)
+								end
+							else SMODS.calculate_individual_effect(effects, G.consumeables.cards[i], 'dollars', effects.dollars, false) end
 						end
 					end
 				end }

@@ -543,18 +543,9 @@ togabalatro.areaprocess = function(t)
 	
 	local output = t
 	
-	if G.GAME.modifiers.toga_reversedscore then
-		output = ReverseTable(output)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Reversing order of given table...", "TOGAPack") end
-	end
-	if G.GAME.modifiers.toga_reversedscore_sleeve then
-		output = ReverseTable(output)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Sleeve-reversing order of given table...", "TOGAPack") end
-	end
-	if G.GAME.modifiers.toga_randomscore then
-		output = ShuffleMyTable(output, 'whotouchmygun')
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Shuffling table...", "TOGAPack") end
-	end
+	if G.GAME.modifiers.toga_reversedscore then output = ReverseTable(output) end
+	if G.GAME.modifiers.toga_reversedscore_sleeve then output = ReverseTable(output) end
+	if G.GAME.modifiers.toga_randomscore then output = ShuffleMyTable(output, 'whotouchmygun') end
 	
 	return output
 end
@@ -678,14 +669,25 @@ togabalatro.playextracards = function()
 	end
 end
 
+togabalatro.getconscount = function()
+	local count = 0
+	if G.consumeables and G.consumeables.cards then
+		for i = 1, #G.consumeables.cards do
+			local stack, stackamount = togabalatro.stackingcompat(G.consumeables.cards[i])
+			if stack then count = count + stackamount else count = count + 1 end
+		end
+	end
+	return count
+end
+
 -- Check for Overflow or Incantation...
-togabalatro.stackingcompat = function(context)
+togabalatro.stackingcompat = function(consumable)
 	-- The new and shiny Overflow!
-	if Overflow and context.other_consumable and context.other_consumable.ability.immutable and context.other_consumable.ability.immutable.overflow_amount then
-		return true, context.other_consumable.ability.immutable.overflow_amount
+	if Overflow and consumable and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
+		return true, consumable.ability.immutable.overflow_amount
 	-- ...though, backwards compatibility wouldn't hurt...
-	elseif Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
-		return true, context.other_consumeable.ability.qty
+	elseif Incantation and consumable and consumeable.ability and consumeable.ability.qty then
+		return true, consumeable.ability.qty
 	end
 end
 

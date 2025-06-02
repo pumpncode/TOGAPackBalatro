@@ -1323,7 +1323,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	perishable_compat = false,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.repetition and not context.individual and G.GAME.blind.boss then
+		if context.end_of_round and not context.repetition and not context.individual then
 			return { func = function()
 				toga_rndvaluetarget(card, card.ability.extra.plusval)
 			end }
@@ -1527,7 +1527,8 @@ if Talisman then
 					ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
 					eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
 				}
-				local stacked, stackamount = togabalatro.stackingcompat(context)
+				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
+				print(stacked, stackamount)
 				if stacked and stackamount then
 					return {
 						func = function()

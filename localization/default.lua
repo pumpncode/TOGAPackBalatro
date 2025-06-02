@@ -278,9 +278,8 @@ return {
 			j_toga_winupdate = {
 				name = 'Joker Update',
 				text = {
-					"{C:attention}Numerical{} values of a random Joker",
-					"are increased by {C:attention}#1#%{} when a",
-					"{C:attention,s:0.9}Boss Blind{} is defeated.",
+					"{C:attention}Numerical{} values of a random Joker are",
+					"increased by {C:attention}#1#%{} when defeating {C:attention}Blinds{}.",
 					"{C:inactive,s:0.8}Cannot affect self or copies of self.{}"
 				}
 			},
