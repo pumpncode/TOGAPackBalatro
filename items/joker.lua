@@ -312,8 +312,6 @@ SMODS.Joker{
 	cost = 20,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if card.ability.cry_rigged or G.GAME.probabilities.normal >= 1e9 then return end -- No rigging my gaming rig!
-		
 		if context.blueprint then return end
 		
 		if context then
@@ -358,9 +356,6 @@ SMODS.Joker{
 			end
 		end
 	end,
-	update = function(self, card, context)
-		if card.ability.cry_rigged then card.ability.cry_rigged = nil end -- No rigging my gaming rig!
-	end
 }
 
 togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult)

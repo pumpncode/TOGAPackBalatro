@@ -297,20 +297,24 @@ local function toga_spbdeckwreck(card, failedchance)
 	}))
 end
 
+local spbdeckpart, spbcardmin = 0.75, 20
+
 SMODS.Consumable{
 	key = 'selfpropelledbomb',
 	set = 'Spectral',
 	atlas = "TOGAConsumables",
 	pos = {x = 0, y = 0},
-	cost = 10,
-	config = {extra = { cardlimit = 20, odds = 4, activated = false } },
+	cost = 4,
+	config = {extra = { cardlimit = spbcardmin, odds = 4, activated = false } },
 	loc_vars = function(self, info_queue, card)
-		return {vars = { math.floor(card.ability.extra.cardlimit), card.ability.extra.odds, (G.GAME and G.GAME.probabilities.normal or 1) } }
+		card.ability.extra.cardlimit = math.max(G.deck and G.deck.cards and math.floor(#G.deck.cards*spbdeckpart) or 0, spbcardmin)
+		return {vars = { math.floor(card.ability.extra.cardlimit), card.ability.extra.odds, (G.GAME and G.GAME.probabilities.normal or 1), spbcardmin, spbdeckpart*100 } }
 	end,
 	can_use = function(self, card, area, copier)
 		return G.deck and G.deck.cards and #G.deck.cards > 0
 	end,
 	use = function(self, card)
+		card.ability.extra.cardlimit = math.max(G.deck and G.deck.cards and math.floor(#G.deck.cards*spbdeckpart) or 0, spbcardmin)
 		card.ability.extra.activated = true
 		toga_spbdeckwreck(card)
 	end,

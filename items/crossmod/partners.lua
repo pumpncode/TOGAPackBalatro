@@ -17,7 +17,7 @@ Partner_API.Partner{
 		return { key = winos >= 1 and self.key.."_buff" or self.key, vars = {(100*card.ability.extra.basepercent)+(100*card.ability.extra.extrapercent*winos), 100*card.ability.extra.basepercent, 100*card.ability.extra.extrapercent*winos} }
 	end,
 	calculate = function(self, card, context)
-		if context.partner_setting_blind and not context.retrigger_joker then
+		if (context.partner_setting_blind or context.setting_blind) and not context.retrigger_joker then
 			local winos = 0
 			if G.jokers and #G.jokers.cards > 0 then
 				for i = 1, #G.jokers.cards do
@@ -58,7 +58,7 @@ Partner_API.Partner{
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds, 100*card.ability.extra.mm } }
 	end,
 	calculate = function(self, card, context)
-		if context.partner_end_of_round and pseudorandom("whenthemoneyissus") < G.GAME.probabilities.normal/card.ability.extra.odds then
+		if (context.partner_end_of_round or context.end_of_round) and pseudorandom("whenthemoneyissus") < G.GAME.probabilities.normal/card.ability.extra.odds then
 			local money = math.floor(math.abs(to_number(G.GAME.dollars)*card.ability.extra.mm))
 			money = math.max(money, 10)
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_suspartner'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_bass"})

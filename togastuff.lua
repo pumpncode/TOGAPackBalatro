@@ -538,6 +538,27 @@ togabalatro.preprocess = function(context)
 	return output
 end
 
+togabalatro.areaprocess = function(t)
+	if t == nil then return {} end
+	
+	local output = t
+	
+	if G.GAME.modifiers.toga_reversedscore then
+		output = ReverseTable(output)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Reversing order of given table...", "TOGAPack") end
+	end
+	if G.GAME.modifiers.toga_reversedscore_sleeve then
+		output = ReverseTable(output)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Sleeve-reversing order of given table...", "TOGAPack") end
+	end
+	if G.GAME.modifiers.toga_randomscore then
+		output = ShuffleMyTable(output, 'whotouchmygun')
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Shuffling table...", "TOGAPack") end
+	end
+	
+	return output
+end
+
 -- Hooking to do more funky scoring shenanigans.
 sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
 local calcmainscoreref = SMODS.calculate_main_scoring
@@ -558,7 +579,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 				local card = spacecadet[i]
 				card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint)
 				for r = 1, card.ability.extra.alltrig do
-					if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 and scoring_hand then
+					if (pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 or card.ability.cry_rigged) and scoring_hand then
 						if not card.ability.pinballscore then card.ability.pinballscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pinballing')}) end
 						SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), context)
 					end
@@ -570,7 +591,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 			for r = 1, #rover do
 				local card = rover[r]
 				for i = 1, #G.deck.cards do
-					if pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds then
+					if (pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds or card.ability.cry_rigged) then
 						if not card.ability.roverscore then card.ability.roverscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof')}) end
 						SMODS.score_card(G.deck.cards[i], context)
 					end

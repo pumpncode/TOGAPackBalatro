@@ -76,14 +76,14 @@ return {
 			b_toga_drunkdeck = {
 				name = 'Drunk',
 				text = {
-					"Playing cards are triggered",
+					"Scoring is triggered",
 					"in reverse order.",
 				}
 			},
 			b_toga_waitthatsillegaldeck = {
 				name = "Wait. That's Illegal.",
 				text = {
-					"Playing cards are triggered",
+					"Scoring is triggered",
 					"in random order.",
 				}
 			},
@@ -835,8 +835,8 @@ return {
 			c_toga_selfpropelledbomb = {
 				name = "Self-Propelled Bomb",
 				text = {
-					"Destroys up to #1# cards",
-					"in the {C:attention}deck{}.",
+					"Destroys up to {C:attention}#1#{} cards in the {C:attention}deck{}.",
+					"{C:inactive,s:0.8}({C:attention,s:0.8}#4#{C:inactive,s:0.8} cards or {C:attention,s:0.8}#5#%{C:inactive,s:0.8} of the deck, whichever is larger.)",
 					"If sold or destroyed, {C:green}#3# in #2#{}",
 					"chance to trigger anyway.",
 				}
@@ -1286,7 +1286,7 @@ return {
 			sleeve_toga_bluemountain = {
 				name = "Blue Mountain Sleeve",
 				text = {
-					"Playing cards are triggered",
+					"Scoring is triggered",
 					"in reverse order.",
 				},
 			},
@@ -1296,13 +1296,12 @@ return {
 					"Playing cards are also",
 					"triggered in reverse order.",
 					"{C:inactive,s:0.8}'Run it back!'{}",
-					"{C:red,s:0.8}Buggy, please be warned.{}"
 				},
 			},
 			sleeve_toga_bluemountain_drunk = {
 				name = "Blue Mountain Sleeve",
 				text = {
-					"Playing cards are triggered",
+					"Scoring is triggered",
 					"in normal order.",
 					"{C:inactive,s:0.8}Wait...{}"
 				},
