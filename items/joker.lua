@@ -312,8 +312,6 @@ SMODS.Joker{
 	cost = 20,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if card.ability.cry_rigged or G.GAME.probabilities.normal >= 1e9 then return end -- No rigging my gaming rig!
-		
 		if context.blueprint then return end
 		
 		if context then
@@ -358,9 +356,6 @@ SMODS.Joker{
 			end
 		end
 	end,
-	update = function(self, card, context)
-		if card.ability.cry_rigged then card.ability.cry_rigged = nil end -- No rigging my gaming rig!
-	end
 }
 
 togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult)
@@ -1328,7 +1323,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	perishable_compat = false,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.repetition and not context.individual and G.GAME.blind.boss then
+		if context.end_of_round and not context.repetition and not context.individual then
 			return { func = function()
 				toga_rndvaluetarget(card, card.ability.extra.plusval)
 			end }
@@ -1532,7 +1527,8 @@ if Talisman then
 					ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
 					eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
 				}
-				local stacked, stackamount = togabalatro.stackingcompat(context)
+				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
+				print(stacked, stackamount)
 				if stacked and stackamount then
 					return {
 						func = function()

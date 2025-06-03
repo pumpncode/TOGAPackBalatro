@@ -538,6 +538,18 @@ togabalatro.preprocess = function(context)
 	return output
 end
 
+togabalatro.areaprocess = function(t)
+	if t == nil then return {} end
+	
+	local output = t
+	
+	if G.GAME.modifiers.toga_reversedscore then output = ReverseTable(output) end
+	if G.GAME.modifiers.toga_reversedscore_sleeve then output = ReverseTable(output) end
+	if G.GAME.modifiers.toga_randomscore then output = ShuffleMyTable(output, 'whotouchmygun') end
+	
+	return output
+end
+
 -- Hooking to do more funky scoring shenanigans.
 sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
 local calcmainscoreref = SMODS.calculate_main_scoring
@@ -558,7 +570,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 				local card = spacecadet[i]
 				card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint)
 				for r = 1, card.ability.extra.alltrig do
-					if pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 and scoring_hand then
+					if (pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 or card.ability.cry_rigged) and scoring_hand then
 						if not card.ability.pinballscore then card.ability.pinballscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pinballing')}) end
 						SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), context)
 					end
@@ -570,7 +582,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 			for r = 1, #rover do
 				local card = rover[r]
 				for i = 1, #G.deck.cards do
-					if pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds then
+					if (pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds or card.ability.cry_rigged) then
 						if not card.ability.roverscore then card.ability.roverscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof')}) end
 						SMODS.score_card(G.deck.cards[i], context)
 					end
@@ -657,14 +669,25 @@ togabalatro.playextracards = function()
 	end
 end
 
+togabalatro.getconscount = function()
+	local count = 0
+	if G.consumeables and G.consumeables.cards then
+		for i = 1, #G.consumeables.cards do
+			local stack, stackamount = togabalatro.stackingcompat(G.consumeables.cards[i])
+			if stack then count = count + stackamount else count = count + 1 end
+		end
+	end
+	return count
+end
+
 -- Check for Overflow or Incantation...
-togabalatro.stackingcompat = function(context)
+togabalatro.stackingcompat = function(consumable)
 	-- The new and shiny Overflow!
-	if Overflow and context.other_consumable and context.other_consumable.ability.immutable and context.other_consumable.ability.immutable.overflow_amount then
-		return true, context.other_consumable.ability.immutable.overflow_amount
+	if Overflow and consumable and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
+		return true, consumable.ability.immutable.overflow_amount
 	-- ...though, backwards compatibility wouldn't hurt...
-	elseif Incantation and context.other_consumeable.ability and context.other_consumeable.ability.qty then
-		return true, context.other_consumeable.ability.qty
+	elseif Incantation and consumable and consumeable.ability and consumeable.ability.qty then
+		return true, consumeable.ability.qty
 	end
 end
 

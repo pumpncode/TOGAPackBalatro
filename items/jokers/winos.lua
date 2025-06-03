@@ -58,6 +58,7 @@ SMODS.Joker{
 	key = 'win98',
 	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.125 } },
 	loc_vars = function(self, info_queue, card)
+		card.ability.extra.totalconsslotbonus = togabalatro.getconscount()*card.ability.extra.consslotbonus or 0
 		return { vars = { card.ability.extra.consslotbonus*100, card.ability.extra.totalconsslotbonus*100, card.ability.extra.percentage*100, toga_gettotaljokervalue()*card.ability.extra.percentage } }
 	end,
 	unlocked = true,
@@ -69,7 +70,7 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
 			local sellvalues = toga_gettotaljokervalue()*card.ability.extra.percentage
-			local slotbonus = sellvalues*#G.consumeables.cards*card.ability.extra.consslotbonus or 0
+			local slotbonus = sellvalues*togabalatro.getconscount()*card.ability.extra.consslotbonus or 0
 			return {
 				mult = sellvalues + slotbonus
 			}
@@ -85,9 +86,6 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_win98tada")
 			else play_sound("toga_chord") end
 		end
-	end,
-	update = function(self, card, context)
-		card.ability.extra.totalconsslotbonus = G.consumeables and #G.consumeables.cards*card.ability.extra.consslotbonus or 0
 	end
 }
 
