@@ -56,7 +56,7 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 			end
 		end,
 		set_badges = function(self, card, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
+			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end
 	}
 	SMODS.Joker{
@@ -69,7 +69,7 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		cost = 7,
 		blueprint_compat = false,
 		set_badges = function(self, card, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
+			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end
 	}
 	SMODS.Joker{
@@ -107,8 +107,10 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 			end
 		end,
 		set_badges = function(self, card, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('RevosVault')[1] }, badges)
+			if self.discovered then
+				SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
+				SMODS.create_mod_badges({ mod = SMODS.find_mod('RevosVault')[1] }, badges)
+			end
 		end,
 		dependencies = 'RevosVault'
 	}
@@ -152,7 +154,7 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 			return { vars = {card.ability.val, val, max, card.ability.upgrade_rounds} }
 		end,
 		set_badges = function(self, card, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
+			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end
 	})
 	SMODS.Consumable({
@@ -195,7 +197,7 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 			return { vars = {card.ability.val, val, max, card.ability.upgrade_rounds} }
 		end,
 		set_badges = function(self, card, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
+			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end
 	})
 	SMODS.Consumable({
@@ -238,7 +240,7 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 			return { vars = {card.ability.val, val, max, card.ability.upgrade_rounds} }
 		end,
 		set_badges = function(self, card, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
+			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end
 	})
 	SMODS.Consumable({
@@ -281,7 +283,7 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 			return { vars = {card.ability.val, val, max, card.ability.upgrade_rounds} }
 		end,
 		set_badges = function(self, card, badges)
-			SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges)
+			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end
 	})
 end
