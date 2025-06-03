@@ -35,7 +35,9 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		SMODS.create_mod_badges({ mod = SMODS.find_mod('Yahimod')[1] }, badges)
+		if self.discovered then
+			SMODS.create_mod_badges({ mod = SMODS.find_mod('Yahimod')[1] }, badges)
+		end
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	update = function(self, card, context)
@@ -75,7 +77,9 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		SMODS.create_mod_badges({ mod = SMODS.find_mod('Yahimod')[1] }, badges)
+		if self.discovered then
+			SMODS.create_mod_badges({ mod = SMODS.find_mod('Yahimod')[1] }, badges)
+		end
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	update = function(self, card, context)
@@ -109,7 +113,7 @@ SMODS.Consumable {
 		end
 	end,
 	set_badges = function(self, card, badges)
-		SMODS.create_mod_badges({ mod = SMODS.find_mod('Yahimod')[1] }, badges)
+		if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('Yahimod')[1] }, badges) end
 	end
 }
 

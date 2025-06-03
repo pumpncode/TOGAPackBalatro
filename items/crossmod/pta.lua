@@ -43,7 +43,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		SMODS.create_mod_badges({ mod = SMODS.find_mod('pta_saka')[1] }, badges)
+		if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('pta_saka')[1] }, badges) end
 	end,
 	pixel_size = { w = 69, h = 74 }
 }
