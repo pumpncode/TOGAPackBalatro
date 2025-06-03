@@ -8,8 +8,10 @@ SMODS.Joker{
 	key = 'horseconch',
 	config = { extra = { hxmult = horsehxmult, hdollars = horsehdollars, heeemult = Talisman and horseeeemult } },
 	loc_vars = function(self, info_queue, card)
-		card.ability.extra.hxmult = math.max(card.ability.extra.hxmult, horsehxmult)
-		info_queue[#info_queue+1] = G.P_SEALS['yahimod_horse_seal']
+		if self.discovered then
+			card.ability.extra.hxmult = math.max(card.ability.extra.hxmult, horsehxmult)
+			info_queue[#info_queue+1] = G.P_SEALS['yahimod_horse_seal']
+		end
 		return { vars = { card.ability.extra.hxmult, card.ability.extra.hdollars } }
 	end,
 	unlocked = true,
@@ -48,7 +50,7 @@ SMODS.Joker{
 	key = 'gatosorrindo',
 	config = { extra = { xchips = catxchips, eeechips = Talisman and cateeechips } },
 	loc_vars = function(self, info_queue, card)
-		card.ability.extra.xchips = math.max(card.ability.extra.xchips, catxchips)
+		if self.discovered then card.ability.extra.xchips = math.max(card.ability.extra.xchips, catxchips) end
 		return { vars = { card.ability.extra.xchips } }
 	end,
 	unlocked = true,
