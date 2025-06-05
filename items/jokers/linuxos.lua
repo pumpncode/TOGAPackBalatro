@@ -53,7 +53,7 @@ SMODS.Joker{
 	config = { extra = { persuit = 0.15 } },
 	loc_vars = function(self, info_queue, card)
 		local uniquesuits, suitcount, diffkey = {}, 0, false
-		if (G.play and G.play.cards and #G.play.cards > 0) or (G.hand and G.hand.cards and #G.hand.cards > 0) then
+		if (G.play and G.play.cards and #G.play.cards > 0) and (G.hand and G.hand.cards and #G.hand.cards > 0) then
 			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and #G.hand.highlighted > 0 and G.hand.highlighted
 			if curtarget[1] then
 				for i = 1, #curtarget do
@@ -88,7 +88,7 @@ SMODS.Joker{
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xmbonus = math.max(card.ability.extra.xmbonus, 0)
 		local phands, diffkey = 0, false
-		if (G.play and G.play.cards and #G.play.cards > 0) or (G.hand and G.hand.cards and #G.hand.cards > 0 and G.hand.highlighted and #G.hand.highlighted > 0) then
+		if (G.play and G.play.cards and #G.play.cards > 0) and (G.hand and G.hand.cards and #G.hand.cards > 0 and G.hand.highlighted and #G.hand.highlighted > 0) then
 			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and #G.hand.highlighted > 0 and G.hand.highlighted
 			if curtarget and curtarget[1] then
 				local curpokhand = evaluate_poker_hand(curtarget)
