@@ -54,9 +54,11 @@ SMODS.Joker{
 	loc_vars = function(self, info_queue, card)
 		local uniquesuits, suitcount, diffkey = {}, 0, false
 		if (G.play and G.play.cards and #G.play.cards > 0) or (G.hand and G.hand.cards and #G.hand.cards > 0) then
-			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and G.hand.highlighted
-			for i = 1, #curtarget do
-				if not uniquesuits[curtarget[i].base.suit] then uniquesuits[curtarget[i].base.suit] = true; suitcount = suitcount + 1 end
+			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and #G.hand.highlighted > 0 and G.hand.highlighted
+			if curtarget[1] then
+				for i = 1, #curtarget do
+					if curtarget[i] and not uniquesuits[curtarget[i].base.suit] then uniquesuits[curtarget[i].base.suit] = true; suitcount = suitcount + 1 end
+				end
 			end
 		end
 		if suitcount-1 > 0 then diffkey = true end
@@ -87,10 +89,12 @@ SMODS.Joker{
 		card.ability.extra.xmbonus = math.max(card.ability.extra.xmbonus, 0)
 		local phands, diffkey = 0, false
 		if (G.play and G.play.cards and #G.play.cards > 0) or (G.hand and G.hand.cards and #G.hand.cards > 0 and G.hand.highlighted and #G.hand.highlighted > 0) then
-			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and G.hand.highlighted
-			local curpokhand = evaluate_poker_hand(curtarget)
-			for k, v in pairs(curpokhand) do
-				if k ~= 'High Card' and next(v) ~= nil then phands = phands + 1 end
+			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and #G.hand.highlighted > 0 and G.hand.highlighted
+			if curtarget and curtarget[1] then
+				local curpokhand = evaluate_poker_hand(curtarget)
+				for k, v in pairs(curpokhand) do
+					if k ~= 'High Card' and next(v) ~= nil then phands = phands + 1 end
+				end
 			end
 		end
 		if phands > 0 then diffkey = true end
