@@ -1528,7 +1528,6 @@ if Talisman then
 					eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
 				}
 				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
-				print(stacked, stackamount)
 				if stacked and stackamount then
 					return {
 						func = function()
