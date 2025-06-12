@@ -623,8 +623,7 @@ return {
 				name = 'Ubuntu',
 				text = {
 					"{C:attention}Jokers{} and {C:attention}Consumeables{} give {C:attention}#1#%{}",
-					"of their {C:money}sell value{} as {X:mult,C:white}XMult{} if",
-					"they can be sold for {C:money}$#2#{} or more."
+					"of their {C:money}sell value{} as {X:mult,C:white}XMult{}."
 				}
 			},
 			j_toga_linux_debian = {

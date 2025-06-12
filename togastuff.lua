@@ -5,24 +5,6 @@ sendInfoMessage("░█░░░█░█░█▀█░█░█░█░█░
 sendInfoMessage("░▀▀▀░▀▀▀░▀░▀░▀▀░░▀░▀░░▀░▀▀▀░░▀░▀░▀░▐▓█▄▄▄▄▄▄▄▄█▓▌░█████░░", "TOGAPack")
 sendInfoMessage("░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄▄██▄▄░░░░░█████░░", "TOGAPack")
 sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
-sendWarnMessage("             ░░░               ", "TOGAPack")
-sendWarnMessage("           ░░░░░░██            ", "TOGAPack")
-sendWarnMessage("          ░░░░░░░░██           ", "TOGAPack")
-sendWarnMessage("         ░░░░░░░░░░██          ", "TOGAPack")
-sendWarnMessage("         ░░░░▒▓▒░░░▒██         ", "TOGAPack")
-sendWarnMessage("        ░░░░█████░░░▒██        ", "TOGAPack")
-sendWarnMessage("       ░░░░░█████░░░░▓██       ", "TOGAPack")
-sendWarnMessage("      ░░░░░░░███▒░░░░░▓██      ", "TOGAPack")
-sendWarnMessage("     ░░░░░░░░███░░░░░░░██      ", "TOGAPack")
-sendWarnMessage("    ░░░░░░░░░▒█▓░░░░░░░░██     ", "TOGAPack")
-sendWarnMessage("   ░░░░░░░░░░░█▒░░░░░░░░░██    ", "TOGAPack")
-sendWarnMessage("  ░░░░░░░░░░░░░░░░░░░░░░░░██   ", "TOGAPack")
-sendWarnMessage("  ░░░░░░░░░░▒███▓░░░░░░░░░▒██  ", "TOGAPack")
-sendWarnMessage(" ░▒░░░░░░░░░█████░░░░░░░░░░▒██ ", "TOGAPack")
-sendWarnMessage("░▒▒▒░░░░░░░░░▓█▓░░░░░░░░░▒▒▒███", "TOGAPack")
-sendWarnMessage(" ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████", "TOGAPack")
-sendWarnMessage("   ███████████████████████████ ", "TOGAPack")
-sendWarnMessage("WARNING! This is not a stable release and may contain unfinished, broken or unused content!", "TOGAPack")
 
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
@@ -365,7 +347,7 @@ function Card:is_face(from_boss)
 	return isfaceref(self, from_boss)
 end
 
--- Hexa & Binary Joker yoink.
+-- Hexa & Binary Joker and Megas XLR yoink.
 local getiduse = false
 sendInfoMessage("Hooking Card:get_id...", "TOGAPack")
 local getidref = Card.get_id
