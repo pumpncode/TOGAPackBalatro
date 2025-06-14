@@ -173,27 +173,12 @@ SMODS.Consumable{
 					if v == dcard then destroyed_cards[#destroyed_cards+1] = dcard end
 				end
 			end
-			SMODS.calculate_context({remove_playing_cards = true, removed = destroyed_cards})
 			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
 				play_sound('tarot1')
 				card:juice_up(0.3, 0.5)
 			return true end}))
 			
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-				delay = 0.1,
-				func = function() 
-					for i=#destroyed_cards, 1, -1 do
-						local card = destroyed_cards[i]
-						if card.ability.name == 'Glass Card' then 
-							card:shatter()
-						else
-							card:start_dissolve(nil, i == #destroyed_cards)
-						end
-					end
-					return true
-				end
-			}))
+			SMODS.destroy_cards(destroyed_cards)
 		end
 		local payment = to_big(card.ability.extra.usecost)
 		if to_big(G.GAME.dollars) - payment < to_big(0) then payment = payment + (to_big(G.GAME.dollars) - to_big(card.ability.extra.usecost)) end
@@ -248,7 +233,7 @@ SMODS.Consumable {
 					card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_stonefound'), sound = togabalatro.config.SFXWhenTriggered and 'toga_xporb'})
 				else
 					card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_stonenothing')})
-					G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1,func = function() card:juice_up(); v:start_dissolve(); return true end }))
+					G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1,func = function() card:juice_up(); SMODS.destroy_cards(v); return true end }))
 				end
 			end
 		end
@@ -278,23 +263,7 @@ local function toga_spbdeckwreck(card, failedchance)
 		card:juice_up(0.3, 0.5)
 	return true end }))
 	
-	SMODS.calculate_context({remove_playing_cards = true, removed = destroyed_cards})
-	
-	G.E_MANAGER:add_event(Event({
-		trigger = 'after',
-		delay = 0.1,
-		func = function() 
-			for i=#destroyed_cards, 1, -1 do
-				local card = destroyed_cards[i]
-				if card.ability.name == 'Glass Card' then 
-					card:shatter()
-				else
-					card:start_dissolve(nil, i == #destroyed_cards)
-				end
-			end
-			return true
-		end
-	}))
+	SMODS.destroy_cards(destroyed_cards)
 end
 
 local spbdeckpart, spbcardmin = 0.75, 20

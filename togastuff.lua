@@ -410,7 +410,7 @@ function CardArea:shuffle(_seed)
 	if self == G.deck then
 		local otherc, smsc = {}, {}
 		for i, k in ipairs(self.cards) do
-			if k.config.center_key == 'm_toga_sms' then
+			if SMODS.has_enhancement(k, 'm_toga_sms') then
 				smsc[#smsc+1] = k
 			else
 				otherc[#otherc+1] = k
@@ -435,16 +435,16 @@ function G.FUNCS.draw_from_deck_to_hand(e)
 		func = function()
 			local allnotifcards = {}
 			for i = 1, #G.deck.cards do
-				if G.deck.cards[i].config.center_key == 'm_toga_notification' then
+				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then --if G.deck.cards[i].config.center_key == 'm_toga_notification' then
 					allnotifcards[#allnotifcards+1] = G.deck.cards[i]
 				end
 			end
 			if #allnotifcards > 0 then
 				for i = 1, #G.deck.cards do
 					for v = 1, #allnotifcards do
-						if G.deck.cards[i].config.center_key == 'm_toga_notification' and allnotifcards[v] == G.deck.cards[i] then
+						if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') and allnotifcards[v] == G.deck.cards[i] then
 							if togabalatro.config.DoMoreLogging then sendInfoMessage("Additionally drawing Notification Card "..i.." ("..G.deck.cards[i].config.card.name..") from the deck...", "TOGAPack") end
-							draw_card(G.deck, G.hand, 1, 'up', true, G.deck.cards[i])
+							draw_card(G.deck, G.hand, i*100/#allnotifcards, 'up', true, G.deck.cards[i])
 						end
 					end
 				end
@@ -702,7 +702,7 @@ togabalatro.playextracards = function()
 	local sms_deck = {}
 	if G.deck.cards and #G.deck.cards > 0 then
 		for i = 1, #G.deck.cards do
-			if G.deck.cards[i].config.center_key == 'm_toga_sms' then
+			if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_sms') then
 				sms_deck[#sms_deck+1] = G.deck.cards[i]
 			end
 		end
@@ -710,7 +710,7 @@ togabalatro.playextracards = function()
 	if #sms_deck > 0 then
 		for i = 1, #G.deck.cards do
 			for v = 1, #sms_deck do
-				if G.deck.cards[i].config.center_key == 'm_toga_sms' and sms_deck[v] == G.deck.cards[i] then
+				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_sms') and sms_deck[v] == G.deck.cards[i] then
 					if G.deck.cards[i]:is_face() then inc_career_stat('c_face_cards_played', 1) end
 					G.deck.cards[i].base.times_played = G.deck.cards[i].base.times_played + 1
 					G.deck.cards[i].ability.played_this_ante = true
