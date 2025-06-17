@@ -623,8 +623,7 @@ return {
 				name = 'Ubuntu',
 				text = {
 					"{C:attention}Jokers{} and {C:attention}Consumeables{} give {C:attention}#1#%{}",
-					"of their {C:money}sell value{} as {X:mult,C:white}XMult{} if",
-					"they can be sold for {C:money}$#2#{} or more."
+					"of their {C:money}sell value{} as {X:mult,C:white}XMult{}."
 				}
 			},
 			j_toga_linux_debian = {
@@ -844,22 +843,30 @@ return {
 				name = "Sealing Around",
 				text = {
 					"Add a {C:attention}Seal^2{}",
-					"to #1# selected",
+					"to {C:attention}#1#{} selected",
 					"card in your hand"
 				}
 			},
 			c_toga_filesource = {
 				name = "File Source",
 				text = {
-					"Enhances #1# selected cards",
+					"Enhances {C:attention}#1#{} selected cards",
 					"to {C:attention}Notification{} cards",
 				}
 			},
 			c_toga_mobilephone = {
 				name = "Phone",
 				text = {
-					"Enhances #1# selected cards",
+					"Enhances {C:attention}#1#{} selected cards",
 					"to {C:attention}SMS{} cards",
+				}
+			},
+			c_toga_hyperlink = {
+				name = "Hyperlink",
+				text = {
+					"Add a {C:attention}Hyperlink Seal{}",
+					"to {C:attention}#1#{} selected",
+					"card in your hand"
 				}
 			},
 		},
@@ -1052,6 +1059,17 @@ return {
 				text = {
 					"Creates a {C:dark_edition}Negative{}",
 					"{C:attention,T:j_egg}Egg{} when scored",
+				},
+			},
+			toga_urlseal_seal = {
+				name = "Hyperlink Seal",
+				text = {
+					-- "{C:dark_edition,E:1,s:3}THIS IS NOT A JOKE{}",
+					-- "{s:2}You are the 100.000th visitor of the day!{}",
+					-- "{C:spectral,E:1,s:2}Click here{}"
+					"{C:attention}Held in hand{} abilities",
+					"of this card trigger",
+					"{C:attention}even{} if {C:attention}not{} in hand."
 				},
 			},
 			toga_albavirusinfo = {
@@ -1386,7 +1404,8 @@ return {
 			toga_startupsfx = "Enable mod startup sound on initial load",
 		},
 		labels = {
-			toga_sealseal_seal = "Seal^2"
+			toga_sealseal_seal = "Seal^2",
+			toga_urlseal_seal = "Hyperlink Seal"
 		},
 		v_dictionary = {
 			toga_Echip = {"^#1# Chips"},

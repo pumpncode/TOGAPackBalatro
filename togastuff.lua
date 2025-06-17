@@ -5,24 +5,6 @@ sendInfoMessage("░█░░░█░█░█▀█░█░█░█░█░
 sendInfoMessage("░▀▀▀░▀▀▀░▀░▀░▀▀░░▀░▀░░▀░▀▀▀░░▀░▀░▀░▐▓█▄▄▄▄▄▄▄▄█▓▌░█████░░", "TOGAPack")
 sendInfoMessage("░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄▄██▄▄░░░░░█████░░", "TOGAPack")
 sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
-sendWarnMessage("             ░░░               ", "TOGAPack")
-sendWarnMessage("           ░░░░░░██            ", "TOGAPack")
-sendWarnMessage("          ░░░░░░░░██           ", "TOGAPack")
-sendWarnMessage("         ░░░░░░░░░░██          ", "TOGAPack")
-sendWarnMessage("         ░░░░▒▓▒░░░▒██         ", "TOGAPack")
-sendWarnMessage("        ░░░░█████░░░▒██        ", "TOGAPack")
-sendWarnMessage("       ░░░░░█████░░░░▓██       ", "TOGAPack")
-sendWarnMessage("      ░░░░░░░███▒░░░░░▓██      ", "TOGAPack")
-sendWarnMessage("     ░░░░░░░░███░░░░░░░██      ", "TOGAPack")
-sendWarnMessage("    ░░░░░░░░░▒█▓░░░░░░░░██     ", "TOGAPack")
-sendWarnMessage("   ░░░░░░░░░░░█▒░░░░░░░░░██    ", "TOGAPack")
-sendWarnMessage("  ░░░░░░░░░░░░░░░░░░░░░░░░██   ", "TOGAPack")
-sendWarnMessage("  ░░░░░░░░░░▒███▓░░░░░░░░░▒██  ", "TOGAPack")
-sendWarnMessage(" ░▒░░░░░░░░░█████░░░░░░░░░░▒██ ", "TOGAPack")
-sendWarnMessage("░▒▒▒░░░░░░░░░▓█▓░░░░░░░░░▒▒▒███", "TOGAPack")
-sendWarnMessage(" ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████", "TOGAPack")
-sendWarnMessage("   ███████████████████████████ ", "TOGAPack")
-sendWarnMessage("WARNING! This is not a stable release and may contain unfinished, broken or unused content!", "TOGAPack")
 
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
@@ -365,7 +347,7 @@ function Card:is_face(from_boss)
 	return isfaceref(self, from_boss)
 end
 
--- Hexa & Binary Joker yoink.
+-- Hexa & Binary Joker and Megas XLR yoink.
 local getiduse = false
 sendInfoMessage("Hooking Card:get_id...", "TOGAPack")
 local getidref = Card.get_id
@@ -428,7 +410,7 @@ function CardArea:shuffle(_seed)
 	if self == G.deck then
 		local otherc, smsc = {}, {}
 		for i, k in ipairs(self.cards) do
-			if k.config.center_key == 'm_toga_sms' then
+			if SMODS.has_enhancement(k, 'm_toga_sms') then
 				smsc[#smsc+1] = k
 			else
 				otherc[#otherc+1] = k
@@ -453,16 +435,16 @@ function G.FUNCS.draw_from_deck_to_hand(e)
 		func = function()
 			local allnotifcards = {}
 			for i = 1, #G.deck.cards do
-				if G.deck.cards[i].config.center_key == 'm_toga_notification' then
+				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then --if G.deck.cards[i].config.center_key == 'm_toga_notification' then
 					allnotifcards[#allnotifcards+1] = G.deck.cards[i]
 				end
 			end
 			if #allnotifcards > 0 then
 				for i = 1, #G.deck.cards do
 					for v = 1, #allnotifcards do
-						if G.deck.cards[i].config.center_key == 'm_toga_notification' and allnotifcards[v] == G.deck.cards[i] then
+						if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') and allnotifcards[v] == G.deck.cards[i] then
 							if togabalatro.config.DoMoreLogging then sendInfoMessage("Additionally drawing Notification Card "..i.." ("..G.deck.cards[i].config.card.name..") from the deck...", "TOGAPack") end
-							draw_card(G.deck, G.hand, 1, 'up', true, G.deck.cards[i])
+							draw_card(G.deck, G.hand, i*100/#allnotifcards, 'up', true, G.deck.cards[i])
 						end
 					end
 				end
@@ -520,8 +502,8 @@ end
 
 -- emem eht era uoy :VOP --
 togabalatro.forcereverse = false
-togabalatro.preprocess = function(context)
-	local output = context.cardarea and context.cardarea.cards or nil
+togabalatro.preprocess = function(context, input)
+	local output = input or context.cardarea and context.cardarea.cards or nil
 	if not output then
 		if context.cardarea == G.play then output = context.full_hand
 		elseif context.cardarea == G.hand then output = G.hand.cards
@@ -590,6 +572,62 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 			end
 		end
 	end
+	if context.cardarea == G.hand then
+		context.main_scoring = true
+		local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
+		for _, area in ipairs(areas) do
+			if area ~= G.hand then
+				local curcards = togabalatro.preprocess(context, area.cards)
+				for _, card in ipairs(curcards) do
+					if card.seal == 'toga_urlseal' then
+						SMODS.score_card(card, context)
+					end
+				end
+			end
+		end
+		context.main_scoring = nil
+	end
+end
+
+-- Yoinked from original SMODS.calculate_end_of_round_effects, but edited to target specific cards.
+-- 100% hacky, there should be a better way for doing this...
+togabalatro.eorproc = function(area, card, context, i)
+	if card.seal ~= 'toga_urlseal' then return end
+	local reps = {1}
+	local j = 1
+	while j <= #reps do
+		percent = percent or (i-0.999)/(#area.cards-0.998) + (j-1)*0.1
+		if reps[j] ~= 1 then
+			local _, eff = next(reps[j])
+			SMODS.calculate_effect(eff, eff.card)
+			percent = percent + 0.08
+		end
+
+		context.playing_card_end_of_round = true
+		local effects = {eval_card(card, context)}
+		SMODS.calculate_quantum_enhancements(card, effects, context)
+
+		context.playing_card_end_of_round = nil
+		context.individual = true
+		context.other_card = card
+
+		SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+		SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+
+		local flags = SMODS.trigger_effects(effects, card)
+
+		context.individual = nil
+		context.repetition = true
+		context.card_effects = effects
+		if reps[j] == 1 then
+			SMODS.calculate_repetitions(card, context, reps)
+		end
+
+		context.repetition = nil
+		context.card_effects = nil
+		context.other_card = nil
+		j = j + (flags.calculated and 1 or #reps)
+	end
 end
 
 -- Hooking to run it back.
@@ -601,6 +639,21 @@ function SMODS.calculate_end_of_round_effects(context)
 		togabalatro.forcereverse = true
 		calcendroundref(context)
 		togabalatro.forcereverse = false
+	end
+	-- This bit is 100% experimental... there should be a better way for doing this, right?
+	local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
+	if context.cardarea == G.hand then
+		local contextcopy = context
+		contextcopy.cardarea = G.hand
+		for i, area in ipairs(areas) do
+			if area ~= G.hand and area.cards then
+				for _, card in ipairs(area.cards) do
+					if card.seal == 'toga_urlseal' then
+						togabalatro.eorproc(area, card, contextcopy, i)
+					end
+				end
+			end
+		end
 	end
 end
 
@@ -649,7 +702,7 @@ togabalatro.playextracards = function()
 	local sms_deck = {}
 	if G.deck.cards and #G.deck.cards > 0 then
 		for i = 1, #G.deck.cards do
-			if G.deck.cards[i].config.center_key == 'm_toga_sms' then
+			if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_sms') then
 				sms_deck[#sms_deck+1] = G.deck.cards[i]
 			end
 		end
@@ -657,7 +710,7 @@ togabalatro.playextracards = function()
 	if #sms_deck > 0 then
 		for i = 1, #G.deck.cards do
 			for v = 1, #sms_deck do
-				if G.deck.cards[i].config.center_key == 'm_toga_sms' and sms_deck[v] == G.deck.cards[i] then
+				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_sms') and sms_deck[v] == G.deck.cards[i] then
 					if G.deck.cards[i]:is_face() then inc_career_stat('c_face_cards_played', 1) end
 					G.deck.cards[i].base.times_played = G.deck.cards[i].base.times_played + 1
 					G.deck.cards[i].ability.played_this_ante = true

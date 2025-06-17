@@ -14,9 +14,9 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		local curcard = context.other_joker or context.other_consumeable or nil
-		if curcard and curcard ~= card and curcard.sell_cost*card.ability.extra.percentage > 1 then
+		if curcard and curcard ~= card and curcard.sell_cost*card.ability.extra.percentage > 0 then
 			local xmultval = curcard and curcard.sell_cost*card.ability.extra.percentage or 0
-			return { xmult = xmultval > 1 and xmultval or 1, message_card = curcard or context.blueprint_card or card }
+			return { xmult = xmultval > 0 and 1+xmultval or 1, message_card = curcard or context.blueprint_card or card }
 		end
 	end,
 	pixel_size = { w = 69, h = 69 }
@@ -50,7 +50,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'linux_slackware',
-	config = { extra = { persuit = 0.15 } },
+	config = { extra = { persuit = 0.2 } },
 	loc_vars = function(self, info_queue, card)
 		local uniquesuits, suitcount, diffkey = {}, 0, false
 		if (G.play and G.play.cards and #G.play.cards > 0) and (G.hand and G.hand.cards and #G.hand.cards > 0) then

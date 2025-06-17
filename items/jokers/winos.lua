@@ -56,7 +56,7 @@ end
 
 SMODS.Joker{
 	key = 'win98',
-	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.125 } },
+	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.15 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.totalconsslotbonus = togabalatro.getconscount()*card.ability.extra.consslotbonus or 0
 		return { vars = { card.ability.extra.consslotbonus*100, card.ability.extra.totalconsslotbonus*100, card.ability.extra.percentage*100, toga_gettotaljokervalue()*card.ability.extra.percentage } }

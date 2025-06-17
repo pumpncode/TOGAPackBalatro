@@ -5,10 +5,10 @@ local function toga_y2kcheck(context)
 	local twopresent = 0
 	local kingpresent = 0
 	for i = 1, #context.full_hand do
-		if SMODS.Ranks[context.full_hand[i].base.value].key == "2" then
+		if context.full_hand[i]:get_id() == 2 then
 			twopresent = twopresent+1
 		end
-		if SMODS.Ranks[context.full_hand[i].base.value].key == "King" then
+		if context.full_hand[i]:get_id() == 13 then
 			kingpresent = kingpresent+1
 		end
 	end
@@ -612,7 +612,7 @@ SMODS.Joker{
 	atlas = 'TOGAJokersMain',
 	pos = { x = 2, y = 0 },
 	soul_pos = { x = 4, y = 0 },
-	cost = 25,
+	cost = 20,
 	blueprint_compat = true,
 	perishable_compat = false,
 	add_to_deck = function(self, card, from_debuff)
@@ -710,6 +710,7 @@ SMODS.Joker{
 	cost = 15,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
+		if context.blueprint then return end
 		if context.after then card.ability.roverscore = nil end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -785,10 +786,10 @@ end
 
 SMODS.Joker{
 	key = 'jokersrb2kart',
-	config = { extra = { Xmult_current = 1, add_shop = 0.1, addshortcut = 0.75, shortcutfailmult = 1.33, maxchance = 3, toexactchance = 1} },
+	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.75, shortcutfailmult = 1.33, maxchance = 3, toexactchance = 1} },
 	loc_vars = function(self, info_queue, card)
 		if self.discovered then
-			info_queue[#info_queue + 1] = {key = "toga_kartjokerlist", set = 'Other', vars = { card.ability.extra.add_shop, card.ability.extra.add_shop*5 } }
+			info_queue[#info_queue + 1] = {key = "toga_kartjokerlist", set = 'Other', vars = { card.ability.extra.add_shop, card.ability.extra.add_shop*8 } }
 			if G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' then info_queue[#info_queue + 1] = {key = "toga_kartjokershortcutspecial", set = 'Other', vars = { card.ability.extra.addshortcut/2.5 } }
 			else
 				info_queue[#info_queue + 1] = {key = "toga_kartjokershortcut", set = 'Other', vars =
@@ -800,7 +801,7 @@ SMODS.Joker{
 		return { vars = { card.ability.extra.Xmult_current } }
 	end,
 	unlocked = true,
-	rarity = 2,
+	rarity = 3,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 1, y = 0 },
 	cost = 10,
@@ -821,7 +822,7 @@ SMODS.Joker{
 		
 		if (context.buying_card or context.selling_card or context.playing_card_added or context.ending_shop or context.using_consumeable or context.open_booster or context.reroll_shop or context.ending_shop)
 		and not context.individual and not context.blueprint then
-			card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + (context.ending_shop and card.ability.extra.add_shop*5 or context.playing_card_added and context.cards and #context.cards and card.ability.extra.add_shop*#context.cards or card.ability.extra.add_shop)
+			card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + (context.ending_shop and card.ability.extra.add_shop*8 or context.playing_card_added and context.cards and #context.cards and card.ability.extra.add_shop*#context.cards or card.ability.extra.add_shop)
 			G.E_MANAGER:add_event(Event({func = function()
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')});
 				return true
@@ -926,8 +927,8 @@ SMODS.Joker{
 -- Count steel card amount in full deck and round down the returned result.
 -- ...and also prevent recursion. (thanks, nnmrts!)
 local steelprocess = false
-local function toga_gettotalsteelcount()
-	if steelprocess then return 0 end
+local function toga_gettotalsteelcount(div)
+	if steelprocess or div == 0 or div == nil then return 0 end
 	local allsteel = 0
 	steelprocess = true
 	if G.playing_cards then
@@ -936,21 +937,17 @@ local function toga_gettotalsteelcount()
 		end
 	end
 	steelprocess = false
-	return math.floor(allsteel/4)
-end
-
--- Update variable for Anvil.
-local function toga_updatesteelrepeat(target)
-	return toga_gettotalsteelcount()*target.ability.extra.repetitions
+	return math.floor(allsteel/math.abs(div))
 end
 
 SMODS.Joker{
 	key = 'mcanvil',
-	config = { extra = { repetitions = 1, totalrepetitions = 0 } },
+	config = { extra = { repetitions = 1, totalrepetitions = 0, steelneed = 4 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
 		card.ability.extra.totalrepetitions = card.ability.extra.repetitions*toga_gettotalsteelcount() or 0
-		return { vars = { math.floor(card.ability.extra.repetitions), toga_updatesteelrepeat(card) } }
+		card.ability.extra.steelneed = math.ceil(math.max(card.ability.extra.steelneed, 1))
+		return { vars = { math.floor(card.ability.extra.repetitions), toga_gettotalsteelcount(card.ability.extra.steelneed)*card.ability.extra.repetitions, card.ability.extra.steelneed } }
 	end,
 	unlocked = true,
 	rarity = 3,
@@ -994,6 +991,7 @@ SMODS.Joker{
 	cost = 15,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
+		if context.blueprint then return end
 		if context.after then card.ability.pinballscore = nil end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -1058,10 +1056,6 @@ SMODS.Joker{
 	end,
 	unlocked = true,
 	rarity = 4,
-	in_pool = function()
-		if #SMODS.find_card('j_toga_pso2ironwill', true) > 0 then return false
-		else return true end
-	end,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 4, y = 2 },
 	cost = 30,
@@ -1087,7 +1081,7 @@ SMODS.Joker{
 local function toga_jimbopluscalc(card)
 	local totalxmult = 1
 	
-	if G.jokers and G.jokers.cards then
+	if G.jokers and G.jokers.cards and card then
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i] and G.jokers.cards[i] ~= card then
 				if G.jokers.cards[i].config.center.key == 'j_joker' then totalxmult = totalxmult + card.ability.extra.jimboxmult
@@ -1115,10 +1109,6 @@ SMODS.Joker{
 		if context.individual and context.cardarea == G.play then
 			local xval = toga_jimbopluscalc(card) or 1
 			return { xmult = xval > 1 and xval }
-		end
-		
-		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and togabalatro.config.SFXWhenTriggered and not silent then
-			return { message = localize('toga_jimbo'), sound = "voice"..math.random(1, 11), pitch = togabalatro.randompitch() }
 		end
 	end
 }
@@ -1246,7 +1236,7 @@ SMODS.Joker{
 	end
 }
 
-local function toga_subtable(ttable, found, increase, depthiter)
+local function toga_subtable(ttable, foundmodified, increase, depthiter)
 	depthiter = depthiter or 1
 	if depthiter > 32 then return end -- Just in case.
 	for k, v in pairs(ttable) do
@@ -1255,7 +1245,7 @@ local function toga_subtable(ttable, found, increase, depthiter)
 			ttable[k] = rplc
 			foundmodified = true
 		elseif type(v) == 'table' then
-			toga_subtable(v, found, increase, depthiter) -- This is a bit dangerous...
+			toga_subtable(v, foundmodified, increase, depthiter) -- This is a bit dangerous...
 		end
 	end
 end
@@ -1518,7 +1508,7 @@ if Talisman then
 		atlas = 'TOGAJokersMain',
 		pos = { x = 0, y = 2 },
 		soul_pos = { x = 4, y = 1 },
-		cost = 40,
+		cost = 30,
 		blueprint_compat = true,
 		perishable_compat = false,
 		calculate = function(self, card, context)
@@ -1528,7 +1518,6 @@ if Talisman then
 					eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
 				}
 				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
-				print(stacked, stackamount)
 				if stacked and stackamount then
 					return {
 						func = function()
@@ -1562,7 +1551,7 @@ end
 if Talisman then
 	SMODS.Joker{
 		key = 'quacksoft',
-		config = { extra = { cardechip = 0.01 } },
+		config = { extra = { cardechip = 0.02 } },
 		loc_vars = function(self, info_queue, card)
 			return { vars = { card.ability.extra.cardechip, G.deck and G.deck.cards and 1 + (card.ability.extra.cardechip*#G.deck.cards) or 1 } }
 		end,

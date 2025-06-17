@@ -39,3 +39,11 @@ SMODS.Seal{
 		end
 	end,
 }
+
+SMODS.Seal{
+	key = 'urlseal',
+	badge_colour = HEX("0000ff"),
+	atlas = "TOGASeals",
+	pos = { x = 1, y = 0 },
+	sound = { sound = "gold_seal", per = 1.2, vol = 0.4 }
+}
