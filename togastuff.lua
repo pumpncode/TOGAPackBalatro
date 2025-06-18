@@ -739,8 +739,8 @@ togabalatro.stackingcompat = function(consumable)
 	if Overflow and consumable and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
 		return true, consumable.ability.immutable.overflow_amount
 	-- ...though, backwards compatibility wouldn't hurt...
-	elseif Incantation and consumable and consumeable.ability and consumeable.ability.qty then
-		return true, consumeable.ability.qty
+	elseif Incantation and consumable and consumable.ability and consumable.ability.qty then
+		return true, consumable.ability.qty
 	end
 end
 
