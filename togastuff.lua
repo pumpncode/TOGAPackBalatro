@@ -32,7 +32,10 @@ SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 32, py = 32}
 -- Hear me scream.
 SMODS.Sound({key = "win95start", path = "win95start.ogg"}) -- The Microsoft Sound (95 & NT4)
 SMODS.Sound({key = "win95tada", path = "win95tada.ogg"}) -- tada.wav (3.x, 95 & NT4)
-SMODS.Sound({key = "w96", path = "w96.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "bells", path = "startup/bells.wav"}) -- Windows 3.0 MME
+SMODS.Sound({key = "w96", path = "startup/w96.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "w94", path = "startup/w94.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "ntreskit", path = "startup/ntreskit.ogg"}) -- Windows NT4 Resource Kit
 SMODS.Sound({key = "chordold", path = "chordold.wav"}) -- chord.wav (95 & NT4)
 SMODS.Sound({key = "chord", path = "chord.wav"}) -- chord.wav (98, ME, 2000 and XP)
 SMODS.Sound({key = "win98start", path = "win98start.ogg"}) -- The Microsoft Sound (98) [edited]
@@ -79,6 +82,7 @@ SMODS.Sound({key = "scalesofjustice", path = "ScalesOfJustice.wav"}) -- self exp
 SMODS.Sound({key = "failsfx", path = "comedicfail.ogg"}) -- fart.mp3
 SMODS.Sound({key = "goldenhit", path = "Saxxy_impact_gen_06.ogg"}) -- getting a kill with a Golden Wrench, Saxxy or Golden Frying Pan, TF2
 SMODS.Sound({key = "jaratehit", path = "jar_explode.ogg"}) -- Jarate hitting something, TF2
+SMODS.Sound({key = "soldierscream", path = "screm.ogg"}) -- TF2 Soldier screaming?
 SMODS.Sound({key = "w95restup", path = "Windows 95 restore up.ogg"}) -- Plus! 95, Windows 95 restore up.wav
 SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
 
@@ -101,138 +105,18 @@ SMODS.Sound({
 	key = "music_balatro98",
 	path = "balatro98.ogg",
 	select_music_track = function()
-		return togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
+		return togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU
+		or togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
 		and (SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togazipboosterpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaziparchivepack'
 		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togararpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togacardcabpack'
 		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaxcopydnapack') and 2
 	end,
 })
 
--- Booster Pack content. So true.
-SMODS.ObjectType{
-	object_type = "ObjectType",
-	key = "TOGAJKR",
-	default = "j_toga_win95",
-	cards = {
-		["j_toga_y2kbug"] = true, ["j_toga_controlpanel"] = true, ["j_toga_mcanvil"] = true,
-		["j_toga_taskmgr"] = true, ["j_toga_solitairejoker"] = true, ["j_toga_win95"] = true,
-		["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
-		["j_toga_win2000"] = true, ["j_toga_winvista"] = true, ["j_toga_win7"] = true,
-		["j_toga_win8"] = true, ["j_toga_useraccounts"] = true, ["j_toga_virtualmemory"] = true,
-		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
-		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
-		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true, ["j_toga_mcanvil"] = true, 
-		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
-		["j_toga_megasxlr"] = true, ["j_toga_mac_os_9"] = true, ["j_toga_mac_os_x"] = true,
-		["j_toga_linux_ubuntu"] = true, ["j_toga_linux_debian"] = true, ["j_toga_linux_slackware"] = true,
-		["j_toga_linux_redhat"] = true
-	}
-}
-
 -- I think, therefore, I am.
 togabalatro = SMODS.current_mod
 
-togabalatro.config_tab = function()
-	return {n = G.UIT.ROOT, config = {align = "cl", outline = 0.5, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 7, minh = 2}, nodes = {
-		{n = G.UIT.R, config = {align = "cl", outline = 0.35, outline_colour = HEX('C3C3C3'), colour = HEX('000082')}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 0, y = 0 }) } },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_configtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenAdding" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_sfxwhenadd'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenRemoving" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_sfxwhendel'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenTriggered" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_sfxwhenuse'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "BoosterPackMusic" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_musicpacks'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "JokeJokersActive" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_jokejokers'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "StartUpSound" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-	}}
-end
-
-togabalatro.extra_tabs = function()
-	return {
-		{ label = 'Logging', tab_definition_function = function()
-			return {n = G.UIT.ROOT, config = {align = "cl", outline = 0.65, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 7, minh = 2}, nodes = {
-				{n = G.UIT.R, config = {align = "cl", outline = 0.35, outline_colour = HEX('C3C3C3'), colour = HEX('000082')}, nodes = {
-					{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-						{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 2, y = 0 }) } },
-					}},
-					{n = G.UIT.C, config = { align = "cl", padding = 0 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_logtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-				{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
-					{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-						create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "DoMoreLogging" },
-					}},
-					{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_verboselog'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-				{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
-					{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-						create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "DoEvenMoreLogging" },
-					}},
-					{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_extraverboselog'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-				{n = G.UIT.R, config = {align = "cm", padding = 0, outline = 0.5, outline_colour = HEX('491A19'), colour = HEX('7A2D29')}, nodes = {
-					{n = G.UIT.C, config = { align = "cm", padding = 0}, nodes = {
-						{n = G.UIT.O, config = { w = 0.66, h = 0.66, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 1, y = 0 }) } },
-					}},
-					{n = G.UIT.C, config = { align = "cm", padding = 0.05 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_extraverboselogwarn'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-			}}
-		end}
-	}
-end
+assert(SMODS.load_file("tabs.lua"))()
 
 togabalatro.custom_ui = function(modNodes)
 	if math.random(1, 10) == 5 then
@@ -255,7 +139,8 @@ end
 togabalatro.optional_features = function()
 	return {
 		cardareas = { deck = true, discard = true },
-		retrigger_joker = true
+		retrigger_joker = true,
+		quantum_enhancements = true
 	}
 end
 
@@ -276,6 +161,60 @@ togabalatro.iswindows = function(card)
 	or card.config.center.key == 'j_toga_win2000' or card.config.center.key == 'j_toga_winxp'
 	or card.config.center.key == 'j_toga_winvista' or card.config.center.key == 'j_toga_win7'
 	or card.config.center.key == 'j_toga_win8' then return true end
+end
+
+togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit'}
+togabalatro.verifysfxconfig = function()
+	togabalatro.config.StartUpSFX = type(togabalatro.config.StartUpSFX) == 'table' and togabalatro.config.StartUpSFX or {}
+	togabalatro.config.StartUpSFX.Selected = togabalatro.config.StartUpSFX.Selected or 1
+	togabalatro.config.StartUpSFX.UseSelected = togabalatro.config.StartUpSFX.UseSelected or false
+end
+togabalatro.execstartupsfx = function()
+	if not togabalatro.has_tried_startup and togabalatro.config.StartUpSound then
+		togabalatro.verifysfxconfig()
+		if not togabalatro.config.StartUpSFX.UseSelected or togabalatro.config.StartUpSFX.Selected == nil then
+			togabalatro.config.StartUpSFX.Selected = math.random(1, #togabalatro.startupsfx)
+		end
+		play_sound(togabalatro.startupsfx[togabalatro.config.StartUpSFX.Selected], 1, 0.5)
+	end
+	togabalatro.has_tried_startup = true
+end
+
+-- Booster Pack content moved to end.
+SMODS.ObjectType{
+	object_type = "ObjectType",
+	key = "TOGAJKR",
+	default = "j_toga_win95",
+	cards = {
+		["j_toga_y2kbug"] = true, ["j_toga_controlpanel"] = true, ["j_toga_mcanvil"] = true,
+		["j_toga_taskmgr"] = true, ["j_toga_solitairejoker"] = true, ["j_toga_win95"] = true,
+		["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
+		["j_toga_win2000"] = true, ["j_toga_winvista"] = true, ["j_toga_win7"] = true,
+		["j_toga_win8"] = true, ["j_toga_useraccounts"] = true, ["j_toga_virtualmemory"] = true,
+		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
+		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
+		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true, ["j_toga_mcanvil"] = true, 
+		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
+		["j_toga_megasxlr"] = true, ["j_toga_asterism"] = true, ["j_toga_theinternet"] = true,
+		["j_toga_binaryjkr"] = true, ["j_toga_hexadecimaljkr"] = true, ["j_toga_y2ksticker"] = true,
+		["j_toga_jimboplus"] = true, ["j_toga_tomscott"] = true, ["j_toga_goldenwrench"] = true,
+		["j_toga_skype"] = true, ["j_toga_msn"] = true, ["j_toga_mac_os_9"] = true, 
+		["j_toga_mac_os_x"] = true, ["j_toga_linux_ubuntu"] = true, ["j_toga_linux_debian"] = true,
+		["j_toga_linux_slackware"] = true, ["j_toga_linux_redhat"] = true,
+	}
+}
+
+G.FUNCS.togabalatro_startupsfx = function(args)
+	if not args or args.to_key == nil then return end
+	togabalatro.verifysfxconfig()
+	togabalatro.config.StartUpSFX.Selected = args.to_key
+end
+G.FUNCS.togabalatro_playsfx = function()
+	togabalatro.verifysfxconfig()
+	play_sound(togabalatro.startupsfx[togabalatro.config.StartUpSFX.Selected], 1, 0.5)
+end
+G.FUNCS.togabalatro_sfxswapcfg = function(args)
+	togabalatro.config.SFXSwapLevel = args.to_key
 end
 
 -- Still kept for colouring the button with higher allowed amount of cards to play, but also backwards compat.
@@ -324,8 +263,8 @@ local playsoundref = play_sound
 function play_sound(sound_code, per, vol)
 	-- ...only if config is set to allow it.
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("play_sound hook.", "TOGAPack") end
-	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and togabalatro.rosensfx[sound_code] then sound_code = 'toga_rosenclick' end
-	if G and G.GAME and G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == 'bl_toga_xpboss' then sound_code = 'toga_winxpcritstop' end
+	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and ((togabalatro.config.SFXSwapLevel == 3) or (togabalatro.config.SFXSwapLevel == 2 and togabalatro.rosensfx[sound_code])) then sound_code = 'toga_rosenclick' end
+	if G and G.GAME and G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == 'bl_toga_xpboss' and (togabalatro.config.SFXSwapLevel >= 2) then sound_code = 'toga_winxpcritstop' end
 	
 	playsoundref(sound_code, per, vol)
 end
@@ -482,6 +421,15 @@ function Blind:disable()
     return bldisref(self)
 end
 
+sendInfoMessage("Hooking Game:update_game_over...", "TOGAPack")
+local ugoref = Game.update_game_over
+function Game:update_game_over(dt)
+	if not G.STATE_COMPLETE then
+		if G.GAME.selected_back.effect.center.key == 'b_toga_screamingdeck' and togabalatro.config.SFXWhenTriggered then play_sound('toga_soldierscream', 1, 0.4) end
+	end
+	ugoref(self, dt)
+end
+
 function ReverseTable(t)
 	local rt = {}
 	for i = #t, 1, -1 do
@@ -532,25 +480,18 @@ togabalatro.areaprocess = function(t)
 	return output
 end
 
--- Hooking to do more funky scoring shenanigans.
-sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
-local calcmainscoreref = SMODS.calculate_main_scoring
-function SMODS.calculate_main_scoring(context, scoring_hand)
-	calcmainscoreref(context, scoring_hand)
-	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
-		togabalatro.forcereverse = true
-		context.main_scoring = true
-		calcmainscoreref(context, scoring_hand)
-		togabalatro.forcereverse = false
-		context.main_scoring = nil
-	end
+togabalatro.areaorderprocess = function(t)
+	return togabalatro.areaprocess(t)
+end
+
+-- Any additional scoring with chips and what not.
+togabalatro.extrascoring = function(context, scoring_hand)
 	local spacecadet, rover = SMODS.find_card('j_toga_spacecadetpinball'), SMODS.find_card('j_toga_rover')
 	if context.cardarea == G.play then
 		if next(spacecadet) then
 			for i = 1, #spacecadet do
 				context.main_scoring = true
 				local card = spacecadet[i]
-				card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint)
 				for r = 1, card.ability.extra.alltrig do
 					if (pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 or card.ability.cry_rigged) and scoring_hand then
 						if not card.ability.pinballscore then card.ability.pinballscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pinballing')}) end
@@ -572,6 +513,10 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 			end
 		end
 	end
+end
+
+-- Custom scoring of held in hand abilities.
+togabalatro.heldinhandscoring = function(context, scoring_hand)
 	if context.cardarea == G.hand then
 		context.main_scoring = true
 		local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
@@ -589,10 +534,30 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 	end
 end
 
+-- Special case for the sleeve scoring.
+togabalatro.kartsleevescoring = function(context, scoring_hand)
+	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
+		togabalatro.forcereverse = true
+		context.main_scoring = true
+		calcmainscoreref(context, scoring_hand)
+		togabalatro.forcereverse = false
+		context.main_scoring = nil
+	end
+end
+
+-- Hooking to do more funky scoring shenanigans.
+sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
+local calcmainscoreref = SMODS.calculate_main_scoring
+function SMODS.calculate_main_scoring(context, scoring_hand)
+	calcmainscoreref(context, scoring_hand)
+	togabalatro.kartsleevescoring(context, scoring_hand)
+	togabalatro.extrascoring(context, scoring_hand)
+	togabalatro.heldinhandscoring(context, scoring_hand)
+end
+
 -- Yoinked from original SMODS.calculate_end_of_round_effects, but edited to target specific cards.
 -- 100% hacky, there should be a better way for doing this...
 togabalatro.eorproc = function(area, card, context, i)
-	if card.seal ~= 'toga_urlseal' then return end
 	local reps = {1}
 	local j = 1
 	while j <= #reps do
@@ -673,6 +638,12 @@ togabalatro.handlimitchange = function(val, set_to)
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Backwards compatibility... "..val, "TOGAPack") end
 		G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + val, val < 0 and 1 or 5)
 	end
+end
+
+-- weaponized negativity.
+local negweightref = G.P_CENTERS['e_negative'].get_weight
+G.P_CENTERS['e_negative'].get_weight = function(self)
+	return negweightref(self)*(G.GAME.toga_negchance or 1)
 end
 
 -- Golden Wrench...

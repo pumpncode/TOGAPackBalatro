@@ -87,6 +87,18 @@ return {
 					"in random order.",
 				}
 			},
+			b_toga_blissful = {
+				name = "Blissful Deck",
+				text = {
+					"{C:attention}Enhancements{} are {C:dark_edition}shared{}",
+					"between {C:attention}playing cards{}",
+					"{C:red}X#5#{} base Blind size",
+					"{C:red,s:0.8}#1# {s:0.8}hand, {C:red,s:0.8}#2# {s:0.8}discard, {C:attention,s:0.8}+#6#{s:0.8} Ante to win",
+					"{C:red,s:0.8}#3# {s:0.8}Joker slot, {C:red,s:0.8}#4# {s:0.8}Consumable slot",
+					"{C:inactive,s:0.9}Can get quite laggy, be warned!{}",
+					"{C:inactive,s:0.8}Animation skipping mods recommended.{}",
+				}
+			},
 		},
 		Blind = {
 			bl_toga_dialupmodem = {
@@ -1033,7 +1045,28 @@ return {
 				name = "Can I Offer You An Egg In These Times",
 				text = {
 					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} {E:1,C:green}will{} be {C:dark_edition}Negative{}.",
-					--"{E:1,C:green}will{} be {C:dark_edition}Negative{}.",
+				},
+			},
+			v_toga_spectralzipper = {
+				name = "Spectral Zipper",
+				text = {
+					"{C:attention}Joker.ZIP{} and {C:attention}CONSUMAB.RAR{}",
+					"have a {C:green}#1# in #2#{} chance to",
+					"contain {C:dark_edition}Legendary{} items."
+				},
+			},
+			v_toga_auroramatter = {
+				name = "Aurora Matter",
+				text = {
+					"{C:dark_edition}Negative{} cards are {X:attention,C:white}#1#X{}",
+					"more likely to appear"
+				},
+			},
+			v_toga_quantummatter = {
+				name = "Quantum Matter",
+				text = {
+					"{C:dark_edition}Negative{} cards are {X:dark_edition,C:white}#1#X{}",
+					"more likely to appear"
 				},
 			},
 		},
@@ -1172,6 +1205,20 @@ return {
 					"{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^^#2#{} Chips, {X:dark_edition,C:white}^^^#3#{} Chips",
 					"{X:dark_edition,C:white}^#4#{} Mult, {X:dark_edition,C:white}^^#5#{} Mult, {X:dark_edition,C:white}^^^#6#{} Mult",
 					"{C:inactive,s:0.7}(10x, 20x and 40x less likely to be rolled respectively.){}",
+				},
+			},
+			toga_jokerzipupgrade = {
+				name = "Spectral Zipper",
+				text = {
+					"{C:green}#1# in #2#{} chance to have a",
+					"{C:dark_edition}Legendary{} {C:attention}Joker{}.",
+				},
+			},
+			toga_consumabrarupgrade = {
+				name = "Spectral Zipper",
+				text = {
+					"{C:green}#1# in #2#{} chance",
+					"to contain {C:dark_edition}The Soul{}.",
 				},
 			},
 			toga_scales1 = {
@@ -1393,15 +1440,24 @@ return {
 			toga_roverwoof = "Woof.",
 			toga_configtab = "Mod Settings",
 			toga_logtab = "Logging Settings",
+			toga_startsfxtab = "Misc. Audio Options",
+			toga_startsfxoptions = "Sound:",
 			toga_sfxwhenadd = "SFX when getting some of the mods' items",
 			toga_sfxwhendel = "SFX when removing some of the mods' items",
 			toga_sfxwhenuse = "SFX when some of the mods' items trigger",
-			toga_musicpacks = "Custom music for own Booster Packs",
+			toga_musicpacks = "MIDI-fied music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
 			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",
+			toga_mainmenumusicswap = "MIDI-fy the Main Menu music",
 			toga_startupsfx = "Enable mod startup sound on initial load",
+			toga_startupsfxuse = "Use selected SFX for next game startup",
+			toga_sfxswaptext = "SFX Swap Level:",
+			toga_sfxswapnone = "None",
+			toga_sfxswapdefault = "Default",
+			toga_sfxswapall = "All",
+			toga_startupsfxtest = "Test",
 		},
 		labels = {
 			toga_sealseal_seal = "Seal^2",

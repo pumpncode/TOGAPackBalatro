@@ -39,13 +39,17 @@ SMODS.Booster{
 	config = {extra = 10, choose = 2, name = "Joker.ZIP"},
 	discovered = false,
 	loc_vars = function(self, info_queue, card)
-		return { vars = {card.ability.choose, card.ability.extra} }
+		if G.GAME and G.GAME.used_vouchers['v_toga_spectralzipper'] == true and G.GAME.spectralzipper_chance then
+			info_queue[#info_queue + 1] = {key = "toga_jokerzipupgrade", set = 'Other', vars = { (G.GAME and G.GAME.probabilities.normal or 1), G.GAME.spectralzipper_chance or 500 } }
+		end
+		return { vars = {card.ability.choose, card.ability.extra } }
 	end,
 	ease_background_colour = function(self)
 		ease_background_colour({ new_colour = HEX("515966"), special_colour = HEX("121417"), contrast = 1.25 }) -- Longhorn, anyone?
 	end,
 	create_card = function(self, card)
-		return create_card("Joker", G.pack_cards, nil, nil, true, true, nil, 'toga')
+		local leg = G.GAME and G.GAME.used_vouchers['v_toga_spectralzipper'] == true and G.GAME.spectralzipper_chance and pseudorandom("toga_leg") < G.GAME.probabilities.normal/G.GAME.spectralzipper_chance or nil
+		return create_card("Joker", G.pack_cards, leg, nil, true, true, nil, 'toga')
 	end,
 	kind = 'TOGABoostPack'
 }
@@ -62,13 +66,17 @@ SMODS.Booster{
 	draw_hand = true,
 	discovered = false,
 	loc_vars = function(self, info_queue, card)
+		if G.GAME and G.GAME.used_vouchers['v_toga_spectralzipper'] == true and G.GAME.spectralzipper_chance then
+			info_queue[#info_queue + 1] = {key = "toga_consumabrarupgrade", set = 'Other', vars = { (G.GAME and G.GAME.probabilities.normal or 1), G.GAME.spectralzipper_chance or 500 } }
+		end
 		return { vars = {card.ability.choose, card.ability.extra} }
 	end,
 	ease_background_colour = function(self)
 		ease_background_colour({ new_colour = HEX("bb1b36"), special_colour = HEX("177c2f"), contrast = 1.25 })
 	end,
 	create_card = function(self, card)
-		return create_card("Consumeables", G.pack_cards, nil, nil, true, true, togabalatro.getrandcons('rar'), 'toga')
+		local leg = G.GAME and G.GAME.used_vouchers['v_toga_spectralzipper'] == true and G.GAME.spectralzipper_chance and pseudorandom("toga_leg") < G.GAME.probabilities.normal/G.GAME.spectralzipper_chance or nil
+		return create_card("Consumeables", G.pack_cards, nil, nil, true, true, leg and 'c_soul' or togabalatro.getrandcons('rar'), 'toga')
 	end,
 	kind = 'TOGABoostPack'
 }

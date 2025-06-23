@@ -35,8 +35,9 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		discovered = true,
 		rarity = 1,
 		atlas = 'TOGAJokersMain',
-		pos = { x = 0, y = 5 },
+		pos = { x = 1, y = 4 },
 		cost = 4,
+		pools = { ["TOGAJKR"] = true },
 		blueprint_compat = true,
 		calculate = function(self, card, context)
 			if context.end_of_round and not context.repetition and not context.individual and not context.game_over then
@@ -65,8 +66,9 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		discovered = true,
 		rarity = 2,
 		atlas = 'TOGAJokersMain',
-		pos = { x = 1, y = 5 },
+		pos = { x = 2, y = 4 },
 		cost = 7,
+		pools = { ["TOGAJKR"] = true },
 		blueprint_compat = false,
 		set_badges = function(self, card, badges)
 			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
@@ -81,8 +83,9 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		perishable_compat = false,
 		rarity = "crv_p",
 		atlas = 'TOGAJokersMain',
-		pos = { x = 2, y = 5 },
+		pos = { x = 3, y = 4 },
 		cost = 10,
+		pools = { ["TOGAJKR"] = true },
 		calculate = function(self, card, context)
 			if context.setting_blind then
 				return {

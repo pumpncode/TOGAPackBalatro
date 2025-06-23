@@ -9,6 +9,7 @@ SMODS.Joker{
 	atlas = 'TOGAJokersOtherDiffSize',
 	pos = { x = 5, y = 0 },
 	cost = 8,
+	pools = { ["TOGAJKR"] = true },
 	blueprint_compat = false,
 	calculate = function(self, card, context)
 		if context.other_consumeable then
@@ -22,6 +23,7 @@ SMODS.Joker{
 				end
 			end
 			if #aheads > 0 and onlyspades then
+				local context = context
 				return {
 					func = function()
 						for i = 1, #aheads do

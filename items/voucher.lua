@@ -52,7 +52,7 @@ SMODS.Voucher{
 		return {vars = {card.ability.extra.probabilitymult}}
 	end,
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied probabilities by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
 		for k, v in pairs(G.GAME.probabilities) do
 			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
 		end
@@ -72,7 +72,7 @@ SMODS.Voucher{
 	end,
 	requires = {'v_toga_hardwarewizard'},
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied probabilities by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
 		for k, v in pairs(G.GAME.probabilities) do
 			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
 		end
@@ -240,4 +240,59 @@ SMODS.Voucher{
 	set_badges = function(self, card, badges)
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end
+}
+
+SMODS.Voucher{
+	key = 'auroramatter',
+	pos = { x = 5, y = 1 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 15,
+	rarity = 3,
+	config = { rarity = 3, extra = { negchance = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.negchance}}
+	end,
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Negative edition chance multiplied by "..math.ceil((card and card.ability.extra or self.config.extra).negchance).."X.", "TOGAPack") end
+		G.GAME.toga_negchance = (G.GAME.toga_negchance or 1)*(card and card.ability.extra or self.config.extra).negchance
+	end,
+}
+
+SMODS.Voucher{
+	key = 'quantummatter',
+	pos = { x = 5, y = 2 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 20,
+	rarity = 4,
+	config = { rarity = 4, extra = { negchance = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.negchance}}
+	end,
+	requires = {'v_auroramatter'},
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Negative edition chance multiplied by "..math.ceil((card and card.ability.extra or self.config.extra).negchance).."X.", "TOGAPack") end
+		G.GAME.toga_negchance = (G.GAME.toga_negchance or 1)*(card and card.ability.extra or self.config.extra).negchance
+	end,
+}
+
+SMODS.Voucher{
+	key = 'spectralzipper',
+	pos = { x = 6, y = 1 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 20,
+	rarity = 4,
+	config = { rarity = 4, extra = { odds = 500 } },
+	requires = {'v_omen_globe'},
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togaziparchivepack
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togararpack
+		return {vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds } }
+	end,
+	redeem = function(self, card)
+		G.GAME.spectralzipper_chance = (card and card.ability.extra or self.config.extra).odds or 500
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Spectral Zipper chance set to "..G.GAME.spectralzipper_chance..".", "TOGAPack") end
+	end,
 }

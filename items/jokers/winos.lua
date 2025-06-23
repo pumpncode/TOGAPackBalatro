@@ -254,9 +254,9 @@ SMODS.Joker{
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 2 },
 	cost = 10,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6 and not context.blueprint then
+		if context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6 then
 			return {
 				remove = true,
 				func = function()

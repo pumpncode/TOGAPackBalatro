@@ -40,7 +40,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'controlpanel',
-	config = { extra = { money = 1, increase = 0.5, totalmoney = 7 } },
+	config = { extra = { money = 0.5, increase = 0.5, totalmoney = 3.5 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.money, card.ability.extra.increase, math.ceil(card.ability.extra.totalmoney) } }
 	end,
@@ -69,10 +69,6 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'taskmgr',
-	config = { extra = { money = 1, wiggling = false } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.money } }
-	end,
 	unlocked = true,
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
@@ -123,12 +119,13 @@ SMODS.Joker{
 		if self.discovered then
 			info_queue[#info_queue + 1] = {key = "toga_useraccountsinfo", set = 'Other'}
 		end
+		card.ability.extra.totalXmult = toga_multaverage(card)
 		return { vars = { card.ability.extra.totalXmult, (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
 	end,
 	unlocked = true,
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 1, y = 3 },
+	pos = { x = 3, y = 1 },
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -142,9 +139,6 @@ SMODS.Joker{
 			end
 		end
 	end,
-	update = function(self, card, context)
-		card.ability.extra.totalXmult = toga_multaverage(card)
-	end
 }
 
 SMODS.Joker{
@@ -156,7 +150,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 2,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 0, y = 3 },
+	pos = { x = 3, y = 0 },
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -230,18 +224,18 @@ SMODS.Joker{
 	key = 'theinternet',
 	config = { extra = { curchips = 0, bonuschips = 15 } },
 	loc_vars = function(self, info_queue, card)
+		card.ability.extra.curchips = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.all or 0) * card.ability.extra.bonuschips
 		return { vars = { card.ability.extra.curchips, card.ability.extra.bonuschips } }
 	end,
 	unlocked = true,
 	rarity = 1,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 2, y = 3 },
+	pos = { x = 3, y = 2 },
 	cost = 3,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		card.ability.extra.curchips = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.all or 0) * card.ability.extra.bonuschips
-		
 		if context.using_consumeable and not context.blueprint then
+			card.ability.extra.curchips = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.all or 0) * card.ability.extra.bonuschips
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = { card.ability.extra.curchips } }, colour = G.C.CHIPS })
 		end
 		
@@ -251,9 +245,6 @@ SMODS.Joker{
 			}
 		end
 	end,
-	update = function(self, card, context)
-		card.ability.extra.curchips = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.all or 0) * card.ability.extra.bonuschips
-	end
 }
 
 SMODS.Joker{
@@ -308,7 +299,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 4,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 2, y = 4 },
+	pos = { x = 2, y = 3 },
 	cost = 20,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
@@ -407,7 +398,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 2,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 1, y = 4 },
+	pos = { x = 1, y = 3 },
 	cost = 7,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -432,7 +423,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 0, y = 4 },
+	pos = { x = 0, y = 3 },
 	cost = 12,
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -479,7 +470,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 2,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 0, y = 6 },
+	pos = { x = 3, y = 3 },
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -528,7 +519,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 1, y = 6 },
+	pos = { x = 0, y = 4 },
 	cost = 10,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -578,6 +569,7 @@ SMODS.Joker{
 					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 					G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)
 					G.HUD_blind:recalculate()
+					return nil, true
 				else
 					G.E_MANAGER:add_event(Event({func = function()
 						G.GAME.blind.chips = math.floor(G.GAME.blind.chips*card.ability.extra.reduce)
@@ -589,6 +581,7 @@ SMODS.Joker{
 						
 						if not silent and togabalatro.config.SFXWhenTriggered then play_sound(togabalatro.plus95rndsfx()) end
 					return true end }))
+					return nil, true
 				end
 			end
 		end
@@ -604,6 +597,9 @@ SMODS.Joker{
 	key = 'jimbo95',
 	config = { extra = { h_size = 2, retriggers = 1, x_chips = 1.5, x_mult = 1.5} },
 	loc_vars = function(self, info_queue, card)
+		card.ability.extra.x_chips = math.max(card.ability.extra.x_chips, 1)
+		card.ability.extra.x_mult = math.max(card.ability.extra.x_mult, 1)
+		card.ability.extra.retriggers = math.max(card.ability.extra.retriggers, 1)
 		return { vars = { card.ability.extra.h_size, math.floor(card.ability.extra.retriggers), card.ability.extra.x_chips, card.ability.extra.x_mult } }
 	end,
 	unlocked = true,
@@ -611,7 +607,7 @@ SMODS.Joker{
 	rarity = 4,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 2, y = 0 },
-	soul_pos = { x = 4, y = 0 },
+	soul_pos = { x = 5, y = 0 },
 	cost = 20,
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -641,11 +637,6 @@ SMODS.Joker{
 				card = context.blueprint_card or card,
 			}
 		end
-	end,
-	update = function(self, card)
-		if card.ability.extra.x_chips < 1 then card.ability.extra.x_chips = 1 end -- no reduce.
-		if card.ability.extra.x_mult < 1 then card.ability.extra.x_mult = 1 end -- only extend.
-		if card.ability.extra.retriggers < 1 then card.ability.extra.retriggers = 1 end -- always at least once.
 	end
 }
 
@@ -669,7 +660,7 @@ SMODS.Joker{
 	rarity = 4,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 1, y = 2 },
-	soul_pos = { x = 4, y = 2 },
+	soul_pos = { x = 5, y = 2 },
 	cost = 25,
 	blueprint_compat = true,
 	perishable_compat = false,
@@ -817,7 +808,7 @@ SMODS.Joker{
 			card.ability.extra.Xmult_current = 0
 			card.ability.extra.eliminated = true
 			SMODS.debuff_card(card, true, card)
-			return true
+			return nil, true
 		end
 		
 		if (context.buying_card or context.selling_card or context.playing_card_added or context.ending_shop or context.using_consumeable or context.open_booster or context.reroll_shop or context.ending_shop)
@@ -854,6 +845,7 @@ SMODS.Joker{
 	key = 'asterism',
 	config = { extra = { curmult = 0, bonusmult = 5 } },
 	loc_vars = function(self, info_queue, card)
+		card.ability.extra.curmult = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.planet or 0) * card.ability.extra.bonusmult
 		return { vars = { card.ability.extra.curmult > 0 and card.ability.extra.curmult or (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.planet or 0) * card.ability.extra.bonusmult, card.ability.extra.bonusmult } }
 	end,
 	unlocked = true,
@@ -863,9 +855,8 @@ SMODS.Joker{
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		card.ability.extra.curmult = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.planet or 0) * card.ability.extra.bonusmult
-		
 		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == 'Planet' then
+			card.ability.extra.curmult = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.planet or 0) * card.ability.extra.bonusmult
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_mult', vars = { card.ability.extra.curmult } } })
 		end
 		
@@ -945,7 +936,7 @@ SMODS.Joker{
 	config = { extra = { repetitions = 1, totalrepetitions = 0, steelneed = 4 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
-		card.ability.extra.totalrepetitions = card.ability.extra.repetitions*toga_gettotalsteelcount() or 0
+		card.ability.extra.totalrepetitions = toga_gettotalsteelcount(card.ability.extra.steelneed)*card.ability.extra.repetitions or 0
 		card.ability.extra.steelneed = math.ceil(math.max(card.ability.extra.steelneed, 1))
 		return { vars = { math.floor(card.ability.extra.repetitions), toga_gettotalsteelcount(card.ability.extra.steelneed)*card.ability.extra.repetitions, card.ability.extra.steelneed } }
 	end,
@@ -957,7 +948,7 @@ SMODS.Joker{
 	cost = 10,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		card.ability.extra.totalrepetitions = card.ability.extra.repetitions*toga_gettotalsteelcount() or 0
+		card.ability.extra.totalrepetitions = toga_gettotalsteelcount(card.ability.extra.steelneed)*card.ability.extra.repetitions or 0
 		if context.cardarea == G.play and context.repetition and not context.repetition_only and card.ability.extra.totalrepetitions >= 1 then
 			return {
 				message = localize('toga_anviltrigger'),
@@ -991,7 +982,8 @@ SMODS.Joker{
 	cost = 15,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if context.blueprint then return end
+		if context.blueprint or context.retrigger_joker then return end
+		if context.before then card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint) end
 		if context.after then card.ability.pinballscore = nil end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -1180,6 +1172,7 @@ SMODS.Joker{
 				card:juice_up()
 				if not silent and togabalatro.config.SFXWhenTriggered then play_sound('toga_jaratehit') end
 			return true end }))
+			return nil, true
 		end
 		
 		if context.cardarea == G.jokers and context.before then
@@ -1455,8 +1448,8 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 1,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 2, y = 6 },
-	soul_pos = { x = 4, y = 3 },
+	pos = { x = 5, y = 4 },
+	soul_pos = { x = 5, y = 3 },
 	no_collection = true,
 	cost = 1,
 	blueprint_compat = false,
@@ -1507,7 +1500,7 @@ if Talisman then
 		rarity = 4,
 		atlas = 'TOGAJokersMain',
 		pos = { x = 0, y = 2 },
-		soul_pos = { x = 4, y = 1 },
+		soul_pos = { x = 5, y = 1 },
 		cost = 30,
 		blueprint_compat = true,
 		perishable_compat = false,

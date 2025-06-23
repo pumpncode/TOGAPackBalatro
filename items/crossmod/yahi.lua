@@ -19,6 +19,7 @@ SMODS.Joker{
 	atlas = 'TOGAYahistuff',
 	pos = { x = 0, y = 0 },
 	cost = 6,
+	pools = { ["TOGAJKR"] = true },
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		card.ability.extra.hxmult = math.max(card.ability.extra.hxmult, horsehxmult)
@@ -60,7 +61,7 @@ SMODS.Joker{
 	atlas = 'TOGAYahistuff',
 	pos = { x = 1, y = 0 },
 	cost = 5,
-	pools = { ["Cat"] = true },
+	pools = { ["Cat"] = true, ["TOGAJKR"] = true },
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		card.ability.extra.xchips = math.max(card.ability.extra.xchips, catxchips)

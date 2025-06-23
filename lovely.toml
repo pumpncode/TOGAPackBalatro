@@ -8,7 +8,7 @@ priority = 1
 target = "game.lua"
 pattern = "play_sound('whoosh1', 0.4, 0.8)"
 position = "before"
-payload = "play_sound(togabalatro and not togabalatro.has_tried_startup and togabalatro.config.StartUpSound and 'toga_w96', 1, 0.3);if togabalatro then togabalatro.has_tried_startup = true end"
+payload = "togabalatro.execstartupsfx()"
 match_indent = true
 
 [[patches]]
@@ -78,5 +78,14 @@ target = "functions/state_events.lua"
 pattern = "for _, area in ipairs(SMODS.get_card_areas('jokers')) do for _, _card in ipairs(area.cards) do"
 position = "at"
 payload = "local areas = togabalatro.areaprocess(SMODS.get_card_areas('jokers')); for _, area in ipairs(areas) do local curcards = togabalatro.areaprocess(area.cards); for _, _card in ipairs(curcards) do"
+overwrite = true
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "for _, v in ipairs(SMODS.get_card_areas('playing_cards')) do"
+position = "at"
+payload = "local playingcardareas = togabalatro.areaorderprocess(SMODS.get_card_areas('playing_cards')); for _, v in ipairs(playingcardareas) do"
 overwrite = true
 match_indent = true

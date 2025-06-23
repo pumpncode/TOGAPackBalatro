@@ -190,7 +190,7 @@ SMODS.Consumable{
 		end,}))
 	end,
 	keep_on_use = function(self, card)
-		if to_big(G.GAME.dollars) - to_big(card.ability.extra.usecost) > to_big(0) then return true end
+		if to_big(G.GAME.dollars) - to_big(card.ability.extra.usecost) >= to_big(G.GAME.bankrupt_at) then return true end
 	end,
 	set_badges = function(self, card, badges)
         badges[#badges] = create_badge(localize('toga_crafttarot'), G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1.2)
@@ -222,7 +222,11 @@ SMODS.Consumable {
 		return G.playing_cards and #G.playing_cards > 1
 	end,
 	use = function(self, card, area, copier)
-		for i, v in ipairs(G.playing_cards) do
+		local cards = {}
+		for i = 1, #G.playing_cards do
+			cards[#cards+1] = G.playing_cards[i]
+		end
+		for k, v in ipairs(cards) do
 			if SMODS.has_enhancement(v, 'm_stone') then
 				if pseudorandom("toga_minediamonds") < G.GAME.probabilities.normal/card.ability.extra.odds then
 					local enhancement = SMODS.poll_enhancement({ guaranteed = true, options = togabalatro.oredict.minerals, type_key = 'modmineral' })
