@@ -31,18 +31,23 @@ SMODS.Joker{
 	cost = 4,
 	blueprint_compat = false,
 	perishable_compat = false,
-	add_to_deck = function(self, card, from_debuff)
-		if not from_debuff then
-			for k, v in pairs(G.GAME.probabilities) do
-				G.GAME.probabilities[k] = v/2
-			end
-		end
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		if not from_debuff then
-			for k, v in pairs(G.GAME.probabilities) do
-				G.GAME.probabilities[k] = v*2
-			end
+	-- add_to_deck = function(self, card, from_debuff)
+		-- if not from_debuff then
+			-- for k, v in pairs(G.GAME.probabilities) do
+				-- G.GAME.probabilities[k] = v/2
+			-- end
+		-- end
+	-- end,
+	-- remove_from_deck = function(self, card, from_debuff)
+		-- if not from_debuff then
+			-- for k, v in pairs(G.GAME.probabilities) do
+				-- G.GAME.probabilities[k] = v*2
+			-- end
+		-- end
+	-- end,
+	calculate = function(self, card, context)
+		if context.mod_probability and not context.blueprint then
+			return { numerator = context.numerator / 2 }
 		end
 	end,
 	pixel_size = { w = 69, h = 94 }
@@ -74,7 +79,7 @@ SMODS.Joker{
 		if context.individual and context.cardarea == G.play then
 			local uniquesuits, suits = {}, 0
 			for i = 1, #G.play.cards do
-				if not uniquesuits[G.play.cards[i].base.suit] then uniquesuits[G.play.cards[i].base.suit] = true; suits = suits + 1 end
+				if G.play.cards[i] and not uniquesuits[G.play.cards[i].base.suit] then uniquesuits[G.play.cards[i].base.suit] = true; suits = suits + 1 end
 			end
 			return { xmult = suits > 1 and 1+(suits-1)*card.ability.extra.persuit }
 		end
