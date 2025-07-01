@@ -821,7 +821,7 @@ end
 
 -- In case Incantation is used, check if it is the specific fork version so that the consumeables don't do unintended things...
 if SMODS.Mods['incantation'] and not SMODS.Mods['incantation'].togafork and not string.find(SMODS.Mods['incantation'].version, '-TOGA_fork') then
-	error("Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables added by "..togabalatro.name, 0)
+	error("Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables added by "..togabalatro.name.." at https://github.com/TheOneGoofAli/JensBalatroCollection", 0)
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
