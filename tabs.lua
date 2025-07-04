@@ -139,7 +139,7 @@ togabalatro.startupsfx_tab = function()
 		}},
 		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
-				create_option_cycle({w = 3.5, colour = HEX('808080'), scale = 1, options = togabalatro.startupsfx, opt_callback = 'togabalatro_startupsfx', current_option = togabalatro.config.StartUpSFX.Selected or 1}),
+				create_option_cycle({w = 3.5, colour = HEX('808080'), scale = 1, options = togabalatro.startupsfx, opt_callback = 'togabalatro_startupsfx', current_option = togabalatro.config.StartUpSFX and togabalatro.config.StartUpSFX.Selected or 1}),
 			}},
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
 				UIBox_button({label = {localize('toga_startupsfxtest')}, button = "togabalatro_playsfx", minw = 1.3})

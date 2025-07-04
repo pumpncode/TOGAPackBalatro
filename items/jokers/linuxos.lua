@@ -111,6 +111,7 @@ SMODS.Joker{
 	pos = { x = 3, y = 0 },
 	cost = 5,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if context.before and context.poker_hands then
 			card.ability.extra.xmbonus = math.max(card.ability.extra.xmbonus, 0)
@@ -124,7 +125,7 @@ SMODS.Joker{
 			end
 		end
 		
-		if context.joker_main then return { xmult = 1+math.max(card.ability.extra.xmbonus, 0) } end
+		if context.joker_main or context.forcetrigger then return { xmult = 1+math.max(card.ability.extra.xmbonus, 0) } end
 	end,
 	pixel_size = { w = 69, h = 84 }
 }

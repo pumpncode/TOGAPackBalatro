@@ -233,13 +233,14 @@ SMODS.Joker{
 	pos = { x = 3, y = 2 },
 	cost = 3,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if context.using_consumeable and not context.blueprint then
 			card.ability.extra.curchips = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.all or 0) * card.ability.extra.bonuschips
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = { card.ability.extra.curchips } }, colour = G.C.CHIPS })
 		end
 		
-		if context.joker_main and card.ability.extra.curchips > 0 then
+		if (context.joker_main or context.forcetrigger) and card.ability.extra.curchips > 0 then
 			return {
 				chips = card.ability.extra.curchips,
 			}
@@ -256,10 +257,11 @@ SMODS.Joker{
 	cost = 10,
 	blueprint_compat = false,
 	eternal_compat = false,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if card.ability.eternal then card:set_eternal(false); card.ability.eternal = false end
 		
-		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
+		if (context.selling_self or context.forcetrigger) and not context.retrigger_joker and not context.blueprint_card then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if i > 1 then
@@ -349,8 +351,15 @@ SMODS.Joker{
 	end,
 }
 
-togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult)
+togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult, context)
 	lchips, lmult = lchips or 0, lmult or 0
+	local prevals
+	if SMODS.displaying_scoring and not (SMODS.displayed_hand == hand) then
+		prevals = copy_table(G.GAME.current_round.current_hand)
+		prevals.level = (G.GAME.hands[prevals.handname] or {}).level or ''
+		prevals.chips = hand_chips
+		prevals.mult = mult
+	end
 	if not (instant or Talisman and Talisman.config_file.disable_anims) then
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'),chips = to_number(G.GAME.hands[hand].l_chips), mult = to_number(G.GAME.hands[hand].l_mult), level=''})
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
@@ -370,10 +379,10 @@ togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult)
 			G.TAROT_INTERRUPT_PULSE = nil
 			return true end }))
 		delay(1.3)
-		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0}, {handname='',chips = 0, mult = 0, level=''})
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.5}, prevals or {mult = 0, chips = 0, handname = '', level = ''})
 	else
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'),chips = to_number(to_big(G.GAME.hands[hand].l_chips) + to_big(lchips)), mult = to_number(to_big(G.GAME.hands[hand].l_mult) + to_big(lmult)), level=''})
-		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.5}, {handname='',chips = 0, mult = 0, level=''})
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.5}, prevals or {mult = 0, chips = 0, handname = '', level = ''})
 	end
 	
 	if Talisman and Talisman.config_file.disable_anims then
@@ -401,9 +410,11 @@ SMODS.Joker{
 	pos = { x = 1, y = 3 },
 	cost = 7,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.ending_shop then
+		if context.ending_shop or context.forcetrigger then
 			local curcard = context.blueprint_card or card
+			local cxt = context
 			return {
 				func = function()
 					local names = {}
@@ -411,7 +422,7 @@ SMODS.Joker{
 						if G.GAME.hands[v] and G.GAME.hands[v].visible then names[#names+1] = v end
 					end
 					local hand = pseudorandom_element(names, pseudoseed('ie'))
-					togabalatro.modifylevelchipsmult(curcard, hand, false, to_number(G.GAME.hands[hand].s_chips)/card.ability.extra.phchips, to_number(G.GAME.hands[hand].s_mult)/card.ability.extra.phmult)
+					togabalatro.modifylevelchipsmult(curcard, hand, false, to_number(G.GAME.hands[hand].s_chips)/card.ability.extra.phchips, to_number(G.GAME.hands[hand].s_mult)/card.ability.extra.phmult, cxt)
 				end
 			}
 		end
@@ -751,6 +762,7 @@ SMODS.Joker{
 	pos = { x = 0, y = 0 },
 	cost = 8,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	add_to_deck = function(self, card, from_debuff)
 		G.hand:change_size(card.ability.extra.h_size)
 		G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.extra.hands
@@ -760,7 +772,7 @@ SMODS.Joker{
 		G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.extra.hands
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main then return { chips = card.ability.extra.chips } end
+		if context.joker_main or context.forcetrigger then return { chips = card.ability.extra.chips } end
 	end
 }
 
@@ -792,6 +804,7 @@ SMODS.Joker{
 	cost = 10,
 	blueprint_compat = true,
 	perishable_compat = false,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if not card then return end
 		if card.ability.extra.eliminated or card.debuff then return end
@@ -830,7 +843,7 @@ SMODS.Joker{
 				card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + shortcutbonus
 				return {message = localize('k_upgrade_ex')}
 			end
-		elseif context.joker_main then
+		elseif context.joker_main or context.forcetrigger then
 			if card.ability.extra.Xmult_current > 1 then return { x_mult = card.ability.extra.Xmult_current } end
 		end
 	end,
@@ -849,13 +862,14 @@ SMODS.Joker{
 	pos = { x = 0, y = 1 },
 	cost = 6,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == 'Planet' then
 			card.ability.extra.curmult = (G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.planet or 0) * card.ability.extra.bonusmult
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_mult', vars = { card.ability.extra.curmult } } })
 		end
 		
-		if context.joker_main and card.ability.extra.curmult > 0 then return { mult = card.ability.extra.curmult } end
+		if (context.joker_main or context.forcetrigger) and card.ability.extra.curmult > 0 then return { mult = card.ability.extra.curmult } end
 	end
 }
 
@@ -1119,9 +1133,10 @@ SMODS.Joker{
 	pos = { x = 1, y = 0 },
 	cost = 5,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	pixel_size = { w = 69, h = 74 },
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			local total = toga_gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart)*card.ability.extra.xmultpart
 			return { xmult = to_big(1)+to_big(total) > to_big(1) and to_number(to_big(1)+to_big(total)) or 1 }
 		end
@@ -1218,9 +1233,10 @@ SMODS.Joker{
 	blueprint_compat = false,
 	perishable_compat = false,
 	eternal_compat = false,
+	demicolon_compat = true,
 	pixel_size = { w = 69, h = 87 },
 	calculate = function(self, card, context)
-		if context.selling_self and card == card then card.ability.sold = true end
+		if context.selling_self and context.card == card then card.ability.sold = true elseif context.forcetrigger then togabalatro.goldenwrench(card) end
 	end
 }
 
@@ -1300,8 +1316,9 @@ SMODS.Joker{
 	cost = 25,
 	blueprint_compat = true,
 	perishable_compat = false,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.repetition and not context.individual then
+		if (context.end_of_round and not context.repetition and not context.individual) or context.forcetrigger then
 			return { func = function()
 				toga_rndvaluetarget(card, card.ability.extra.plusval)
 			end }
@@ -1344,9 +1361,10 @@ SMODS.Joker{
 	pos = { x = 2, y = 2 },
 	cost = 5,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
 		local curxmult = card.ability.extra.basexmult ^ toga_calccopiesofself(card.config.center.key)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return { xmult = curxmult }
 		end
 	end,

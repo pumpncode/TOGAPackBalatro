@@ -925,6 +925,13 @@ return {
 					"{C:spectral}Black Hole{}",
 				},
 			},
+			tag_toga_thenet_cryptid = {
+				name = "Globe Tag",
+				text = {
+					"Gives a free {C:spectral}Black Hole{}",
+					"{C:green,s:0.75}#1# in #2# {C:inactive,s:0.75}chance for {C:spectral,s:0.75}White Hole{C:inactive,s:0.75} instead",
+				},
+			},
 			tag_toga_controlexe = {
 				name = "Settings Tag",
 				text = {

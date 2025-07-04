@@ -13,8 +13,9 @@ SMODS.Joker{
 	pos = { x = 0, y = 0 },
 	cost = 7,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
+		if (context.setting_blind or context.forcetrigger) and not (context.blueprint_card or card).getting_sliced then
 			ease_hands_played(card.ability.extra.hands)
 			ease_discard(card.ability.extra.discards)
 			return { message = localize('toga_32bits') }
@@ -179,8 +180,9 @@ SMODS.Joker{
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = false,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.end_of_round and not (context.individual or context.repetition) then
+		if (context.end_of_round or context.forcetrigger) and not (context.individual or context.repetition) then
 			return { func = function()
 				G.E_MANAGER:add_event(Event({
 					func = (function()
@@ -255,8 +257,9 @@ SMODS.Joker{
 	pos = { x = 0, y = 2 },
 	cost = 10,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6 then
+		if (context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6) or context.forcetrigger then
 			return {
 				remove = true,
 				func = function()

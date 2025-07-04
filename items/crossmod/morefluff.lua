@@ -39,8 +39,9 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		cost = 4,
 		pools = { ["TOGAJKR"] = true },
 		blueprint_compat = true,
+		demicolon_compat = true,
 		calculate = function(self, card, context)
-			if context.end_of_round and not context.repetition and not context.individual and not context.game_over then
+			if (context.end_of_round or context.forcetrigger) and not context.repetition and not context.individual and not context.game_over then
 				return { func = function()
 					for i = 1, #G.consumeables.cards do
 						if G.consumeables.cards[i].config.center.set == 'Colour' then
@@ -81,13 +82,14 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		blueprint_compat = false,
 		eternal_compat = true,
 		perishable_compat = false,
+		demicolon_compat = true,
 		rarity = "crv_p",
 		atlas = 'TOGAJokersMain',
 		pos = { x = 3, y = 4 },
 		cost = 10,
 		pools = { ["TOGAJKR"] = true },
 		calculate = function(self, card, context)
-			if context.setting_blind then
+			if context.setting_blind or context.forcetrigger then
 				return {
 					func = function()
 						local createnegative = false
