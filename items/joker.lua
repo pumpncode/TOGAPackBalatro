@@ -789,9 +789,9 @@ SMODS.Joker{
 			info_queue[#info_queue + 1] = {key = "toga_kartjokerlist", set = 'Other', vars = { card.ability.extra.add_shop, card.ability.extra.add_shop*8 } }
 			if G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' then info_queue[#info_queue + 1] = {key = "toga_kartjokershortcutspecial", set = 'Other', vars = { card.ability.extra.addshortcut/2.5 } }
 			else
+				local num, dem = SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.maxchance)
 				info_queue[#info_queue + 1] = {key = "toga_kartjokershortcut", set = 'Other', vars =
-					{ SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.maxchance),
-					card.ability.extra.addshortcut, math.abs((1-card.ability.extra.shortcutfailmult)*100) }
+					{ num, dem, card.ability.extra.addshortcut, math.abs((1-card.ability.extra.shortcutfailmult)*100) }
 				}
 			end
 		end
@@ -1261,26 +1261,32 @@ local function toga_rndvaluetarget(origcard, increase, curiter)
 	
 	-- Find random joker that is not one of ourselves.
 	local selectedjoker = pseudorandom_element(G.jokers.cards, pseudoseed('j_toga_update'))
+	if togabalatro.config.DoMoreLogging then sendInfoMessage("Joker Update - "..tostring(selectedjoker.config.center.key), "TOGAPack") end
 	if #G.jokers.cards > 1 then
+		local rnditer = 0
 		while selectedjoker.config.center.key == 'j_toga_winupdate' or selectedjoker.ability.bypasswu or selectedjoker.ability.immutable do
 			selectedjoker = pseudorandom_element(G.jokers.cards, pseudoseed('j_toga_update'))
+			rnditer = rnditer + 1
+			if rnditer > 32*#G.jokers.cards then break end
 		end
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Joker Update - "..tostring(selectedjoker.config.center.key), "TOGAPack") end
+		if togabalatro.config.DoMoreLogging and selectedjoker then sendInfoMessage("Joker Update - "..tostring(selectedjoker.config.center.key), "TOGAPack") end
 	else selectedjoker = nil; return false end
 	
 	local foundmodified = false
-	if type(selectedjoker.ability.extra) == 'number' then
-		local rplc = selectedjoker.ability.extra+(selectedjoker.ability.extra*increase)
-		selectedjoker.ability.extra = rplc
-		foundmodified = true
-	elseif type(selectedjoker.ability.extra) == 'table' then
-		for k, v in pairs(selectedjoker.ability.extra) do
-			if type(v) == 'number' then
-				local rplc = v*(1+increase)
-				selectedjoker.ability.extra[k] = rplc
-				foundmodified = true
-			elseif type(v) == 'table' then
-				toga_subtable(v, foundmodified, increase) -- This is a bit dangerous...
+	if selectedjoker then
+		if type(selectedjoker.ability.extra) == 'number' then
+			local rplc = selectedjoker.ability.extra+(selectedjoker.ability.extra*increase)
+			selectedjoker.ability.extra = rplc
+			foundmodified = true
+		elseif type(selectedjoker.ability.extra) == 'table' then
+			for k, v in pairs(selectedjoker.ability.extra) do
+				if type(v) == 'number' then
+					local rplc = v*(1+increase)
+					selectedjoker.ability.extra[k] = rplc
+					foundmodified = true
+				elseif type(v) == 'table' then
+					toga_subtable(v, foundmodified, increase) -- This is a bit dangerous...
+				end
 			end
 		end
 	end
