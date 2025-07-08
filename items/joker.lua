@@ -305,11 +305,10 @@ SMODS.Joker{
 	cost = 20,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if context.blueprint then return end
-		
-		if context then
-			-- Larswijn was here.
+		if context and not (context.mod_probability or context.fix_probability or context.check_enhancement or context.blueprint) then
+			-- Larswijn and N' were here.
 			local returns = nil
+			local merge = {}
 			for i = 1, #G.jokers.cards do
 				local other_joker = G.jokers.cards[i]
 				if other_joker and other_joker:can_calculate() and other_joker.config.center.key ~= self.key and SMODS.pseudorandom_probability(card, "virtualpc2004sp1", 1, card.ability.extra.odds) then
@@ -320,30 +319,12 @@ SMODS.Joker{
 							returns = returns or {}
 							returns.repetitions = (returns.repetitions or 0) + other_joker_effect.repetitions
 						else
-							if not returns then
-								returns = other_joker_effect
-							else
-								local index = returns
-								while index.extra do
-									index = index.extra
-								end
-								index.extra = other_joker_effect
-							end
+							table.insert(merge, other_joker_effect)
 						end
 					end
 				end
 			end
-			if context.repetition and not context.repetition_only and context.other_card then
-				local total_repetitions = type(card.ability.extra) == 'number' and card.ability.extra + (returns and returns.repetitions or 0) or 0
-				if total_repetitions > 0 then
-					return {
-						message = localize("k_again_ex"),
-						repetitions = total_repetitions,
-						card = context.blueprint_card or card,
-						was_blueprinted = true,
-					}
-				end
-			end
+			returns = SMODS.merge_effects(merge)
 			if returns and next(returns) ~= nil then
 				return returns
 			end
