@@ -99,6 +99,22 @@ return {
 					"{C:inactive,s:0.8}Animation skipping mods recommended.{}",
 				}
 			},
+			b_toga_prairie = {
+				name = "Prairie Deck",
+				text = {
+					"{C:attention}Vanilla{} scoring of",
+					"{C:attention}played{} cards",
+					"does not occur."
+				}
+			},
+			b_toga_betafish = {
+				name = "Betafish Deck",
+				text = {
+					"{C:attention}Vanilla{} scoring of",
+					"{C:attention}held in hand{} cards",
+					"does not occur."
+				}
+			},
 		},
 		Blind = {
 			bl_toga_dialupmodem = {
@@ -638,20 +654,20 @@ return {
 				}
 			},
 			j_toga_linux_debian = {
-				name= 'Debian',
-                text= {
-                    "Halves all {C:attention}listed",
-                    "{C:green,E:1,s:1.1}probabilities",
-                    "{C:inactive}(ex: {C:green}1 in 3{C:inactive} -> {C:green}0.5 in 3{C:inactive})",
-                },
+				name = 'Debian',
+				text = {
+					"Halves all {C:attention}listed",
+					"{C:green,E:1,s:1.1}probabilities",
+					"{C:inactive}(ex: {C:green}1 in 3{C:inactive} -> {C:green}0.5 in 3{C:inactive})",
+				},
 			},
 			j_toga_linux_slackware = {
 				name = 'Slackware Linux',
 				text = {
 					"If more than 2 suits are {C:attention}played{},",
 					"scoring cards give {X:mult,C:white}X#1#{} Mult per",
-					"{C:attention}additional{} suit in played hand.",
-					"{C:inactive,s:0.8}(Ignores Wild Card, Hearty Spades, etc.){}"
+					"{C:attention}additional{} base suit in played hand.",
+					"{C:inactive,s:0.8}(Ignores Wild Card, Smeared Joker, etc.){}"
 				}
 			},
 			j_toga_linux_slackware_cardsel = {
@@ -1267,41 +1283,41 @@ return {
 		},
 		Partner = {
 			pnr_toga_startupdisk={
-                name = "Startup Diskette",
-                text = {
-                    "Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
-                    "when {C:attention}Blind{} is selected.",
-                },
-                unlock={
-                    "Used a {C:attention}Windows OS{} Joker",
-                    "to win on {C:attention}Gold",
-                    "{C:attention}Stake{} difficulty",
-                },
-            },
+				name = "Startup Diskette",
+				text = {
+					"Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
+					"when {C:attention}Blind{} is selected.",
+				},
+				unlock={
+					"Used a {C:attention}Windows OS{} Joker",
+					"to win on {C:attention}Gold",
+					"{C:attention}Stake{} difficulty",
+				},
+			},
 			pnr_toga_startupdisk_buff={
-                name = "Startup Diskette",
-                text = {
-                    "Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
-                    "when {C:attention}Blind{} is selected, with additional {C:attention}#3#%{}",
+				name = "Startup Diskette",
+				text = {
+					"Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
+					"when {C:attention}Blind{} is selected, with additional {C:attention}#3#%{}",
 					"provided by currently held {C:attention}Windows OS Jokers{}.",
 					"{C:inactive}(Currently {C:attention}#1#%{C:inactive})"
-                },
-                unlock={
-                    "Used a {C:attention}Windows OS{} Joker",
-                    "to win on {C:attention}Gold",
-                    "{C:attention}Stake{} difficulty",
-                },
-            },
+				},
+				unlock={
+					"Used a {C:attention}Windows OS{} Joker",
+					"to win on {C:attention}Gold",
+					"{C:attention}Stake{} difficulty",
+				},
+			},
 			pnr_toga_amongusplushie={
-                name = "Among Us Plushie",
-                text = {
-                    "{C:green}#1# in #2#{} chance to give {C:attention}bonus{}",
+				name = "Among Us Plushie",
+				text = {
+					"{C:green}#1# in #2#{} chance to give {C:attention}bonus{}",
 					"{C:money}money{} at end of round.",
 					"{C:inactive,s:0.8}#3#% of currently held money or $10,{}",
 					"{C:inactive,s:0.8}whichever is higher.{}",
 					"{C:inactive,s:0.75}Spin speed is tied to money held.{}"
-                },
-            },
+				},
+			},
 		},
 		Colour = {
 			c_toga_classic = {
@@ -1476,6 +1492,17 @@ return {
 			toga_Emult = {"^#1# Mult"},
 			toga_EEmult = {"^^#1# Mult"},
 			toga_EEEmult = {"^^^#1# Mult"},
+		},
+		challenge_names = {
+			c_toga_jokerful = "Jokerful..?"
+		},
+		v_text = {
+			ch_c_toga_noplayedscore = {
+				"{C:attention}Vanilla{} scoring of {C:attention}played{} cards does not occur",
+			},
+			ch_c_toga_nohandscore = {
+				"{C:attention}Vanilla{} scoring of {C:attention}held in hand{} cards does not occur",
+			},
 		},
 		collab_palettes = {
 			toga_oldschool_Spades = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },

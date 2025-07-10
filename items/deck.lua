@@ -166,7 +166,7 @@ SMODS.Back{
 }
 
 SMODS.Back{
-	key = 'blissful',
+	key = "blissful",
 	atlas = "TOGADeckBack",
 	pos = { x = 8, y = 0 },
 	config = {ante_scaling = 2, hands = -1, discards = -1, joker_slot = -1, consumable_slot = -1, extraante = 4}, -- maybe remove extra Antes?
@@ -194,5 +194,25 @@ SMODS.Back{
 			end
 			return curenh
 		end
+	end
+}
+
+SMODS.Back{
+	key = "prairie",
+	pos = { x = 9, y = 0 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.modifiers.toga_noplayedscore = true
+	end
+}
+
+SMODS.Back{
+	key = "betafish",
+	pos = { x = 10, y = 0 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.modifiers.toga_nohandscore = true
 	end
 }

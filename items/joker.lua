@@ -1341,7 +1341,7 @@ SMODS.Joker{
 	end,
 	unlocked = true,
 	in_pool = function()
-		return togabalatro.config.JokeJokersActive, { allow_duplicates = togabalatro.config.JokeJokersActive } -- Should only spawn if allowed to via config!
+		return togabalatro.config.JokeJokersActive, { allow_duplicates = true } -- Should only spawn if allowed to via config!
 	end,
 	rarity = 2,
 	atlas = 'TOGAJokersOther',

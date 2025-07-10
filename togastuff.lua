@@ -470,7 +470,7 @@ togabalatro.preprocess = function(context, input)
 end
 
 togabalatro.areaprocess = function(t)
-	if t == nil then return {} end
+	t = t or {}
 	
 	local output = t
 	
@@ -575,7 +575,7 @@ togabalatro.heldinhandscoring = function(context, scoring_hand)
 	if context.cardarea == G.hand then
 		context.main_scoring = true
 		local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
-		togabalatro.scoreheldinhand(areas, context)
+		if togabalatro.canareascore(context.cardarea) then togabalatro.scoreheldinhand(areas, context) end
 		
 		local clippitcalc = {}
 		SMODS.calculate_context({clippitscore = true, cardarea = context.cardarea}, clippitcalc)
@@ -627,11 +627,20 @@ togabalatro.kartsleevescoring = function(context, scoring_hand)
 	end
 end
 
+togabalatro.canareascore = function(cardarea)
+	local can = true
+	if cardarea then
+		if cardarea == G.play and G.GAME.modifiers.toga_noplayedscore then can = false end
+		if cardarea == G.hand and G.GAME.modifiers.toga_nohandscore then can = false end
+	end
+	return can
+end
+
 -- Hooking to do more funky scoring shenanigans.
 sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
 local calcmainscoreref = SMODS.calculate_main_scoring
 function SMODS.calculate_main_scoring(context, scoring_hand)
-	calcmainscoreref(context, scoring_hand)
+	if togabalatro.canareascore(context.cardarea) then calcmainscoreref(context, scoring_hand) end
 	togabalatro.kartsleevescoring(context, scoring_hand)
 	togabalatro.extrascoring(context, scoring_hand)
 	togabalatro.heldinhandscoring(context, scoring_hand)
@@ -696,7 +705,7 @@ end
 sendInfoMessage("Hooking SMODS.calculate_end_of_round_effects...", "TOGAPack")
 local calcendroundref = SMODS.calculate_end_of_round_effects
 function SMODS.calculate_end_of_round_effects(context)
-	calcendroundref(context)
+	if togabalatro.canareascore(context.cardarea) then calcendroundref(context) end
 	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
 		togabalatro.forcereverse = true
 		calcendroundref(context)
@@ -825,7 +834,7 @@ if SMODS.Mods['incantation'] and not SMODS.Mods['incantation'].togafork and not 
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
-for _, file in ipairs{"joker.lua", "deck.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "crossmod.lua"} do
+for _, file in ipairs{"joker.lua", "deck.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "crossmod.lua"} do
 	sendDebugMessage("Executing items/"..file, "TOGAPack")
 	assert(SMODS.load_file("items/"..file))()
 end
