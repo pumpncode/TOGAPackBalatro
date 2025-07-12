@@ -305,7 +305,7 @@ SMODS.Joker{
 	cost = 20,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if context and not (context.mod_probability or context.fix_probability or context.check_enhancement or context.blueprint) then
+		if context and not (context.mod_probability or context.fix_probability or context.check_enhancement or context.blueprint or context.pseudorandom_result) then
 			-- Larswijn and N' were here.
 			local returns = nil
 			local merge = {}

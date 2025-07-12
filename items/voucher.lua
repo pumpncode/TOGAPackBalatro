@@ -52,9 +52,14 @@ SMODS.Voucher{
 		return {vars = {card.ability.extra.probabilitymult}}
 	end,
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied probabilities by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
-		for k, v in pairs(G.GAME.probabilities) do
-			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Added X"..(card and card.ability.extra or self.config.extra).probabilitymult.." probability multiplier.", "TOGAPack") end
+		-- for k, v in pairs(G.GAME.probabilities) do
+			-- G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
+		-- end
+	end,
+	calculate = function(self, card, context)
+		if context.mod_probability and not context.blueprint then
+			return { numerator = context.numerator * (card and card.ability.extra or self.config.extra).probabilitymult }
 		end
 	end,
 }
@@ -72,9 +77,14 @@ SMODS.Voucher{
 	end,
 	requires = {'v_toga_hardwarewizard'},
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied probabilities by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
-		for k, v in pairs(G.GAME.probabilities) do
-			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Added X"..(card and card.ability.extra or self.config.extra).probabilitymult.." probability multiplier.", "TOGAPack") end
+		-- for k, v in pairs(G.GAME.probabilities) do
+			-- G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
+		-- end
+	end,
+	calculate = function(self, card, context)
+		if context.mod_probability and not context.blueprint then
+			return { numerator = context.numerator * (card and card.ability.extra or self.config.extra).probabilitymult }
 		end
 	end,
 }
