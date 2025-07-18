@@ -9,5 +9,6 @@
 	"badge_colour": "fd9712",
 	"version": "1.7.1d",
 	"dependencies": ["Steamodded (>=1.0.0~BETA-0711a)"],
-	"conflicts": ["Talisman (<<2.1.0*~)"]
+	"conflicts": ["Talisman (<<2.1.0*~)"],
+	"allow_redistribution": true
 }
