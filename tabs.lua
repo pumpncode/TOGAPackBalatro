@@ -34,14 +34,6 @@ togabalatro.config_tab = function()
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "BoosterPackMusic" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_musicpacks'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "JokeJokersActive" },
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
@@ -62,7 +54,7 @@ end
 togabalatro.extra_tabs = function()
 	return {
 		{ label = 'Logging', tab_definition_function = togabalatro.tabs[1] },
-		{ label = 'SFX/Music', tab_definition_function = togabalatro.tabs[2] },
+		{ label = 'Misc. Audio', tab_definition_function = togabalatro.tabs[2] },
 	}
 end
 
@@ -119,6 +111,22 @@ togabalatro.startupsfx_tab = function()
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_mainmenumusicswap'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+		}},
+		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "UseCustomModTabMusic" },
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_modtabmusicswap'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+		}},
+		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "BoosterPackMusic" },
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_musicpacks'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {

@@ -91,11 +91,11 @@ SMODS.Joker{
 }
 
 local function toga_vouchcount()
-	local vouchercount = 0
-	for i, v in pairs(G.GAME.used_vouchers) do
-		if v == true then vouchercount = vouchercount + 1 end
-	end
-	return vouchercount
+	-- local vouchercount = 0
+	-- for i, v in pairs(G.GAME.used_vouchers) do
+		-- if v == true then vouchercount = vouchercount + 1 end
+	-- end
+	return G.vouchers and G.vouchers.cards and #G.vouchers.cards or 0
 end
 
 SMODS.Joker{

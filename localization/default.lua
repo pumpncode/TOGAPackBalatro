@@ -193,9 +193,9 @@ return {
 				name = 'User Accounts',
 				text = {
 					"{C:green}#2# in #3#{} chance for scoring cards to",
-					"give {X:mult,C:white}XMult{} based on calculated average of",
-					"current {C:attention}Joker{} & {C:attention}Consumable{} slots and",
-					"{C:chips}hands{} & {C:red}discards{} left.",
+					"give {X:mult,C:white}XMult{} based on half of calculated",
+					"average of current {C:chips}hands{} & {C:red}discards{} left",
+					"and {C:attention}Joker{} & {C:attention}Consumable{} slots.",
 					"{C:inactive,s:0.8}(Currently {}{X:mult,C:white,s:0.8}X#1#{}{C:inactive,s:0.8}){}",
 				}
 			},
@@ -211,9 +211,15 @@ return {
 			j_toga_solitairejoker = {
 				name = 'Solitaire Joker',
 				text = {
-					"{C:attention}+#1#{} hand size",
-					"{C:chips}+#2#{} Chips",
-					"{C:chips}-#3#{} hand per round",
+					-- "{C:attention}+#1#{} hand size",
+					-- "{C:chips}+#2#{} Chips",
+					-- "{C:chips}-#3#{} hand per round",
+					
+					-- "After the initial drawing of cards,",
+					-- "draw {C:attention}#1#{} additional {C:attention}#2#s{} to hand.",
+					"When playing a hand {C:attention}containing{} a {C:attention}Straight{},",
+					"draw remaining {C:attention}#2#s{} in the deck to hand.",
+					"Rank changes every round.",
 					"{C:inactive,s:0.8}An Office regular.{}"
 				}
 			},
@@ -298,17 +304,16 @@ return {
 			j_toga_quacksoft = {
 				name = 'Duck?',
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Chips for each",
-					"remaining card in the {C:attention}deck{}",
+					"{X:dark_edition,C:white}^#1#{} Chips per card",
+					"in the {C:attention}full deck{}",
 					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}"
 				}
 			},
 			j_toga_winupdate = {
 				name = 'Joker Update',
 				text = {
-					"{C:attention}Numerical{} values of a {C:attention}random{} Joker are",
-					"increased by {C:attention}#1#%{} when defeating {C:attention}Blinds{}.",
-					"{C:inactive,s:0.8}Cannot affect self or copies of self.{}"
+					"When {C:attention}entering shop{}, {C:attention}add{} a random",
+					"{C:attention}Voucher{} and {C:attention}Booster Pack{} to shop"
 				}
 			},
 			j_toga_virtualmemory = {
@@ -375,10 +380,16 @@ return {
 			j_toga_pso2ironwill = {
 				name = 'Skill: Iron Will',
 				text = {
-					"When ready and if you have at least {C:money}$1{},",
-					"lose all held {C:money}money{}, prevents death and",
-					"becomes {C:attention}inactive{}. Recharges after",
-					"defeating a {C:attention}Boss Blind{}.",
+					-- "When ready and if you have at least {C:money}$1{},",
+					-- "lose all held {C:money}money{}, prevents death and",
+					-- "becomes {C:attention}inactive{}. Recharges after",
+					-- "defeating a {C:attention}Blind{}.",
+					-- "{C:inactive,s:0.8}Currently: #2#{}"
+					-- "Prevents death if active and at least {C:money}$1{} is held, sets money to $0 and becomes inactive. Recharges upon defeating a Boss Blind.",
+					"Prevents death if active and at",
+					"least {C:money}$1{} is held, sets money to $0",
+					"and becomes inactive. {C:attention}Recharges{}",
+					"upon {C:attention}defeating{} a Boss Blind.",
 					"{C:inactive,s:0.8}Currently: #2#{}"
 				}
 			},
@@ -455,13 +466,16 @@ return {
 			j_toga_jimboplus = {
 				name = 'JimboPlus!',
 				text = {
-					"Scoring cards give {X:mult,C:white}XMult{}",
-					"depending on {C:attention}Jokers{} currently held.",
-					"{C:attention}Jimbos{} give {X:mult,C:white}X#1#{} Mult instead of",
-					"{X:mult,C:white}X#2#{} Mult for every other Joker.",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
-					"{C:inactive,s:0.8}Copies of this Joker{}",
-					"{C:inactive,s:0.8}do not contribute to XMult.{}"
+					-- "Scoring cards give {X:mult,C:white}XMult{}",
+					-- "depending on {C:attention}Jokers{} currently held.",
+					-- "{C:attention}Jimbos{} give {X:mult,C:white}X#1#{} Mult instead of",
+					-- "{X:mult,C:white}X#2#{} Mult for every other Joker.",
+					-- "{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
+					-- "{C:inactive,s:0.8}Copies of this Joker{}",
+					-- "{C:inactive,s:0.8}do not contribute to XMult.{}"
+					"When playing a hand, {C:attention}leech{} {X:attention,C:white}X#1#{}",
+					"of {C:attention}Blind requirements{} to",
+					"currently scored chips."
 				}
 			},
 			j_toga_speedsneakers = {
@@ -598,7 +612,8 @@ return {
 				name = 'Skype',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}each mod{} among",
-					"held {C:attention}Jokers{} and {C:attention}Consumeables{}.",
+					"redeemed {C:attention}Vouchers{}, held {C:attention}Jokers{}",
+					"and {C:attention}Consumeables{}.",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}, #3# mod.){}",
 					"{C:inactive,s:0.7}RIP Skype (2003 - 2025){}"
 				}
@@ -713,6 +728,101 @@ return {
 					"{C:inactive,s:0.75}(Excluding self and copies of self.){}"
 				}
 			},
+			j_toga_tempinternetfiles = {
+				name = 'Downloaded Program Files',
+				text = {
+					"Gains {X:mult,C:white}X#2#{} Mult when a card is drawn.",
+					"Resets if {C:blue}played{}/{C:red}discarded{} hand contains a {C:attention}Flush{}.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
+				}
+			},
+			j_toga_google = {
+                name = 'Google',
+                text = {
+                    "Adds a {C:attention}6{} to deck",
+                    "when {C:attention}Blind{} is selected",
+                },
+            },
+			j_toga_bonzibuddy = {
+                name = 'Bonzi Buddy',
+                text = {
+                    "{C:attention}Strength{}-like effects",
+					"are inverted"
+                },
+            },
+			j_toga_netscapenavigator = {
+                name = 'Netscape Navigator',
+                text = {
+					"{C:dark_edition}Holographic{} {C:attention}Jokers{}",
+					"or {C:attention}held in hand{} cards",
+                    "give {X:mult,C:white}X#1#{} Mult",
+                },
+            },
+			j_toga_diskcleanup = {
+                name = 'Disk Cleanup',
+                text = {
+					"Gain {C:money}$#1#{} per {C:red}destroyed{}",
+					"{C:attention}#2#{} card",
+					"{C:inactive,s:0.8}Suit changes every round.{}",
+                },
+            },
+			j_toga_regedit = {
+                name = 'Registry Editor',
+                text = {
+					"{C:attention}Overrides{} suit change to {C:attention}#1#{}.",
+					"Suit changes every round.",
+                },
+            },
+			j_toga_msagent = {
+                name = 'Microsoft Agent',
+                text = {
+					"{C:dark_edition}Unbalances{}",
+					"{C:blue}Chips{} and {C:red}Mult{}",
+                },
+            },
+			j_toga_drwatson = {
+                name = 'Dr. Watson',
+                text = {
+					"After a hand is played, {C:red}destroy{}",
+					"debuffed {C:attention}played{}/{C:attention}held in hand{} cards",
+                },
+            },
+			j_toga_fontsfolder = {
+                name = 'Fonts',
+                text = {
+					"{X:mult,C:white}X#1#{} Mult for every",
+					"custom font loaded",
+					"{C:inactive,s:0.9}(Currently #2#, {X:mult,C:white,s:0.8}X#3#{C:inactive,s:0.8})",
+                },
+            },
+			j_toga_fontsfolder_inactive = {
+                name = 'Fonts',
+                text = {
+					"{E:2,s:1.2}Does nothing.{}",
+					"{C:inactive,s:0.85}Load some fonts, will ya?{}"
+                },
+            },
+			j_toga_pcmcia = {
+                name = 'PCMCIA Card',
+                text = {
+					"{X:mult,C:white}X#1#{} Mult..?",
+                },
+            },
+			j_toga_scsi = {
+                name = 'SCSI',
+                text = {
+					"{C:attention}#1#{} hand size",
+					"Increase hand size by {C:attention}1{}",
+					"when {C:attention}redeeming{} a Voucher",
+                },
+            },
+			j_toga_visualstudio = {
+                name = 'Visual Studio',
+                text = {
+					"Rank of {C:attention}Strength{}-like effects",
+					"is increased by {C:attention}#1#{}",
+                },
+            },
 		},
 		Enhanced = {
 			m_toga_notification = {
@@ -1212,7 +1322,7 @@ return {
 				name = "Formula",
 				text = {
 					"({C:attention}Joker slots{} + {C:attention}Consumable{} slots",
-					"+ {C:blue}hands{} left + {C:red}discards{} left) / 4",
+					"+ {C:blue}hands{} left + {C:red}discards{} left) / 8",
 				},
 			},
 			toga_roseneffects = {
@@ -1441,6 +1551,9 @@ return {
 			toga_stonenothing = "Nothing...",
 			toga_stonefound = "!",
 			--
+			toga_unbalanced = "Unbalanced",
+			toga_pluscard = "+1 Card",
+			toga_solitairedraw = "Drawing...",
 			toga_32bits = "32-bit!",
 			toga_jimbo = "...",
 			toga_jimbo95txt1 = "Run!",
@@ -1460,6 +1573,8 @@ return {
 			toga_perlevel = "per-level",
 			toga_pinballing = "Score!",
 			toga_roverwoof = "Woof.",
+			toga_leech = "Leech",
+			toga_bonziinvert = "Inverted",
 			toga_configtab = "Mod Settings",
 			toga_logtab = "Logging Settings",
 			toga_startsfxtab = "Misc. Audio Options",
@@ -1473,6 +1588,7 @@ return {
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
 			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",
 			toga_mainmenumusicswap = "MIDI-fy the Main Menu music",
+			toga_modtabmusicswap = "Custom music for own mod config menu",
 			toga_startupsfx = "Enable mod startup sound on initial load",
 			toga_startupsfxuse = "Use selected SFX for next game startup",
 			toga_sfxswaptext = "SFX Swap Level:",

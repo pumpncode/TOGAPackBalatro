@@ -8,6 +8,7 @@ sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
 
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGAJokersMainW", path = "togajokersw.png", px = 91, py = 95}
 SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersOtherDiffSize", path = "togajokersothersize.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
@@ -114,6 +115,15 @@ SMODS.Sound({
 	end,
 })
 
+SMODS.Sound({
+	key = "music_upgradestation",
+	path = "upgradestation.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return togabalatro.config.UseCustomModTabMusic and SMODS.LAST_SELECTED_MOD_TAB and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "TOGAPack" and 2
+	end,
+})
+
 -- I think, therefore, I am.
 togabalatro = SMODS.current_mod
 
@@ -164,6 +174,22 @@ togabalatro.iswindows = function(card)
 	or card.config.center.key == 'j_toga_win8' then return true end
 end
 
+togabalatro.performpseudolag = function()
+	if not togabalatro.pseudolag then
+		togabalatro.pseudolag = true
+		if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("waitarrow")) end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = math.random(),
+			func = function()
+				togabalatro.pseudolag = nil
+				if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("arrow")) end
+				return true
+			end
+		}))
+	end
+end
+
 togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit'}
 togabalatro.verifysfxconfig = function()
 	togabalatro.config.StartUpSFX = type(togabalatro.config.StartUpSFX) == 'table' and togabalatro.config.StartUpSFX or {}
@@ -201,7 +227,11 @@ SMODS.ObjectType{
 		["j_toga_jimboplus"] = true, ["j_toga_tomscott"] = true, ["j_toga_goldenwrench"] = true,
 		["j_toga_skype"] = true, ["j_toga_msn"] = true, ["j_toga_mac_os_9"] = true, 
 		["j_toga_mac_os_x"] = true, ["j_toga_linux_ubuntu"] = true, ["j_toga_linux_debian"] = true,
-		["j_toga_linux_slackware"] = true, ["j_toga_linux_redhat"] = true,
+		["j_toga_linux_slackware"] = true, ["j_toga_linux_redhat"] = true, ["j_toga_tempinternetfiles"] = true,
+		["j_toga_google"] = true, ["j_toga_bonzibuddy"] = true, ["j_toga_netscapenavigator"] = true,
+		["j_toga_diskcleanup"] = true, ["j_toga_regedit"] = true, ["j_toga_msagent"] = true,
+		["j_toga_drwatson"] = true, ["j_toga_fontsfolder"] = true, ["j_toga_pcmcia"] = true,
+		["j_toga_scsi"] = true, ["j_toga_visualstudio"] = true,
 	}
 }
 
@@ -373,32 +403,63 @@ function G.FUNCS.draw_from_deck_to_hand(e)
 	if togabalatro.config.DoMoreLogging then sendInfoMessage("Executed original function or (potential) hook.", "TOGAPack") end
 	G.E_MANAGER:add_event(Event({
 		func = function()
-			local allnotifcards = {}
-			for i = 1, #G.deck.cards do
-				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then --if G.deck.cards[i].config.center_key == 'm_toga_notification' then
-					allnotifcards[#allnotifcards+1] = G.deck.cards[i]
-				end
-			end
-			if #allnotifcards > 0 then
-				for i = 1, #G.deck.cards do
-					for v = 1, #allnotifcards do
-						if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') and allnotifcards[v] == G.deck.cards[i] then
-							if togabalatro.config.DoMoreLogging then sendInfoMessage("Additionally drawing Notification Card "..i.." ("..G.deck.cards[i].config.card.name..") from the deck...", "TOGAPack") end
-							draw_card(G.deck, G.hand, i*100/#allnotifcards, 'up', true, G.deck.cards[i])
-						end
-					end
-				end
-				
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if togabalatro.config.DoMoreLogging then sendInfoMessage("save_run() so the additionally drawn "..#allnotifcards.." cards are set...", "TOGAPack") end
-						save_run() -- god.
-						return true
-					end}))
-			end
+			togabalatro.drawextracards()
 			return true
 		end
 	}))
+end
+
+togabalatro.reset_solitaire = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.solitaire = {} end
+	G.GAME.current_round.togabalatro.solitaire.rank = 'Ace'
+	G.GAME.current_round.togabalatro.solitaire.id = 14
+	local valid_soli_cards = {}
+	for k, v in ipairs(G.playing_cards) do
+		if v.ability.effect ~= 'Stone Card' then
+			if not SMODS.has_no_rank(v) then
+				valid_soli_cards[#valid_soli_cards+1] = v
+			end
+		end
+	end
+	if valid_soli_cards[1] then
+		local soli_card = pseudorandom_element(valid_soli_cards, pseudoseed('solitaire'..G.GAME.round_resets.ante))
+		G.GAME.current_round.togabalatro.solitaire.rank = soli_card.base.value
+		G.GAME.current_round.togabalatro.solitaire.id = soli_card.base.id
+	end
+end
+
+togabalatro.reset_diskcleanup = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.diskcleanup = {}; G.GAME.current_round.togabalatro.diskcleanup.suit = 'Hearts' end
+	local dc_suits = {}
+	for k, v in ipairs(G.playing_cards) do
+		if v.ability.effect ~= 'Stone Card' then
+			if not SMODS.has_no_suit(v) and not dc_suits[v.base.suit] and SMODS.Suits[v.base.suit] then
+				dc_suits[v.base.suit] = true
+			end
+		end
+	end
+	local valid_dc_suits = {}
+	for k, v in pairs(dc_suits) do valid_dc_suits[#valid_dc_suits+1] = k end
+	if next(valid_dc_suits) then G.GAME.current_round.togabalatro.diskcleanup.suit = pseudorandom_element(valid_dc_suits, pseudoseed('diskcleanup'..G.GAME.round_resets.ante)) end
+end
+
+togabalatro.reset_regedit = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.regedit = {}; G.GAME.current_round.togabalatro.regedit.suit = 'Hearts' end
+	local regedit_suits = {}
+    for k, v in pairs(SMODS.Suits) do
+        if k ~= G.GAME.current_round.togabalatro.regedit.suit then regedit_suits[#regedit_suits + 1] = k end
+    end
+    G.GAME.current_round.togabalatro.regedit.suit = pseudorandom_element(regedit_suits, pseudoseed('regedit'..G.GAME.round_resets.ante))
+end
+
+togabalatro.reset_game_globals = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro = {} end
+	
+	togabalatro.reset_solitaire(run_start)
+	togabalatro.reset_diskcleanup(run_start)
+	togabalatro.reset_regedit(run_start)
+	
+	if togabalatro.config.DoMoreLogging then sendInfoMessage("Reset own round variables.", "TOGAPack") end
 end
 
 -- for Jarate & a Boss/Showdown Blind...
@@ -415,11 +476,11 @@ end
 sendInfoMessage("Hooking Blind:disable...", "TOGAPack")
 local bldisref = Blind.disable
 function Blind:disable()
-    if self.debuff.toga_no_disable then
-        play_sound('toga_winxpcritstop', 1, 0.5)
-        return
-    end
-    return bldisref(self)
+	if self.debuff.toga_no_disable then
+		play_sound('toga_winxpcritstop', 1, 0.5)
+		return
+	end
+	return bldisref(self)
 end
 
 sendInfoMessage("Hooking Game:update_game_over...", "TOGAPack")
@@ -429,6 +490,75 @@ function Game:update_game_over(dt)
 		if G.GAME.selected_back.effect.center.key == 'b_toga_screamingdeck' and togabalatro.config.SFXWhenTriggered then play_sound('toga_soldierscream', 1, 0.4) end
 	end
 	ugoref(self, dt)
+end
+
+-- Hook for Strength-like stuff.
+sendInfoMessage("Hooking SMODS.modify_rank...", "TOGAPack")
+local modifyrankref = SMODS.modify_rank
+function SMODS.modify_rank(card, amount, manual_sprites)
+	local vscalc = {}
+	SMODS.calculate_context({ vs_modify_rank = true }, vscalc)
+	for _, eval in pairs(vscalc) do
+		for key, eval2 in pairs(eval) do
+			if eval2.amount and eval2.card then amount = amount + eval2.amount end
+		end
+	end
+	local bonzicalc = {}
+	SMODS.calculate_context({ bonzi_modify_rank = true }, bonzicalc)
+	for _, eval in pairs(bonzicalc) do
+		for key, eval2 in pairs(eval) do
+			if eval2.amount and eval2.card then amount = amount * eval2.amount end
+		end
+	end
+	return modifyrankref(card, amount, manual_sprites)
+end
+
+-- Voucher redeem calculation.
+sendInfoMessage("Hooking Card:apply_to_run...", "TOGAPack")
+local applytorunref = Card.apply_to_run
+function Card:apply_to_run(center)
+	applytorunref(self, center)
+	SMODS.calculate_context({ redeem_individual_voucher = true, voucher = center or self })
+end
+
+sendInfoMessage("Hooking Card:change_suit...", "TOGAPack")
+local changesuitref = Card.change_suit
+function Card:change_suit(new_suit)
+	if next(SMODS.find_card('j_toga_regedit')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.regedit and G.GAME.current_round.togabalatro.regedit.suit then
+		new_suit = G.GAME.current_round.togabalatro.regedit.suit
+	end
+	changesuitref(self, new_suit)
+end
+
+togabalatro.drawextracards = function()
+	local anycarddrawn = false
+	
+	local allnotifcards = {}
+	for i = 1, #G.deck.cards do
+		if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then --if G.deck.cards[i].config.center_key == 'm_toga_notification' then
+			allnotifcards[#allnotifcards+1] = G.deck.cards[i]
+		end
+	end
+	if #allnotifcards > 0 then
+		for i = 1, #G.deck.cards do
+			for v = 1, #allnotifcards do
+				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') and allnotifcards[v] == G.deck.cards[i] then
+					if togabalatro.config.DoMoreLogging then sendInfoMessage("Additionally drawing Notification Card "..i.." ("..G.deck.cards[i].config.card.name..") from the deck...", "TOGAPack") end
+					draw_card(G.deck, G.hand, i*100/#allnotifcards, 'up', true, G.deck.cards[i])
+					anycarddrawn = true
+				end
+			end
+		end
+	end
+	
+	if anycarddrawn then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if togabalatro.config.DoMoreLogging then sendInfoMessage("save_run() so the additionally drawn cards are set...", "TOGAPack") end
+				save_run() -- god.
+				return true
+			end}))
+	end
 end
 
 function ReverseTable(t)
@@ -760,6 +890,7 @@ G.P_CENTERS['e_negative'].get_weight = function(self)
 end
 
 -- Golden Wrench...
+sendInfoMessage("Hooking Card:start_dissolve...", "TOGAPack")
 local startdisref = Card.start_dissolve
 function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 	if self and self.config and self.config.center_key == 'j_toga_goldenwrench' and not self.ability.sold then togabalatro.goldenwrench(self) end
@@ -781,8 +912,38 @@ togabalatro.goldenwrench = function(card)
 	}))
 end
 
--- Play more cards! For the SMS enhancement.
+togabalatro.isplayingcardarea = function(target)
+	local t = {}
+	t[#t+1] = G.play
+	t[#t+1] = G.hand
+	t[#t+1] = G.deck
+	t[#t+1] = G.discard
+	-- TOGA-TARGET: add your own CardAreas for playing cards
+	for i, v in ipairs(t) do
+		if v == target then return true end
+	end
+	return false
+end
+
+sendInfoMessage("Hooking draw_card...", "TOGAPack")
+local drawcardref = draw_card
+function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
+	drawcardref(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
+	if togabalatro.isplayingcardarea(to) and togabalatro.isplayingcardarea(from) then SMODS.calculate_context({ individual_draw = true }) end
+end
+
+sendInfoMessage("Hooking love.graphics.newFont...", "TOGAPack")
+local newfontref = love.graphics.newFont
+function love.graphics.newFont(arg1, arg2, arg3, arg4)
+	local font = newfontref(arg1, arg2, arg3, arg4)
+	togabalatro.externalfontsloaded = togabalatro.externalfontsloaded or {}
+	togabalatro.externalfontsloaded[#togabalatro.externalfontsloaded+1] = font
+	return font
+end
+
+-- Do additional stuff when playing a hand.
 togabalatro.playextracards = function()
+	-- SMS enhancement.
 	local sms_deck = {}
 	if G.deck.cards and #G.deck.cards > 0 then
 		for i = 1, #G.deck.cards do
@@ -802,6 +963,16 @@ togabalatro.playextracards = function()
 					draw_card(G.deck, G.play, i*100/#sms_deck, 'up', nil, G.deck.cards[i])
 				end
 			end
+		end
+	end
+	-- Draw cards to hand by Solitaire Joker.
+	if next(SMODS.find_card('j_toga_solitairejoker')) then
+		local curcards = {}
+		for i = 1, #G.deck.cards do
+			if G.deck.cards[i]:get_id() == G.GAME.current_round.togabalatro.solitaire.id then curcards[#curcards+1] = G.deck.cards[i] end
+		end
+		for c = 1, #curcards do
+			if curcards[c] then draw_card(G.deck, G.hand, c*100/#curcards, 'up', true, curcards[c]) end
 		end
 	end
 end

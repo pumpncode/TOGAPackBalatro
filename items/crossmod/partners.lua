@@ -55,7 +55,8 @@ Partner_API.Partner{
 	atlas = "TOGAFunnyStatic",
 	config = {extra = { odds = 8, mm = 0.25 }},
 	loc_vars = function(self, info_queue, card)
-		return { vars = { SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds), 100*card.ability.extra.mm } }
+		local num, dem = SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds)
+		return { vars = { num, dem, 100*card.ability.extra.mm } }
 	end,
 	calculate = function(self, card, context)
 		--if context.end_of_round and not context.repetition and not context.individual and pseudorandom("whenthemoneyissus") < G.GAME.probabilities.normal/card.ability.extra.odds then

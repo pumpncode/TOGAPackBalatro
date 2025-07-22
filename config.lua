@@ -11,6 +11,7 @@ return {
 		["Selected"] = 1,
 		["UseSelected"] = false
 	}
-	["UseCustomMMMusic"] = false
+	["UseCustomMMMusic"] = true
+	["UseCustomModTabMusic"] = true
 	["SFXSwapLevel"] = 2
 }
