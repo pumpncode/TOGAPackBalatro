@@ -19,6 +19,7 @@ SMODS.Joker{
 	pos = { x = 2, y = 7 },
 	soul_pos = { x = 5, y = 5 },
 	cost = 6,
+	pools = { ["TOGAJKR"] = true },
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.other_joker and context.other_joker.config and context.other_joker.config.center and context.other_joker.config.center.rarity == "crv_p"

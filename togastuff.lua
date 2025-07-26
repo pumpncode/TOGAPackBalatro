@@ -231,7 +231,9 @@ SMODS.ObjectType{
 		["j_toga_google"] = true, ["j_toga_bonzibuddy"] = true, ["j_toga_netscapenavigator"] = true,
 		["j_toga_diskcleanup"] = true, ["j_toga_regedit"] = true, ["j_toga_msagent"] = true,
 		["j_toga_drwatson"] = true, ["j_toga_fontsfolder"] = true, ["j_toga_pcmcia"] = true,
-		["j_toga_scsi"] = true, ["j_toga_visualstudio"] = true,
+		["j_toga_scsi"] = true, ["j_toga_visualstudio"] = true, ["j_toga_printershare"] = true,
+		["j_toga_netshow"] = true, ["j_toga_certserver"] = true, ["j_toga_cpu"] = true,
+		["j_toga_ups"] = true, ["j_toga_hammer"] = true,
 	}
 }
 
