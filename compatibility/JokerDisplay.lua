@@ -36,5 +36,28 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 				card.joker_display_values.totalmoney = math.ceil(card.ability.extra.totalmoney)
 			end,
 		}
+
+		jd_def["j_toga_useraccounts"] = {
+			text = {
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "totalXmult" },
+					}
+				}
+			},
+			extra = {
+				{
+					{ text = "(" },
+					{ ref_table = "card.joker_display_values", ref_value = "odds" },
+					{ text = ")" },
+				}
+			},
+			extra_config = { colour = G.C.GREEN, scale = 0.3 },
+
+			calc_function = function(card)
+				card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+			end,
+		}
 	end
 end
