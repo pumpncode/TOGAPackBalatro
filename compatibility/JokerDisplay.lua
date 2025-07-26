@@ -3,7 +3,7 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 		local jd_def = JokerDisplay.Definitions
 
 		jd_def["j_toga_theinternet"] = {
-			 text = {
+			text = {
 				{ text = "+" },
 				{ ref_table = "card.ability.extra", ref_value = "curchips", retrigger_type = "mult" }
 			},
@@ -11,7 +11,7 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 		}
 
 		jd_def["j_toga_speedsneakers"] = {
-			 text = {
+			text = {
 				{
 					border_nodes = {
 						{ text = "X" },
@@ -57,6 +57,18 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 
 			calc_function = function(card)
 				card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { (G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+			end,
+		}
+
+		jd_def["j_toga_cpu"] = {
+			text = {
+				{ text = "+" },
+				{ ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
+			},
+			text_config = { colour = G.C.MULT },
+			calc_function = function(card)
+				local cores = love.system.getProcessorCount() or 1
+				card.joker_display_values.mult = cores * card.ability.extra.coremult
 			end,
 		}
 	end
