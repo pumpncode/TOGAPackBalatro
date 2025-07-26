@@ -24,5 +24,17 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 				card.joker_display_values.xmult = to_big(1)+to_big(total) > to_big(1) and to_big(1)+to_big(total) or to_big(1)
 			end,
 		}
+
+		jd_def["j_toga_controlpanel"] = {
+			text = {
+				{ text = "+$" },
+				{ ref_table = "card.joker_display_values", ref_value = "totalmoney" },
+			},
+			text_config = { colour = G.C.GOLD },
+
+			calc_function = function(card)
+				card.joker_display_values.totalmoney = math.ceil(card.ability.extra.totalmoney)
+			end,
+		}
 	end
 end
