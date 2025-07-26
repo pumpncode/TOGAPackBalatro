@@ -653,6 +653,10 @@ SMODS.Joker{
 			end
 			if dmoney > 0 then return { dollars = dmoney } end
 		end
+		
+		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then
+			return { message = localize('k_reset') }
+		end
 	end,
 }
 
@@ -712,6 +716,30 @@ SMODS.Joker{
 	pos = { x = 3, y = 5 },
 	cost = 7,
 	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then
+			return { message = localize('k_reset') }
+		end
+	end,
+}
+
+SMODS.Joker{
+	key = 'certserver',
+	loc_vars = function(self, info_queue, card)
+		local togacertserver = G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.certserver or {}
+		return { vars = { localize(togacertserver.rank or "Ace", 'ranks') } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 0, y = 8 },
+	cost = 6,
+	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then
+			return { message = localize('k_reset') }
+		end
+	end,
 }
 
 SMODS.Joker{
@@ -789,17 +817,16 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'fontsfolder',
-	config = { extra = { perfontxmult = 1.25 } },
+	config = { extra = { perfontxmult = 1.5 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.perfontxmult = math.max(card.ability.extra.perfontxmult, 1)
-		if togabalatro.externalfontsloaded and #togabalatro.externalfontsloaded > 0 then
-			local fontamount = togabalatro.externalfontsloaded and #togabalatro.externalfontsloaded
+		if next(togabalatro.externalfontsloaded) and fontamount > 0 then
 			return { vars = { card.ability.extra.perfontxmult, fontamount, card.ability.extra.perfontxmult*fontamount } }
 		else return { key = self.key.."_inactive" } end
 	end,
 	unlocked = true,
 	in_pool = function()
-		return togabalatro.externalfontsloaded and #togabalatro.externalfontsloaded > 0 -- Should only spawn if fonts are detected.
+		return next(togabalatro.externalfontsloaded) and togabalatro.externalfontsloaded() > 0 -- Should only spawn if fonts are detected.
 	end,
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
@@ -807,15 +834,16 @@ SMODS.Joker{
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if (togabalatro.externalfontsloaded and #togabalatro.externalfontsloaded > 0) and context.joker_main then
-			return { xmult = math.max(card.ability.extra.perfontxmult, 1)*#togabalatro.externalfontsloaded }
+		if next(togabalatro.externalfontsloaded) and context.joker_main then
+			local fontamount = togabalatro.externalfontsloaded()
+			if fontamount > 0 then return { xmult = math.max(card.ability.extra.perfontxmult, 1)*fontamount } end
 		end
 	end,
 }
 
 SMODS.Joker{
 	key = 'pcmcia',
-	config = { extra = { xmult = 2.5 } },
+	config = { extra = { xmult = 3 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xmult = math.max(card.ability.extra.xmult, 1)
 		return { vars = { card.ability.extra.xmult } }
@@ -854,10 +882,10 @@ SMODS.Joker{
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.hand:change_size(card.ability.extra.hsize or -2)
+		G.hand:change_size(card.ability.extra.hsize or -1)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand:change_size(-(card.ability.extra.hsize or -2))
+		G.hand:change_size(-(card.ability.extra.hsize or -1))
 	end,
 }
 
@@ -875,6 +903,61 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.vs_modify_rank then return { amount = math.floor(card.ability.extra.mrank), card = context.blueprint_card or card } end
+	end,
+}
+
+SMODS.Joker{
+	key = 'cpu',
+	config = { extra = { coremult = 2 } },
+	loc_vars = function(self, info_queue, card)
+		local cores = love.system.getProcessorCount() or 1
+		return { vars = { card.ability.extra.coremult, cores, cores*card.ability.extra.coremult } }
+	end,
+	unlocked = true,
+	rarity = 1,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 1, y = 8 },
+	cost = 5,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then return { mult = (love.system.getProcessorCount() or 1)*card.ability.extra.coremult } end
+	end,
+}
+
+SMODS.Joker{
+	key = 'ups',
+	config = { extra = { debuffxmult = 0.2, bonusxmult = 0 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.debuffxmult, 1+card.ability.extra.bonusxmult } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 2, y = 8 },
+	cost = 5,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then return { xmult = math.max(1+card.ability.extra.bonusxmult, 1) } end
+		if context.debuffed_ups and context.card then
+			card.ability.extra.bonusxmult = card.ability.extra.bonusxmult + card.ability.extra.debuffxmult
+			return { message = localize('k_upgrade_ex'), delay = 0.25 }
+		end
+	end,
+}
+
+SMODS.Joker{
+	key = 'hammer',
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 3, y = 8 },
+	cost = 8,
+	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.hammerscore then return { card = context.blueprint_card or card } end
+		if context.destroy_card then
+			if context.destroy_card.atomsmashed and SMODS.has_enhancement(context.destroy_card, "m_glass") then return { remove = true } else context.destroy_card.atomsmashed = nil end
+		end
 	end,
 }
 
@@ -1042,6 +1125,11 @@ SMODS.Joker{
 	pos = { x = 0, y = 0 },
 	cost = 8,
 	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then
+			return { message = localize('k_reset') }
+		end
+	end,
 }
 
 togabalatro.checkxmultsafe = function(card)

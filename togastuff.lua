@@ -277,6 +277,72 @@ to_number = to_number or function(a)
 	return a
 end
 
+togabalatro.reset_solitaire = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.solitaire = {} end
+	G.GAME.current_round.togabalatro.solitaire.rank = 'Ace'
+	G.GAME.current_round.togabalatro.solitaire.id = 14
+	local valid_soli_cards = {}
+	for k, v in ipairs(G.playing_cards) do
+		if v.ability.effect ~= 'Stone Card' then
+			if not SMODS.has_no_rank(v) then
+				valid_soli_cards[#valid_soli_cards+1] = v
+			end
+		end
+	end
+	if valid_soli_cards[1] then
+		local soli_card = pseudorandom_element(valid_soli_cards, pseudoseed('solitaire'..G.GAME.round_resets.ante))
+		G.GAME.current_round.togabalatro.solitaire.rank = soli_card.base.value
+		G.GAME.current_round.togabalatro.solitaire.id = soli_card.base.id
+	end
+end
+
+togabalatro.reset_diskcleanup = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.diskcleanup = {}; G.GAME.current_round.togabalatro.diskcleanup.suit = 'Hearts' end
+	local dc_suits = {}
+	for k, v in ipairs(G.playing_cards) do
+		if v.ability.effect ~= 'Stone Card' then
+			if not SMODS.has_no_suit(v) and not dc_suits[v.base.suit] and SMODS.Suits[v.base.suit] then
+				dc_suits[v.base.suit] = true
+			end
+		end
+	end
+	local valid_dc_suits = {}
+	for k, v in pairs(dc_suits) do valid_dc_suits[#valid_dc_suits+1] = k end
+	if next(valid_dc_suits) then G.GAME.current_round.togabalatro.diskcleanup.suit = pseudorandom_element(valid_dc_suits, pseudoseed('diskcleanup'..G.GAME.round_resets.ante)) end
+end
+
+togabalatro.reset_regedit = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.regedit = {}; G.GAME.current_round.togabalatro.regedit.suit = 'Hearts' end
+	local regedit_suits = {}
+    for k, v in pairs(SMODS.Suits) do
+        if k ~= G.GAME.current_round.togabalatro.regedit.suit then regedit_suits[#regedit_suits + 1] = k end
+    end
+    G.GAME.current_round.togabalatro.regedit.suit = pseudorandom_element(regedit_suits, pseudoseed('regedit'..G.GAME.round_resets.ante))
+end
+
+togabalatro.reset_certificateserver = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.certserver = {} end
+	G.GAME.current_round.togabalatro.certserver.rank = 'Ace'
+	G.GAME.current_round.togabalatro.certserver.id = 14
+	
+	local rndrank = pseudorandom_element(SMODS.Ranks, pseudoseed('certserver'..G.GAME.round_resets.ante))
+	if rndrank then
+		G.GAME.current_round.togabalatro.certserver.rank = rndrank.key
+		G.GAME.current_round.togabalatro.certserver.id = rndrank.id
+	end
+end
+
+togabalatro.reset_game_globals = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro = {} end
+	
+	togabalatro.reset_solitaire(run_start)
+	togabalatro.reset_diskcleanup(run_start)
+	togabalatro.reset_regedit(run_start)
+	togabalatro.reset_certificateserver(run_start)
+	
+	if togabalatro.config.DoMoreLogging then sendInfoMessage("Reset own round variables.", "TOGAPack") end
+end
+
 -- Random pitch...
 togabalatro.randompitch = function()
 	local genvalue = math.random(50, 150)/100
@@ -409,59 +475,6 @@ function G.FUNCS.draw_from_deck_to_hand(e)
 	}))
 end
 
-togabalatro.reset_solitaire = function(run_start)
-	if run_start then G.GAME.current_round.togabalatro.solitaire = {} end
-	G.GAME.current_round.togabalatro.solitaire.rank = 'Ace'
-	G.GAME.current_round.togabalatro.solitaire.id = 14
-	local valid_soli_cards = {}
-	for k, v in ipairs(G.playing_cards) do
-		if v.ability.effect ~= 'Stone Card' then
-			if not SMODS.has_no_rank(v) then
-				valid_soli_cards[#valid_soli_cards+1] = v
-			end
-		end
-	end
-	if valid_soli_cards[1] then
-		local soli_card = pseudorandom_element(valid_soli_cards, pseudoseed('solitaire'..G.GAME.round_resets.ante))
-		G.GAME.current_round.togabalatro.solitaire.rank = soli_card.base.value
-		G.GAME.current_round.togabalatro.solitaire.id = soli_card.base.id
-	end
-end
-
-togabalatro.reset_diskcleanup = function(run_start)
-	if run_start then G.GAME.current_round.togabalatro.diskcleanup = {}; G.GAME.current_round.togabalatro.diskcleanup.suit = 'Hearts' end
-	local dc_suits = {}
-	for k, v in ipairs(G.playing_cards) do
-		if v.ability.effect ~= 'Stone Card' then
-			if not SMODS.has_no_suit(v) and not dc_suits[v.base.suit] and SMODS.Suits[v.base.suit] then
-				dc_suits[v.base.suit] = true
-			end
-		end
-	end
-	local valid_dc_suits = {}
-	for k, v in pairs(dc_suits) do valid_dc_suits[#valid_dc_suits+1] = k end
-	if next(valid_dc_suits) then G.GAME.current_round.togabalatro.diskcleanup.suit = pseudorandom_element(valid_dc_suits, pseudoseed('diskcleanup'..G.GAME.round_resets.ante)) end
-end
-
-togabalatro.reset_regedit = function(run_start)
-	if run_start then G.GAME.current_round.togabalatro.regedit = {}; G.GAME.current_round.togabalatro.regedit.suit = 'Hearts' end
-	local regedit_suits = {}
-    for k, v in pairs(SMODS.Suits) do
-        if k ~= G.GAME.current_round.togabalatro.regedit.suit then regedit_suits[#regedit_suits + 1] = k end
-    end
-    G.GAME.current_round.togabalatro.regedit.suit = pseudorandom_element(regedit_suits, pseudoseed('regedit'..G.GAME.round_resets.ante))
-end
-
-togabalatro.reset_game_globals = function(run_start)
-	if run_start then G.GAME.current_round.togabalatro = {} end
-	
-	togabalatro.reset_solitaire(run_start)
-	togabalatro.reset_diskcleanup(run_start)
-	togabalatro.reset_regedit(run_start)
-	
-	if togabalatro.config.DoMoreLogging then sendInfoMessage("Reset own round variables.", "TOGAPack") end
-end
-
 -- for Jarate & a Boss/Showdown Blind...
 sendInfoMessage("Hooking Blind:defeat...", "TOGAPack")
 local blindkillref = Blind.defeat
@@ -511,6 +524,15 @@ function SMODS.modify_rank(card, amount, manual_sprites)
 		end
 	end
 	return modifyrankref(card, amount, manual_sprites)
+end
+
+-- Hooking for rank-specific stuff.
+local changebaseref = SMODS.change_base
+function SMODS.change_base(card, suit, rank, manual_sprites)
+	if next(SMODS.find_card('j_toga_certserver')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.certserver and G.GAME.current_round.togabalatro.certserver.rank then
+		rank = G.GAME.current_round.togabalatro.certserver.rank
+	end
+    return changebaseref(card, suit, rank, manual_sprites)
 end
 
 -- Voucher redeem calculation.
@@ -645,6 +667,24 @@ togabalatro.extrascoring = function(context, scoring_hand)
 						if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.odds or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8)) or eval2.card.ability.cry_rigged) then
 							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_roverbark"}) end
 							SMODS.score_card(G.deck.cards[i], context)
+						end
+					end
+				end
+			end
+		end
+		local hammercalc = {}
+		SMODS.calculate_context({hammerscore = true}, hammercalc)
+		for _, eval in pairs(hammercalc) do
+			for key, eval2 in pairs(eval) do
+				local notyetscored = true
+				if eval2.card then
+					for i = 1, #G.hand.cards do
+						if SMODS.has_enhancement(G.hand.cards[i], "m_glass") and G.hand.cards[i]:can_calculate() then
+							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_hammersmash')}) end
+							SMODS.score_card(G.hand.cards[i], context)
+							if SMODS.pseudorandom_probability(G.hand.cards[i], 'glass', 1, G.hand.cards[i].ability.name == 'Glass Card' and G.hand.cards[i].ability.extra or G.P_CENTERS.m_glass.config.extra) then
+								G.hand.cards[i].atomsmashed = true
+							end
 						end
 					end
 				end
@@ -932,13 +972,32 @@ function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped
 	if togabalatro.isplayingcardarea(to) and togabalatro.isplayingcardarea(from) then SMODS.calculate_context({ individual_draw = true }) end
 end
 
+togabalatro.externalfontsloaded = {}
+togabalatro.getexternalfontcount = function()
+	local count = 0
+	for k, v in pairs(togabalatro.externalfontsloaded or {}) do
+		if k and v then count = count + 1 end
+	end
+	return count
+end
+
 sendInfoMessage("Hooking love.graphics.newFont...", "TOGAPack")
 local newfontref = love.graphics.newFont
 function love.graphics.newFont(arg1, arg2, arg3, arg4)
-	local font = newfontref(arg1, arg2, arg3, arg4)
+	-- note to self: redo this bit to account for Trance font changes.
+	-- ...
+	print(arg1, arg2, arg3, arg4)
 	togabalatro.externalfontsloaded = togabalatro.externalfontsloaded or {}
-	togabalatro.externalfontsloaded[#togabalatro.externalfontsloaded+1] = font
-	return font
+	if type(arg1) == 'string' and not togabalatro.externalfontsloaded[arg1] then togabalatro.externalfontsloaded[arg1] = true end
+	
+	return newfontref(arg1, arg2, arg3, arg4)
+end
+
+local setdebuffref = Card.set_debuff
+function Card:set_debuff(should_debuff)
+	local prevstate = self.debuff
+	setdebuffref(self, should_debuff)
+    if self.debuff ~= prevstate and self.debuff == true then SMODS.calculate_context({ debuffed_ups = true, card = self }) end
 end
 
 -- Do additional stuff when playing a hand.

@@ -771,6 +771,7 @@ return {
                 text = {
 					"{C:attention}Overrides{} suit change to {C:attention}#1#{}.",
 					"Suit changes every round.",
+					"{C:inactive,s:0.9}Does not affect card copying.{}"
                 },
             },
 			j_toga_msagent = {
@@ -823,6 +824,53 @@ return {
 					"is increased by {C:attention}#1#{}",
                 },
             },
+			j_toga_printershare = {
+                name = 'Printer Sharing',
+                text = {
+					"{C:green}#2# in #3#{} chance for held",
+					"{C:attention}Printers{} to give {X:mult,C:white}X#1#{} Mult",
+                },
+            },
+			j_toga_netshow = {
+                name = 'NetShow',
+                text = {
+					"When playing a hand, gain {X:mult,C:white}X#1#{} Mult",
+					"for every {C:attention}unique{} movie genre held",
+					"{C:inactive}(Currently #3#, {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+                },
+            },
+			j_toga_certserver = {
+				name = 'Certificate Server',
+				text = {
+					"{C:attention}Overrides{} rank changes to {C:attention}#1#s{}.",
+					"Rank changes every round.",
+					"{C:inactive,s:0.9}Does not affect card copying.{}",
+				}
+			},
+			j_toga_cpu = {
+				name = 'CPU',
+				text = {
+					"{C:red}+#1#{} Mult per {C:dark_edition}logical{} processor",
+					"on current device",
+					"{C:inactive}(Currently #2#, {C:red}+#3#{C:inactive} Mult)",
+				}
+			},
+			j_toga_ups = {
+				name = 'Uninterruptable Power Supply',
+				text = {
+					"When a {C:attention}card is {C:red}debuffed{}, gain {X:mult,C:white}X#1#{} Mult",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_hammer = {
+				name = 'Hammer',
+				text = {
+					"{C:attention}Held in hand Glass{} cards",
+					"are also {C:attention}scored{} as if",
+					"they had been {C:attention}played{}",
+					"{C:inactive,s:0.8}Anyone remember Atom Smasher?{}"
+				}
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {
@@ -1575,6 +1623,7 @@ return {
 			toga_roverwoof = "Woof.",
 			toga_leech = "Leech",
 			toga_bonziinvert = "Inverted",
+			toga_hammersmash = "Smash!",
 			toga_configtab = "Mod Settings",
 			toga_logtab = "Logging Settings",
 			toga_startsfxtab = "Misc. Audio Options",
