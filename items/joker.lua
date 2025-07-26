@@ -820,13 +820,14 @@ SMODS.Joker{
 	config = { extra = { perfontxmult = 1.5 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.perfontxmult = math.max(card.ability.extra.perfontxmult, 1)
+		local fontamount = togabalatro.getexternalfontcount()
 		if next(togabalatro.externalfontsloaded) and fontamount > 0 then
 			return { vars = { card.ability.extra.perfontxmult, fontamount, card.ability.extra.perfontxmult*fontamount } }
 		else return { key = self.key.."_inactive" } end
 	end,
 	unlocked = true,
 	in_pool = function()
-		return next(togabalatro.externalfontsloaded) and togabalatro.externalfontsloaded() > 0 -- Should only spawn if fonts are detected.
+		return next(togabalatro.externalfontsloaded) and togabalatro.getexternalfontcount() > 0 -- Should only spawn if fonts are detected.
 	end,
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
@@ -835,7 +836,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if next(togabalatro.externalfontsloaded) and context.joker_main then
-			local fontamount = togabalatro.externalfontsloaded()
+			local fontamount = togabalatro.getexternalfontcount()
 			if fontamount > 0 then return { xmult = math.max(card.ability.extra.perfontxmult, 1)*fontamount } end
 		end
 	end,
