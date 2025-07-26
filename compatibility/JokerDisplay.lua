@@ -71,5 +71,17 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 				card.joker_display_values.mult = cores * card.ability.extra.coremult
 			end,
 		}
+
+		jd_def["j_toga_pcmcia"] = {
+			text = {
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "xmult" },
+					}
+				}
+			},
+		}
+
 	end
 end
