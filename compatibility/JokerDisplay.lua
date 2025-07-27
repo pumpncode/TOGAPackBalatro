@@ -83,5 +83,16 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 			},
 		}
 
+		jd_def["j_toga_jokersrb2kart"] = {
+			text = {
+				{
+					border_nodes = {
+						{ text = "X" },
+						{ ref_table = "card.ability.extra", ref_value = "Xmult_current" },
+					}
+				}
+			},
+		}
+
 	end
 end
