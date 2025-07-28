@@ -94,5 +94,52 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 			},
 		}
 
+		jd_def["j_toga_y2kbug"] = {
+			text = {
+				{ text = "+",                              colour = G.C.CHIPS },
+				{ ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS, retrigger_type = "mult" },
+				{ text = " +",                             colour = G.C.MULT },
+				{ ref_table = "card.joker_display_values", ref_value = "mult",  colour = G.C.MULT,  retrigger_type = "mult" }
+			},
+			reminder_text = {
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "localized_text_king",  colour = G.C.ORANGE },
+				{ text = ", " },
+				{ text = "2", colour = G.C.ORANGE },
+				{ text = ")" },
+			},
+			calc_function = function(card)
+				local chips, mult = 0, 0
+				local text, _, scoring_hand = JokerDisplay.evaluate_hand()
+				local hand = JokerDisplay.current_hand
+				local twopresent, kingpresent = false, false
+
+				if text ~= "Unknown" then
+					for _, current_card in pairs(hand) do
+						if current_card:get_id() then
+							if current_card:get_id() == 2 then
+								twopresent = true
+							end
+							if current_card:get_id() == 13 then
+								kingpresent = true
+							end
+						end
+					end
+					
+					for _, scoring_card in pairs(scoring_hand) do
+						if twopresent and kingpresent then
+							local retriggers = JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+							chips = chips + card.ability.extra.chips * retriggers
+							mult = mult + card.ability.extra.mult * retriggers
+						end
+					end
+				end
+				card.joker_display_values.chips = chips
+				card.joker_display_values.mult = mult
+
+				card.joker_display_values.localized_text_king = localize("King", "ranks")
+			end
+		}
+
 	end
 end
