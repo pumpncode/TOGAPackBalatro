@@ -164,5 +164,20 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 			},
 		}
 
+		jd_def["j_toga_virtualpc"] = {
+			extra = {
+				{
+					{ text = "(" },
+					{ ref_table = "card.joker_display_values", ref_value = "odds" },
+					{ text = ")" },
+				}
+			},
+			extra_config = { colour = G.C.GREEN, scale = 0.3 },
+
+			calc_function = function(card)
+				card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds), card.ability.extra.odds } }
+			end,
+		}
+
 	end
 end
