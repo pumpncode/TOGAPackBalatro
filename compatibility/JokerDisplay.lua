@@ -141,5 +141,16 @@ if SMODS.Mods["JokerDisplay"] and SMODS.Mods["JokerDisplay"].can_load then
 			end
 		}
 
+		jd_def["j_toga_taskmgr"] = {
+			reminder_text = {
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "active" },
+				{ text = ")" },
+			},
+			calc_function = function(card)
+				card.joker_display_values.active = (G.GAME and G.GAME.current_round.discards_left == 1 and localize("jdis_active") or localize("jdis_inactive"))
+			end
+		}
+
 	end
 end
