@@ -1026,14 +1026,17 @@ togabalatro.playextracards = function()
 			end
 		end
 	end
-	-- Draw cards to hand by Solitaire Joker.
+	-- Draw cards to hand by Solitaire Joker... if we actually have a Straight.
 	if next(SMODS.find_card('j_toga_solitairejoker')) then
-		local curcards = {}
-		for i = 1, #G.deck.cards do
-			if G.deck.cards[i]:get_id() == G.GAME.current_round.togabalatro.solitaire.id then curcards[#curcards+1] = G.deck.cards[i] end
-		end
-		for c = 1, #curcards do
-			if curcards[c] then draw_card(G.deck, G.hand, c*100/#curcards, 'up', true, curcards[c]) end
+		local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+		if next(pokerhands['Straight']) then
+			local curcards = {}
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i]:get_id() == G.GAME.current_round.togabalatro.solitaire.id then curcards[#curcards+1] = G.deck.cards[i] end
+			end
+			for c = 1, #curcards do
+				if curcards[c] then draw_card(G.deck, G.hand, c*100/#curcards, 'up', true, curcards[c]) end
+			end
 		end
 	end
 end

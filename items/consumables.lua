@@ -32,6 +32,23 @@ togabalatro.oredict.bronze = {'m_toga_bronze'}
 -- Set up a global pool of 'minerals' in our OreDictionary.
 togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium'}
 
+togabalatro.is_mineral = function(card)
+	if not card then return false end
+	for k, v in pairs(togabalatro.oredict.minerals) do
+		if v and SMODS.has_enhancement(card, v) then return true end
+	end
+	return false
+end
+
+togabalatro.has_mineral = function()
+	if G.playing_cards then
+		for i = 1, #G.playing_cards do
+			if togabalatro.is_mineral(G.playing_cards[i]) then return true end
+		end
+	end
+	return false
+end
+
 togabalatro.add_to_oredict = function(key, material, quiet)
 	quiet = quiet or false
 	if not (key or material) then sendErrorMessage("Key or material not defined: ["..tostring(key).."] ["..tostring(material).."]", "TOGAPack - OreDictionary"); return end
@@ -136,6 +153,9 @@ SMODS.Consumable{
 		end
 		return { key = cando and self.key..'_ready' or G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and self.key.."_novalidrecipe" or self.key, vars = { txt, card.ability.extra.usecost } }
 	end,
+	in_pool = function()
+		return togabalatro.has_mineral() -- Should only spawn if mineral cards.
+	end,
 	can_use = function(self, card, area, copier)
 		if togabalatro.validsmeltrecipes and #togabalatro.validsmeltrecipes < 0 then return false end
 		
@@ -217,6 +237,14 @@ SMODS.Consumable {
 			end
 		end
 		return {key = love.keyboard.isDown("lshift") and self.key.."_showminerals" or self.key, vars = { SMODS.get_probability_vars(card or self, 1, (card.ability.extra or self.config.extra).odds) }}
+	end,
+	in_pool = function()
+		if G.playing_cards then
+			for i = 1, #G.playing_cards do
+				if SMODS.has_enhancement(G.playing_cards[i], "m_stone") then return true end -- Appear if there's a Stone card.
+			end
+		end
+		return false
 	end,
 	can_use = function(self, card, area, copier)
 		return G.playing_cards and #G.playing_cards > 1

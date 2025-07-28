@@ -33,6 +33,7 @@ SMODS.Joker{
 					end
 				end
 			end
+			if next(uniquegenrest) then return { message = localize('k_upgrade_ex') } end
 		end
 		
 		if context.joker_main then return { x_mult = 1+card.ability.extra.bonusxmult } end

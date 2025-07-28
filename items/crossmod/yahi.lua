@@ -70,7 +70,7 @@ SMODS.Joker{
 		if context.other_joker and context.other_joker.config.center and context.other_joker.config.center.pools
 		and context.other_joker.config.center.pools.Cat and context.other_joker.config.center.key ~= card.config.center.key then
 			--local chanceroll = Talisman and pseudorandom("thecatmusical") < G.GAME.probabilities.normal/supremescret
-			local chanceroll = Talisman and local chanceroll = Talisman and SMODS.pseudorandom_probability(card, "thecatmusical", 1, supremescret)
+			local chanceroll = Talisman and SMODS.pseudorandom_probability(card, "thecatmusical", 1, supremescret)
 			return {
 				xchips = not chanceroll and card.ability.extra.xchips,
 				eeechips = chanceroll and card.ability.extra.eeechips,
