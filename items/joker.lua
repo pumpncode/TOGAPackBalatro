@@ -1851,7 +1851,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 1,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 5, y = 4 },
+	pos = { x = 7, y = 4 },
 	soul_pos = { x = 7, y = 3 },
 	no_collection = true,
 	cost = 1,
