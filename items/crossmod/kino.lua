@@ -18,7 +18,7 @@ SMODS.Joker{
 	unlocked = true,
 	rarity = 2,
 	atlas = 'TOGAJokersMain',
-	pos = { x = 3, y = 7 },
+	pos = { x = 0, y = 5 },
 	cost = 6,
 	pools = { ["TOGAJKR"] = true },
 	blueprint_compat = true,

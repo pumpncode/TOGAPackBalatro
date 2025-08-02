@@ -554,6 +554,72 @@ function Card:change_suit(new_suit)
 	changesuitref(self, new_suit)
 end
 
+togabalatro.chipmultopswap = {
+	['chips'] = 'mult',
+	['h_chips'] = 'h_mult',
+	['chip_mod'] = 'mult_mod',
+	['mult'] = 'chips',
+	['h_mult'] = 'h_chips',
+	['mult_mod'] = 'chip_mod',
+	['x_chips'] = 'x_mult',
+	['xchips'] = 'xmult',
+	['Xchip_mod'] = 'Xmult_mod',
+	['x_mult'] = 'x_chips',
+	['xmult'] = 'xchips',
+	['Xmult'] = 'xchips',
+	['x_mult_mod'] = 'Xchip_mod',
+	['Xmult_mod'] = 'Xchip_mod',
+	-- Talisman.
+	['e_mult'] = 'e_chips',
+	['emult'] = 'echips',
+	['ee_mult'] = 'ee_chips',
+	['eemult'] = 'eechips',
+	['eee_mult'] = 'eee_chips',
+	['eeemult'] = 'eeechips',
+	['hypermult'] = 'hyperchips',
+	['hyper_mult'] = 'hyper_chips',
+	['e_chips'] = 'e_mult',
+	['echips'] = 'emult',
+	['ee_chips'] = 'ee_mult',
+	['eechips'] = 'eemult',
+	['eee_chips'] = 'eee_mult',
+	['eeechips'] = 'eeemult',
+	['hyperchips'] = 'hypermult',
+	['hyper_chips'] = 'hyper_mult',
+	['Emult_mod'] = 'Echip_mod',
+	['EEmult_mod'] = 'EEchip_mod',
+	['EEEmult_mod'] = 'EEEchip_mod',
+	['hypermult_mod'] = 'hyperchip_mod',
+	['Echip_mod'] = 'Emult_mod',
+	['EEchip_mod'] = 'EEmult_mod',
+	['EEEchip_mod'] = 'EEEmult_mod',
+	['hyperchip_mod'] = 'hypermult_mod',
+	-- Other mods can add their custom operations to this table.
+}
+
+sendInfoMessage("Hooking SMODS.calculate_individual_effect...", "TOGAPack")
+local calcindiveffectref = SMODS.calculate_individual_effect
+SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, from_edition)
+	-- do stuff if only the table is actually a table and has not been mangled by external factors.
+	if type(togabalatro.chipmultopswap) == 'table' and togabalatro.chipmultopswap[key] then
+		local activesyncs = SMODS.find_card('j_toga_activesync')
+		if next(activesyncs) then
+			for i = 1, #activesyncs do
+				if SMODS.pseudorandom_probability(activesyncs[i], "msactivesync", 1, activesyncs[i].ability.extra.odds or 8) then
+					local msg
+					if string.find(key, 'chip') then msg = localize('toga_activesyncmult') elseif string.find(key, 'mult') then msg = localize('toga_activesyncchip') end
+					if msg and not (Talisman and Talisman.config_file.disable_anims) then
+						card_eval_status_text(activesyncs[i], 'extra', nil, nil, nil, {message = msg, colour = string.find(key, 'chip') and G.C.CHIPS or string.find(key, 'mult') and G.C.MULT, delay = 0.2})
+					end
+					key = togabalatro.chipmultopswap[key]
+				end
+			end
+		end
+	end
+	local ret = calcindiveffectref(effect, scored_card, key, amount, from_edition)
+	if ret then return ret end
+end
+
 togabalatro.drawextracards = function()
 	local anycarddrawn = false
 	
@@ -649,26 +715,9 @@ togabalatro.extrascoring = function(context, scoring_hand)
 				local notyetscored = true
 				if eval2.card then
 					for i = 1, math.floor(to_number(tonumber(eval2.spacecadet)) or eval2.card and to_number(eval2.card.ability.extra.alltrig) or 1) do
-						--if (pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 or eval2.card.ability.cry_rigged) and scoring_hand then
 						if (SMODS.pseudorandom_probability(card, "toga_spacecadetpinball", 1, 3) or eval2.card.ability.cry_rigged) and scoring_hand then
 							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_pinballing')}) end
 							SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), context)
-						end
-					end
-				end
-			end
-		end
-		local rovercalc = {}
-		SMODS.calculate_context({roverscore = true}, rovercalc)
-		for _, eval in pairs(rovercalc) do
-			for key, eval2 in pairs(eval) do
-				local notyetscored = true
-				if eval2.card then
-					for i = 1, #G.deck.cards do
-						--if (pseudorandom("toga_rover") < G.GAME.probabilities.normal/(eval2.odds or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8) or eval2.card.ability.cry_rigged) then
-						if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.odds or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8)) or eval2.card.ability.cry_rigged) then
-							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_roverbark"}) end
-							SMODS.score_card(G.deck.cards[i], context)
 						end
 					end
 				end
@@ -684,9 +733,23 @@ togabalatro.extrascoring = function(context, scoring_hand)
 						if SMODS.has_enhancement(G.hand.cards[i], "m_glass") and G.hand.cards[i]:can_calculate() then
 							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_hammersmash')}) end
 							SMODS.score_card(G.hand.cards[i], context)
-							if SMODS.pseudorandom_probability(G.hand.cards[i], 'glass', 1, G.hand.cards[i].ability.name == 'Glass Card' and G.hand.cards[i].ability.extra or G.P_CENTERS.m_glass.config.extra) then
-								G.hand.cards[i].atomsmashed = true
-							end
+							local smashchance = G.hand.cards[i].ability.name == 'Glass Card' and G.hand.cards[i].ability.extra or G.P_CENTERS.m_glass.config.extra
+							if SMODS.pseudorandom_probability(G.hand.cards[i], 'glass', 1, smashchance/2) then G.hand.cards[i].atomsmashed = true end
+						end
+					end
+				end
+			end
+		end
+		local rovercalc = {}
+		SMODS.calculate_context({roverscore = true}, rovercalc)
+		for _, eval in pairs(rovercalc) do
+			for key, eval2 in pairs(eval) do
+				local notyetscored = true
+				if eval2.card then
+					for i = 1, #G.deck.cards do
+						if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.odds or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8)) or eval2.card.ability.cry_rigged) then
+							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_roverbark"}) end
+							SMODS.score_card(G.deck.cards[i], context)
 						end
 					end
 				end
@@ -694,53 +757,6 @@ togabalatro.extrascoring = function(context, scoring_hand)
 		end
 	end
 end
-
--- [Hand in held ability detection.] Commented out for now, could not figure out how to get this working.
--- togabalatro.checkhihability = function(context)
-	-- local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
-	-- local hashihability = false
-	-- for _, area in ipairs(areas) do
-		-- if area == G.hand then
-			-- local curcards = togabalatro.preprocess(context, area.cards)
-			-- for _, card in ipairs(curcards) do
-				-- if context.end_of_round then context.playing_card_end_of_round = true end
-				-- local effects = {eval_card(card, context)}
-				-- SMODS.calculate_quantum_enhancements(card, effects, context)
-
-				-- context.playing_card_end_of_round = nil
-				-- togabalatro.effects1 = effects
-				-- -- print(inspect(togabalatro.ret))
-				-- for k, v in pairs(effects) do
-					-- for i, t in pairs(v) do
-						-- print(k, v, i, t)
-						-- if next(t) then print('!'); return true end
-					-- end
-				-- end
-			-- end
-		-- end
-		-- if area ~= G.hand then
-			-- local curcards = togabalatro.preprocess(context, area.cards)
-			-- for _, card in ipairs(curcards) do
-				-- if card.seal == 'toga_urlseal' then
-					-- if context.end_of_round then context.playing_card_end_of_round = true end
-					-- local effects = {eval_card(card, context)}
-					-- SMODS.calculate_quantum_enhancements(card, effects, context)
-
-					-- context.playing_card_end_of_round = nil
-					-- togabalatro.effects2 = effects
-					-- -- print(inspect(togabalatro.ret))
-					-- for k, v in pairs(effects) do
-						-- for i, t in pairs(v) do
-							-- print(k, v, i, t)
-							-- if next(t) then print('!'); return true end
-						-- end
-					-- end
-				-- end
-			-- end
-		-- end
-	-- end
-	-- return false
--- end
 
 -- Custom scoring of held in hand abilities.
 togabalatro.heldinhandscoring = function(context, scoring_hand)
@@ -752,19 +768,15 @@ togabalatro.heldinhandscoring = function(context, scoring_hand)
 		local clippitcalc = {}
 		SMODS.calculate_context({clippitscore = true, cardarea = context.cardarea}, clippitcalc)
 		
-		--local hasanyhih = togabalatro.checkhihability(context) -- [Hand in held ability detection.] Commented out for now, could not figure out how to get this working.
-		--if hasanyhih then
-			for _, eval in pairs(clippitcalc) do
-				for key, eval2 in pairs(eval) do
-					if eval2.card then
-						for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
-							--card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_pinballing'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_officehammer"})
-							togabalatro.scoreheldinhand(areas, context, true)
-						end
+		for _, eval in pairs(clippitcalc) do
+			for key, eval2 in pairs(eval) do
+				if eval2.card then
+					for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
+						togabalatro.scoreheldinhand(areas, context, true)
 					end
 				end
 			end
-		--end
+		end
 		context.main_scoring = nil
 	end
 end
@@ -889,21 +901,16 @@ function SMODS.calculate_end_of_round_effects(context)
 		togabalatro.triggereof(areas, context) -- initial end of round scoring of cards with Hyperlink Seals
 		local clippitcalc = {}
 		SMODS.calculate_context({clippitscore_eor = true, cardarea = context.cardarea}, clippitcalc)
-		--local hasanyhih = togabalatro.checkhihability(context) -- [Hand in held ability detection.] Commented out for now, could not figure out how to get this working.
-		--if hasanyhih then
-			for _, eval in pairs(clippitcalc) do
-				for key, eval2 in pairs(eval) do
-					if eval2.card then
-						for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
-							--card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_pinballing'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_officehammer"})
-							calcendroundref(context)
-							
-							togabalatro.triggereof(areas, context) -- rescore...
-						end
+		for _, eval in pairs(clippitcalc) do
+			for key, eval2 in pairs(eval) do
+				if eval2.card then
+					for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
+						calcendroundref(context)
+						togabalatro.triggereof(areas, context) -- rescore...
 					end
 				end
 			end
-		--end
+		end
 	end
 end
 
@@ -986,9 +993,6 @@ end
 sendInfoMessage("Hooking love.graphics.newFont...", "TOGAPack")
 local newfontref = love.graphics.newFont
 function love.graphics.newFont(arg1, arg2, arg3, arg4)
-	-- note to self: redo this bit to account for Trance font changes.
-	-- ...
-	print(arg1, arg2, arg3, arg4)
 	togabalatro.externalfontsloaded = togabalatro.externalfontsloaded or {}
 	if type(arg1) == 'string' and not togabalatro.externalfontsloaded[arg1] then togabalatro.externalfontsloaded[arg1] = true end
 	
@@ -1065,7 +1069,12 @@ end
 
 -- In case Incantation is used, check if it is the specific fork version so that the consumeables don't do unintended things...
 if SMODS.Mods['incantation'] and not SMODS.Mods['incantation'].togafork and not string.find(SMODS.Mods['incantation'].version, '-TOGA_fork') then
-	error("Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables added by "..togabalatro.name.." at https://github.com/TheOneGoofAli/JensBalatroCollection", 0)
+	error([[
+	Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables
+	added by TOGA's Stuff at https://github.com/TheOneGoofAli/JensBalatroCollection in order to continue.
+	Otherwise, remove it or add a '.lovelyignore' file into its' folder to disable it.
+	Alternatively, why not check out Overflow at https://github.com/lord-ruby/Overflow for stacking too?
+	]], 0)
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!

@@ -211,12 +211,6 @@ return {
 			j_toga_solitairejoker = {
 				name = 'Solitaire Joker',
 				text = {
-					-- "{C:attention}+#1#{} hand size",
-					-- "{C:chips}+#2#{} Chips",
-					-- "{C:chips}-#3#{} hand per round",
-					
-					-- "After the initial drawing of cards,",
-					-- "draw {C:attention}#1#{} additional {C:attention}#2#s{} to hand.",
 					"When playing a hand {C:attention}containing{} a {C:attention}Straight{},",
 					"draw remaining {C:attention}#2#s{} in the deck to hand.",
 					"Rank changes every round.",
@@ -235,9 +229,8 @@ return {
 				text = {
 					"{C:chips}+#1#{} hand(s) & {C:red}+#2#{} discard(s)",
 					"upon selecting a {C:attention}Blind{}.",
-					"Earn {C:money}$#3#{} at end of round.",
-					"If there are {C:attention}#5#{} or fewer",
-					"Jokers, get {X:money,C:white}X#4#{} the amount."
+					"If there are {C:attention}#4#{} or fewer",
+					"Jokers, get {C:attention}X#3#{} the amount."
 				}
 			},
 			j_toga_win98 = {
@@ -252,9 +245,8 @@ return {
 			j_toga_winmillenium = {
 				name = 'Windows ME',
 				text = {
-					"Each {C:attention}Joker{} held gives {C:chips}+#1#{} Chips.",
-					"Increase {C:attention}individual{} Joker bonus by {C:chips}+#2#{} Chips",
-					"for every {C:attention}unique Voucher{} redeemed.",
+					"Each {C:attention}Joker{} held gives {C:chips}+#1#{} Chips, with",
+					"additional {C:chips}+#2#{} Chips per {C:attention}Voucher{} redeemed.",
 					"{C:inactive,s:0.8}(Currently {}{C:chips,s:0.8}+#3#{}{C:inactive,s:0.8} per Joker){}"
 				}
 			},
@@ -380,12 +372,6 @@ return {
 			j_toga_pso2ironwill = {
 				name = 'Skill: Iron Will',
 				text = {
-					-- "When ready and if you have at least {C:money}$1{},",
-					-- "lose all held {C:money}money{}, prevents death and",
-					-- "becomes {C:attention}inactive{}. Recharges after",
-					-- "defeating a {C:attention}Blind{}.",
-					-- "{C:inactive,s:0.8}Currently: #2#{}"
-					-- "Prevents death if active and at least {C:money}$1{} is held, sets money to $0 and becomes inactive. Recharges upon defeating a Boss Blind.",
 					"Prevents death if active and at",
 					"least {C:money}$1{} is held, sets money to $0",
 					"and becomes inactive. {C:attention}Recharges{}",
@@ -405,11 +391,6 @@ return {
 			j_toga_spacecadetpinball = {
 				name = 'Space Cadet',
 				text = {
-					-- "{C:green}#3# in 3{} chance to {C:attention}rescore{} a",
-					-- "random scoring card by this",
-					-- "{C:attention}Joker{}. For every {C:money}$#1#{} held,",
-					-- "try to {C:attention}rescore{} again.",
-					-- "{C:inactive,s:0.8}Currently #2# attempts.{}",
 					"After the played cards are {C:attention}scored{},",
 					"{C:green}#3# in 3{} chance to perform {C:attention}additional scoring{}",
 					"of a {C:attention}random{} card in the scoring hand.",
@@ -466,13 +447,6 @@ return {
 			j_toga_jimboplus = {
 				name = 'JimboPlus!',
 				text = {
-					-- "Scoring cards give {X:mult,C:white}XMult{}",
-					-- "depending on {C:attention}Jokers{} currently held.",
-					-- "{C:attention}Jimbos{} give {X:mult,C:white}X#1#{} Mult instead of",
-					-- "{X:mult,C:white}X#2#{} Mult for every other Joker.",
-					-- "{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
-					-- "{C:inactive,s:0.8}Copies of this Joker{}",
-					-- "{C:inactive,s:0.8}do not contribute to XMult.{}"
 					"When playing a hand, {C:attention}leech{} {X:attention,C:white}X#1#{}",
 					"of {C:attention}Blind requirements{} to",
 					"currently scored chips."
@@ -518,7 +492,7 @@ return {
 				text = {
 					"Does nothing...",
 					"{C:inactive,s:0.8}Wonder what happens if this{}",
-					"{C:inactive,s:0.8}happened to be destroyed...{}",
+					"{C:inactive,s:0.8}were to be destroyed...{}",
 				}
 			},
 			j_toga_virtualpc = {
@@ -842,7 +816,7 @@ return {
 			j_toga_certserver = {
 				name = 'Certificate Server',
 				text = {
-					"{C:attention}Overrides{} rank changes to {C:attention}#1#s{}.",
+					"{C:attention}Overrides{} rank change to {C:attention}#1#s{}.",
 					"Rank changes every round.",
 					"{C:inactive,s:0.9}Does not affect card copying.{}",
 				}
@@ -858,7 +832,7 @@ return {
 			j_toga_ups = {
 				name = 'Uninterruptable Power Supply',
 				text = {
-					"When a {C:attention}card is {C:red}debuffed{}, gain {X:mult,C:white}X#1#{} Mult",
+					"When a {C:attention}card{} is {C:red}debuffed{}, gain {X:mult,C:white}X#1#{} Mult",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
 				}
 			},
@@ -866,15 +840,32 @@ return {
 				name = 'Hammer',
 				text = {
 					"{C:attention}Held in hand Glass{} cards",
-					"are also {C:attention}scored{} as if",
-					"they had been {C:attention}played{}",
+					"are also {C:attention}scored{} as if they",
+					"had been {C:attention}played{} but their",
+					"{C:green}chance{} to {C:red}break{} is {C:attention}doubled{}",
 					"{C:inactive,s:0.8}Anyone remember Atom Smasher?{}"
+				}
+			},
+			j_toga_joker203 = {
+				name = 'Joker 2.03',
+				text = {
+					"{X:attention,C:white}X#1#{} Blind requirements",
+					"{X:purple,C:white}=0{} Score if {C:attention}scored hand{}",
+					"{C:red}does not{} beat the Blind.",
+				}
+			},
+			j_toga_activesync = {
+				name = 'ActiveSync',
+				text = {
+					"{C:green}#1# in #2#{} chance to {C:attention}swap{} any",
+					"{C:attention}operations{} on {C:blue}Chips{} or {C:red}Mult{}",
+					"to the {C:attention}other{} instead",
 				}
 			},
 		},
 		Enhanced = {
 			m_toga_notification = {
-				name = "Notification",
+				name = "Notification Card",
 				text = {
 					"{s:0.9}Wherever applicable,",
 					"{C:attention,s:0.9}always{s:0.9} gets drawn",
@@ -882,7 +873,7 @@ return {
 				},
 			},
 			m_toga_sms = {
-				name = "SMS",
+				name = "SMS Card",
 				text = {
 					"{s:0.9}Deprioritized when {C:attention,s:0.9}drawing{s:0.9} cards.",
 					"{s:0.9}If in {C:attention,s:0.9}deck{s:0.9} and playing a hand,",
@@ -1109,10 +1100,9 @@ return {
 			tag_toga_controlexe = {
 				name = "Settings Tag",
 				text = {
-					"Applies a random {C:dark_edition}edition{}",
+					"Applies a {C:attention}random{} {C:dark_edition}edition{}",
 					"to a random {C:attention}Joker{}",
-					"{C:inactive,s:0.8}May replace current edition{}",
-					"{C:inactive,s:0.8}if one is present.{}"
+					"{C:attention}without{} an {C:dark_edition}edition{}",
 				},
 			},
 			tag_toga_thelegend = {
@@ -1277,9 +1267,6 @@ return {
 			toga_urlseal_seal = {
 				name = "Hyperlink Seal",
 				text = {
-					-- "{C:dark_edition,E:1,s:3}THIS IS NOT A JOKE{}",
-					-- "{s:2}You are the 100.000th visitor of the day!{}",
-					-- "{C:spectral,E:1,s:2}Click here{}"
 					"{C:attention}Held in hand{} abilities",
 					"of this card trigger",
 					"{C:attention}even{} if {C:attention}not{} in hand."
@@ -1568,6 +1555,8 @@ return {
 			toga_kartouch = "Ouch!",
 			toga_karteliminated = "Eliminated!",
 			toga_pagefileuse = "Swapped!",
+			toga_activesyncchip = "Chips!",
+			toga_activesyncmult = "Mult!",
 			toga_active = "Active!",
 			toga_inactive = "Inactive.",
 			toga_updated = "Update!",

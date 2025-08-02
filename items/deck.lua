@@ -169,7 +169,7 @@ SMODS.Back{
 	key = "blissful",
 	atlas = "TOGADeckBack",
 	pos = { x = 8, y = 0 },
-	config = {ante_scaling = 2, hands = -1, discards = -1, joker_slot = -1, consumable_slot = -1, extraante = 4}, -- maybe remove extra Antes?
+	config = {ante_scaling = 2, hands = -1, discards = -1, joker_slot = -1, consumable_slot = -1, extraante = 2},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { self.config.hands, self.config.discards, self.config.joker_slot, self.config.consumable_slot, self.config.ante_scaling, self.config.extraante } }
 	end,

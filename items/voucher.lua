@@ -53,9 +53,6 @@ SMODS.Voucher{
 	end,
 	redeem = function(self, card)
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Added X"..(card and card.ability.extra or self.config.extra).probabilitymult.." probability multiplier.", "TOGAPack") end
-		-- for k, v in pairs(G.GAME.probabilities) do
-			-- G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
-		-- end
 	end,
 	calculate = function(self, card, context)
 		if context.mod_probability and not context.blueprint then
@@ -78,9 +75,6 @@ SMODS.Voucher{
 	requires = {'v_toga_hardwarewizard'},
 	redeem = function(self, card)
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Added X"..(card and card.ability.extra or self.config.extra).probabilitymult.." probability multiplier.", "TOGAPack") end
-		-- for k, v in pairs(G.GAME.probabilities) do
-			-- G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
-		-- end
 	end,
 	calculate = function(self, card, context)
 		if context.mod_probability and not context.blueprint then
@@ -103,7 +97,6 @@ SMODS.Voucher{
 	redeem = function(self, card)
 		togabalatro.handlimitchange(math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect)))
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))..".", "TOGAPack") end
-		--G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))
 	end,
 }
 
@@ -131,7 +124,6 @@ SMODS.Voucher{
 		G.consumeables.config.card_limit = cardlimitavrg
 		G.hand.config.card_limit = cardlimitavrg
 		togabalatro.handlimitchange(cardlimitavrg, true)
-		--G.hand.config.highlighted_limit = cardlimitavrg
 		-- poker hand levels.
 		local totallevel = 0
 		for _, v in ipairs(G.handlist) do

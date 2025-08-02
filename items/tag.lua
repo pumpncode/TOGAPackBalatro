@@ -27,6 +27,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togajokerbooster",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togazipboosterpack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 1, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -56,6 +59,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togajokerziparchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togaziparchivepack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 6, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -228,6 +234,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togarararchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togararpack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 8, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -257,6 +266,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togacardcabarchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togacardcabpack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 9, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -286,6 +298,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togaxcopydnaarchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togaxcopydnapack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 10, y = 0 },
 	config = { type = "new_blind_choice" },

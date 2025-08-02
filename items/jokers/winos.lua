@@ -2,9 +2,10 @@ sendInfoMessage("Loading Jokers - Windows OS...", "TOGAPack")
 
 SMODS.Joker{
 	key = 'win95',
-	config = { extra = { hands = 1, discards = 1, money = 4, Xmoney = 2, slots = 3 } },
+	config = { extra = { hands = 1, discards = 1, xhd = 2, slots = 3 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.hands, card.ability.extra.discards, card.ability.extra.money, card.ability.extra.Xmoney, card.ability.extra.slots } }
+		card.ability.extra.xhd = math.max(card.ability.extra.xhd, 2)
+		return { vars = { card.ability.extra.hands, card.ability.extra.discards, card.ability.extra.xhd, card.ability.extra.slots } }
 	end,
 	unlocked = true,
 	discovered = true,
@@ -16,18 +17,10 @@ SMODS.Joker{
 	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if (context.setting_blind or context.forcetrigger) and not (context.blueprint_card or card).getting_sliced then
-			ease_hands_played(card.ability.extra.hands)
-			ease_discard(card.ability.extra.discards)
+			local handdiscardmult = G.jokers and #G.jokers.cards <= card.ability.extra.slots and math.max(card.ability.extra.xhd, 2) or 2
+			ease_hands_played(card.ability.extra.hands*handdiscardmult)
+			ease_discard(card.ability.extra.discards*handdiscardmult)
 			return { message = localize('toga_32bits') }
-		end
-	end,
-	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
-			if #G.jokers.cards <= card.ability.extra.slots then
-				return card.ability.extra.money * card.ability.extra.Xmoney
-			else
-				return card.ability.extra.money
-			end
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -91,10 +84,6 @@ SMODS.Joker{
 }
 
 local function toga_vouchcount()
-	-- local vouchercount = 0
-	-- for i, v in pairs(G.GAME.used_vouchers) do
-		-- if v == true then vouchercount = vouchercount + 1 end
-	-- end
 	return G.vouchers and G.vouchers.cards and #G.vouchers.cards or 0
 end
 
