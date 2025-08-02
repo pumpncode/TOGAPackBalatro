@@ -22,6 +22,7 @@ SMODS.Joker{
 	cost = 6,
 	pools = { ["TOGAJKR"] = true },
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if context.before then
 			local uniquegenrest = {}
@@ -36,7 +37,7 @@ SMODS.Joker{
 			if next(uniquegenrest) then return { message = localize('k_upgrade_ex') } end
 		end
 		
-		if context.joker_main then return { x_mult = 1+card.ability.extra.bonusxmult } end
+		if (context.joker_main or context.forcetrigger) then return { x_mult = 1+card.ability.extra.bonusxmult } end
 	end,
 	set_badges = function(self, card, badges)
 		if self.discovered then

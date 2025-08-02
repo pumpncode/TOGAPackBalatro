@@ -934,7 +934,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.joker_main then return { xmult = math.max(1+card.ability.extra.bonusxmult, 1) } end
-		if context.debuffed_ups and context.card then
+		if context.debuffed_ups and context.card and not context.blueprint then
 			card.ability.extra.bonusxmult = card.ability.extra.bonusxmult + card.ability.extra.debuffxmult
 			return { message = localize('k_upgrade_ex'), delay = 0.25 }
 		end

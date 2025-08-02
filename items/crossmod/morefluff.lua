@@ -20,6 +20,19 @@ togabalatro.mf_colours_held = function()
 	return false
 end
 
+togabalatro.mf_displayproperties = function()
+	local display = {}
+	SMODS.calculate_context({ coloureof = true }, display)
+	for _, eval in pairs(display) do
+		for key, eval2 in pairs(eval) do
+			if eval2.rescore and eval2.card then
+				card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_colourful'), sound = togabalatro.config.SFXWhenTriggered and 'toga_winxpinfobar'})
+				colour_end_of_round_effects()
+			end
+		end
+	end
+end
+
 local atlastype = ".png"
 if mf_config["Programmer Art"] then atlastype = "progart.png" end
 
@@ -70,7 +83,10 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		pos = { x = 2, y = 4 },
 		cost = 7,
 		pools = { ["TOGAJKR"] = true },
-		blueprint_compat = false,
+		blueprint_compat = true,
+		calculate = function(self, card, context)
+			if context.coloureof then return { rescore = true, card = context.blueprint_card or card } end
+		end,
 		set_badges = function(self, card, badges)
 			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end

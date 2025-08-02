@@ -180,7 +180,7 @@ togabalatro.performpseudolag = function()
 		if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("waitarrow")) end
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
-			delay = math.random(),
+			delay = math.random()*G.SETTINGS.GAMESPEED/2,
 			func = function()
 				togabalatro.pseudolag = nil
 				if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("arrow")) end
