@@ -14,7 +14,7 @@ SMODS.Atlas{key = "TOGAJokersOtherDiffSize", path = "togajokersothersize.png", p
 SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokersMac", path = "togamacos.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersLinux", path = "togalinuxos.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokerRover", path = "togarover.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAConsumables", path = "togacons.png", px = 71, py = 95}
