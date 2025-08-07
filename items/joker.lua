@@ -136,7 +136,7 @@ SMODS.Joker{
 		end
 		
 		if context.individual and context.cardarea == G.play then
-			if context.other_card and SMODS.pseudorandom_probability(card, "toga_useraccounts", 1, card.ability.extra.odds) then
+			if context.other_card and SMODS.pseudorandom_probability(card, "toga_useraccounts", 1, card.ability.extra.odds, 'useraccounts') then
 				return { x_mult = card.ability.extra.totalXmult }
 			end
 		end
@@ -157,7 +157,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
-			if SMODS.pseudorandom_probability(card, "toga_virtualmemory", 1, card.ability.extra.odds) then
+			if SMODS.pseudorandom_probability(card, "toga_virtualmemory", 1, card.ability.extra.odds, 'virtualmemory') then
 				return {
 					swap = true,
 					message = localize('toga_pagefileuse'),
@@ -313,7 +313,7 @@ SMODS.Joker{
 			local merge = {}
 			for i = 1, #G.jokers.cards do
 				local other_joker = G.jokers.cards[i]
-				if other_joker and other_joker:can_calculate() and other_joker.config.center.key ~= self.key and SMODS.pseudorandom_probability(card, "virtualpc2004sp1", 1, card.ability.extra.odds) then
+				if other_joker and other_joker:can_calculate() and other_joker.config.center.key ~= self.key and SMODS.pseudorandom_probability(card, "virtualpc2004sp1", 1, card.ability.extra.odds, 'virtualpc') then
 					local other_joker_effect = SMODS.blueprint_effect(card, other_joker, context)
 					if other_joker_effect and not other_joker_effect.was_blueprinted then
 						other_joker_effect.was_blueprinted = true
@@ -690,7 +690,7 @@ SMODS.Joker{
 		if context.individual_draw and not context.blueprint then
 			card.ability.extra.curxmult = card.ability.extra.curxmult + card.ability.extra.percard
 			return {
-				delay = 0.1,
+				delay = 0.05,
 				message = localize{ type='variable', key = 'a_xmult', vars = {card.ability.extra.curxmult} },
 				colour = G.C.RED
 			}
@@ -1191,7 +1191,7 @@ SMODS.Joker{
 				return true
 			end}))
 		elseif (context.skip_blind or context.skipping_booster) and not context.blueprint then
-			if not SMODS.pseudorandom_probability(card, 'j_toga_jokersrb2kart', 1, card.ability.extra.maxchance) and G.GAME.selected_back.effect.center.key ~= 'b_toga_srb2kartdeck' then
+			if not SMODS.pseudorandom_probability(card, 'j_toga_jokersrb2kart', 1, card.ability.extra.maxchance, 'srb2kart') and G.GAME.selected_back.effect.center.key ~= 'b_toga_srb2kartdeck' then
 				if not togabalatro.checkxmultsafe(card) then
 					-- Eliminated!
 					card.ability.extra.Xmult_current = 0
@@ -1400,6 +1400,23 @@ SMODS.Joker{
 	pos = { x = 1, y = 3 },
 	cost = 8,
 	blueprint_compat = false
+}
+
+SMODS.Joker{
+	key = 'cavingjkr',
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
+	end,
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 1, y = 4 },
+	cost = 8,
+	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if (context.retrigger_joker_check or context.retrigger_joker or context.blueprint) then return end
+		if context.check_enhancement and context.no_blueprint and context.other_card and context.cardarea == G.jokers then return { m_stone = true } end
+	end
 }
 
 SMODS.Joker{
@@ -1693,6 +1710,74 @@ SMODS.Joker{
 	pixel_size = { w = 69, h = 69 }
 }
 
+SMODS.Joker{
+	key = 'chrome',
+	config = { extra = { xmult = 1.5, process = 'Chrome', totalxmult = 0 } },
+	loc_vars = function(self, info_queue, card)
+		local count = togabalatro.getprocessamount(card.ability.extra.process)
+		local bonus, totalbonus = card.ability.extra.xmult, 0
+		for i = 1, count do
+			totalbonus = totalbonus + bonus
+			bonus = bonus * 0.8
+		end
+		card.ability.extra.totalxmult = 1+totalbonus
+		return { vars = { card.ability.extra.xmult, card.ability.extra.totalxmult, count, card.ability.extra.process } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersOtherDiffSize',
+	pos = { x = 8, y = 0 },
+	cost = 5,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.before then
+			local count = togabalatro.getprocessamount(card.ability.extra.process)
+			local bonus, totalbonus = card.ability.extra.xmult, 0
+			for i = 1, count do
+				totalbonus = totalbonus + bonus
+				bonus = bonus * 0.8
+			end
+			card.ability.extra.totalxmult = 1+totalbonus
+		end
+		if context.joker_main then return { xmult = math.max(card.ability.extra.totalxmult, 1) } end
+	end,
+	pixel_size = { w = 69, h = 69 }
+}
+
+SMODS.Joker{
+	key = 'firefox',
+	config = { extra = { xchips = 1.5, process = 'Firefox', totalxchips = 0 } },
+	loc_vars = function(self, info_queue, card)
+		local count = togabalatro.getprocessamount(card.ability.extra.process)
+		local bonus, totalbonus = card.ability.extra.xchips, 0
+		for i = 1, count do
+			totalbonus = totalbonus + bonus
+			bonus = bonus * 0.8
+		end
+		card.ability.extra.totalxchips = 1+totalbonus
+		return { vars = { card.ability.extra.xchips, card.ability.extra.totalxchips, count, card.ability.extra.process } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersOtherDiffSize',
+	pos = { x = 9, y = 0 },
+	cost = 5,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.before then
+			local count = togabalatro.getprocessamount(card.ability.extra.process)
+			local bonus, totalbonus = card.ability.extra.xchips, 0
+			for i = 1, count do
+				totalbonus = totalbonus + bonus
+				bonus = bonus * 0.8
+			end
+			card.ability.extra.totalxchips = 1+totalbonus
+		end
+		if context.joker_main then return { xchips = math.max(card.ability.extra.totalxchips, 1) } end
+	end,
+	pixel_size = { w = 69, h = 67 }
+}
+
 local winupdateframes = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1}
 SMODS.Joker{
 	key = 'winupdate',
@@ -1807,21 +1892,21 @@ SMODS.Joker{
 			togabalatro.rosencheck(card)
 			-- Still, dear god...
 			return {
-				dollars = SMODS.pseudorandom_probability(card, "michaelrosen_money", 1, card.ability.extra.odds) and card.ability.extra.heldmoney or nil,
-				x_chips = SMODS.pseudorandom_probability(card, "michaelrosen_xchips", 1, card.ability.extra.odds) and card.ability.extra.heldxchip > 1 and card.ability.extra.heldxchip or nil,
+				dollars = SMODS.pseudorandom_probability(card, "michaelrosen_money", 1, card.ability.extra.odds, "michaelrosen_money") and card.ability.extra.heldmoney or nil,
+				x_chips = SMODS.pseudorandom_probability(card, "michaelrosen_xchips", 1, card.ability.extra.odds, "michaelrosen_xchips") and card.ability.extra.heldxchip > 1 and card.ability.extra.heldxchip or nil,
 				xchip_message = {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.heldxchip } }, colour = G.C.CHIPS, sound = "xchips"} or nil,
-				x_mult = SMODS.pseudorandom_probability(card, "michaelrosen_xmult", 1, card.ability.extra.odds) and card.ability.extra.heldxmult > 1 and card.ability.extra.heldxmult or nil,
-				e_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_echips", 1, card.ability.extra.odds*10) and card.ability.extra.heldechip > 1 and card.ability.extra.heldechip or nil,
+				x_mult = SMODS.pseudorandom_probability(card, "michaelrosen_xmult", 1, card.ability.extra.odds, "michaelrosen_xmult") and card.ability.extra.heldxmult > 1 and card.ability.extra.heldxmult or nil,
+				e_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_echips", 1, card.ability.extra.odds*10, "michaelrosen_echips") and card.ability.extra.heldechip > 1 and card.ability.extra.heldechip or nil,
 				echip_message = Talisman and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.heldechip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
-				ee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eechips", 1, card.ability.extra.odds*20) and card.ability.extra.heldeechip > 1 and card.ability.extra.heldeechip or nil,
+				ee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eechips", 1, card.ability.extra.odds*20, "michaelrosen_eechips") and card.ability.extra.heldeechip > 1 and card.ability.extra.heldeechip or nil,
 				eechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEchip", vars = { card.ability.extra.heldeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eechip"} or nil,
-				eee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeechips", 1, card.ability.extra.odds*40) and card.ability.extra.heldeeechip > 1 and card.ability.extra.heldeeechip or nil,
+				eee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeechips", 1, card.ability.extra.odds*40, "michaelrosen_eeechips") and card.ability.extra.heldeeechip > 1 and card.ability.extra.heldeeechip or nil,
 				eeechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEchip", vars = { card.ability.extra.heldeeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eeechip"} or nil,
-				e_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_emult", 1, card.ability.extra.odds*10) and card.ability.extra.heldemult > 1 and card.ability.extra.heldemult or nil,
+				e_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_emult", 1, card.ability.extra.odds*10, "michaelrosen_emult") and card.ability.extra.heldemult > 1 and card.ability.extra.heldemult or nil,
 				emult_message = Talisman and {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.heldemult } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
-				ee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eemult", 1, card.ability.extra.odds*20) and card.ability.extra.heldeemult > 1 and card.ability.extra.heldeemult or nil,
+				ee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eemult", 1, card.ability.extra.odds*20, "michaelrosen_eemult") and card.ability.extra.heldeemult > 1 and card.ability.extra.heldeemult or nil,
 				eemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.heldeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
-				eee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeemult", 1, card.ability.extra.odds*40) and card.ability.extra.heldeeemult > 1 and card.ability.extra.heldeeemult or nil,
+				eee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeemult", 1, card.ability.extra.odds*40, "michaelrosen_eeemult") and card.ability.extra.heldeeemult > 1 and card.ability.extra.heldeeemult or nil,
 				eeemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEmult", vars = { card.ability.extra.heldeeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eeemult"} or nil,
 			}
 		end

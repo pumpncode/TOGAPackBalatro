@@ -862,6 +862,32 @@ return {
 					"to the {C:attention}other{} instead",
 				}
 			},
+			j_toga_chrome = {
+				name = 'Chrome',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult per {C:attention}process{} with '{C:attention}#4#{}'",
+					"in the {C:attention}name{} currently running.",
+					"{C:attention,s:0.8}Additional{s:0.8} processes give {C:red,s:0.8}diminishing{s:0.8} returns.{}",
+					"{C:inactive}(Currently {C:attention}#3#{}, {X:mult,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_firefox = {
+				name = 'Firefox',
+				text = {
+					"{X:chips,C:white}X#1#{} Chips per {C:attention}process{} with '{C:attention}#4#{}'",
+					"in the {C:attention}name{} currently running.",
+					"{C:attention,s:0.8}Additional{s:0.8} processes give {C:red,s:0.8}diminishing{s:0.8} returns.{}",
+					"{C:inactive}(Currently {C:attention}#3#{}, {X:chips,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_cavingjkr = {
+				name = 'Caving Joker',
+				text = {
+					"All cards are",
+					"also considered",
+					"as {C:attention,T:m_stone}Stone Cards{}",
+				}
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {
@@ -939,6 +965,33 @@ return {
 					"{X:chips,C:white}X#1#{} Chips",
 				},
 			},
+			m_toga_redstone = {
+				name = "Redstone Card",
+				text = {
+					"If {C:attention}played{}, draw a card",
+					"to {C:attention}hand{} from deck",
+				},
+			},
+			m_toga_nickel = {
+				name = "Nickel Card",
+				text = {
+					"Can't be debuffed"
+				},
+			},
+			m_toga_invar = {
+				name = "Invar Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"while this card",
+					"stays in hand",
+				},
+			},
+			m_toga_signalum = {
+				name = "Signalum Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+				},
+			},
 		},
 		Tarot = {
 			c_toga_furnace = {
@@ -948,7 +1001,9 @@ return {
 					"depending on cards selected",
 					"Cost per use: {C:money}$#2#{}",
 					"{C:inactive,s:0.8}If you can pay for another{}",
-					"{C:inactive,s:0.8}use, keep on use.{}"
+					"{C:inactive,s:0.8}use, keep on use.{}",
+					"{C:inactive,s:0.8}(To see recipes, hold Left Shift{}",
+					"{C:inactive,s:0.8}before hovering over the card.){}",
 				}
 			},
 			c_toga_furnace_ready = {
@@ -971,7 +1026,9 @@ return {
 					"depending on cards selected",
 					"{C:inactive,s:0.9}#1#{}",
 					"{C:inactive,s:0.8}If you can pay for another{}",
-					"{C:inactive,s:0.8}use, keep on use.{}"
+					"{C:inactive,s:0.8}use, keep on use.{}",
+					"{C:inactive,s:0.8}(To see recipes, hold Left Shift{}",
+					"{C:inactive,s:0.8}before hovering over the card.){}",
 				}
 			},
 			c_toga_miningprospect = {
@@ -1425,6 +1482,18 @@ return {
 					"3x Copper + 1x Tin = 4x Bronze",
 				},
 			},
+			toga_alloysignalum = {
+				name = "Signalum Card Recipe",
+				text = {
+					"3x Copper + 1x Silver + 1x Redstone (consumed) = 4x Signalum",
+				},
+			},
+			toga_alloyinvar = {
+				name = "Invar Card Recipe",
+				text = {
+					"2x Copper + 1x Nickel = 3x Invar",
+				},
+			},
 		},
 		Partner = {
 			pnr_toga_startupdisk={
@@ -1582,6 +1651,8 @@ return {
 			toga_steelrecipe = "1x Iron + 1x Coal Coke (consumed) = 1x Steel",
 			toga_electrumrecipe = "1x Gold + 1x Silver = 2x Electrum",
 			toga_bronzerecipe = "3x Copper + 1x Tin = 4x Bronze",
+			toga_signalumrecipe = "3x Copper + 1x Silver + 1 Redstone (consumed) = 4x Signalum",
+			toga_invarrecipe = "2x Iron + 1x Nickel = 3x Invar",
 			toga_alloy = "Alloy",
 			toga_crafttarot = "Crafting Tarot",
 			toga_minetarot = "Mining Tarot",

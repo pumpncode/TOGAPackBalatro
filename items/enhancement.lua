@@ -18,7 +18,7 @@ SMODS.Enhancement{
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.h_chips } }
 	end,
-	weight = 15
+	weight = 10
 }
 
 SMODS.Enhancement{
@@ -29,7 +29,7 @@ SMODS.Enhancement{
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.h_x_mult } }
 	end,
-	weight = 12
+	weight = 8
 }
 
 SMODS.Enhancement{
@@ -46,11 +46,14 @@ SMODS.Enhancement{
 	key = 'electrum',
 	atlas = "TOGAEnhancements",
 	pos = { x = 4, y = 0 },
-	config = { p_dollars = 1, x_mult = 1.5 },
+	config = { p_dollars = 1, x_mult = 1.75 },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.p_dollars, card.ability.x_mult } }
 	end,
-	weight = 2,
+	in_pool = function(self, args)
+		return false
+	end,
+	alloy = true,
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('e4d691'), G.C.WHITE, 1)
     end,
@@ -71,18 +74,22 @@ SMODS.Enhancement{
 	atlas = "TOGAEnhancements",
 	pos = { x = 6, y = 0 },
 	always_scores = true,
-	weight = 15
+	weight = 8
 }
 
 SMODS.Enhancement{
 	key = 'bronze',
 	atlas = "TOGAEnhancements",
 	pos = { x = 7, y = 0 },
-	config = { h_x_chips = 2.25 },
+	config = { h_x_chips = 2.5 },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.h_x_chips } }
 	end,
+	in_pool = function(self, args)
+		return false
+	end,
 	weight = 1,
+	alloy = true,
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('a87544'), G.C.WHITE, 1)
     end,
@@ -103,4 +110,54 @@ SMODS.Enhancement{
 	atlas = "TOGAEnhancements",
 	pos = { x = 9, y = 0 },
 	weight = 2
+}
+
+SMODS.Enhancement{
+	key = 'redstone',
+	atlas = "TOGAEnhancements",
+	pos = { x = 0, y = 1 },
+	weight = 4
+}
+
+SMODS.Enhancement{
+	key = 'signalum',
+	atlas = "TOGAEnhancements",
+	pos = { x = 1, y = 1 },
+	config = { x_mult = 2.25 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.x_mult } }
+	end,
+	in_pool = function(self, args)
+		return false
+	end,
+	weight = 1,
+	alloy = true,
+	set_badges = function(self, card, badges)
+        badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('db4600'), G.C.WHITE, 1)
+    end,
+}
+
+SMODS.Enhancement{
+	key = 'nickel',
+	atlas = "TOGAEnhancements",
+	pos = { x = 2, y = 1 },
+	weight = 12
+}
+
+SMODS.Enhancement{
+	key = 'invar',
+	atlas = "TOGAEnhancements",
+	pos = { x = 3, y = 1 },
+	config = { h_x_mult = 1.75 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.h_x_mult } }
+	end,
+	in_pool = function(self, args)
+		return false
+	end,
+	weight = 1,
+	alloy = true,
+	set_badges = function(self, card, badges)
+        badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('6f7975'), G.C.WHITE, 1)
+    end,
 }

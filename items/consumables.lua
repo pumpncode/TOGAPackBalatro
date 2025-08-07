@@ -28,9 +28,13 @@ togabalatro.oredict.coalcoke = {'m_toga_coalcoke'}
 togabalatro.oredict.silver = {'m_toga_silver'}
 togabalatro.oredict.electrum = {'m_toga_electrum'}
 togabalatro.oredict.bronze = {'m_toga_bronze'}
+togabalatro.oredict.redstone = {'m_toga_redstone'}
+togabalatro.oredict.signalum = {'m_toga_signalum'}
+togabalatro.oredict.nickel = {'m_toga_nickel'}
+togabalatro.oredict.invar = {'m_toga_invar'}
 
 -- Set up a global pool of 'minerals' in our OreDictionary.
-togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium'}
+togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium', 'm_toga_redstone', 'm_toga_nickel'}
 
 togabalatro.is_mineral = function(card)
 	if not card then return false end
@@ -115,6 +119,43 @@ togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selca
 	return copper1 and copper2 and copper3 and tin and copper1 ~= tin and copper1 ~= copper2 and copper2 ~= copper3 and copper1 ~= copper3, { cards = { copper1, copper2, copper3, tin } }, 'm_toga_bronze', localize('toga_bronzerecipe')
 end
 
+-- 3x Copper + 1x Silver + 1 Redstone (consumed) = 4x Signalum
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local copper1, copper2, copper3, silver, redstone = nil, nil, nil, nil, nil
+	local copper1ok, copper2ok, copper3ok, silverok, redstoneok = false, false, false, false, false
+	local iter, iterlimit = 0, 100
+	for i, v in ipairs(selcards) do
+		repeat -- scary jank, but works.
+			iter = iter + 1
+			if not copper1ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper1 = v; copper1ok = true; break end
+			if not copper2ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper2 = v; copper2ok = true; break end
+			if not copper3ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper3 = v; copper3ok = true; break end
+			if not silverok and togabalatro.oredictcheck(v, togabalatro.oredict.silver) then silver = v; break end
+			if not redstoneok and togabalatro.oredictcheck(v, togabalatro.oredict.redstone) then redstone = v; break end
+		until (copper1ok and copper2ok and copper3ok and silverok and redstoneok) or iter > iterlimit
+	end
+	return copper1 and copper2 and copper3 and silver and redstone and copper1 ~= silver and copper1 ~= redstone and copper1 ~= copper2 and copper2 ~= copper3 and copper1 ~= copper3,
+		 { cards = { copper1, copper2, copper3, silver }, destroycard = { redstone }, allcards = { copper1, copper2, copper3, silver, redstone } }, 'm_toga_signalum', localize('toga_signalumrecipe')
+end
+
+-- 2x Iron + 1x Nickel = 3x Invar
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local iron1, iron2, nickel = nil, nil, nil
+	local iron1ok, iron2ok, nickelok = false, false, false
+	local iter, iterlimit = 0, 100
+	for i, v in ipairs(selcards) do
+		repeat -- scary jank, but works.
+			iter = iter + 1
+			if not iron1ok and togabalatro.oredictcheck(v, togabalatro.oredict.iron) then iron1 = v; iron1ok = true; break end
+			if not iron2ok and togabalatro.oredictcheck(v, togabalatro.oredict.iron) then iron2 = v; iron2ok = true; break end
+			if not nickelok and togabalatro.oredictcheck(v, togabalatro.oredict.nickel) then nickel = v; break end
+		until (iron1ok and iron2ok and nickelok) or iter > iterlimit
+	end
+	return iron1 and iron2 and nickel and iron1 ~= nickel and iron1 ~= iron2, { cards = { iron1, iron2, nickel } }, 'm_toga_invar', localize('toga_invarrecipe')
+end
+
 -- Check recipe.
 togabalatro.checkvalidrecipe = function()
 	local text, recipetxt, userecipetxt = localize('toga_novalidrecipe'), localize('toga_unknownvalidrecipe'), false
@@ -132,7 +173,7 @@ togabalatro.checkvalidrecipe = function()
 end
 
 -- Valid recipe text stuff.
-togabalatro.currentrecipetxt = {"toga_alloysteel", "toga_alloyelectrum", "toga_alloybronze"}
+togabalatro.currentrecipetxt = {"toga_alloysteel", "toga_alloyelectrum", "toga_alloybronze", "toga_alloysignalum", "toga_alloyinvar"}
 
 -- Feel the heat of the Smeltery.
 SMODS.Consumable{
@@ -144,7 +185,7 @@ SMODS.Consumable{
 	config = { extra = { usecost = 4 } },
 	loc_vars = function(self, info_queue, card)
 		local cando, txt = togabalatro.checkvalidrecipe()
-		if not cando then
+		if love.keyboard.isDown("lshift") then
 			if togabalatro.currentrecipetxt and #togabalatro.currentrecipetxt > 0 then
 				for i = 1, #togabalatro.currentrecipetxt do
 					info_queue[#info_queue + 1] = {key = togabalatro.currentrecipetxt[i], set = 'Other'}
@@ -257,7 +298,7 @@ SMODS.Consumable {
 		for k, v in ipairs(cards) do
 			if SMODS.has_enhancement(v, 'm_stone') then
 				--if pseudorandom("toga_minediamonds") < G.GAME.probabilities.normal/card.ability.extra.odds then
-				if SMODS.pseudorandom_probability(card, "toga_minediamonds", 1, card.ability.extra.odds) then
+				if SMODS.pseudorandom_probability(card, "toga_minediamonds", 1, card.ability.extra.odds, 'miningprospect') then
 					local enhancement = SMODS.poll_enhancement({ guaranteed = true, options = togabalatro.oredict.minerals, type_key = 'modmineral' })
 					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
 						card:juice_up()
@@ -266,7 +307,8 @@ SMODS.Consumable {
 					card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_stonefound'), sound = togabalatro.config.SFXWhenTriggered and 'toga_xporb'})
 				else
 					card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_stonenothing')})
-					G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1,func = function() card:juice_up(); SMODS.destroy_cards(v); return true end }))
+					card:juice_up()
+					SMODS.destroy_cards(v)
 				end
 			end
 		end
@@ -329,7 +371,7 @@ SMODS.Consumable{
 	remove_from_deck = function(self, card, from_debuff)
 		if card.ability.extra.activated then return end
 		--if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds then
-		if SMODS.pseudorandom_probability(card, "toga_selfpropelledbomb", 1, card.ability.extra.odds) then
+		if SMODS.pseudorandom_probability(card, "toga_selfpropelledbomb", 1, card.ability.extra.odds, 'theselfpropelledbomb') then
 			toga_spbdeckwreck(card, true)
 		else
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_safe_ex'), sound = togabalatro.config.SFXWhenRemoving and 'toga_thundershield'})

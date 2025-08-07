@@ -16,7 +16,7 @@ SMODS.Seal{
 	sound = { sound = "gold_seal", per = 1.2, vol = 0.4 },
 	calculate = function(self, card, context)
 		if context.main_scoring and context.cardarea == G.play and card and card.ability.seal then
-			local negativeroll = SMODS.pseudorandom_probability(context.other_card or card or self, "sealseal", 1, card.ability.seal.odds)
+			local negativeroll = SMODS.pseudorandom_probability(context.other_card or card or self, "sealseal", 1, card.ability.seal.odds, 'sealseal')
 			return {
 				func = function()
 					local createnegative = false

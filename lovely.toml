@@ -68,6 +68,15 @@ overwrite = true
 match_indent = true
 
 [[patches]]
+[patches.regex]
+target = 'main.lua'
+pattern = "Oops! The game crashed"
+position = "at"
+payload = "A problem has been detected and Balatro has been stopped"
+overwrite = true
+match_indent = true
+
+[[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
 pattern = "for _, area in ipairs(SMODS.get_card_areas('jokers')) do for _, _card in ipairs(area.cards) do"
