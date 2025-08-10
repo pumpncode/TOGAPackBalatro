@@ -886,6 +886,26 @@ return {
 					"All cards are",
 					"also considered",
 					"as {C:attention,T:m_stone}Stone Cards{}",
+					"{C:inactive,s:0.75}May reveal rank or suit{}",
+					"{C:inactive,s:0.75}of certain cards...{}",
+				}
+			},
+			j_toga_miningjkr = {
+				name = 'Mining Joker',
+				text = {
+					"{C:attention}Unenhanced{} cards played on the",
+					"{C:attention}first hand{} of round are {C:attention}converted{}",
+					"to {C:attention}Mineral{} cards afterwards.",
+					"{C:inactive,s:0.8}Hold Left SHIFT before hovering over{}",
+					"{C:inactive,s:0.8}this card to show the Mineral pool.{}"
+				}
+			},
+			j_toga_miningjkr_showminerals = {
+				name = 'Mining Joker',
+				text = {
+					"{C:attention}Unenhanced{} cards played on the",
+					"{C:attention}first hand{} of round are {C:attention}converted{}",
+					"to {C:attention}Mineral{} cards afterwards.",
 				}
 			},
 		},
@@ -990,6 +1010,28 @@ return {
 				name = "Signalum Card",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult",
+				},
+			},
+			m_toga_glowstone = {
+				name = "Glowstone Card",
+				text = {
+					"Does not count",
+					"as base rank",
+				},
+			},
+			m_toga_lumium = {
+				name = "Lumium Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"while this card",
+					"stays in hand",
+				},
+			},
+			m_toga_refinedglowstone = {
+				name = "Refined Glowstone Card",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"{X:mult,C:white}X#2#{} Mult",
 				},
 			},
 		},
@@ -1467,31 +1509,54 @@ return {
 			toga_alloysteel = {
 				name = "Steel Card Recipe",
 				text = {
-					"1x Iron + 1x Coal Coke (consumed) = 1x Steel",
+					"1x Iron",
+					"+ 1x Coal Coke (consumed)",
+					"= 1x Steel",
 				},
 			},
 			toga_alloyelectrum = {
 				name = "Electrum Card Recipe",
 				text = {
-					"1x Gold + 1x Silver = 2x Electrum",
+					"1x Gold + 1x Silver",
+					"= 2x Electrum",
 				},
 			},
 			toga_alloybronze = {
 				name = "Bronze Card Recipe",
 				text = {
-					"3x Copper + 1x Tin = 4x Bronze",
+					"3x Copper + 1x Tin",
+					"= 4x Bronze",
 				},
 			},
 			toga_alloysignalum = {
 				name = "Signalum Card Recipe",
 				text = {
-					"3x Copper + 1x Silver + 1x Redstone (consumed) = 4x Signalum",
+					"3x Copper + 1x Silver",
+					"+ 1x Redstone (consumed)",
+					"= 4x Signalum",
 				},
 			},
 			toga_alloyinvar = {
 				name = "Invar Card Recipe",
 				text = {
-					"2x Copper + 1x Nickel = 3x Invar",
+					"2x Copper + 1x Nickel",
+					"= 3x Invar",
+				},
+			},
+			toga_alloylumium = {
+				name = "Lumium Card Recipe",
+				text = {
+					"3x Tin + 1x Silver",
+					"+ 1x Glowstone (consumed)",
+					"= 4x Lumium",
+				},
+			},
+			toga_alloyrefglowstone = {
+				name = "Refined Glowstone Card Recipe",
+				text = {
+					"1x Osmium",
+					"+ 1x Glowstone (consumed)",
+					"= 1x Refined Glowstone",
 				},
 			},
 		},
@@ -1651,8 +1716,10 @@ return {
 			toga_steelrecipe = "1x Iron + 1x Coal Coke (consumed) = 1x Steel",
 			toga_electrumrecipe = "1x Gold + 1x Silver = 2x Electrum",
 			toga_bronzerecipe = "3x Copper + 1x Tin = 4x Bronze",
-			toga_signalumrecipe = "3x Copper + 1x Silver + 1 Redstone (consumed) = 4x Signalum",
+			toga_signalumrecipe = "3x Copper + 1x Silver + 1x Redstone (consumed) = 4x Signalum",
 			toga_invarrecipe = "2x Iron + 1x Nickel = 3x Invar",
+			toga_lumiumrecipe = "3x Tin + 1x Silver + 1x Glowstone (consumed) = 4x Lumium",
+			toga_refglowstonerecipe = "1x Osmium + 1x Glowstone (consumed) = 1x Refined Glowstone",
 			toga_alloy = "Alloy",
 			toga_crafttarot = "Crafting Tarot",
 			toga_minetarot = "Mining Tarot",

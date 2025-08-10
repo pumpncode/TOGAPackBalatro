@@ -26,15 +26,20 @@ togabalatro.oredict.tin = {'m_toga_tin'}
 togabalatro.oredict.iron = {'m_toga_iron'}
 togabalatro.oredict.coalcoke = {'m_toga_coalcoke'}
 togabalatro.oredict.silver = {'m_toga_silver'}
+togabalatro.oredict.osmium = {'m_toga_osmium'}
 togabalatro.oredict.electrum = {'m_toga_electrum'}
 togabalatro.oredict.bronze = {'m_toga_bronze'}
 togabalatro.oredict.redstone = {'m_toga_redstone'}
 togabalatro.oredict.signalum = {'m_toga_signalum'}
 togabalatro.oredict.nickel = {'m_toga_nickel'}
 togabalatro.oredict.invar = {'m_toga_invar'}
+togabalatro.oredict.glowstone = {'m_toga_glowstone'}
+togabalatro.oredict.lumium = {'m_toga_lumium'}
 
 -- Set up a global pool of 'minerals' in our OreDictionary.
-togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium', 'm_toga_redstone', 'm_toga_nickel'}
+togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium', 'm_toga_redstone', 'm_toga_nickel', 'm_toga_glowstone'}
+-- ...and one for alloys.
+togabalatro.oredict.alloys = {'m_toga_electrum', 'm_toga_bronze', 'm_toga_signalum', 'm_toga_invar', 'm_toga_lumium', 'm_toga_refinedglowstone'}
 
 togabalatro.is_mineral = function(card)
 	if not card then return false end
@@ -156,6 +161,37 @@ togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selca
 	return iron1 and iron2 and nickel and iron1 ~= nickel and iron1 ~= iron2, { cards = { iron1, iron2, nickel } }, 'm_toga_invar', localize('toga_invarrecipe')
 end
 
+-- 3x Tin + 1x Silver + 1x Glowstone = 4x Lumium
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local tin1, tin2, tin3, silver, glowstone = nil, nil, nil, nil, nil
+	local tin1ok, tin2ok, tin3ok, silverok, glowstoneok = false, false, false, false, false
+	local iter, iterlimit = 0, 100
+	for i, v in ipairs(selcards) do
+		repeat -- scary jank, but works.
+			iter = iter + 1
+			if not tin1ok and togabalatro.oredictcheck(v, togabalatro.oredict.tin) then tin1 = v; tin1ok = true; break end
+			if not tin2ok and togabalatro.oredictcheck(v, togabalatro.oredict.tin) then tin2 = v; tin2ok = true; break end
+			if not tin3ok and togabalatro.oredictcheck(v, togabalatro.oredict.tin) then tin3 = v; tin3ok = true; break end
+			if not silverok and togabalatro.oredictcheck(v, togabalatro.oredict.silver) then silver = v; break end
+			if not glowstoneok and togabalatro.oredictcheck(v, togabalatro.oredict.glowstone) then glowstone = v; break end
+		until (tin1ok and tin2ok and tin3ok and silverok and glowstoneok) or iter > iterlimit
+	end
+	return tin1 and tin2 and tin3 and silver and glowstone and tin1 ~= silver and tin1 ~= glowstone and tin1 ~= tin2 and tin2 ~= tin3 and tin1 ~= tin3,
+		 { cards = { tin1, tin2, tin3, silver }, destroycard = { glowstone }, allcards = { tin1, tin2, tin3, silver, glowstone } }, 'm_toga_signalum', localize('toga_signalumrecipe')
+end
+
+-- 1x Osmium + 1 Glowstone (consumed) = 1x Refined Glowstone
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local glowstone, osmium = nil, nil
+	for i, v in ipairs(selcards) do
+		if togabalatro.oredictcheck(v, togabalatro.oredict.glowstone) then glowstone = v end
+		if togabalatro.oredictcheck(v, togabalatro.oredict.osmium) then osmium = v end
+	end
+	return osmium and glowstone and osmium ~= glowstone, { cards = { osmium }, destroycard = { glowstone }, allcards = { osmium, glowstone } }, 'm_toga_refinedglowstone', localize('toga_refglowstonerecipe')
+end
+
 -- Check recipe.
 togabalatro.checkvalidrecipe = function()
 	local text, recipetxt, userecipetxt = localize('toga_novalidrecipe'), localize('toga_unknownvalidrecipe'), false
@@ -173,7 +209,7 @@ togabalatro.checkvalidrecipe = function()
 end
 
 -- Valid recipe text stuff.
-togabalatro.currentrecipetxt = {"toga_alloysteel", "toga_alloyelectrum", "toga_alloybronze", "toga_alloysignalum", "toga_alloyinvar"}
+togabalatro.currentrecipetxt = {"toga_alloysteel", "toga_alloyelectrum", "toga_alloybronze", "toga_alloysignalum", "toga_alloyinvar", "toga_alloylumium", "toga_alloyrefglowstone"}
 
 -- Feel the heat of the Smeltery.
 SMODS.Consumable{

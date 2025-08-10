@@ -1420,6 +1420,45 @@ SMODS.Joker{
 }
 
 SMODS.Joker{
+	key = 'miningjkr',
+	config = { extra = { } },
+	loc_vars = function(self, info_queue, card)
+		local minpool = togabalatro.oredict.minerals
+		if minpool and #minpool > 0 and love.keyboard.isDown("lshift") then
+			for k, v in pairs(minpool) do
+				info_queue[#info_queue + 1] = G.P_CENTERS[v]
+			end
+		end
+		return { key = love.keyboard.isDown("lshift") and self.key.."_showminerals" or self.key }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 2, y = 4 },
+	cost = 4,
+	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.setting_blind or context.end_of_round then card.ability.extra.used = nil end
+		if context.after and not context.blueprint and not context.retrigger_joker and not card.ability.extra.used then
+			if #context.full_hand > 0 then
+				for i = 1, #context.full_hand do
+					local v = context.full_hand[i]
+					if v.config.center.key == 'c_base' then
+						local enhancement = SMODS.poll_enhancement({ guaranteed = true, options = togabalatro.oredict.minerals, type_key = 'modmineral' })
+						G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+							card:juice_up()
+							v:set_ability(G.P_CENTERS[enhancement])
+						return true end }))
+						card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_stonefound'), sound = togabalatro.config.SFXWhenTriggered and 'toga_xporb'})
+					end
+				end
+			end
+			card.ability.extra.used = true
+		end
+	end
+}
+
+SMODS.Joker{
 	key = 'y2ksticker',
 	unlocked = true,
 	rarity = 3,

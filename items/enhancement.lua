@@ -161,3 +161,47 @@ SMODS.Enhancement{
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('6f7975'), G.C.WHITE, 1)
     end,
 }
+
+SMODS.Enhancement{
+	key = 'glowstone',
+	atlas = "TOGAEnhancements",
+	pos = { x = 4, y = 1 },
+	no_rank = true,
+	replace_base_card = false
+}
+
+SMODS.Enhancement{
+	key = 'lumium',
+	atlas = "TOGAEnhancements",
+	pos = { x = 5, y = 1 },
+	config = { h_x_mult = 2 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.h_x_mult } }
+	end,
+	in_pool = function(self, args)
+		return false
+	end,
+	weight = 1,
+	alloy = true,
+	set_badges = function(self, card, badges)
+        badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('cf8f42'), G.C.WHITE, 1)
+    end,
+}
+
+SMODS.Enhancement{
+	key = 'refinedglowstone',
+	atlas = "TOGAEnhancements",
+	pos = { x = 6, y = 1 },
+	config = { x_mult = 1.25, x_chips = 1.5 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.x_chips, card.ability.x_mult } }
+	end,
+	in_pool = function(self, args)
+		return false
+	end,
+	weight = 1,
+	alloy = true,
+	set_badges = function(self, card, badges)
+        badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('d4bc41'), G.C.WHITE, 1)
+    end,
+}

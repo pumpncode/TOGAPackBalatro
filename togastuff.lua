@@ -334,6 +334,7 @@ SMODS.ObjectType{
 		["j_toga_netshow"] = true, ["j_toga_certserver"] = true, ["j_toga_cpu"] = true,
 		["j_toga_ups"] = true, ["j_toga_hammer"] = true, ["j_toga_joker203"] = true,
 		["j_toga_chrome"] = true, ["j_toga_firefox"] = true, ["j_toga_cavingjkr"] = true,
+		["j_toga_miningjkr"] = true,
 	}
 }
 
