@@ -291,7 +291,7 @@ SMODS.Voucher{
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togaziparchivepack
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togararpack
-		return {vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds } }
+		return {vars = { SMODS.get_probability_vars(card or self, 1, card.ability.extra.odds or 500) } }
 	end,
 	redeem = function(self, card)
 		G.GAME.spectralzipper_chance = (card and card.ability.extra or self.config.extra).odds or 500
