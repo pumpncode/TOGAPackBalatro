@@ -2,7 +2,7 @@ return {
 	["SFXWhenAdding"] = true,
 	["SFXWhenRemoving"] = true,
 	["SFXWhenTriggered"] = true,
-	["JokeJokersActive"] = false,
+	["JokeJokersActive"] = true,
 	["DoMoreLogging"] = false,
 	["DoEvenMoreLogging"] = false,
 	["StartUpSound"] = true,
