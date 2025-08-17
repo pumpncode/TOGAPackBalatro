@@ -427,6 +427,7 @@ togabalatro.reset_certificateserver = function(run_start)
 	if rndrank then
 		G.GAME.current_round.togabalatro.certserver.rank = rndrank.key
 		G.GAME.current_round.togabalatro.certserver.id = rndrank.id
+		G.GAME.current_round.togabalatro.certserver.value = rndrank.value
 	end
 end
 
@@ -632,11 +633,14 @@ function SMODS.modify_rank(card, amount, manual_sprites)
 	return modifyrankref(card, amount, manual_sprites)
 end
 
--- Hooking for rank-specific stuff.
+-- Hooking for rank/suit-specific stuff.
 local changebaseref = SMODS.change_base
 function SMODS.change_base(card, suit, rank, manual_sprites)
-	if next(SMODS.find_card('j_toga_certserver')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.certserver and G.GAME.current_round.togabalatro.certserver.rank then
+	if next(SMODS.find_card('j_toga_certserver')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.certserver and G.GAME.current_round.togabalatro.certserver.rank and rank ~= nil then
 		rank = G.GAME.current_round.togabalatro.certserver.rank
+	end
+	if next(SMODS.find_card('j_toga_regedit')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.regedit and G.GAME.current_round.togabalatro.regedit.suit and suit ~= nil then
+		suit = G.GAME.current_round.togabalatro.regedit.suit
 	end
     return changebaseref(card, suit, rank, manual_sprites)
 end
@@ -649,6 +653,7 @@ function Card:apply_to_run(center)
 	SMODS.calculate_context({ redeem_individual_voucher = true, voucher = center or self })
 end
 
+-- Hooking for suit-specific stuff.
 sendInfoMessage("Hooking Card:change_suit...", "TOGAPack")
 local changesuitref = Card.change_suit
 function Card:change_suit(new_suit)
