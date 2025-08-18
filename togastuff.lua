@@ -1160,7 +1160,7 @@ togabalatro.playextracards = function()
 	end
 	-- Draw cards to hand by (attempting to be) played Redstone cards.
 	for i = 1, #G.hand.highlighted do
-		if SMODS.has_enhancement(G.hand.highlighted[i], 'm_toga_redstone') then draw_card(G.deck, G.hand, 1, 'up') end
+		if not G.hand.highlighted[i].debuff and SMODS.has_enhancement(G.hand.highlighted[i], 'm_toga_redstone') then draw_card(G.deck, G.hand, 1, 'up') end
 	end
 end
 
