@@ -5,7 +5,7 @@
 # TOGA's Stuff
 A personal timewaster project that is a mod for Balatro.
 
-[Download the latest commit here.](https://github.com/TheOneGoofAli/TOGAPackBalatro/archive/refs/heads/main.zip)
+[Download the latest release here.](https://github.com/TheOneGoofAli/TOGAPackBalatro/releases/latest)
 
 Don't forget to check mod config menu, especially on first load or fresh profile.
 
