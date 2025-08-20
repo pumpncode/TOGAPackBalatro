@@ -334,7 +334,7 @@ SMODS.ObjectType{
 		["j_toga_netshow"] = true, ["j_toga_certserver"] = true, ["j_toga_cpu"] = true,
 		["j_toga_ups"] = true, ["j_toga_hammer"] = true, ["j_toga_joker203"] = true,
 		["j_toga_chrome"] = true, ["j_toga_firefox"] = true, ["j_toga_cavingjkr"] = true,
-		["j_toga_miningjkr"] = true,
+		["j_toga_miningjkr"] = true, ["j_toga_virtualpc"] = true, ["j_toga_tuneupwizard"] = true, 
 	}
 }
 
@@ -479,7 +479,15 @@ function Card:is_face(from_boss)
 		ischecking2s = false
 	end
 	ischecking2s = false
-	return isfaceref(self, from_boss)
+	local result = isfaceref(self, from_boss)
+	local tuneupcalc = {}
+	SMODS.calculate_context({ tuneupwizard = true }, tuneupcalc)
+	for _, eval in pairs(tuneupcalc) do
+		for key, eval2 in pairs(eval) do
+			if eval2.flip and eval2.card then result = not result end
+		end
+	end
+	return result
 end
 
 -- Hexa & Binary Joker and Megas XLR yoink.

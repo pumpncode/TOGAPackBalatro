@@ -296,41 +296,24 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'virtualpc',
-	config = { extra = { odds = 15 }, bypasswu = true },
+	config = { extra = { chips = 0, mult = 0 }, bypasswu = true },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds) } }
+		return { vars = { card.ability.extra.chips, card.ability.extra.mult } }
 	end,
 	unlocked = true,
-	rarity = 4,
+	rarity = 3,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 2, y = 3 },
-	cost = 20,
-	blueprint_compat = false,
+	cost = 12,
+	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context and not (context.mod_probability or context.fix_probability or context.check_enhancement or context.blueprint or context.pseudorandom_result) then
-			-- Larswijn and N' were here.
-			local returns = nil
-			local merge = {}
-			for i = 1, #G.jokers.cards do
-				local other_joker = G.jokers.cards[i]
-				if other_joker and other_joker:can_calculate() and other_joker.config.center.key ~= self.key and SMODS.pseudorandom_probability(card, "virtualpc2004sp1", 1, card.ability.extra.odds, 'virtualpc') then
-					local other_joker_effect = SMODS.blueprint_effect(card, other_joker, context)
-					if other_joker_effect and not other_joker_effect.was_blueprinted then
-						other_joker_effect.was_blueprinted = true
-						if context.repetition then
-							returns = returns or {}
-							returns.repetitions = (returns.repetitions or 0) + other_joker_effect.repetitions
-						else
-							table.insert(merge, other_joker_effect)
-						end
-					end
-				end
-			end
-			returns = SMODS.merge_effects(merge)
-			if returns and next(returns) ~= nil then
-				return returns
-			end
+		if context.initial_scoring_step and not context.blueprint then
+			card.ability.extra.chips = to_big(card.ability.extra.chips or 0) + to_big(hand_chips)
+			card.ability.extra.mult = to_big(card.ability.extra.mult or 0) + to_big(mult)
+			SMODS.calculate_effect({message = localize('k_upgrade_ex')}, card)
+			return nil, true
 		end
+		if context.joker_main then return { chips = card.ability.extra.chips, mult = card.ability.extra.mult } end
 	end,
 }
 
@@ -938,6 +921,19 @@ SMODS.Joker{
 			card.ability.extra.bonusxmult = card.ability.extra.bonusxmult + card.ability.extra.debuffxmult
 			return { message = localize('k_upgrade_ex'), delay = 0.25 }
 		end
+	end,
+}
+
+SMODS.Joker{
+	key = 'tuneupwizard',
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 2, y = 6 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.tuneupwizard then return { flip = true, card = card } end
 	end,
 }
 

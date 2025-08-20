@@ -185,7 +185,8 @@ return {
 				name = 'Task Manager',
 				text = {
 					"On {C:attention}last discard{}, {C:red}destroy{}",
-					"{C:attention}all{} discarded cards."
+					"{C:attention}all{} discarded cards.",
+					"{C:inactive,s:0.8}I want to speak to your Manager!{}"
 				}
 			},
 			-- Old Task Manager ability, tweaked.
@@ -221,7 +222,9 @@ return {
 				name = 'DriveSpace',
 				text = {
 					"{X:attention,C:white}X#1#{} Blind requirement",
-					"when a card {C:attention}scores{}."
+					"when a card {C:attention}scores{}.",
+					"{C:inactive,s:0.8}Back when hard drives were{}",
+					"{C:inactive,s:0.8}smaller than CDs...{}"
 				}
 			},
 			j_toga_win95 = {
@@ -298,14 +301,16 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Chips per card",
 					"in the {C:attention}full deck{}",
-					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}"
+					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}",
+					"{C:inactive,s:0.8,E:1}Quack.{}"
 				}
 			},
 			j_toga_winupdate = {
 				name = 'Joker Update',
 				text = {
 					"When {C:attention}entering shop{}, {C:attention}add{} a random",
-					"{C:attention}Voucher{} and {C:attention}Booster Pack{} to shop"
+					"{C:attention}Voucher{} and {C:attention}Booster Pack{} to shop",
+					"{C:inactive,s:0.8}Upgrades, upgrades!{}"
 				}
 			},
 			j_toga_virtualmemory = {
@@ -323,14 +328,17 @@ return {
 					"Right most {C:attention}scoring{} card gives {X:chips,C:white}X#2#{} Chips.",
 					"Destroying {C:attention}playing cards{} increases {X:chips,C:white}XChips{}",
 					"by {X:chips,C:white}X#1#{} or {X:chips,C:white}X#3#{} if destroyed",
-					"card is {C:attention}enhanced{}."
+					"card is {C:attention}enhanced{}.",
+					"{C:inactive,s:0.8}Taking out the trash...{}"
 				}
 			},
 			j_toga_clippit = {
 				name = 'Clippit',
 				text = {
 					"Rescore all {C:attention}held in hand{}",
-					"card abilities {C:attention}#1#{} time(s)."
+					"card abilities {C:attention}#1#{} time(s).",
+					"{C:inactive,s:0.8}It looks like you're trying to naneinf.{}",
+					"{C:inactive,s:0.8}Would you like help?{}"
 				}
 			},
 			j_toga_asterism = {
@@ -348,7 +356,9 @@ return {
 					"{C:chips}+#2#{} Chips per",
 					"any {C:dark_edition}Consumable{}",
 					"used this run",
-					"{C:inactive}(Currently {}{C:chips}+#1#{}{C:inactive}){}"
+					"{C:inactive}(Currently {}{C:chips}+#1#{}{C:inactive}){}",
+					'{C:inactive,s:0.8}"the internet is{}',
+					'{C:inactive,s:0.8}gaming right now"'
 				}
 			},
 			j_toga_computerlock = {
@@ -367,6 +377,7 @@ return {
 					"cards become",
 					"{C:chips}Bonus{} cards",
 					"when scored",
+					"{C:inactive,s:0.8}Merasmus!{}"
 				}
 			},
 			j_toga_pso2ironwill = {
@@ -402,7 +413,8 @@ return {
 				name = 'Hearty Spades',
 				text = {
 					"{C:hearts}Hearts{} and {C:spades}Spades{}",
-					"count as the same suit"
+					"count as the same suit",
+					"{C:inactive,s:0.8}Hearty meal...{}"
 				}
 			},
 			j_toga_rover = {
@@ -411,7 +423,8 @@ return {
 					"After scoring of {C:attention}played{} cards,",
 					"each card in the {C:attention}deck{} has a",
 					"{C:green}#1# in #2#{} chance to be {C:attention}scored{}",
-					"as well"
+					"as well",
+					"{C:inactive,s:0.8}woof.{}"
 				}
 			},
 			j_toga_binaryjkr = {
@@ -457,6 +470,7 @@ return {
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for every {C:money}$#2#{} you have",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
+					"{C:inactive,s:0.8,E:1}Gotta go fast!{}"
 				}
 			},
 			j_toga_tomscott = {
@@ -466,6 +480,8 @@ return {
 					"{C:attention}copy{} of itself held",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{} {C:inactive}Mult){}",
 					"{C:inactive,s:0.8}Stacks multiplicatively.{}",
+					"{C:inactive,s:0.8}I am currently a Joker{}",
+					"{C:inactive,s:0.8}in the Balatro video game.{}"
 				}
 			},
 			j_toga_megasxlr = {
@@ -484,7 +500,8 @@ return {
 					"Scored cards {C:attention}lose{} their",
 					"enhancements, editions and seals.",
 					"Recharges when {C:attention}entering{} shop.",
-					"{C:inactive,s:0.8}#2#"
+					"{C:inactive,s:0.8}#2#",
+					"{C:inactive,s:0.8}Ah... {C:inactive,s:0.8,E:1}piss!{}"
 				}
 			},
 			j_toga_goldenwrench = {
@@ -498,9 +515,10 @@ return {
 			j_toga_virtualpc = {
 				name = 'Virtual PC',
 				text = {
-					"{C:green}#1# in #2#{} chance to copy",
-					"an ability of {C:attention}any{}",
-					"compatible {C:attention}Joker{} held"
+					"When {C:attention}scoring starts{}, current",
+					"{C:blue}Chips{} and {C:red}Mult{} are {C:attention}added{}",
+					"to this Joker",
+					"{C:inactive,s:0.85}(Currently {C:blue,s:0.85}#1#{C:inactive,s:0.85} Chips / {C:red,s:0.85}#2#{C:inactive,s:0.85} Mult)"
 				}
 			},
 			j_toga_ie = {
@@ -707,7 +725,7 @@ return {
 				text = {
 					"Gains {X:mult,C:white}X#2#{} Mult when a card is drawn.",
 					"Resets if {C:blue}played{}/{C:red}discarded{} hand contains a {C:attention}Flush{}.",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
 				}
 			},
 			j_toga_google = {
@@ -715,6 +733,7 @@ return {
                 text = {
                     "Adds a {C:attention}6{} to deck",
                     "when {C:attention}Blind{} is selected",
+					"{C:inactive,s:0.8}Don't be evil.{}"
                 },
             },
 			j_toga_bonzibuddy = {
@@ -827,6 +846,7 @@ return {
 					"{C:red}+#1#{} Mult per {C:dark_edition}logical{} processor",
 					"on current device",
 					"{C:inactive}(Currently #2#, {C:red}+#3#{C:inactive} Mult)",
+					"{C:inactive,s:0.8}P2W Joker?{}"
 				}
 			},
 			j_toga_ups = {
@@ -906,6 +926,13 @@ return {
 					"{C:attention}Unenhanced{} cards played on the",
 					"{C:attention}first hand{} of round are {C:attention}converted{}",
 					"to {C:attention}Mineral{} cards afterwards.",
+				}
+			},
+			j_toga_tuneupwizard = {
+				name = 'Tune-up Wizard',
+				text = {
+					"{C:attention}Inverts{} face card",
+					"consideration"
 				}
 			},
 		},
