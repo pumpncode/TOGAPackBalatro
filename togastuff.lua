@@ -551,7 +551,9 @@ sendInfoMessage("Hooking Card:should_hide_front...", "TOGAPack")
 local shfref = Card.should_hide_front
 function Card:should_hide_front()
 	local ret = shfref(self)
-	if ret and next(SMODS.find_card('j_toga_cavingjkr')) then return false else return ret end
+	if ret and next(SMODS.find_card('j_toga_cavingjkr')) then return false
+	elseif self.config.center.key == 'm_toga_glowstone' then return false
+	else return ret end
 end
 
 -- This really shuffled my brain...
