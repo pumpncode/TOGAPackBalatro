@@ -271,15 +271,17 @@ end
 
 local stype = love.system.getOS()
 if stype == 'OS X' or stype == 'Linux' then stype = 'UNIX' elseif stype == 'Android' or stype == 'iOS' then stype = 'Mobile ('..stype..')' end
-local cmd = stype == 'Windows' and "tasklist" or (sys == 'OS X' or sys == 'UNIX') and "ps -e"
-local table, strcapture = {}, mlineproc(os.capture(cmd, true))
-local togachannel = love.thread.getChannel('togatasklist')
-local id = togachannel:push(table)
-while true do
-	if togachannel:hasRead(id) then
-		table = mlineproc(os.capture(cmd, true))
-		id = togachannel:push(table)
-		sendMsg('INFO ', 'TOGAPack', 'love2d Channel <> Thread - Table refreshed and sent.')
+local cmd = stype == 'Windows' and "tasklist" or (stype == 'OS X' or stype == 'UNIX') and "ps -e" or nil
+if cmd then
+	local table, strcapture = {}, mlineproc(os.capture(cmd, true))
+	local togachannel = love.thread.getChannel('togatasklist')
+	local id = togachannel:push(table)
+	while true do
+		if togachannel:hasRead(id) then
+			table = mlineproc(os.capture(cmd, true))
+			id = togachannel:push(table)
+			sendMsg('INFO ', 'TOGAPack', 'love2d Channel <> Thread - Table refreshed and sent.')
+		end
 	end
 end
 ]]
