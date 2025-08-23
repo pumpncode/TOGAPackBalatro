@@ -603,7 +603,7 @@ SMODS.Joker{
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if ((context.other_joker and context.other_joker.edition.holo) or (context.individual and context.cardarea == G.hand and context.other_card and context.other_card.edition and context.other_card.edition.holo
+		if ((context.other_joker and context.other_joker.edition and context.other_joker.edition.holo) or (context.individual and context.cardarea == G.hand and context.other_card and context.other_card.edition and context.other_card.edition.holo
 		and not context.other_card.debuff and not context.repetition and not context.repetition_only)) and not context.end_of_round then
 			return { xmult = card.ability.extra.holoxmult, message_card = context.other_joker or context.other_card }
 		end
