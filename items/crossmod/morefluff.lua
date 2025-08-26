@@ -2,8 +2,10 @@
 -- but bronze and steel are not intended for this pool for being alloys.
 sendInfoMessage("Added Gemstone cards of More Fluff to mineral pool.", "TOGAPack - MoreFluff")
 togabalatro.add_to_oredict('m_mf_gemstone', 'minerals', true)
+togabalatro.add_to_oredict('m_mf_gemstone', 'gemstone', true)
 sendInfoMessage("Added Brass cards of More Fluff to mineral pool.", "TOGAPack - MoreFluff")
 togabalatro.add_to_oredict('m_mf_brass', 'minerals', true)
+togabalatro.add_to_oredict('m_mf_brass', 'brass', true)
 
 togabalatro.mf_art_credit = function(name)
 	if mf_config["Programmer Art"] then return nil end

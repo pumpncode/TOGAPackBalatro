@@ -12,6 +12,7 @@ local basecrossmod = {
 	next(SMODS.find_mod('CardSleeves')) and CardSleeves and 'sleeve.lua',
 	next(SMODS.find_mod('kino')) and 'kino.lua',
 	next(SMODS.find_mod('JokerDisplay')) and JokerDisplay and 'jokerdisplay.lua',
+	next(SMODS.find_mod('GSPhanta')) and 'phanta.lua',
 }
 
 -- If none of these are valid, stop here.
