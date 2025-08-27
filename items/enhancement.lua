@@ -88,7 +88,6 @@ SMODS.Enhancement{
 	in_pool = function(self, args)
 		return false
 	end,
-	weight = 1,
 	alloy = true,
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('a87544'), G.C.WHITE, 1)
@@ -130,7 +129,6 @@ SMODS.Enhancement{
 	in_pool = function(self, args)
 		return false
 	end,
-	weight = 1,
 	alloy = true,
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('db4600'), G.C.WHITE, 1)
@@ -155,7 +153,6 @@ SMODS.Enhancement{
 	in_pool = function(self, args)
 		return false
 	end,
-	weight = 1,
 	alloy = true,
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('6f7975'), G.C.WHITE, 1)
@@ -181,7 +178,6 @@ SMODS.Enhancement{
 	in_pool = function(self, args)
 		return false
 	end,
-	weight = 1,
 	alloy = true,
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('cf8f42'), G.C.WHITE, 1)
@@ -199,7 +195,6 @@ SMODS.Enhancement{
 	in_pool = function(self, args)
 		return false
 	end,
-	weight = 1,
 	alloy = true,
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('d4bc41'), G.C.WHITE, 1)

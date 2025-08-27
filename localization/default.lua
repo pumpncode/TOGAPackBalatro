@@ -1121,6 +1121,14 @@ return {
 					"convert into a {C:attention}Mineral{} card instead.",
 				}
 			},
+			c_toga_inbox = {
+				name = "Inbox",
+				text = {
+					"Destroy up to",
+					"{C:attention}#1# SMS Cards{}",
+					"in the {C:attention}full deck{}"
+				}
+			},
 			c_toga_bombshee = {
 				name = "Bomb?",
 				text = {
@@ -1172,6 +1180,22 @@ return {
 					"Add a {C:attention}Hyperlink Seal{}",
 					"to {C:attention}#1#{} selected",
 					"card in your hand"
+				}
+			},
+			c_toga_alloyer = {
+				name = "Alloy",
+				text = {
+					"{C:green}#2# in #3#{} chance to enhance",
+					"{C:attention}#1#{} card to an {C:attention}Alloy{} card.",
+					"{C:inactive,s:0.8}Hold Left SHIFT before hovering over{}",
+					"{C:inactive,s:0.8}this card to show the Alloy pool.{}"
+				}
+			},
+			c_toga_alloyer_showalloys = {
+				name = "Alloy",
+				text = {
+					"{C:green}#2# in #3#{} chance to enhance",
+					"{C:attention}#1#{} card to an {C:attention}Alloy{} card.",
 				}
 			},
 		},

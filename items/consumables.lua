@@ -49,10 +49,27 @@ togabalatro.is_mineral = function(card)
 	return false
 end
 
+togabalatro.is_alloy = function(card)
+	if not card then return false end
+	for k, v in pairs(togabalatro.oredict.alloys) do
+		if v and SMODS.has_enhancement(card, v) then return true end
+	end
+	return false
+end
+
 togabalatro.has_mineral = function()
 	if G.playing_cards then
 		for i = 1, #G.playing_cards do
 			if togabalatro.is_mineral(G.playing_cards[i]) then return true end
+		end
+	end
+	return false
+end
+
+togabalatro.has_alloy = function()
+	if G.playing_cards then
+		for i = 1, #G.playing_cards do
+			if togabalatro.is_alloy(G.playing_cards[i]) then return true end
 		end
 	end
 	return false
@@ -228,7 +245,7 @@ SMODS.Consumable{
 				end
 			end
 		end
-		return { key = cando and self.key..'_ready' or G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and self.key.."_novalidrecipe" or self.key, vars = { txt, card.ability.extra.usecost } }
+		return { key = cando and self.key..'_ready' or G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and self.key.."_novalidrecipe" or self.key, vars = { txt, (card.ability.extra or self.config.extra).usecost } }
 	end,
 	in_pool = function()
 		return togabalatro.has_mineral() -- Should only spawn if mineral cards.
@@ -358,6 +375,50 @@ SMODS.Consumable {
 	can_stack = false
 }
 
+SMODS.Consumable {
+	key = 'inbox',
+	set = 'Tarot',
+	atlas = "TOGAConsumables",
+	pos = {x = 8, y = 0},
+	cost = 5,
+	config = { extra = { max_cards = 2 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS['m_toga_sms']
+		return { vars = { (card.ability or self.config).extra.max_cards } }
+	end,
+	in_pool = function()
+		if G.playing_cards then
+			for i = 1, #G.playing_cards do
+				if SMODS.has_enhancement(G.playing_cards[i], "m_toga_sms") then return true end -- Appear if there's a SMS card.
+			end
+		end
+		return false
+	end,
+	can_use = function(self, card, area, copier)
+		if G.playing_cards then
+			for i = 1, #G.playing_cards do
+				if SMODS.has_enhancement(G.playing_cards[i], "m_toga_sms") then return true end -- Can be used if an SMS card is present.
+			end
+		end
+		return false
+	end,
+	use = function(self, card, area, copier)
+		local cards = {}
+		for i = 1, #G.playing_cards do
+			if SMODS.has_enhancement(G.playing_cards[i], "m_toga_sms") then cards[#cards+1] = G.playing_cards[i] end
+		end
+		pseudoshuffle(cards, pseudoseed('yougotmail'))
+		local dcards = {}
+		for i = 1, card.ability.extra.max_cards or 2 do
+			if cards[i] then dcards[#dcards+1] = cards[i] end
+		end
+		if next(dcards) then SMODS.destroy_cards(dcards) end
+	end,
+	pixel_size = { w = 71, h = 77 },
+	perishable_compat = false,
+	eternal_compat = false,
+}
+
 -- SPB function.
 local function toga_spbdeckwreck(card, failedchance)
 	if not (G.deck and G.deck.cards and #G.deck.cards > 0) then return end
@@ -458,7 +519,7 @@ SMODS.Consumable {
 		return { vars = { card.ability.extra.cards } }
 	end,
 	can_use = function(self, card)
-		if G and G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.cards then 
+		if G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.cards then 
 			return true
 		end
 		return false
@@ -540,4 +601,65 @@ SMODS.Consumable {
 		end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
 	end
+}
+
+SMODS.Consumable {
+	key = 'alloyer',
+	set = 'Spectral',
+	atlas = "TOGAConsumables",
+	pos = {x = 7, y = 0},
+	cost = 5,
+	config = { extra = { max_highlighted = 1, odds = 4 } },
+	loc_vars = function(self, info_queue, card)
+		local alloypool = togabalatro.oredict.alloys
+		if alloypool and #alloypool > 0 and love.keyboard.isDown("lshift") then
+			for k, v in pairs(alloypool) do
+				info_queue[#info_queue + 1] = G.P_CENTERS[v]
+			end
+		end
+		return {key = love.keyboard.isDown("lshift") and self.key.."_showalloys" or self.key, vars = { (card.ability.extra or self.config.extra).max_highlighted, SMODS.get_probability_vars(card or self, 1, (card.ability.extra or self.config.extra).odds) } }
+	end,
+	can_use = function(self, card)
+		if G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.max_highlighted then
+			return true
+		end
+		return false
+	end,
+	use = function(self, card, area, copier)
+		if SMODS.pseudorandom_probability(card, "toga_alloyingmyingots", 1, card.ability.extra.odds, 'alloyer') then
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+			return true end }))
+			delay(0.2)
+			for i, v in pairs(G.hand.highlighted) do
+				local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+				local alloyenh = SMODS.poll_enhancement({ key = 'thealloying', guaranteed = true, options = togabalatro.oredict.alloys })
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() v:flip();play_sound('card1', percent, 1);v:juice_up(0.3, 0.3);return true end }))
+				G.E_MANAGER:add_event(Event({trigger = 'after',func = function() v:set_ability(alloyenh);return true end }))
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() v:flip();play_sound('tarot2', percent, 0.6);v:juice_up(0.3, 0.3);return true end }))
+			end
+			delay(0.2)
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+		else
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+				attention_text({
+					text = localize('k_nope_ex'),
+					scale = 1.3, 
+					hold = 1.4,
+					major = card,
+					backdrop_colour = G.C.SECONDARY_SET.Tarot,
+					align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and 'tm' or 'cm',
+					offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0},
+					silent = true
+					})
+					G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+						play_sound('tarot2', 0.76, 0.4);return true end}))
+					play_sound('tarot2', 1, 0.4)
+					card:juice_up(0.3, 0.5)
+			return true end }))
+			delay(0.2)
+		end
+	end,
+	pixel_size = { w = 71, h = 77 },
 }

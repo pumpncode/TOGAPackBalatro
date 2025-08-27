@@ -341,7 +341,7 @@ SMODS.Joker{
 		return { vars = { card.ability.extra.xmult } }
 	end,
 	unlocked = true,
-	rarity = 2,
+	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 2, y = 2 },
 	cost = 8,
