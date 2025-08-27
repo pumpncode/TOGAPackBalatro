@@ -13,5 +13,6 @@ return {
 	}
 	["UseCustomMMMusic"] = true
 	["UseCustomModTabMusic"] = true
-	["SFXSwapLevel"] = 2
+	["SFXSwapLevel"] = 2,
+	["DoCrashSFX"] = false
 }

@@ -30,11 +30,25 @@ SMODS.Joker{
 				for k, v in pairs(kino_genres) do
 					if is_genre(G.jokers.cards[i], v) and not uniquegenrest[v] then
 						uniquegenrest[v] = true
-						card.ability.extra.bonusxmult = card.ability.extra.bonusxmult + card.ability.extra.moviexmult
 					end
 				end
 			end
-			if next(uniquegenrest) then return { message = localize('k_upgrade_ex') } end
+			if next(uniquegenrest) then
+				local amount = 0
+				for k, v in pairs(uniquegenrest) do
+					if k and v then amount = amount + 1 end
+				end
+				if amount > 1 then
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "bonusxmult",
+						scalar_value = "moviexmult",
+						operation = function(ref_table, ref_value, initial, change)
+							ref_table[ref_value] = initial + amount*change
+						end,
+					})
+				end
+			end
 		end
 		
 		if (context.joker_main or context.forcetrigger) then return { x_mult = 1+card.ability.extra.bonusxmult } end

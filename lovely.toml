@@ -68,6 +68,15 @@ overwrite = true
 match_indent = true
 
 [[patches]]
+[patches.pattern]
+target = 'main.lua'
+pattern = "love.audio.stop()"
+position = "after"
+payload = "if togabalatro then togabalatro.errorhandler() end"
+overwrite = true
+match_indent = true
+
+[[patches]]
 [patches.regex]
 target = 'main.lua'
 pattern = "Oops! The game crashed"

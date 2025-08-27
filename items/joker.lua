@@ -44,6 +44,10 @@ SMODS.Joker{
 	key = 'controlpanel',
 	config = { extra = { money = 0.5, increase = 0.5, totalmoney = 3.5 } },
 	loc_vars = function(self, info_queue, card)
+		local jokerslotbonus, consslotbonus = 0, 0
+		if G.jokers then jokerslotbonus = card.ability.extra.money*G.jokers.config.card_limit end
+		if G.consumeables then consslotbonus = card.ability.extra.money*G.consumeables.config.card_limit end
+		card.ability.extra.totalmoney = jokerslotbonus+consslotbonus
 		return { vars = { card.ability.extra.money, card.ability.extra.increase, math.ceil(card.ability.extra.totalmoney) } }
 	end,
 	unlocked = true,
@@ -54,8 +58,13 @@ SMODS.Joker{
 	blueprint_compat = false,
 	calculate = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and G.GAME.blind.boss then
-			card.ability.extra.money = card.ability.extra.money + card.ability.extra.increase
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+			-- card.ability.extra.money = card.ability.extra.money + card.ability.extra.increase
+			-- card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+			SMODS.scale_card(pcard, {
+				ref_table = card.ability.extra,
+				ref_value = "money",
+				scalar_value = "increase",
+			})
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
@@ -199,9 +208,24 @@ SMODS.Joker{
 		if context.remove_playing_cards then
 			for k, v in ipairs(context.removed) do
 				if v.config.center ~= G.P_CENTERS.c_base then
-					card.ability.extra.xchip_mod = card.ability.extra.xchip_mod+(card.ability.extra.xchip_increase*3)
+					-- Add 3x0.05.
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "xchip_mod",
+						scalar_value = "xchip_increase",
+						no_message = true,
+						operation = function(ref_table, ref_value, initial, change)
+							ref_table[ref_value] = initial + 3*change
+						end,
+					})
 				else
-					card.ability.extra.xchip_mod = card.ability.extra.xchip_mod+card.ability.extra.xchip_increase
+					-- Add 0.05.
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "xchip_mod",
+						scalar_value = "xchip_increase",
+						no_message = true,
+					})
 				end
 			end
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_recyclebinsfx"})
@@ -308,8 +332,26 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.initial_scoring_step and not context.blueprint then
-			card.ability.extra.chips = to_big(card.ability.extra.chips or 0) + to_big(hand_chips)
-			card.ability.extra.mult = to_big(card.ability.extra.mult or 0) + to_big(mult)
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "chips",
+				scalar_value = "hand_chips",
+				scalar_table = _G,
+				operation = function(ref_table, ref_value, initial, change)
+					ref_table[ref_value] = initial + to_big(change)
+				end,
+				no_message = true
+			})
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "mult",
+				scalar_value = "mult",
+				scalar_table = _G,
+				operation = function(ref_table, ref_value, initial, change)
+					ref_table[ref_value] = initial + to_big(change)
+				end,
+				no_message = true
+			})
 			SMODS.calculate_effect({message = localize('k_upgrade_ex')}, card)
 			return nil, true
 		end
@@ -671,12 +713,17 @@ SMODS.Joker{
 		end
 		
 		if context.individual_draw and not context.blueprint then
-			card.ability.extra.curxmult = card.ability.extra.curxmult + card.ability.extra.percard
-			return {
-				delay = 0.05,
-				message = localize{ type='variable', key = 'a_xmult', vars = {card.ability.extra.curxmult} },
-				colour = G.C.RED
-			}
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "curxmult",
+				scalar_value = "percard",
+				scaling_message = {
+					delay = 0.05,
+					message = localize{ type='variable', key = 'a_xmult', vars = {card.ability.extra.curxmult} },
+					colour = G.C.RED
+				}
+			})
+			return nil, true
 		end
 		
 		if context.joker_main then return { xmult = card.ability.extra.curxmult } end
@@ -918,8 +965,13 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.joker_main then return { xmult = math.max(1+card.ability.extra.bonusxmult, 1) } end
 		if context.debuffed_ups and context.card and not context.blueprint then
-			card.ability.extra.bonusxmult = card.ability.extra.bonusxmult + card.ability.extra.debuffxmult
-			return { message = localize('k_upgrade_ex'), delay = 0.25 }
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "bonusxmult",
+				scalar_value = "debuffxmult",
+				scaling_message = { message = localize('k_upgrade_ex'), delay = 0.25 }
+			})
+			return nil, true
 		end
 	end,
 }
@@ -1181,11 +1233,15 @@ SMODS.Joker{
 		
 		if (context.buying_card or context.selling_card or context.playing_card_added or context.ending_shop or context.using_consumeable or context.open_booster or context.reroll_shop or context.ending_shop)
 		and not context.individual and not context.blueprint then
-			card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + (context.ending_shop and card.ability.extra.add_shop*8 or context.playing_card_added and context.cards and #context.cards and card.ability.extra.add_shop*#context.cards or card.ability.extra.add_shop)
-			G.E_MANAGER:add_event(Event({func = function()
-				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')});
-				return true
-			end}))
+			local valmodify = context.ending_shop and 8 or context.playing_card_added and context.cards and #context.cards or 1
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "Xmult_current",
+				scalar_value = "add_shop",
+				operation = function(ref_table, ref_value, initial, change)
+					ref_table[ref_value] = initial + valmodify*change
+				end,
+			})
 		elseif (context.skip_blind or context.skipping_booster) and not context.blueprint then
 			if not SMODS.pseudorandom_probability(card, 'j_toga_jokersrb2kart', 1, card.ability.extra.maxchance, 'srb2kart') and G.GAME.selected_back.effect.center.key ~= 'b_toga_srb2kartdeck' then
 				if not togabalatro.checkxmultsafe(card) then
@@ -1195,13 +1251,28 @@ SMODS.Joker{
 					SMODS.debuff_card(card, true, card)
 					return {message = localize('toga_karteliminated'), colour = G.C.RED, sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_ssb64crowdohh'}
 				else
-					card.ability.extra.Xmult_current = card.ability.extra.Xmult_current / card.ability.extra.shortcutfailmult
-					return {message = localize('toga_kartouch'), colour = G.C.RED}
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "Xmult_current",
+						scalar_value = "shortcutfailmult",
+						operation = function(ref_table, ref_value, initial, change)
+							ref_table[ref_value] = initial / change
+						end,
+						scaling_message = {message = localize('toga_kartouch'), colour = G.C.RED}
+					})
+					return nil, true
 				end
 			else
 				local shortcutbonus = G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and card.ability.extra.addshortcut/2.5 or card.ability.extra.addshortcut
-				card.ability.extra.Xmult_current = card.ability.extra.Xmult_current + shortcutbonus
-				return {message = localize('k_upgrade_ex')}
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "Xmult_current",
+					scalar_value = "addshortcut",
+					operation = function(ref_table, ref_value, initial, change)
+						ref_table[ref_value] = initial + (G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and change/2.5 or change)
+					end,
+				})
+				return nil, true
 			end
 		elseif context.joker_main or context.forcetrigger then
 			if card.ability.extra.Xmult_current > 1 then return { x_mult = card.ability.extra.Xmult_current } end
@@ -1483,7 +1554,7 @@ SMODS.Joker{
 			ease_dollars(to_big(-G.GAME.dollars), true)
 			return {
 				message = localize('toga_pso2ironwillproc'),
-				saved = 'toga_pso2ironwillsave', -- no longer needing Lovely patches for this, but it is a bit backwards with implementation.
+				saved = localize('toga_pso2ironwillsave'),
 				colour = G.C.RED
 			}
 		end

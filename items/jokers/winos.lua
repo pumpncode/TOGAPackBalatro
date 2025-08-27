@@ -336,7 +336,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'win8',
-	config = { extra = { xmult = 1.8 } },
+	config = { extra = { xmult = 0.08 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }
 	end,
@@ -347,9 +347,18 @@ SMODS.Joker{
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.individual and (context.cardarea == G.deck or context.cardarea == G.discard) and context.other_card:get_id() == 8
-		and not context.other_card.debuff and not context.end_of_round then
-			return { xmult = card.ability.extra.xmult }
+		if context.before and context.full_hand and #context.full_hand > 1 then
+			SMODS.calculate_effect({message = '!'}, context.blueprint_card or card)
+			for i = 1, #context.full_hand do
+				local pcard = context.full_hand[i]
+				SMODS.scale_card(pcard, {
+					ref_table = pcard.ability,
+					ref_value = "perma_h_x_mult",
+					scalar_table = card.ability.extra,
+					scalar_value = "xmult",
+				})
+			end
+			return nil, true
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)

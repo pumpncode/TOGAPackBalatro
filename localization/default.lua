@@ -550,9 +550,12 @@ return {
 			j_toga_win8 = {
 				name = 'Windows 8',
 				text = {
-					"Each {C:attention}8{} {C:red}discarded{} this round",
-					"or in the remaining {C:attention}deck{}",
-					"gives {X:mult,C:white}X#1#{} Mult",
+					-- "Each {C:attention}8{} {C:red}discarded{} this round",
+					-- "or in the remaining {C:attention}deck{}",
+					-- "gives {X:mult,C:white}X#1#{} Mult",
+					"Played {C:attention}8s{} gain",
+					"{C:attention}held in hand{}",
+					"{X:mult,C:white}X#1#{} Mult"
 				}
 			},
 			j_toga_penwheel = {
@@ -1794,6 +1797,7 @@ return {
 			toga_modtabmusicswap = "Custom music for own mod config menu",
 			toga_startupsfx = "Enable mod startup sound on initial load",
 			toga_startupsfxuse = "Use selected SFX for next game startup",
+			toga_crashsfxuse = "Play a sound when game crashes",
 			toga_sfxswaptext = "SFX Swap Level:",
 			toga_sfxswapnone = "None",
 			toga_sfxswapdefault = "Default",

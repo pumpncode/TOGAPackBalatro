@@ -99,6 +99,7 @@ SMODS.Sound({key = "jaratehit", path = "jar_explode.ogg"}) -- Jarate hitting som
 SMODS.Sound({key = "soldierscream", path = "screm.ogg"}) -- TF2 Soldier screaming?
 SMODS.Sound({key = "w95restup", path = "Windows 95 restore up.ogg"}) -- Plus! 95, Windows 95 restore up.wav
 SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
+SMODS.Sound({key = "mcprf5400", path = "macperforma5400.ogg"}) -- Mac Performa 5400 (Death Chime)
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
@@ -161,7 +162,6 @@ end
 
 togabalatro.optional_features = function()
 	return {
-		cardareas = { deck = true, discard = true },
 		retrigger_joker = true,
 		quantum_enhancements = true
 	}
@@ -169,6 +169,24 @@ end
 
 togabalatro.set_debuff = function(card)
 	if SMODS.has_enhancement(card, 'm_toga_nickel') then return 'prevent_debuff' end
+end
+
+local nfs = require('nativefs')
+togabalatro.errorhandler = function()
+	if togabalatro.config.DoCrashSFX and not togabalatro.crashtrig then
+		local crashdata = love.filesystem.newFileData(nfs.read(togabalatro.path.."/assets/sounds/macperforma5400.ogg"))
+		if crashdata then
+			local crashsfx = love.sound.newSoundData(crashdata)
+			if crashsfx then
+				local crashsource = love.audio.newSource(crashsfx, 'static')
+				if crashsource then
+					crashsource:setVolume(0.33)
+					love.audio.play(crashsource)
+				end
+			end
+		end
+	end
+	togabalatro.crashtrig = true
 end
 
 togabalatro.getrandcons = function(seed)
