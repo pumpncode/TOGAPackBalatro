@@ -43,7 +43,17 @@ SMODS.Joker{
 	key = 'linux_slackware',
 	config = { extra = { persuit = 0.2 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.persuit, 1+(suitcount-1)*card.ability.extra.persuit > 0 and 1+(suitcount-1)*card.ability.extra.persuit or 0 } }
+		local uniquesuits, suitcount, diffkey = {}, 0, false
+		if (G.play and G.play.cards and #G.play.cards > 0) and (G.hand and G.hand.cards and #G.hand.cards > 0) then
+			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and #G.hand.highlighted > 0 and G.hand.highlighted
+			if curtarget[1] then
+				for i = 1, #curtarget do
+					if curtarget[i] and not uniquesuits[curtarget[i].base.suit] then uniquesuits[curtarget[i].base.suit] = true; suitcount = suitcount + 1 end
+				end
+			end
+		end
+		if suitcount-1 > 0 then diffkey = true end
+		return { key = diffkey and self.key.."_cardsel" or self.key, vars = { card.ability.extra.persuit, 1+(suitcount-1)*card.ability.extra.persuit > 0 and 1+(suitcount-1)*card.ability.extra.persuit or 0 } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -68,7 +78,18 @@ SMODS.Joker{
 	config = { extra = { phandscale = 0.1, xmbonus = 0} },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xmbonus = math.max(card.ability.extra.xmbonus, 0)
-		return { vars = { card.ability.extra.phandscale, 1+card.ability.extra.xmbonus, phands } }
+		local phands, diffkey = 0, false
+		if (G.play and G.play.cards and #G.play.cards > 0) and (G.hand and G.hand.cards and #G.hand.cards > 0 and G.hand.highlighted and #G.hand.highlighted > 0) then
+			local curtarget = #G.play.cards > 0 and G.play.cards or G.hand.cards and #G.hand.highlighted > 0 and G.hand.highlighted
+			if curtarget and curtarget[1] then
+				local curpokhand = evaluate_poker_hand(curtarget)
+				for k, v in pairs(curpokhand) do
+					if k ~= 'High Card' and next(v) ~= nil then phands = phands + 1 end
+				end
+			end
+		end
+		if phands > 0 then diffkey = true end
+		return { key = diffkey and self.key.."_cardsel" or self.key, vars = { card.ability.extra.phandscale, 1+card.ability.extra.xmbonus, phands } }
 	end,
 	unlocked = true,
 	rarity = 2,
