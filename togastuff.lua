@@ -891,7 +891,7 @@ togabalatro.extrascoring = function(context, scoring_hand)
 				local notyetscored = true
 				if eval2.card then
 					for i = 1, #G.deck.cards do
-						if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.odds or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8), 'searchwithrover') or eval2.card.ability.cry_rigged) then
+						if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.rover or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8), 'searchwithrover') or eval2.card.ability.cry_rigged) then
 							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_roverbark"}) end
 							SMODS.score_card(G.deck.cards[i], context)
 						end
