@@ -1013,8 +1013,10 @@ SMODS.Joker{
 	blueprint_compat = false,
 	calculate = function(self, card, context)
 		if context.hammerscore then return { card = context.blueprint_card or card } end
-		if context.destroy_card and context.destroy_card.atomsmashed and SMODS.has_enhancement(context.destroy_card, "m_glass") then return { remove = true }
-		else context.destroy_card.atomsmashed = nil end
+		if context.destroy_card then
+			if context.destroy_card.atomsmashed and SMODS.has_enhancement(context.destroy_card, "m_glass") then return { remove = true }
+			else context.destroy_card.atomsmashed = nil end
+		end
 	end,
 }
 
