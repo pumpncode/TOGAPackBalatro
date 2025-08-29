@@ -60,7 +60,7 @@ SMODS.Joker{
 		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and G.GAME.blind.boss then
 			-- card.ability.extra.money = card.ability.extra.money + card.ability.extra.increase
 			-- card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
-			SMODS.scale_card(pcard, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "money",
 				scalar_value = "increase",

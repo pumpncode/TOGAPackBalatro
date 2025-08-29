@@ -537,27 +537,23 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:get_is_suit hook.", "TOGAPack") end
 	if flush_calc then
 		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared'))
-		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs')
-		and not SMODS.has_no_rank(self) then
+		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades + Smeared Joker flush pass.", "TOGAPack") end
 			return true
 		end
-		if next(SMODS.find_card('j_toga_heartyspades')) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades')
-		and not SMODS.has_no_rank(self) then
+		if next(SMODS.find_card('j_toga_heartyspades')) and not SMODS.has_no_suit(self) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades flush pass.", "TOGAPack") end
 			return true
 		end
 		return issuitref(self, suit, bypass_debuff, flush_calc)
 	else
 		if self.debuff and not bypass_debuff then return end
-		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared'))
-		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs')
-		and not SMODS.has_no_rank(self) then
+		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared')) and not SMODS.has_no_suit(self)
+		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades + Smeared Joker pass.", "TOGAPack") end
 			return true
 		end
-		if next(SMODS.find_card('j_toga_heartyspades')) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades')
-		and not SMODS.has_no_rank(self) then
+		if next(SMODS.find_card('j_toga_heartyspades')) and not SMODS.has_no_suit(self) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades pass.", "TOGAPack") end
 			return true
 		end
