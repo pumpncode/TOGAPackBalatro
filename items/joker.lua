@@ -1781,8 +1781,9 @@ SMODS.Joker{
 	demicolon_compat = true,
 	pixel_size = { w = 69, h = 87 },
 	calculate = function(self, card, context)
-		if context.selling_self and context.card == card then card.ability.sold = true elseif context.forcetrigger then togabalatro.goldenwrench(card) end
-	end
+		if context.blueprint or context.retrigger_joker then return end
+		if (context.selling_self or context.selling_card) and context.card == card then card.ability.sold = true elseif context.forcetrigger then togabalatro.goldenwrench(card) end
+	end,
 }
 
 SMODS.Joker{

@@ -17,7 +17,7 @@ SMODS.Joker{
 	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if (context.setting_blind or context.forcetrigger) and not (context.blueprint_card or card).getting_sliced then
-			local handdiscardmult = G.jokers and #G.jokers.cards <= card.ability.extra.slots and math.max(card.ability.extra.xhd, 2) or 2
+			local handdiscardmult = G.jokers and #G.jokers.cards <= card.ability.extra.slots and math.max(card.ability.extra.xhd, 2) or 1
 			ease_hands_played(card.ability.extra.hands*handdiscardmult)
 			ease_discard(card.ability.extra.discards*handdiscardmult)
 			return { message = localize('toga_32bits') }
@@ -348,17 +348,20 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.before and context.full_hand and #context.full_hand > 1 then
-			SMODS.calculate_effect({message = '!'}, context.blueprint_card or card)
+			local hastriggered = false
 			for i = 1, #context.full_hand do
 				local pcard = context.full_hand[i]
-				SMODS.scale_card(pcard, {
-					ref_table = pcard.ability,
-					ref_value = "perma_h_x_mult",
-					scalar_table = card.ability.extra,
-					scalar_value = "xmult",
-				})
+				if pcard:get_id() == 8 then
+					if not hastriggered then hastriggered = true; SMODS.calculate_effect({message = '!'}, context.blueprint_card or card) end
+					SMODS.scale_card(pcard, {
+						ref_table = pcard.ability,
+						ref_value = "perma_h_x_mult",
+						scalar_table = card.ability.extra,
+						scalar_value = "xmult",
+					})
+				end
 			end
-			return nil, true
+			return nil, hastriggered
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
