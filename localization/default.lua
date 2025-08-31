@@ -273,9 +273,8 @@ return {
 			j_toga_winxp = {
 				name = 'Windows XP',
 				text = {
-					"Retrigger {C:attention}scored{} cards,",
-					"{C:attention}held in hand{} card abilities",
-					"and {C:attention}Jokers{} #1# time."
+					"Halves all {C:green,E:1}denominators",
+					"{C:inactive}(ex: {C:green}1 in 8{C:inactive} -> {C:green}1 in 4{C:inactive})",
 				}
 			},
 			j_toga_jokersrb2kart = {
@@ -732,109 +731,109 @@ return {
 				}
 			},
 			j_toga_google = {
-                name = 'Google',
-                text = {
-                    "Adds a {C:attention}6{} to deck",
-                    "when {C:attention}Blind{} is selected",
+				name = 'Google',
+				text = {
+					"Adds a {C:attention}6{} to deck",
+					"when {C:attention}Blind{} is selected",
 					"{C:inactive,s:0.8}Don't be evil.{}"
-                },
-            },
+				},
+			},
 			j_toga_bonzibuddy = {
-                name = 'Bonzi Buddy',
-                text = {
-                    "{C:attention}Strength{}-like effects",
+				name = 'Bonzi Buddy',
+				text = {
+					"{C:attention}Strength{}-like effects",
 					"are inverted"
-                },
-            },
+				},
+			},
 			j_toga_netscapenavigator = {
-                name = 'Netscape Navigator',
-                text = {
+				name = 'Netscape Navigator',
+				text = {
 					"{C:dark_edition}Holographic{} {C:attention}Jokers{}",
 					"or {C:attention}held in hand{} cards",
-                    "give {X:mult,C:white}X#1#{} Mult",
-                },
-            },
+					"give {X:mult,C:white}X#1#{} Mult",
+				},
+			},
 			j_toga_diskcleanup = {
-                name = 'Disk Cleanup',
-                text = {
+				name = 'Disk Cleanup',
+				text = {
 					"Gain {C:money}$#1#{} per {C:red}destroyed{}",
 					"{C:attention}#2#{} card",
 					"{C:inactive,s:0.8}Suit changes every round.{}",
-                },
-            },
+				},
+			},
 			j_toga_regedit = {
-                name = 'Registry Editor',
-                text = {
+				name = 'Registry Editor',
+				text = {
 					"{C:attention}Overrides{} suit change to {C:attention}#1#{}.",
 					"Suit changes every round.",
 					"{C:inactive,s:0.9}Does not affect card copying.{}"
-                },
-            },
+				},
+			},
 			j_toga_msagent = {
-                name = 'Microsoft Agent',
-                text = {
+				name = 'Microsoft Agent',
+				text = {
 					"{C:dark_edition}Unbalances{}",
 					"{C:blue}Chips{} and {C:red}Mult{}",
-                },
-            },
+				},
+			},
 			j_toga_drwatson = {
-                name = 'Dr. Watson',
-                text = {
+				name = 'Dr. Watson',
+				text = {
 					"After a hand is played, {C:red}destroy{}",
 					"debuffed {C:attention}played{}/{C:attention}held in hand{} cards",
-                },
-            },
+				},
+			},
 			j_toga_fontsfolder = {
-                name = 'Fonts',
-                text = {
+				name = 'Fonts',
+				text = {
 					"{X:mult,C:white}X#1#{} Mult for every",
 					"custom font loaded",
 					"{C:inactive,s:0.9}(Currently #2#, {X:mult,C:white,s:0.8}X#3#{C:inactive,s:0.8})",
-                },
-            },
+				},
+			},
 			j_toga_fontsfolder_inactive = {
-                name = 'Fonts',
-                text = {
+				name = 'Fonts',
+				text = {
 					"{E:2,s:1.2}Does nothing.{}",
 					"{C:inactive,s:0.85}Load some fonts, will ya?{}"
-                },
-            },
+				},
+			},
 			j_toga_pcmcia = {
-                name = 'PCMCIA Card',
-                text = {
+				name = 'PCMCIA Card',
+				text = {
 					"{X:mult,C:white}X#1#{} Mult..?",
-                },
-            },
+				},
+			},
 			j_toga_scsi = {
-                name = 'SCSI',
-                text = {
+				name = 'SCSI',
+				text = {
 					"{C:attention}#1#{} hand size",
 					"Increase hand size by {C:attention}1{}",
 					"when {C:attention}redeeming{} a Voucher",
-                },
-            },
+				},
+			},
 			j_toga_visualstudio = {
-                name = 'Visual Studio',
-                text = {
+				name = 'Visual Studio',
+				text = {
 					"Rank of {C:attention}Strength{}-like effects",
 					"is increased by {C:attention}#1#{}",
-                },
-            },
+				},
+			},
 			j_toga_printershare = {
-                name = 'Printer Sharing',
-                text = {
+				name = 'Printer Sharing',
+				text = {
 					"{C:green}#2# in #3#{} chance for held",
 					"{C:attention}Printers{} to give {X:mult,C:white}X#1#{} Mult",
-                },
-            },
+				},
+			},
 			j_toga_netshow = {
-                name = 'NetShow',
-                text = {
+				name = 'NetShow',
+				text = {
 					"When playing a hand, gain {X:mult,C:white}X#1#{} Mult",
 					"for every {C:attention}unique{} movie genre held",
 					"{C:inactive}(Currently #3#, {}{X:mult,C:white}X#2#{}{C:inactive}){}",
-                },
-            },
+				},
+			},
 			j_toga_certserver = {
 				name = 'Certificate Server',
 				text = {
@@ -906,12 +905,12 @@ return {
 			j_toga_cavingjkr = {
 				name = 'Caving Joker',
 				text = {
-					"All cards are",
-					"also considered",
-					"as {C:attention,T:m_stone}Stone Cards{}",
+					"All played {C:attention}non-face{} cards",
+					"become {C:attention}Stone{} cards",
+					"when scored",
 					"{C:inactive,s:0.75}May reveal rank or suit{}",
 					"{C:inactive,s:0.75}of certain cards...{}",
-				}
+				},
 			},
 			j_toga_miningjkr = {
 				name = 'Mining Joker',
@@ -1822,6 +1821,7 @@ return {
 			toga_startupsfx = "Enable mod startup sound on initial load",
 			toga_startupsfxuse = "Use selected SFX for next game startup",
 			toga_crashsfxuse = "Play a sound when game crashes",
+			toga_qestuff = "Enable quantum enhancement deck (restart required)",
 			toga_sfxswaptext = "SFX Swap Level:",
 			toga_sfxswapnone = "None",
 			toga_sfxswapdefault = "Default",

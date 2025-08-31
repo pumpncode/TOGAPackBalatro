@@ -15,4 +15,5 @@ return {
 	["UseCustomModTabMusic"] = true
 	["SFXSwapLevel"] = 2,
 	["DoCrashSFX"] = false
+	["EnableQE"] = true,
 }

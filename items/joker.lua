@@ -375,17 +375,23 @@ togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult, 
 			if card then card:juice_up(0.8, 0.5) end
 			G.TAROT_INTERRUPT_PULSE = true
 			return true end }))
-		update_hand_text({delay = 0}, {mult = to_number(to_big(G.GAME.hands[hand].l_mult) + to_big(lmult)), StatusText = true})
-		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-			play_sound('tarot1')
-			if card then card:juice_up(0.8, 0.5) end
+		if lmult and lmult ~= 0 then
+			update_hand_text({delay = 0}, {mult = to_number(to_big(G.GAME.hands[hand].l_mult) + to_big(lmult)), StatusText = true})
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+				play_sound('tarot1')
+				if card then card:juice_up(0.8, 0.5) end
 			return true end }))
-		update_hand_text({delay = 0}, {chips = to_number(to_big(G.GAME.hands[hand].l_chips) + to_big(lchips)), StatusText = true})
+		end
+		if lchips and lchips ~= 0 then
+			update_hand_text({delay = 0}, {chips = to_number(to_big(G.GAME.hands[hand].l_chips) + to_big(lchips)), StatusText = true})
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+				play_sound('tarot1')
+				if card then card:juice_up(0.8, 0.5) end
+			return true end }))
+		end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-			play_sound('tarot1')
-			if card then card:juice_up(0.8, 0.5) end
 			G.TAROT_INTERRUPT_PULSE = nil
-			return true end }))
+		return true end }))
 		delay(1.3)
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.5}, prevals or {mult = 0, chips = 0, handname = '', level = ''})
 	else
@@ -1477,14 +1483,23 @@ SMODS.Joker{
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
 	end,
 	unlocked = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 1, y = 4 },
-	cost = 8,
-	blueprint_compat = false,
+	cost = 6,
+	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if (context.retrigger_joker_check or context.retrigger_joker or context.blueprint) then return end
-		if context.check_enhancement and context.no_blueprint and context.other_card and context.cardarea == G.jokers then return { m_stone = true } end
+		if context.before and context.scoring_hand and #context.scoring_hand > 1 then
+			for i = 1, #context.scoring_hand do
+				if not context.scoring_hand[i]:is_face() then
+					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+						card:juice_up()
+						context.scoring_hand[i]:set_ability('m_stone')
+					return true end }))
+					card_eval_status_text(context.scoring_hand[i], 'extra', nil, nil, nil, {message = localize('toga_stonefound'), sound = togabalatro.config.SFXWhenTriggered and 'toga_xporb'})
+				end
+			end
+		end
 	end
 }
 
@@ -1507,7 +1522,7 @@ SMODS.Joker{
 	cost = 4,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if context.setting_blind or context.end_of_round then card.ability.extra.used = nil end
+		if context.first_hand_drawn then card.ability.extra.used = nil end
 		if context.after and not context.blueprint and not context.retrigger_joker and not card.ability.extra.used then
 			if #context.full_hand > 0 then
 				for i = 1, #context.full_hand do

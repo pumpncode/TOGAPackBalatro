@@ -202,28 +202,15 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'winxp',
-	config = { extra = { repetitions = 1 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { math.floor(card.ability.extra.repetitions) } }
-	end,
 	unlocked = true,
 	rarity = 4,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 2, y = 1 },
 	cost = 20,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if card.ability.extra.repetitions < 1 then card.ability.extra.repetitions = 1 end -- always at least once.
-		
-		local othcrd = context.other_card
-		if (context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_winxp')
-		or ((context.cardarea == G.play or context.cardarea == G.hand) and context.repetition and not context.repetition_only) then
-			return {
-				message = localize('k_again_ex'),
-				repetitions = card.ability.extra.repetitions,
-				card = context.blueprint_card or card,
-			}
-		end
+		if context.blueprint or context.retrigger_joker then return end
+		if context.mod_probability then return { denominator = context.denominator / 2 } end
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then

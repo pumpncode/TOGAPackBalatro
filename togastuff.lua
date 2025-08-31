@@ -163,7 +163,7 @@ end
 togabalatro.optional_features = function()
 	return {
 		retrigger_joker = true,
-		quantum_enhancements = true
+		quantum_enhancements = togabalatro.config.EnableQE and true or nil
 	}
 end
 
@@ -324,9 +324,39 @@ togabalatro.execstartupsfx = function()
 		play_sound(togabalatro.startupsfx[togabalatro.config.StartUpSFX.Selected], 1, 0.5)
 	end
 	togabalatro.has_tried_startup = true
+	
+	-- Sneak our title screen card addition here.
+	local replace_card = Card(G.title_top.T.x, G.title_top.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.j_toga_win95)
+	G.title_top.T.w = G.title_top.T.w*1.7675
+	G.title_top.T.x = G.title_top.T.x - 0.8
+	replace_card.T.w = replace_card.T.w*1.1*1.2
+	replace_card.T.h = replace_card.T.h*1.1*1.2
+    G.title_top:emplace(replace_card)
+
+    replace_card.states.visible = false
+    replace_card.no_ui = true
+    replace_card.ambient_tilt = 0.0
+
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = change_context == 'game' and 1.5 or 0,
+        blockable = false,
+        blocking = false,
+        func = (function()
+            if change_context == 'splash' then 
+                replace_card.states.visible = true
+                replace_card:start_materialize({G.C.WHITE,G.C.WHITE}, true, 2.5)
+                play_sound('whoosh1', math.random()*0.1 + 0.3,0.3)
+                play_sound('crumple'..math.random(1,5), math.random()*0.2 + 0.6,0.65)
+            else
+                replace_card.states.visible = true
+                replace_card:start_materialize({G.C.WHITE,G.C.WHITE}, nil, 1.2)
+            end
+            G.VIBRATION = G.VIBRATION + 1
+            return true
+    end)}))
 end
 
--- Booster Pack content moved to end.
 SMODS.ObjectType{
 	object_type = "ObjectType",
 	key = "TOGAJKR",
