@@ -114,7 +114,7 @@ SMODS.Joker{
 						ref_table[ref_value] = initial + phands*change
 					end,
 					scaling_message = {
-						message = localize('k_upgrade_ex').." x"..phands,
+						message = phands > 1 and localize('k_upgrade_ex').." x"..phands or localize('k_upgrade_ex'),
 					}
 				})
 				return nil, true

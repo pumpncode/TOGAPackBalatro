@@ -273,8 +273,9 @@ return {
 			j_toga_winxp = {
 				name = 'Windows XP',
 				text = {
-					"Halves all {C:green,E:1}denominators",
-					"{C:inactive}(ex: {C:green}1 in 8{C:inactive} -> {C:green}1 in 4{C:inactive})",
+					"{C:green}#1# in #2#{} chance to {C:attention}double{}",
+					"leveling amount before",
+					"{C:attention}upgrading{} a poker hand"
 				}
 			},
 			j_toga_jokersrb2kart = {

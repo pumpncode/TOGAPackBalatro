@@ -202,15 +202,18 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'winxp',
+	config = { extra = { odds = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds) } }
+	end,
 	unlocked = true,
 	rarity = 4,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 2, y = 1 },
 	cost = 20,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.blueprint or context.retrigger_joker then return end
-		if context.mod_probability then return { denominator = context.denominator / 2 } end
+		if context.toga_xplvlup then return { card = context.blueprint_card or card, odds = card.ability.extra.odds } end
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then

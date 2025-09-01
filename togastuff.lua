@@ -719,6 +719,26 @@ function Card:change_suit(new_suit)
 	changesuitref(self, new_suit)
 end
 
+-- Hooking for influencing hand level changes.
+sendInfoMessage("Hooking level_up_hand...", "TOGAPack")
+local lvluphandref = level_up_hand
+function level_up_hand(card, hand, instant, amount)
+	amount = amount or 1
+	if amount > 0 then
+		local xpcalc = {}
+		SMODS.calculate_context({ toga_xplvlup = true }, xpcalc)
+		for _, eval in pairs(xpcalc) do
+			for key, eval2 in pairs(eval) do
+				if eval2.card and SMODS.pseudorandom_probability(eval2.card, "experiencethebest", 1, eval2.odds or eval2.card.ability.extra.odds or 4, 'yesyoucan') then
+					amount = amount * 2
+					SMODS.calculate_effect({message = localize('k_upgrade_ex')}, eval2.card)
+				end
+			end
+		end
+	end
+	lvluphandref(card, hand, instant, amount)
+end
+
 togabalatro.chipmultopswap = {
 	['chips'] = 'mult',
 	['h_chips'] = 'h_mult',
