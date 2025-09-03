@@ -908,7 +908,6 @@ return {
 				text = {
 					"All played {C:attention}non-face{} cards",
 					"become {C:attention}Stone{} cards",
-					"when scored",
 					"{C:inactive,s:0.75}May reveal rank or suit{}",
 					"{C:inactive,s:0.75}of certain cards...{}",
 				},

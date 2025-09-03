@@ -1489,14 +1489,17 @@ SMODS.Joker{
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.before and context.scoring_hand and #context.scoring_hand > 1 then
-			for i = 1, #context.scoring_hand do
-				if not context.scoring_hand[i]:is_face() then
-					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-						card:juice_up()
-						context.scoring_hand[i]:set_ability('m_stone')
-					return true end }))
-					card_eval_status_text(context.scoring_hand[i], 'extra', nil, nil, nil, {message = localize('toga_stonefound'), sound = togabalatro.config.SFXWhenTriggered and 'toga_xporb'})
+		if context.before then
+			local cardsplayed = context.full_hand or G.play and G.play.cards
+			if #cardsplayed > 1 then
+				for i = 1, #cardsplayed do
+					if cardsplayed[i].config.center.key ~= 'm_stone' and not cardsplayed[i]:is_face() then
+						G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+							card:juice_up()
+							cardsplayed[i]:set_ability('m_stone')
+						return true end }))
+						card_eval_status_text(cardsplayed[i], 'extra', nil, nil, nil, {message = localize('toga_stonefound'), sound = togabalatro.config.SFXWhenTriggered and 'toga_xporb'})
+					end
 				end
 			end
 		end
