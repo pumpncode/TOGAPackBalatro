@@ -952,8 +952,7 @@ end
 togabalatro.heldinhandscoring = function(context, scoring_hand)
 	if context.cardarea == G.hand then
 		context.main_scoring = true
-		local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
-		if togabalatro.canareascore(context.cardarea) then togabalatro.scoreheldinhand(areas, context) end
+		if togabalatro.canareascore(context.cardarea) then togabalatro.scoreheldinhand(context) end
 		
 		local clippitcalc = {}
 		SMODS.calculate_context({clippitscore = true, cardarea = context.cardarea}, clippitcalc)
@@ -962,7 +961,7 @@ togabalatro.heldinhandscoring = function(context, scoring_hand)
 			for key, eval2 in pairs(eval) do
 				if eval2.card then
 					for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
-						togabalatro.scoreheldinhand(areas, context, true)
+						togabalatro.scoreheldinhand(context, true)
 					end
 				end
 			end
@@ -971,20 +970,23 @@ togabalatro.heldinhandscoring = function(context, scoring_hand)
 	end
 end
 
-togabalatro.scoreheldinhand = function(areas, context, handrescore)
-	for _, area in ipairs(areas) do
-		if area == G.hand and handrescore then
-			local curcards = togabalatro.preprocess(context, area.cards)
-			for _, card in ipairs(curcards) do
+togabalatro.scoreheldinhand = function(context, handrescore)
+	local allcards = {}
+	
+	for i = 1, #G.playing_cards do
+		if G.playing_cards[i] then allcards[#allcards+1] = G.playing_cards[i] end
+	end
+	
+	allcards = togabalatro.preprocess(context, allcards)
+	
+	for i = 1, #allcards do
+		local card, area = allcards[i], allcards[i].area
+		if card then
+			if area == G.hand and handrescore then
 				SMODS.score_card(card, context)
 			end
-		end
-		if area ~= G.hand then
-			local curcards = togabalatro.preprocess(context, area.cards)
-			for _, card in ipairs(curcards) do
-				if card.seal == 'toga_urlseal' then
-					SMODS.score_card(card, context)
-				end
+			if area ~= G.hand and card.seal == 'toga_urlseal' then
+				SMODS.score_card(card, context)
 			end
 		end
 	end
@@ -1061,16 +1063,22 @@ togabalatro.eorproc = function(area, card, context, i)
 end
 
 -- This bit is 100% experimental... there should be a better way for doing this, right?
-togabalatro.triggereof = function(areas, context)
+togabalatro.triggereof = function(context)
 	local contextcopy = context
 	contextcopy.cardarea = G.hand
-	for i, area in ipairs(areas) do
-		if area ~= G.hand and area.cards then
-			for _, card in ipairs(area.cards) do
-				if card.seal == 'toga_urlseal' then
-					togabalatro.eorproc(area, card, contextcopy, i)
-				end
-			end
+	
+	local allcards = {}
+	
+	for i = 1, #G.playing_cards do
+		if G.playing_cards[i] then allcards[#allcards+1] = G.playing_cards[i] end
+	end
+	
+	allcards = togabalatro.preprocess(context, allcards)
+	
+	for i = 1, #allcards do
+		local card, area = allcards[i], allcards[i].area
+		if area ~= G.hand and card.seal == 'toga_urlseal' then
+			togabalatro.eorproc(area, card, contextcopy, i)
 		end
 	end
 end
@@ -1087,8 +1095,7 @@ function SMODS.calculate_end_of_round_effects(context)
 	end
 	
 	if context.cardarea == G.hand and context.end_of_round then
-		local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
-		togabalatro.triggereof(areas, context) -- initial end of round scoring of cards with Hyperlink Seals
+		togabalatro.triggereof(context) -- initial end of round scoring of cards with Hyperlink Seals
 		local clippitcalc = {}
 		SMODS.calculate_context({clippitscore_eor = true, cardarea = context.cardarea}, clippitcalc)
 		for _, eval in pairs(clippitcalc) do
@@ -1096,7 +1103,7 @@ function SMODS.calculate_end_of_round_effects(context)
 				if eval2.card then
 					for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
 						calcendroundref(context)
-						togabalatro.triggereof(areas, context) -- rescore...
+						togabalatro.triggereof(context) -- rescore...
 					end
 				end
 			end
