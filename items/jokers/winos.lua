@@ -2,9 +2,10 @@ sendInfoMessage("Loading Jokers - Windows OS...", "TOGAPack")
 
 SMODS.Joker{
 	key = 'win95',
-	config = { extra = { hands = 1, discards = 1, money = 4, Xmoney = 2, slots = 3 } },
+	config = { extra = { hands = 1, discards = 1, xhd = 2, slots = 3 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.hands, card.ability.extra.discards, card.ability.extra.money, card.ability.extra.Xmoney, card.ability.extra.slots } }
+		card.ability.extra.xhd = math.max(card.ability.extra.xhd, 2)
+		return { vars = { card.ability.extra.hands, card.ability.extra.discards, card.ability.extra.xhd, card.ability.extra.slots } }
 	end,
 	unlocked = true,
 	discovered = true,
@@ -13,20 +14,13 @@ SMODS.Joker{
 	pos = { x = 0, y = 0 },
 	cost = 7,
 	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.setting_blind and not (context.blueprint_card or card).getting_sliced then
-			ease_hands_played(card.ability.extra.hands)
-			ease_discard(card.ability.extra.discards)
+		if (context.setting_blind or context.forcetrigger) and not (context.blueprint_card or card).getting_sliced then
+			local handdiscardmult = G.jokers and #G.jokers.cards <= card.ability.extra.slots and math.max(card.ability.extra.xhd, 2) or 1
+			ease_hands_played(card.ability.extra.hands*handdiscardmult)
+			ease_discard(card.ability.extra.discards*handdiscardmult)
 			return { message = localize('toga_32bits') }
-		end
-	end,
-	calc_dollar_bonus = function(self, card)
-		if card.ability.extra.money > 0 then
-			if #G.jokers.cards <= card.ability.extra.slots then
-				return card.ability.extra.money * card.ability.extra.Xmoney
-			else
-				return card.ability.extra.money
-			end
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -90,11 +84,7 @@ SMODS.Joker{
 }
 
 local function toga_vouchcount()
-	local vouchercount = 0
-	for i, v in pairs(G.GAME.used_vouchers) do
-		if v == true then vouchercount = vouchercount + 1 end
-	end
-	return vouchercount
+	return G.vouchers and G.vouchers.cards and #G.vouchers.cards or 0
 end
 
 SMODS.Joker{
@@ -179,8 +169,9 @@ SMODS.Joker{
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = false,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.end_of_round and not (context.individual or context.repetition) then
+		if (context.end_of_round or context.forcetrigger) and not (context.individual or context.repetition) then
 			return { func = function()
 				G.E_MANAGER:add_event(Event({
 					func = (function()
@@ -211,9 +202,9 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'winxp',
-	config = { extra = { repetitions = 1 } },
+	config = { extra = { odds = 4 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { math.floor(card.ability.extra.repetitions) } }
+		return { vars = { SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds) } }
 	end,
 	unlocked = true,
 	rarity = 4,
@@ -222,17 +213,7 @@ SMODS.Joker{
 	cost = 20,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if card.ability.extra.repetitions < 1 then card.ability.extra.repetitions = 1 end -- always at least once.
-		
-		local othcrd = context.other_card
-		if (context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_winxp')
-		or ((context.cardarea == G.play or context.cardarea == G.hand) and context.repetition and not context.repetition_only) then
-			return {
-				message = localize('k_again_ex'),
-				repetitions = card.ability.extra.repetitions,
-				card = context.blueprint_card or card,
-			}
-		end
+		if context.toga_xplvlup then return { card = context.blueprint_card or card, odds = card.ability.extra.odds } end
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
@@ -254,9 +235,10 @@ SMODS.Joker{
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 2 },
 	cost = 10,
-	blueprint_compat = false,
+	blueprint_compat = true,
+	demicolon_compat = true,
 	calculate = function(self, card, context)
-		if context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6 and not context.blueprint then
+		if (context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6) or context.forcetrigger then
 			return {
 				remove = true,
 				func = function()
@@ -344,20 +326,32 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'win8',
-	config = { extra = { xmult = 1.8 } },
+	config = { extra = { xmult = 0.08 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }
 	end,
 	unlocked = true,
-	rarity = 2,
+	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 2, y = 2 },
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.individual and (context.cardarea == G.deck or context.cardarea == G.discard) and context.other_card:get_id() == 8
-		and not context.other_card.debuff and not context.end_of_round then
-			return { xmult = card.ability.extra.xmult }
+		if context.before and context.full_hand and #context.full_hand > 1 then
+			local hastriggered = false
+			for i = 1, #context.full_hand do
+				local pcard = context.full_hand[i]
+				if pcard:get_id() == 8 then
+					if not hastriggered then hastriggered = true; SMODS.calculate_effect({message = '!'}, context.blueprint_card or card) end
+					SMODS.scale_card(pcard, {
+						ref_table = pcard.ability,
+						ref_value = "perma_h_x_mult",
+						scalar_table = card.ability.extra,
+						scalar_value = "xmult",
+					})
+				end
+			end
+			return nil, hastriggered
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)

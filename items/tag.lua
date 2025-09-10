@@ -27,6 +27,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togajokerbooster",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togazipboosterpack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 1, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -56,6 +59,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togajokerziparchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togaziparchivepack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 6, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -141,7 +147,10 @@ SMODS.Tag{
 	key = "thenet",
 	atlas = "TOGATags",
 	pos = { x = 4, y = 0 },
-	config = { type = "immediate" },
+	config = { type = "immediate", odds = 15 },
+	loc_vars = function(self, info_queue, card)
+		return { key = Cryptid and self.key.."_cryptid" or self.key, vars = { SMODS.get_probability_vars(card or self, 1, card.ability.odds or self.config.odds) } }
+	end,
 	in_pool = function(self, args)
 		return true
 	end,
@@ -150,7 +159,7 @@ SMODS.Tag{
 		if context.type == "immediate" then
 			G.CONTROLLER.locks[lock] = true
 			tag:yep('+', G.C.ORANGE,function() 
-				local card = create_card('Spectral', G.consumables, nil, nil, nil, nil, "c_black_hole", "internetexplorer")
+				local card = create_card('Spectral', G.consumables, nil, nil, nil, nil, Cryptid and SMODS.pseudorandom_probability(self, 'toga_colorinverthole', 1, tag.ability.odds or self.config.odds, 'thenet') and "c_cry_white_hole" or "c_black_hole", "internetexplorer")
 				card:add_to_deck()
 				G.consumeables:emplace(card)
 				G.CONTROLLER.locks[lock] = nil
@@ -159,7 +168,7 @@ SMODS.Tag{
 			tag.triggered = true
 			return true
 		end
-	end,
+	end
 }
 
 SMODS.Tag{
@@ -225,6 +234,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togarararchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togararpack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 8, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -254,6 +266,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togacardcabarchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togacardcabpack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 9, y = 0 },
 	config = { type = "new_blind_choice" },
@@ -283,6 +298,9 @@ SMODS.Tag{
 
 SMODS.Tag{
 	key = "togaxcopydnaarchive",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togaxcopydnapack
+	end,
 	atlas = "TOGATags",
 	pos = { x = 10, y = 0 },
 	config = { type = "new_blind_choice" },

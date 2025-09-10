@@ -10,7 +10,12 @@ local basecrossmod = {
 	next(SMODS.find_mod('sdm0sstuff')) and 'sdm0.lua',
 	next(SMODS.find_mod('Yahimod')) and 'yahi.lua',
 	next(SMODS.find_mod('CardSleeves')) and CardSleeves and 'sleeve.lua',
+	next(SMODS.find_mod('kino')) and 'kino.lua',
+	next(SMODS.find_mod('JokerDisplay')) and JokerDisplay and 'jokerdisplay.lua',
+	next(SMODS.find_mod('GSPhanta')) and 'phanta.lua',
+	next(SMODS.find_mod('aikoyorisshenanigans')) and 'aiko.lua',
 }
+
 -- If none of these are valid, stop here.
 if not next(basecrossmod) then sendInfoMessage("No eligible mods found, aborting...", "TOGAPack"); return end
 

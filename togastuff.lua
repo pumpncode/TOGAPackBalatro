@@ -8,12 +8,13 @@ sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
 
 -- Define thy map.
 SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGAJokersMainW", path = "togajokersw.png", px = 91, py = 95}
 SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersOtherDiffSize", path = "togajokersothersize.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
 SMODS.Atlas{key = "TOGAJokersMac", path = "togamacos.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokersLinux", path = "togalinuxos.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 72, py = 95}
+SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAJokerRover", path = "togarover.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAConsumables", path = "togacons.png", px = 71, py = 95}
@@ -32,7 +33,11 @@ SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 32, py = 32}
 -- Hear me scream.
 SMODS.Sound({key = "win95start", path = "win95start.ogg"}) -- The Microsoft Sound (95 & NT4)
 SMODS.Sound({key = "win95tada", path = "win95tada.ogg"}) -- tada.wav (3.x, 95 & NT4)
-SMODS.Sound({key = "w96", path = "w96.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "bells", path = "startup/bells.wav"}) -- Windows 3.0 MME
+SMODS.Sound({key = "w96", path = "startup/w96.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "w94", path = "startup/w94.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "longhorn", path = "startup/longhorn.wav"}) -- "Longhorn Startup" / Samsung Theme for Windows XP
+SMODS.Sound({key = "ntreskit", path = "startup/ntreskit.ogg"}) -- Windows NT4 Resource Kit
 SMODS.Sound({key = "chordold", path = "chordold.wav"}) -- chord.wav (95 & NT4)
 SMODS.Sound({key = "chord", path = "chord.wav"}) -- chord.wav (98, ME, 2000 and XP)
 SMODS.Sound({key = "win98start", path = "win98start.ogg"}) -- The Microsoft Sound (98) [edited]
@@ -46,7 +51,7 @@ SMODS.Sound({key = "winxplogoff", path = "Windows XP Logoff Sound.wav"}) -- Wind
 SMODS.Sound({key = "winxpyesyoucan", path = "theexperience.ogg"}) -- Snippet from Windows XP Tour
 SMODS.Sound({key = "winxpcritstop", path = "Windows XP Critical Stop.wav"}) -- Critical Stop, XP
 SMODS.Sound({key = "winxpballoon", path = "Windows XP Balloon.wav"}) -- Critical Stop, XP
-SMODS.Sound({key = "winxpinfobar", path = "Windows XP Information Bar.wav"}) -- Critical Stop, XP
+SMODS.Sound({key = "winxpinfobar", path = "Windows XP Information Bar.wav"}) -- Information Bar, XP
 SMODS.Sound({key = "winvista78logon", path = "winvista78logon.wav"}) -- Startup/Logon, Vista, 7 & 8.x
 SMODS.Sound({key = "winvista78logoff", path = "winvista78logoff.wav"}) -- Logoff, Vista, 7 & 8.x
 SMODS.Sound({key = "winvista7critstop", path = "winvista7critstop.wav"}) -- Critical Stop, Vista, 7
@@ -63,14 +68,26 @@ SMODS.Sound({key = "infraredend", path = "ir_end.ogg"}) -- Infrared End (ending 
 SMODS.Sound({key = "o97doorbell", path = "doorbell.wav"}) -- doorbell.wav from Office 97 Multimedia
 SMODS.Sound({key = "o97glide", path = "glide.wav"}) -- glide.wav from Office 97 Multimedia
 SMODS.Sound({key = "mmeclap", path = "CLAP.WAV"}) -- clap.wav from Windows 3.0 MME
-SMODS.Sound({key = "officehammer", path = "HAMMER.WAV"}) -- hammer.wav from Microsoft Office sounds
+SMODS.Sound({key = "officehammer", path = "HAMMER.WAV"}) -- hammer.wav from Microsoft Office sounds, unused as of 1.7.1-RC1
+SMODS.Sound({key = "roverbark", path = "roverbark.ogg"}) -- 0002.wav, Microsoft Agent - Rover
 SMODS.Sound({key = "mscmenucmd", path = "Musica Menu Command.ogg"}) -- Musica Sound Scheme (95 & NT4)
 SMODS.Sound({key = "spb", path = "kc57.ogg"}) -- Unused in Knuckles Chaotix, Self-Propelled Bomb targeting first place in SRB2Kart/Dr. Robotnik's Ring Racers.
 SMODS.Sound({key = "thundershield", path = "DSZIO3.ogg"}) -- Thunder Shield
 SMODS.Sound({key = "anviluse", path = "mcanviluse.ogg"}) -- Snippet of block.anvil.use, Minecraft
 SMODS.Sound({key = "xporb", path = "mcxp.ogg"}) -- Experience, Minecraft
 SMODS.Sound({key = "pinballstart", path = "SOUND4.WAV"}) -- Round Start, Plus! 98 - Space Cadet Pinball Demo
+SMODS.Sound({key = "pinballshutdown", path = "SOUND68.WAV"}) -- Board Shut Down - Space Cadet Pinball Demo
 SMODS.Sound({key = "pinballloseball", path = "SOUND27.WAV"}) -- Lose Ball, Plus! 98 - Space Cadet Pinball Demo
+SMODS.Sound({key = "pinballsfx8", path = "pinball/SOUND8.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx14", path = "pinball/SOUND14.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx16", path = "pinball/SOUND16.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx21", path = "pinball/SOUND21.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx24", path = "pinball/SOUND24.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx26", path = "pinball/SOUND26.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx43", path = "pinball/SOUND43.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx49", path = "pinball/SOUND49.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx53", path = "pinball/SOUND53.WAV"}) -- Space Cadet Pinball Demo SFX
+SMODS.Sound({key = "pinballsfx55", path = "pinball/SOUND55.WAV"}) -- Space Cadet Pinball Demo SFX
 SMODS.Sound({key = "rosenclick", path = "rosenclick.ogg"}) -- *click* Nice. - Michael Rosen
 SMODS.Sound({key = "rosenhello", path = "rosenhello.ogg"}) -- self explanatory, same as above.
 SMODS.Sound({key = "rosenbye", path = "rosenthatsashame.ogg"}) -- self explanatory, same as above.
@@ -79,8 +96,10 @@ SMODS.Sound({key = "scalesofjustice", path = "ScalesOfJustice.wav"}) -- self exp
 SMODS.Sound({key = "failsfx", path = "comedicfail.ogg"}) -- fart.mp3
 SMODS.Sound({key = "goldenhit", path = "Saxxy_impact_gen_06.ogg"}) -- getting a kill with a Golden Wrench, Saxxy or Golden Frying Pan, TF2
 SMODS.Sound({key = "jaratehit", path = "jar_explode.ogg"}) -- Jarate hitting something, TF2
+SMODS.Sound({key = "soldierscream", path = "screm.ogg"}) -- TF2 Soldier screaming?
 SMODS.Sound({key = "w95restup", path = "Windows 95 restore up.ogg"}) -- Plus! 95, Windows 95 restore up.wav
 SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
+SMODS.Sound({key = "mcprf5400", path = "macperforma5400.ogg"}) -- Mac Performa 5400 (Death Chime)
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
@@ -101,138 +120,27 @@ SMODS.Sound({
 	key = "music_balatro98",
 	path = "balatro98.ogg",
 	select_music_track = function()
-		return togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
+		return togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU
+		or togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
 		and (SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togazipboosterpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaziparchivepack'
 		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togararpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togacardcabpack'
 		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaxcopydnapack') and 2
 	end,
 })
 
--- Booster Pack content. So true.
-SMODS.ObjectType{
-	object_type = "ObjectType",
-	key = "TOGAJKR",
-	default = "j_toga_win95",
-	cards = {
-		["j_toga_y2kbug"] = true, ["j_toga_controlpanel"] = true, ["j_toga_mcanvil"] = true,
-		["j_toga_taskmgr"] = true, ["j_toga_solitairejoker"] = true, ["j_toga_win95"] = true,
-		["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
-		["j_toga_win2000"] = true, ["j_toga_winvista"] = true, ["j_toga_win7"] = true,
-		["j_toga_win8"] = true, ["j_toga_useraccounts"] = true, ["j_toga_virtualmemory"] = true,
-		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
-		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
-		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true, ["j_toga_mcanvil"] = true, 
-		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
-		["j_toga_megasxlr"] = true, ["j_toga_mac_os_9"] = true, ["j_toga_mac_os_x"] = true,
-		["j_toga_linux_ubuntu"] = true, ["j_toga_linux_debian"] = true, ["j_toga_linux_slackware"] = true,
-		["j_toga_linux_redhat"] = true
-	}
-}
+SMODS.Sound({
+	key = "music_upgradestation",
+	path = "upgradestation.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return togabalatro.config.UseCustomModTabMusic and SMODS.LAST_SELECTED_MOD_TAB and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "TOGAPack" and 2
+	end,
+})
 
 -- I think, therefore, I am.
 togabalatro = SMODS.current_mod
 
-togabalatro.config_tab = function()
-	return {n = G.UIT.ROOT, config = {align = "cl", outline = 0.5, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 7, minh = 2}, nodes = {
-		{n = G.UIT.R, config = {align = "cl", outline = 0.35, outline_colour = HEX('C3C3C3'), colour = HEX('000082')}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-				{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 0, y = 0 }) } },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_configtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenAdding" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_sfxwhenadd'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenRemoving" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_sfxwhendel'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenTriggered" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_sfxwhenuse'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "BoosterPackMusic" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_musicpacks'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "JokeJokersActive" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_jokejokers'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "StartUpSound" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
-	}}
-end
-
-togabalatro.extra_tabs = function()
-	return {
-		{ label = 'Logging', tab_definition_function = function()
-			return {n = G.UIT.ROOT, config = {align = "cl", outline = 0.65, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 7, minh = 2}, nodes = {
-				{n = G.UIT.R, config = {align = "cl", outline = 0.35, outline_colour = HEX('C3C3C3'), colour = HEX('000082')}, nodes = {
-					{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
-						{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 2, y = 0 }) } },
-					}},
-					{n = G.UIT.C, config = { align = "cl", padding = 0 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_logtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-				{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
-					{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-						create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "DoMoreLogging" },
-					}},
-					{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_verboselog'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-				{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
-					{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-						create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "DoEvenMoreLogging" },
-					}},
-					{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_extraverboselog'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-				{n = G.UIT.R, config = {align = "cm", padding = 0, outline = 0.5, outline_colour = HEX('491A19'), colour = HEX('7A2D29')}, nodes = {
-					{n = G.UIT.C, config = { align = "cm", padding = 0}, nodes = {
-						{n = G.UIT.O, config = { w = 0.66, h = 0.66, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 1, y = 0 }) } },
-					}},
-					{n = G.UIT.C, config = { align = "cm", padding = 0.05 }, nodes = {
-						{n = G.UIT.T, config = { text = localize('toga_extraverboselogwarn'), scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
-					}},
-				}},
-			}}
-		end}
-	}
-end
+assert(SMODS.load_file("tabs.lua"))()
 
 togabalatro.custom_ui = function(modNodes)
 	if math.random(1, 10) == 5 then
@@ -254,9 +162,31 @@ end
 
 togabalatro.optional_features = function()
 	return {
-		cardareas = { deck = true, discard = true },
-		retrigger_joker = true
+		retrigger_joker = true,
+		quantum_enhancements = togabalatro.config.EnableQE and true or nil
 	}
+end
+
+togabalatro.set_debuff = function(card)
+	if SMODS.has_enhancement(card, 'm_toga_nickel') then return 'prevent_debuff' end
+end
+
+local nfs = require('nativefs')
+togabalatro.errorhandler = function()
+	if togabalatro.config.DoCrashSFX and not togabalatro.crashtrig then
+		local crashdata = love.filesystem.newFileData(nfs.read(togabalatro.path.."/assets/sounds/macperforma5400.ogg"))
+		if crashdata then
+			local crashsfx = love.sound.newSoundData(crashdata)
+			if crashsfx then
+				local crashsource = love.audio.newSource(crashsfx, 'static')
+				if crashsource then
+					crashsource:setVolume(0.33)
+					love.audio.play(crashsource)
+				end
+			end
+		end
+	end
+	togabalatro.crashtrig = true
 end
 
 togabalatro.getrandcons = function(seed)
@@ -276,6 +206,199 @@ togabalatro.iswindows = function(card)
 	or card.config.center.key == 'j_toga_win2000' or card.config.center.key == 'j_toga_winxp'
 	or card.config.center.key == 'j_toga_winvista' or card.config.center.key == 'j_toga_win7'
 	or card.config.center.key == 'j_toga_win8' then return true end
+end
+
+togabalatro.performpseudolag = function()
+	if not togabalatro.pseudolag then
+		togabalatro.pseudolag = true
+		if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("waitarrow")) end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = math.random()*G.SETTINGS.GAMESPEED/2,
+			func = function()
+				togabalatro.pseudolag = nil
+				if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("arrow")) end
+				return true
+			end
+		}))
+	end
+end
+
+togabalatro.systemtype = function()
+	local stype = love.system.getOS()
+	if stype == 'Windows' then return 'Windows'
+	elseif stype == 'OS X' or stype == 'Linux' then return 'UNIX'
+	elseif stype == 'Android' or stype == 'iOS' then return 'Mobile ('..stype..')'
+	end
+end
+
+-- Check for specific process name.
+togabalatro.getprocessamount = function(process)
+	process = string.lower(process) or 'whereismysupersuit'
+	-- If a new table exists on the message queue on the Channel, set table to it. Otherwise, stay as-is.
+	togabalatro.tasklisttable = love.thread.getChannel('togatasklist'):pop() or togabalatro.tasklisttable
+	local count = 0
+	for k, v in pairs(togabalatro.tasklisttable) do
+		if string.find(v, process) then count = count + 1 end
+	end
+	return count
+end
+
+togabalatro.tasklisttable = {}
+
+-- This code is for the thread that's initialized below. (although this could be its' own file, lmao.)
+-- Upon loading, it preps some of the functions, checks what system we're on and assigns the appropriate command,
+-- then it gets the initial list of processes without writing to an actual file and pushes the table in a message
+-- via the channel and stores the ID of the pushed message, constantly checking whether the message is still there.
+-- When the message is read with :pop(), the message is removed and the table is obtained, leading to the Table
+-- being reset and repopulated, then pushing and waiting again all over again.
+local tasklistcode = [[
+require 'love.timer'
+require 'love.system'
+require 'io'
+require 'os'
+
+function os.capture(cmd, raw)
+	local f = assert(io.popen(cmd, 'r'))
+	local s = assert(f:read('*a'))
+	f:close()
+	if raw then return s end
+	s = string.gsub(s, '^%s+', '')
+	s = string.gsub(s, '%s+$', '')
+	s = string.gsub(s, '[\n\r]+', ' ')
+	return s
+end
+
+local function mlineproc(s)
+	local t = {}
+	local i = 1
+	for str in string.gmatch(s, "[^\r\n]+") do
+		t[i] = str
+		i = i + 1
+	end
+	return t
+end
+
+local function sendMsg(level, logger, message)
+    level = level or "DEBUG"
+    logger = logger or "DefaultLogger"
+    message = message or "Default log message"
+    date = os.date('%Y-%m-%d %H:%M:%S')
+    print(date .. " :: " .. level .. " :: " .. logger .. " :: " .. message)
+end
+
+local stype = love.system.getOS()
+if stype == 'OS X' or stype == 'Linux' then stype = 'UNIX' elseif stype == 'Android' or stype == 'iOS' then stype = 'Mobile ('..stype..')' end
+local cmd = stype == 'Windows' and "tasklist" or (stype == 'OS X' or stype == 'UNIX') and "ps -e" or nil
+if cmd then
+	local table, strcapture = {}, mlineproc(os.capture(cmd, true))
+	local togachannel = love.thread.getChannel('togatasklist')
+	local id = togachannel:push(table)
+	while true do
+		if togachannel:hasRead(id) then
+			table = mlineproc(os.capture(cmd, true))
+			id = togachannel:push(table)
+			sendMsg('INFO ', 'TOGAPack', 'love2d Channel <> Thread - Table refreshed and sent.')
+		end
+	end
+end
+]]
+
+-- Create Thread object using the code above and then start it.
+togabalatro.thread = love.thread.newThread(tasklistcode)
+togabalatro.thread:start(togabalatro.tasklisttable)
+
+togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit', 'toga_longhorn'}
+togabalatro.verifysfxconfig = function()
+	togabalatro.config.StartUpSFX = type(togabalatro.config.StartUpSFX) == 'table' and togabalatro.config.StartUpSFX or {}
+	togabalatro.config.StartUpSFX.Selected = togabalatro.config.StartUpSFX.Selected or 1
+	togabalatro.config.StartUpSFX.UseSelected = togabalatro.config.StartUpSFX.UseSelected or false
+end
+togabalatro.execstartupsfx = function()
+	if not togabalatro.has_tried_startup and togabalatro.config.StartUpSound then
+		togabalatro.verifysfxconfig()
+		togabalatro.tasklisttable = love.thread.getChannel('togatasklist'):pop()
+		if not togabalatro.config.StartUpSFX.UseSelected or togabalatro.config.StartUpSFX.Selected == nil then
+			togabalatro.config.StartUpSFX.Selected = math.random(1, #togabalatro.startupsfx)
+		end
+		play_sound(togabalatro.startupsfx[togabalatro.config.StartUpSFX.Selected], 1, 0.5)
+	end
+	togabalatro.has_tried_startup = true
+	
+	-- Sneak our title screen card addition here.
+	local replace_card = Card(G.title_top.T.x, G.title_top.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.j_toga_win95)
+	G.title_top.T.w = G.title_top.T.w*1.7675
+	G.title_top.T.x = G.title_top.T.x - 0.8
+	replace_card.T.w = replace_card.T.w*1.1*1.2
+	replace_card.T.h = replace_card.T.h*1.1*1.2
+    G.title_top:emplace(replace_card)
+
+    replace_card.states.visible = false
+    replace_card.no_ui = true
+    replace_card.ambient_tilt = 0.0
+
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = change_context == 'game' and 1.5 or 0,
+        blockable = false,
+        blocking = false,
+        func = (function()
+            if change_context == 'splash' then 
+                replace_card.states.visible = true
+                replace_card:start_materialize({G.C.WHITE,G.C.WHITE}, true, 2.5)
+                play_sound('whoosh1', math.random()*0.1 + 0.3,0.3)
+                play_sound('crumple'..math.random(1,5), math.random()*0.2 + 0.6,0.65)
+            else
+                replace_card.states.visible = true
+                replace_card:start_materialize({G.C.WHITE,G.C.WHITE}, nil, 1.2)
+            end
+            G.VIBRATION = G.VIBRATION + 1
+            return true
+    end)}))
+end
+
+SMODS.ObjectType{
+	object_type = "ObjectType",
+	key = "TOGAJKR",
+	default = "j_toga_win95",
+	cards = {
+		["j_toga_y2kbug"] = true, ["j_toga_controlpanel"] = true, ["j_toga_mcanvil"] = true,
+		["j_toga_taskmgr"] = true, ["j_toga_solitairejoker"] = true, ["j_toga_win95"] = true,
+		["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
+		["j_toga_win2000"] = true, ["j_toga_winvista"] = true, ["j_toga_win7"] = true,
+		["j_toga_win8"] = true, ["j_toga_useraccounts"] = true, ["j_toga_virtualmemory"] = true,
+		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
+		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
+		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true, ["j_toga_mcanvil"] = true, 
+		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
+		["j_toga_megasxlr"] = true, ["j_toga_asterism"] = true, ["j_toga_theinternet"] = true,
+		["j_toga_binaryjkr"] = true, ["j_toga_hexadecimaljkr"] = true, ["j_toga_y2ksticker"] = true,
+		["j_toga_jimboplus"] = true, ["j_toga_tomscott"] = true, ["j_toga_goldenwrench"] = true,
+		["j_toga_skype"] = true, ["j_toga_msn"] = true, ["j_toga_mac_os_9"] = true, 
+		["j_toga_mac_os_x"] = true, ["j_toga_linux_ubuntu"] = true, ["j_toga_linux_debian"] = true,
+		["j_toga_linux_slackware"] = true, ["j_toga_linux_redhat"] = true, ["j_toga_tempinternetfiles"] = true,
+		["j_toga_google"] = true, ["j_toga_bonzibuddy"] = true, ["j_toga_netscapenavigator"] = true,
+		["j_toga_diskcleanup"] = true, ["j_toga_regedit"] = true, ["j_toga_msagent"] = true,
+		["j_toga_drwatson"] = true, ["j_toga_fontsfolder"] = true, ["j_toga_pcmcia"] = true,
+		["j_toga_scsi"] = true, ["j_toga_visualstudio"] = true, ["j_toga_printershare"] = true,
+		["j_toga_netshow"] = true, ["j_toga_certserver"] = true, ["j_toga_cpu"] = true,
+		["j_toga_ups"] = true, ["j_toga_hammer"] = true, ["j_toga_joker203"] = true,
+		["j_toga_chrome"] = true, ["j_toga_firefox"] = true, ["j_toga_cavingjkr"] = true,
+		["j_toga_miningjkr"] = true, ["j_toga_virtualpc"] = true, ["j_toga_tuneupwizard"] = true, 
+	}
+}
+
+G.FUNCS.togabalatro_startupsfx = function(args)
+	if not args or args.to_key == nil then return end
+	togabalatro.verifysfxconfig()
+	togabalatro.config.StartUpSFX.Selected = args.to_key
+end
+G.FUNCS.togabalatro_playsfx = function()
+	togabalatro.verifysfxconfig()
+	play_sound(togabalatro.startupsfx[togabalatro.config.StartUpSFX.Selected], 1, 0.5)
+end
+G.FUNCS.togabalatro_sfxswapcfg = function(args)
+	togabalatro.config.SFXSwapLevel = args.to_key
 end
 
 -- Still kept for colouring the button with higher allowed amount of cards to play, but also backwards compat.
@@ -299,12 +422,74 @@ function G.FUNCS.can_play(e)
 end
 
 -- As Talisman is now optional and we have some items using this, best keep these.
-to_big = to_big or function(a)
-	return a
+to_big = to_big or function(a) return a end
+to_number = to_number or function(a) return a end
+
+togabalatro.reset_solitaire = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.solitaire = {} end
+	G.GAME.current_round.togabalatro.solitaire.rank = 'Ace'
+	G.GAME.current_round.togabalatro.solitaire.id = 14
+	local valid_soli_cards = {}
+	for k, v in ipairs(G.playing_cards) do
+		if v.ability.effect ~= 'Stone Card' then
+			if not SMODS.has_no_rank(v) then
+				valid_soli_cards[#valid_soli_cards+1] = v
+			end
+		end
+	end
+	if valid_soli_cards[1] then
+		local soli_card = pseudorandom_element(valid_soli_cards, pseudoseed('solitaire'..G.GAME.round_resets.ante))
+		G.GAME.current_round.togabalatro.solitaire.rank = soli_card.base.value
+		G.GAME.current_round.togabalatro.solitaire.id = soli_card.base.id
+	end
 end
 
-to_number = to_number or function(a)
-	return a
+togabalatro.reset_diskcleanup = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.diskcleanup = {}; G.GAME.current_round.togabalatro.diskcleanup.suit = 'Hearts' end
+	local dc_suits = {}
+	for k, v in ipairs(G.playing_cards) do
+		if v.ability.effect ~= 'Stone Card' then
+			if not SMODS.has_no_suit(v) and not dc_suits[v.base.suit] and SMODS.Suits[v.base.suit] then
+				dc_suits[v.base.suit] = true
+			end
+		end
+	end
+	local valid_dc_suits = {}
+	for k, v in pairs(dc_suits) do valid_dc_suits[#valid_dc_suits+1] = k end
+	if next(valid_dc_suits) then G.GAME.current_round.togabalatro.diskcleanup.suit = pseudorandom_element(valid_dc_suits, pseudoseed('diskcleanup'..G.GAME.round_resets.ante)) end
+end
+
+togabalatro.reset_regedit = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.regedit = {}; G.GAME.current_round.togabalatro.regedit.suit = 'Hearts' end
+	local regedit_suits = {}
+    for k, v in pairs(SMODS.Suits) do
+        if k ~= G.GAME.current_round.togabalatro.regedit.suit then regedit_suits[#regedit_suits + 1] = k end
+    end
+    G.GAME.current_round.togabalatro.regedit.suit = pseudorandom_element(regedit_suits, pseudoseed('regedit'..G.GAME.round_resets.ante))
+end
+
+togabalatro.reset_certificateserver = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro.certserver = {} end
+	G.GAME.current_round.togabalatro.certserver.rank = 'Ace'
+	G.GAME.current_round.togabalatro.certserver.id = 14
+	
+	local rndrank = pseudorandom_element(SMODS.Ranks, pseudoseed('certserver'..G.GAME.round_resets.ante))
+	if rndrank then
+		G.GAME.current_round.togabalatro.certserver.rank = rndrank.key
+		G.GAME.current_round.togabalatro.certserver.id = rndrank.id
+		G.GAME.current_round.togabalatro.certserver.value = rndrank.value
+	end
+end
+
+togabalatro.reset_game_globals = function(run_start)
+	if run_start then G.GAME.current_round.togabalatro = {} end
+	
+	togabalatro.reset_solitaire(run_start)
+	togabalatro.reset_diskcleanup(run_start)
+	togabalatro.reset_regedit(run_start)
+	togabalatro.reset_certificateserver(run_start)
+	
+	if togabalatro.config.DoMoreLogging then sendInfoMessage("Reset own round variables.", "TOGAPack") end
 end
 
 -- Random pitch...
@@ -324,8 +509,8 @@ local playsoundref = play_sound
 function play_sound(sound_code, per, vol)
 	-- ...only if config is set to allow it.
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("play_sound hook.", "TOGAPack") end
-	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and togabalatro.rosensfx[sound_code] then sound_code = 'toga_rosenclick' end
-	if G and G.GAME and G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == 'bl_toga_xpboss' then sound_code = 'toga_winxpcritstop' end
+	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and ((togabalatro.config.SFXSwapLevel == 3) or (togabalatro.config.SFXSwapLevel == 2 and togabalatro.rosensfx[sound_code])) then sound_code = 'toga_rosenclick' end
+	if G and G.GAME and G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == 'bl_toga_xpboss' and (togabalatro.config.SFXSwapLevel >= 2) then sound_code = 'toga_winxpcritstop' end
 	
 	playsoundref(sound_code, per, vol)
 end
@@ -344,7 +529,15 @@ function Card:is_face(from_boss)
 		ischecking2s = false
 	end
 	ischecking2s = false
-	return isfaceref(self, from_boss)
+	local result = isfaceref(self, from_boss)
+	local tuneupcalc = {}
+	SMODS.calculate_context({ tuneupwizard = true }, tuneupcalc)
+	for _, eval in pairs(tuneupcalc) do
+		for key, eval2 in pairs(eval) do
+			if eval2.flip and eval2.card then result = not result end
+		end
+	end
+	return result
 end
 
 -- Hexa & Binary Joker and Megas XLR yoink.
@@ -374,32 +567,37 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Card:get_is_suit hook.", "TOGAPack") end
 	if flush_calc then
 		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared'))
-		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs')
-		and not SMODS.has_no_rank(self) then
+		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades + Smeared Joker flush pass.", "TOGAPack") end
 			return true
 		end
-		if next(SMODS.find_card('j_toga_heartyspades')) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades')
-		and not SMODS.has_no_rank(self) then
+		if next(SMODS.find_card('j_toga_heartyspades')) and not SMODS.has_no_suit(self) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades flush pass.", "TOGAPack") end
 			return true
 		end
 		return issuitref(self, suit, bypass_debuff, flush_calc)
 	else
 		if self.debuff and not bypass_debuff then return end
-		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared'))
-		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs')
-		and not SMODS.has_no_rank(self) then
+		if next(SMODS.find_card('j_toga_heartyspades')) and next(SMODS.find_card('j_smeared')) and not SMODS.has_no_suit(self)
+		and (self.base.suit == 'Hearts' or self.base.suit == 'Spades' or self.base.suit == 'Diamonds' or self.base.suit == 'Clubs') and (suit == 'Hearts' or suit == 'Spades' or suit == 'Diamonds' or suit == 'Clubs') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades + Smeared Joker pass.", "TOGAPack") end
 			return true
 		end
-		if next(SMODS.find_card('j_toga_heartyspades')) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades')
-		and not SMODS.has_no_rank(self) then
+		if next(SMODS.find_card('j_toga_heartyspades')) and not SMODS.has_no_suit(self) and (self.base.suit == 'Hearts' or self.base.suit == 'Spades') and (suit == 'Hearts' or suit == 'Spades') then
 			if togabalatro.config.DoMoreLogging then sendInfoMessage("Hearty Spades pass.", "TOGAPack") end
 			return true
 		end
 		return issuitref(self, suit, bypass_debuff, flush_calc)
 	end
+end
+
+sendInfoMessage("Hooking Card:should_hide_front...", "TOGAPack")
+local shfref = Card.should_hide_front
+function Card:should_hide_front()
+	local ret = shfref(self)
+	if ret and next(SMODS.find_card('j_toga_cavingjkr')) then return false
+	elseif self.config.center.key == 'm_toga_glowstone' then return false
+	else return ret end
 end
 
 -- This really shuffled my brain...
@@ -433,29 +631,7 @@ function G.FUNCS.draw_from_deck_to_hand(e)
 	if togabalatro.config.DoMoreLogging then sendInfoMessage("Executed original function or (potential) hook.", "TOGAPack") end
 	G.E_MANAGER:add_event(Event({
 		func = function()
-			local allnotifcards = {}
-			for i = 1, #G.deck.cards do
-				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then --if G.deck.cards[i].config.center_key == 'm_toga_notification' then
-					allnotifcards[#allnotifcards+1] = G.deck.cards[i]
-				end
-			end
-			if #allnotifcards > 0 then
-				for i = 1, #G.deck.cards do
-					for v = 1, #allnotifcards do
-						if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') and allnotifcards[v] == G.deck.cards[i] then
-							if togabalatro.config.DoMoreLogging then sendInfoMessage("Additionally drawing Notification Card "..i.." ("..G.deck.cards[i].config.card.name..") from the deck...", "TOGAPack") end
-							draw_card(G.deck, G.hand, i*100/#allnotifcards, 'up', true, G.deck.cards[i])
-						end
-					end
-				end
-				
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if togabalatro.config.DoMoreLogging then sendInfoMessage("save_run() so the additionally drawn "..#allnotifcards.." cards are set...", "TOGAPack") end
-						save_run() -- god.
-						return true
-					end}))
-			end
+			togabalatro.drawextracards()
 			return true
 		end
 	}))
@@ -475,11 +651,189 @@ end
 sendInfoMessage("Hooking Blind:disable...", "TOGAPack")
 local bldisref = Blind.disable
 function Blind:disable()
-    if self.debuff.toga_no_disable then
-        play_sound('toga_winxpcritstop', 1, 0.5)
-        return
-    end
-    return bldisref(self)
+	if self.debuff.toga_no_disable then
+		play_sound('toga_winxpcritstop', 1, 0.5)
+		return
+	end
+	return bldisref(self)
+end
+
+sendInfoMessage("Hooking Game:update_game_over...", "TOGAPack")
+local ugoref = Game.update_game_over
+function Game:update_game_over(dt)
+	if not G.STATE_COMPLETE then
+		if G.GAME.selected_back.effect.center.key == 'b_toga_screamingdeck' and togabalatro.config.SFXWhenTriggered then play_sound('toga_soldierscream', 1, 0.4) end
+		if next(SMODS.find_card('j_toga_spacecadetpinball', true)) and togabalatro.config.SFXWhenTriggered then play_sound('toga_pinballshutdown', 1, 0.4) end
+	end
+	ugoref(self, dt)
+end
+
+-- Hook for Strength-like stuff.
+sendInfoMessage("Hooking SMODS.modify_rank...", "TOGAPack")
+local modifyrankref = SMODS.modify_rank
+function SMODS.modify_rank(card, amount, manual_sprites)
+	local vscalc = {}
+	SMODS.calculate_context({ vs_modify_rank = true }, vscalc)
+	for _, eval in pairs(vscalc) do
+		for key, eval2 in pairs(eval) do
+			if eval2.amount and eval2.card then amount = amount + eval2.amount end
+		end
+	end
+	local bonzicalc = {}
+	SMODS.calculate_context({ bonzi_modify_rank = true }, bonzicalc)
+	for _, eval in pairs(bonzicalc) do
+		for key, eval2 in pairs(eval) do
+			if eval2.amount and eval2.card then amount = amount * eval2.amount end
+		end
+	end
+	return modifyrankref(card, amount, manual_sprites)
+end
+
+-- Hooking for rank/suit-specific stuff.
+local changebaseref = SMODS.change_base
+function SMODS.change_base(card, suit, rank, manual_sprites)
+	if next(SMODS.find_card('j_toga_certserver')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.certserver and G.GAME.current_round.togabalatro.certserver.rank and rank ~= nil then
+		rank = G.GAME.current_round.togabalatro.certserver.rank
+	end
+	if next(SMODS.find_card('j_toga_regedit')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.regedit and G.GAME.current_round.togabalatro.regedit.suit and suit ~= nil then
+		suit = G.GAME.current_round.togabalatro.regedit.suit
+	end
+    return changebaseref(card, suit, rank, manual_sprites)
+end
+
+-- Voucher redeem calculation.
+sendInfoMessage("Hooking Card:apply_to_run...", "TOGAPack")
+local applytorunref = Card.apply_to_run
+function Card:apply_to_run(center)
+	applytorunref(self, center)
+	SMODS.calculate_context({ redeem_individual_voucher = true, voucher = center or self })
+end
+
+-- Hooking for suit-specific stuff.
+sendInfoMessage("Hooking Card:change_suit...", "TOGAPack")
+local changesuitref = Card.change_suit
+function Card:change_suit(new_suit)
+	if next(SMODS.find_card('j_toga_regedit')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.regedit and G.GAME.current_round.togabalatro.regedit.suit then
+		new_suit = G.GAME.current_round.togabalatro.regedit.suit
+	end
+	changesuitref(self, new_suit)
+end
+
+-- Hooking for influencing hand level changes.
+sendInfoMessage("Hooking level_up_hand...", "TOGAPack")
+local lvluphandref = level_up_hand
+function level_up_hand(card, hand, instant, amount)
+	amount = amount or to_big(1)
+	if amount > to_big(0) then
+		local xpcalc = {}
+		SMODS.calculate_context({ toga_xplvlup = true }, xpcalc)
+		for _, eval in pairs(xpcalc) do
+			for key, eval2 in pairs(eval) do
+				if eval2.card and SMODS.pseudorandom_probability(eval2.card, "experiencethebest", 1, eval2.odds or eval2.card.ability.extra.odds or 4, 'yesyoucan') then
+					amount = amount * 2
+					SMODS.calculate_effect({message = localize('k_upgrade_ex')}, eval2.card)
+				end
+			end
+		end
+	end
+	lvluphandref(card, hand, instant, amount)
+end
+
+togabalatro.chipmultopswap = {
+	['chips'] = 'mult',
+	['h_chips'] = 'h_mult',
+	['chip_mod'] = 'mult_mod',
+	['mult'] = 'chips',
+	['h_mult'] = 'h_chips',
+	['mult_mod'] = 'chip_mod',
+	['x_chips'] = 'x_mult',
+	['xchips'] = 'xmult',
+	['Xchip_mod'] = 'Xmult_mod',
+	['x_mult'] = 'x_chips',
+	['xmult'] = 'xchips',
+	['Xmult'] = 'xchips',
+	['x_mult_mod'] = 'Xchip_mod',
+	['Xmult_mod'] = 'Xchip_mod',
+	-- Talisman.
+	['e_mult'] = 'e_chips',
+	['emult'] = 'echips',
+	['ee_mult'] = 'ee_chips',
+	['eemult'] = 'eechips',
+	['eee_mult'] = 'eee_chips',
+	['eeemult'] = 'eeechips',
+	['hypermult'] = 'hyperchips',
+	['hyper_mult'] = 'hyper_chips',
+	['e_chips'] = 'e_mult',
+	['echips'] = 'emult',
+	['ee_chips'] = 'ee_mult',
+	['eechips'] = 'eemult',
+	['eee_chips'] = 'eee_mult',
+	['eeechips'] = 'eeemult',
+	['hyperchips'] = 'hypermult',
+	['hyper_chips'] = 'hyper_mult',
+	['Emult_mod'] = 'Echip_mod',
+	['EEmult_mod'] = 'EEchip_mod',
+	['EEEmult_mod'] = 'EEEchip_mod',
+	['hypermult_mod'] = 'hyperchip_mod',
+	['Echip_mod'] = 'Emult_mod',
+	['EEchip_mod'] = 'EEmult_mod',
+	['EEEchip_mod'] = 'EEEmult_mod',
+	['hyperchip_mod'] = 'hypermult_mod',
+	-- Other mods can add their custom operations to this table.
+}
+
+sendInfoMessage("Hooking SMODS.calculate_individual_effect...", "TOGAPack")
+local calcindiveffectref = SMODS.calculate_individual_effect
+SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, from_edition)
+	-- do stuff if only the table is actually a table and has not been mangled by external factors.
+	if type(togabalatro.chipmultopswap) == 'table' and togabalatro.chipmultopswap[key] then
+		local activesyncs = SMODS.find_card('j_toga_activesync')
+		if next(activesyncs) then
+			for i = 1, #activesyncs do
+				if SMODS.pseudorandom_probability(activesyncs[i], "msactivesync", 1, activesyncs[i].ability.extra.odds or 8, 'msactivesync') then
+					local msg
+					if string.find(key, 'chip') then msg = localize('toga_activesyncmult') elseif string.find(key, 'mult') then msg = localize('toga_activesyncchip') end
+					if msg and not (Talisman and Talisman.config_file.disable_anims) then
+						card_eval_status_text(activesyncs[i], 'extra', nil, nil, nil, {message = msg, colour = string.find(key, 'chip') and G.C.CHIPS or string.find(key, 'mult') and G.C.MULT, delay = 0.2})
+					end
+					key = togabalatro.chipmultopswap[key]
+				end
+			end
+		end
+	end
+	local ret = calcindiveffectref(effect, scored_card, key, amount, from_edition)
+	if ret then return ret end
+end
+
+togabalatro.drawextracards = function()
+	local anycarddrawn = false
+	
+	local allnotifcards = {}
+	for i = 1, #G.deck.cards do
+		if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then --if G.deck.cards[i].config.center_key == 'm_toga_notification' then
+			allnotifcards[#allnotifcards+1] = G.deck.cards[i]
+		end
+	end
+	if #allnotifcards > 0 then
+		for i = 1, #G.deck.cards do
+			for v = 1, #allnotifcards do
+				if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') and allnotifcards[v] == G.deck.cards[i] then
+					if togabalatro.config.DoMoreLogging then sendInfoMessage("Additionally drawing Notification Card "..i.." ("..G.deck.cards[i].config.card.name..") from the deck...", "TOGAPack") end
+					draw_card(G.deck, G.hand, i*100/#allnotifcards, 'up', true, G.deck.cards[i])
+					anycarddrawn = true
+				end
+			end
+		end
+	end
+	
+	if anycarddrawn then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if togabalatro.config.DoMoreLogging then sendInfoMessage("save_run() so the additionally drawn cards are set...", "TOGAPack") end
+				save_run() -- god.
+				return true
+			end}))
+	end
 end
 
 function ReverseTable(t)
@@ -521,7 +875,7 @@ togabalatro.preprocess = function(context, input)
 end
 
 togabalatro.areaprocess = function(t)
-	if t == nil then return {} end
+	t = t or {}
 	
 	local output = t
 	
@@ -532,55 +886,82 @@ togabalatro.areaprocess = function(t)
 	return output
 end
 
--- Hooking to do more funky scoring shenanigans.
-sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
-local calcmainscoreref = SMODS.calculate_main_scoring
-function SMODS.calculate_main_scoring(context, scoring_hand)
-	calcmainscoreref(context, scoring_hand)
-	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
-		togabalatro.forcereverse = true
-		context.main_scoring = true
-		calcmainscoreref(context, scoring_hand)
-		togabalatro.forcereverse = false
-		context.main_scoring = nil
-	end
-	local spacecadet, rover = SMODS.find_card('j_toga_spacecadetpinball'), SMODS.find_card('j_toga_rover')
+togabalatro.areaorderprocess = function(t)
+	return togabalatro.areaprocess(t)
+end
+
+togabalatro.spacecadetsfx = {'toga_pinballsfx8', 'toga_pinballsfx14', 'toga_pinballsfx16', 'toga_pinballsfx21', 'toga_pinballsfx24', 'toga_pinballsfx26', 'toga_pinballsfx43', 'toga_pinballsfx49', 'toga_pinballsfx53', 'toga_pinballsfx55'}
+togabalatro.spacecadetrndsfx = function()
+	return togabalatro.spacecadetsfx[math.random(1, #togabalatro.spacecadetsfx)]
+end
+
+-- Any additional scoring with chips and what not.
+togabalatro.extrascoring = function(context, scoring_hand)
 	if context.cardarea == G.play then
-		if next(spacecadet) then
-			for i = 1, #spacecadet do
-				context.main_scoring = true
-				local card = spacecadet[i]
-				card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint)
-				for r = 1, card.ability.extra.alltrig do
-					if (pseudorandom("toga_spacecadetpinball") < G.GAME.probabilities.normal/3 or card.ability.cry_rigged) and scoring_hand then
-						if not card.ability.pinballscore then card.ability.pinballscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pinballing')}) end
-						SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), context)
+		local spacecadetcalc = {}
+		SMODS.calculate_context({spacecadetscore = true}, spacecadetcalc)
+		for _, eval in pairs(spacecadetcalc) do
+			for key, eval2 in pairs(eval) do
+				local notyetscored = true
+				if eval2.card then
+					for i = 1, math.floor(to_number(tonumber(eval2.spacecadet)) or eval2.card and to_number(eval2.card.ability.extra.alltrig) or 1) do
+						if (SMODS.pseudorandom_probability(card, "toga_spacecadetpinball", 1, 3, 'spacecadetpinball') or eval2.card.ability.cry_rigged) and scoring_hand then
+							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_pinballing'), sound = not silent and togabalatro.config.SFXWhenTriggered and togabalatro.spacecadetrndsfx()}) end
+							SMODS.score_card(pseudorandom_element(context.scoring_hand, pseudoseed('spacecadet')), context)
+						end
 					end
 				end
-				context.main_scoring = nil
 			end
 		end
-		if next(rover) then
-			for r = 1, #rover do
-				local card = rover[r]
-				for i = 1, #G.deck.cards do
-					if (pseudorandom("toga_rover") < G.GAME.probabilities.normal/card.ability.extra.odds or card.ability.cry_rigged) then
-						if not card.ability.roverscore then card.ability.roverscore = true; card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof')}) end
-						SMODS.score_card(G.deck.cards[i], context)
+		local hammercalc = {}
+		SMODS.calculate_context({hammerscore = true}, hammercalc)
+		for _, eval in pairs(hammercalc) do
+			for key, eval2 in pairs(eval) do
+				local notyetscored = true
+				if eval2.card then
+					for i = 1, #G.hand.cards do
+						if SMODS.has_enhancement(G.hand.cards[i], "m_glass") and G.hand.cards[i]:can_calculate() then
+							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_hammersmash')}) end
+							SMODS.score_card(G.hand.cards[i], context)
+							local smashchance = G.hand.cards[i].ability.name == 'Glass Card' and G.hand.cards[i].ability.extra or G.P_CENTERS.m_glass.config.extra
+							if SMODS.pseudorandom_probability(G.hand.cards[i], 'glass', 1, smashchance/2, 'atomsmashererrorgenerator') then G.hand.cards[i].atomsmashed = true end
+						end
+					end
+				end
+			end
+		end
+		local rovercalc = {}
+		SMODS.calculate_context({roverscore = true}, rovercalc)
+		for _, eval in pairs(rovercalc) do
+			for key, eval2 in pairs(eval) do
+				local notyetscored = true
+				if eval2.card then
+					for i = 1, #G.deck.cards do
+						if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.rover or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8), 'searchwithrover') or eval2.card.ability.cry_rigged) then
+							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_roverbark"}) end
+							SMODS.score_card(G.deck.cards[i], context)
+						end
 					end
 				end
 			end
 		end
 	end
+end
+
+-- Custom scoring of held in hand abilities.
+togabalatro.heldinhandscoring = function(context, scoring_hand)
 	if context.cardarea == G.hand then
 		context.main_scoring = true
-		local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
-		for _, area in ipairs(areas) do
-			if area ~= G.hand then
-				local curcards = togabalatro.preprocess(context, area.cards)
-				for _, card in ipairs(curcards) do
-					if card.seal == 'toga_urlseal' then
-						SMODS.score_card(card, context)
+		if togabalatro.canareascore(context.cardarea) then togabalatro.scoreheldinhand(context) end
+		
+		local clippitcalc = {}
+		SMODS.calculate_context({clippitscore = true, cardarea = context.cardarea}, clippitcalc)
+		
+		for _, eval in pairs(clippitcalc) do
+			for key, eval2 in pairs(eval) do
+				if eval2.card then
+					for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
+						togabalatro.scoreheldinhand(context, true)
 					end
 				end
 			end
@@ -589,10 +970,61 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
 	end
 end
 
+togabalatro.scoreheldinhand = function(context, handrescore)
+	local allcards = {}
+	
+	for i = 1, #G.playing_cards do
+		if G.playing_cards[i] then allcards[#allcards+1] = G.playing_cards[i] end
+	end
+	
+	allcards = togabalatro.preprocess(context, allcards)
+	
+	for i = 1, #allcards do
+		local card, area = allcards[i], allcards[i].area
+		if card then
+			if area == G.hand and handrescore then
+				SMODS.score_card(card, context)
+			end
+			if area ~= G.hand and card.seal == 'toga_urlseal' then
+				SMODS.score_card(card, context)
+			end
+		end
+	end
+end
+
+-- Special case for the sleeve scoring.
+togabalatro.kartsleevescoring = function(context, scoring_hand)
+	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
+		togabalatro.forcereverse = true
+		context.main_scoring = true
+		calcmainscoreref(context, scoring_hand)
+		togabalatro.forcereverse = false
+		context.main_scoring = nil
+	end
+end
+
+togabalatro.canareascore = function(cardarea)
+	local can = true
+	if cardarea then
+		if cardarea == G.play and G.GAME.modifiers.toga_noplayedscore then can = false end
+		if cardarea == G.hand and G.GAME.modifiers.toga_nohandscore then can = false end
+	end
+	return can
+end
+
+-- Hooking to do more funky scoring shenanigans.
+sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
+local calcmainscoreref = SMODS.calculate_main_scoring
+function SMODS.calculate_main_scoring(context, scoring_hand)
+	if togabalatro.canareascore(context.cardarea) then calcmainscoreref(context, scoring_hand) end
+	togabalatro.kartsleevescoring(context, scoring_hand)
+	togabalatro.extrascoring(context, scoring_hand)
+	togabalatro.heldinhandscoring(context, scoring_hand)
+end
+
 -- Yoinked from original SMODS.calculate_end_of_round_effects, but edited to target specific cards.
 -- 100% hacky, there should be a better way for doing this...
 togabalatro.eorproc = function(area, card, context, i)
-	if card.seal ~= 'toga_urlseal' then return end
 	local reps = {1}
 	local j = 1
 	while j <= #reps do
@@ -630,26 +1062,48 @@ togabalatro.eorproc = function(area, card, context, i)
 	end
 end
 
+-- This bit is 100% experimental... there should be a better way for doing this, right?
+togabalatro.triggereof = function(context)
+	local contextcopy = context
+	contextcopy.cardarea = G.hand
+	
+	local allcards = {}
+	
+	for i = 1, #G.playing_cards do
+		if G.playing_cards[i] then allcards[#allcards+1] = G.playing_cards[i] end
+	end
+	
+	allcards = togabalatro.preprocess(context, allcards)
+	
+	for i = 1, #allcards do
+		local card, area = allcards[i], allcards[i].area
+		if area ~= G.hand and card.seal == 'toga_urlseal' then
+			togabalatro.eorproc(area, card, contextcopy, i)
+		end
+	end
+end
+
 -- Hooking to run it back.
 sendInfoMessage("Hooking SMODS.calculate_end_of_round_effects...", "TOGAPack")
 local calcendroundref = SMODS.calculate_end_of_round_effects
 function SMODS.calculate_end_of_round_effects(context)
-	calcendroundref(context)
+	if togabalatro.canareascore(context.cardarea) then calcendroundref(context) end
 	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
 		togabalatro.forcereverse = true
 		calcendroundref(context)
 		togabalatro.forcereverse = false
 	end
-	-- This bit is 100% experimental... there should be a better way for doing this, right?
-	local areas = togabalatro.areaprocess(SMODS.get_card_areas('playing_cards'))
-	if context.cardarea == G.hand then
-		local contextcopy = context
-		contextcopy.cardarea = G.hand
-		for i, area in ipairs(areas) do
-			if area ~= G.hand and area.cards then
-				for _, card in ipairs(area.cards) do
-					if card.seal == 'toga_urlseal' then
-						togabalatro.eorproc(area, card, contextcopy, i)
+	
+	if context.cardarea == G.hand and context.end_of_round then
+		togabalatro.triggereof(context) -- initial end of round scoring of cards with Hyperlink Seals
+		local clippitcalc = {}
+		SMODS.calculate_context({clippitscore_eor = true, cardarea = context.cardarea}, clippitcalc)
+		for _, eval in pairs(clippitcalc) do
+			for key, eval2 in pairs(eval) do
+				if eval2.card then
+					for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
+						calcendroundref(context)
+						togabalatro.triggereof(context) -- rescore...
 					end
 				end
 			end
@@ -675,7 +1129,14 @@ togabalatro.handlimitchange = function(val, set_to)
 	end
 end
 
+-- weaponized negativity.
+local negweightref = G.P_CENTERS['e_negative'].get_weight
+G.P_CENTERS['e_negative'].get_weight = function(self)
+	return negweightref(self)*(G.GAME.toga_negchance or 1)
+end
+
 -- Golden Wrench...
+sendInfoMessage("Hooking Card:start_dissolve...", "TOGAPack")
 local startdisref = Card.start_dissolve
 function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 	if self and self.config and self.config.center_key == 'j_toga_goldenwrench' and not self.ability.sold then togabalatro.goldenwrench(self) end
@@ -697,8 +1158,55 @@ togabalatro.goldenwrench = function(card)
 	}))
 end
 
--- Play more cards! For the SMS enhancement.
+togabalatro.isplayingcardarea = function(target)
+	local t = {}
+	t[#t+1] = G.play
+	t[#t+1] = G.hand
+	t[#t+1] = G.deck
+	t[#t+1] = G.discard
+	-- TOGA-TARGET: add your own CardAreas for playing cards
+	for i, v in ipairs(t) do
+		if v == target then return true end
+	end
+	return false
+end
+
+sendInfoMessage("Hooking draw_card...", "TOGAPack")
+local drawcardref = draw_card
+function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
+	drawcardref(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
+	if togabalatro.isplayingcardarea(to) and togabalatro.isplayingcardarea(from) then SMODS.calculate_context({ individual_draw = true, from_area = from, to_area = to }) end
+end
+
+togabalatro.externalfontsloaded = {}
+togabalatro.getexternalfontcount = function()
+	local count = 0
+	for k, v in pairs(togabalatro.externalfontsloaded or {}) do
+		if k and v then count = count + 1 end
+	end
+	return count
+end
+
+sendInfoMessage("Hooking love.graphics.newFont...", "TOGAPack")
+local newfontref = love.graphics.newFont
+function love.graphics.newFont(arg1, arg2, arg3, arg4)
+	togabalatro.externalfontsloaded = togabalatro.externalfontsloaded or {}
+	if type(arg1) == 'string' and not togabalatro.externalfontsloaded[arg1] then togabalatro.externalfontsloaded[arg1] = true end
+	
+	return newfontref(arg1, arg2, arg3, arg4)
+end
+
+sendInfoMessage("Hooking Card:set_debuff...", "TOGAPack")
+local setdebuffref = Card.set_debuff
+function Card:set_debuff(should_debuff)
+	local prevstate = self.debuff
+	setdebuffref(self, should_debuff)
+    if self.debuff ~= prevstate and self.debuff == true then SMODS.calculate_context({ debuffed_ups = true, card = self }) end
+end
+
+-- Do additional stuff when playing a hand.
 togabalatro.playextracards = function()
+	-- SMS enhancement.
 	local sms_deck = {}
 	if G.deck.cards and #G.deck.cards > 0 then
 		for i = 1, #G.deck.cards do
@@ -720,6 +1228,23 @@ togabalatro.playextracards = function()
 			end
 		end
 	end
+	-- Draw cards to hand by Solitaire Joker... if we actually have a Straight.
+	if next(SMODS.find_card('j_toga_solitairejoker')) then
+		local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+		if next(pokerhands['Straight']) then
+			local curcards = {}
+			for i = 1, #G.deck.cards do
+				if G.deck.cards[i]:get_id() == G.GAME.current_round.togabalatro.solitaire.id then curcards[#curcards+1] = G.deck.cards[i] end
+			end
+			for c = 1, #curcards do
+				if curcards[c] then draw_card(G.deck, G.hand, c*100/#curcards, 'up', true, curcards[c]) end
+			end
+		end
+	end
+	-- Draw cards to hand by (attempting to be) played Redstone cards.
+	for i = 1, #G.hand.highlighted do
+		if not G.hand.highlighted[i].debuff and SMODS.has_enhancement(G.hand.highlighted[i], 'm_toga_redstone') then draw_card(G.deck, G.hand, 1, 'up') end
+	end
 end
 
 togabalatro.getconscount = function()
@@ -739,18 +1264,23 @@ togabalatro.stackingcompat = function(consumable)
 	if Overflow and consumable and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
 		return true, consumable.ability.immutable.overflow_amount
 	-- ...though, backwards compatibility wouldn't hurt...
-	elseif Incantation and consumable and consumeable.ability and consumeable.ability.qty then
-		return true, consumeable.ability.qty
+	elseif Incantation and consumable and consumable.ability and consumable.ability.qty then
+		return true, consumable.ability.qty
 	end
 end
 
 -- In case Incantation is used, check if it is the specific fork version so that the consumeables don't do unintended things...
 if SMODS.Mods['incantation'] and not SMODS.Mods['incantation'].togafork and not string.find(SMODS.Mods['incantation'].version, '-TOGA_fork') then
-	error("Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables added by "..togabalatro.name, 0)
+	error([[
+	Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables
+	added by TOGA's Stuff at https://github.com/TheOneGoofAli/JensBalatroCollection in order to continue.
+	Otherwise, remove it or add a '.lovelyignore' file into its' folder to disable it.
+	Alternatively, why not check out Overflow at https://github.com/lord-ruby/Overflow for stacking too?
+	]], 0)
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
-for _, file in ipairs{"joker.lua", "deck.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "crossmod.lua"} do
+for _, file in ipairs{"joker.lua", "deck.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "crossmod.lua"} do
 	sendDebugMessage("Executing items/"..file, "TOGAPack")
 	assert(SMODS.load_file("items/"..file))()
 end

@@ -2,8 +2,10 @@
 -- but bronze and steel are not intended for this pool for being alloys.
 sendInfoMessage("Added Gemstone cards of More Fluff to mineral pool.", "TOGAPack - MoreFluff")
 togabalatro.add_to_oredict('m_mf_gemstone', 'minerals', true)
+togabalatro.add_to_oredict('m_mf_gemstone', 'gemstone', true)
 sendInfoMessage("Added Brass cards of More Fluff to mineral pool.", "TOGAPack - MoreFluff")
 togabalatro.add_to_oredict('m_mf_brass', 'minerals', true)
+togabalatro.add_to_oredict('m_mf_brass', 'brass', true)
 
 togabalatro.mf_art_credit = function(name)
 	if mf_config["Programmer Art"] then return nil end
@@ -18,6 +20,19 @@ togabalatro.mf_colours_held = function()
 		end
 	end
 	return false
+end
+
+togabalatro.mf_displayproperties = function()
+	local display = {}
+	SMODS.calculate_context({ coloureof = true }, display)
+	for _, eval in pairs(display) do
+		for key, eval2 in pairs(eval) do
+			if eval2.rescore and eval2.card then
+				card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_colourful'), sound = togabalatro.config.SFXWhenTriggered and 'toga_winxpinfobar'})
+				colour_end_of_round_effects()
+			end
+		end
+	end
 end
 
 local atlastype = ".png"
@@ -35,11 +50,13 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		discovered = true,
 		rarity = 1,
 		atlas = 'TOGAJokersMain',
-		pos = { x = 0, y = 5 },
+		pos = { x = 1, y = 4 },
 		cost = 4,
+		pools = { ["TOGAJKR"] = true },
 		blueprint_compat = true,
+		demicolon_compat = true,
 		calculate = function(self, card, context)
-			if context.end_of_round and not context.repetition and not context.individual and not context.game_over then
+			if (context.end_of_round or context.forcetrigger) and not context.repetition and not context.individual and not context.game_over then
 				return { func = function()
 					for i = 1, #G.consumeables.cards do
 						if G.consumeables.cards[i].config.center.set == 'Colour' then
@@ -65,9 +82,13 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		discovered = true,
 		rarity = 2,
 		atlas = 'TOGAJokersMain',
-		pos = { x = 1, y = 5 },
+		pos = { x = 2, y = 4 },
 		cost = 7,
-		blueprint_compat = false,
+		pools = { ["TOGAJKR"] = true },
+		blueprint_compat = true,
+		calculate = function(self, card, context)
+			if context.coloureof then return { rescore = true, card = context.blueprint_card or card } end
+		end,
 		set_badges = function(self, card, badges)
 			if self.discovered then SMODS.create_mod_badges({ mod = SMODS.find_mod('MoreFluff')[1] }, badges) end
 		end
@@ -79,12 +100,14 @@ if SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 		blueprint_compat = false,
 		eternal_compat = true,
 		perishable_compat = false,
+		demicolon_compat = true,
 		rarity = "crv_p",
 		atlas = 'TOGAJokersMain',
-		pos = { x = 2, y = 5 },
+		pos = { x = 3, y = 4 },
 		cost = 10,
+		pools = { ["TOGAJKR"] = true },
 		calculate = function(self, card, context)
-			if context.setting_blind then
+			if context.setting_blind or context.forcetrigger then
 				return {
 					func = function()
 						local createnegative = false

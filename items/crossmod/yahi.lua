@@ -19,13 +19,15 @@ SMODS.Joker{
 	atlas = 'TOGAYahistuff',
 	pos = { x = 0, y = 0 },
 	cost = 6,
+	pools = { ["TOGAJKR"] = true },
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		card.ability.extra.hxmult = math.max(card.ability.extra.hxmult, horsehxmult)
 		if Talisman then card.ability.extra.heeemult = math.max(card.ability.extra.heeemult, horseeeemult) end
 		if context.cardarea == G.hand and context.other_card and not context.other_card.debuff and context.other_card.seal == "yahimod_horse_seal"
 		and not context.repetition and not context.repetition_only and not context.end_of_round then
-			local chanceroll = Talisman and pseudorandom("thegianthorseconchweighsover11pounds") < G.GAME.probabilities.normal/supremescret
+			--local chanceroll = Talisman and pseudorandom("thegianthorseconchweighsover11pounds") < G.GAME.probabilities.normal/supremescret
+			local chanceroll = Talisman and SMODS.pseudorandom_probability(card, "thegianthorseconchweighsover11pounds", 1, supremescret, 'horseconch')
 			return {
 				xmult = not chanceroll and card.ability.extra.hxmult,
 				eeemult = chanceroll and card.ability.extra.heeemult,
@@ -60,14 +62,15 @@ SMODS.Joker{
 	atlas = 'TOGAYahistuff',
 	pos = { x = 1, y = 0 },
 	cost = 5,
-	pools = { ["Cat"] = true },
+	pools = { ["Cat"] = true, ["TOGAJKR"] = true },
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		card.ability.extra.xchips = math.max(card.ability.extra.xchips, catxchips)
 		if Talisman then card.ability.extra.eeechips = math.max(card.ability.extra.eeechips, cateeechips) end
 		if context.other_joker and context.other_joker.config.center and context.other_joker.config.center.pools
 		and context.other_joker.config.center.pools.Cat and context.other_joker.config.center.key ~= card.config.center.key then
-			local chanceroll = Talisman and pseudorandom("thecatmusical") < G.GAME.probabilities.normal/supremescret
+			--local chanceroll = Talisman and pseudorandom("thecatmusical") < G.GAME.probabilities.normal/supremescret
+			local chanceroll = Talisman and SMODS.pseudorandom_probability(card, "thecatmusical", 1, supremescret, 'thecatmusical')
 			return {
 				xchips = not chanceroll and card.ability.extra.xchips,
 				eeechips = chanceroll and card.ability.extra.eeechips,

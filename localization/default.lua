@@ -87,6 +87,34 @@ return {
 					"in random order.",
 				}
 			},
+			b_toga_blissful = {
+				name = "Blissful Deck",
+				text = {
+					"{C:attention}Enhancements{} are {C:dark_edition}shared{}",
+					"between {C:attention}playing cards{}",
+					"{C:red}X#5#{} base Blind size",
+					"{C:red,s:0.8}#1# {s:0.8}hand, {C:red,s:0.8}#2# {s:0.8}discard, {C:attention,s:0.8}+#6#{s:0.8} Ante to win",
+					"{C:red,s:0.8}#3# {s:0.8}Joker slot, {C:red,s:0.8}#4# {s:0.8}Consumable slot",
+					"{C:inactive,s:0.9}Can get quite laggy, be warned!{}",
+					"{C:inactive,s:0.8}Animation skipping mods recommended.{}",
+				}
+			},
+			b_toga_prairie = {
+				name = "Prairie Deck",
+				text = {
+					"{C:attention}Vanilla{} scoring of",
+					"{C:attention}played{} cards",
+					"does not occur."
+				}
+			},
+			b_toga_betafish = {
+				name = "Betafish Deck",
+				text = {
+					"{C:attention}Vanilla{} scoring of",
+					"{C:attention}held in hand{} cards",
+					"does not occur."
+				}
+			},
 		},
 		Blind = {
 			bl_toga_dialupmodem = {
@@ -157,7 +185,8 @@ return {
 				name = 'Task Manager',
 				text = {
 					"On {C:attention}last discard{}, {C:red}destroy{}",
-					"{C:attention}all{} discarded cards."
+					"{C:attention}all{} discarded cards.",
+					"{C:inactive,s:0.8}I want to speak to your Manager!{}"
 				}
 			},
 			-- Old Task Manager ability, tweaked.
@@ -165,9 +194,9 @@ return {
 				name = 'User Accounts',
 				text = {
 					"{C:green}#2# in #3#{} chance for scoring cards to",
-					"give {X:mult,C:white}XMult{} based on calculated average of",
-					"current {C:attention}Joker{} & {C:attention}Consumable{} slots and",
-					"{C:chips}hands{} & {C:red}discards{} left.",
+					"give {X:mult,C:white}XMult{} based on half of calculated",
+					"average of current {C:chips}hands{} & {C:red}discards{} left",
+					"and {C:attention}Joker{} & {C:attention}Consumable{} slots.",
 					"{C:inactive,s:0.8}(Currently {}{X:mult,C:white,s:0.8}X#1#{}{C:inactive,s:0.8}){}",
 				}
 			},
@@ -183,9 +212,9 @@ return {
 			j_toga_solitairejoker = {
 				name = 'Solitaire Joker',
 				text = {
-					"{C:attention}+#1#{} hand size",
-					"{C:chips}+#2#{} Chips",
-					"{C:chips}-#3#{} hand per round",
+					"When playing a hand {C:attention}containing{} a {C:attention}Straight{},",
+					"draw remaining {C:attention}#2#s{} in the deck to hand.",
+					"Rank changes every round.",
 					"{C:inactive,s:0.8}An Office regular.{}"
 				}
 			},
@@ -193,7 +222,9 @@ return {
 				name = 'DriveSpace',
 				text = {
 					"{X:attention,C:white}X#1#{} Blind requirement",
-					"when a card {C:attention}scores{}."
+					"when a card {C:attention}scores{}.",
+					"{C:inactive,s:0.8}Back when hard drives were{}",
+					"{C:inactive,s:0.8}smaller than CDs...{}"
 				}
 			},
 			j_toga_win95 = {
@@ -201,9 +232,8 @@ return {
 				text = {
 					"{C:chips}+#1#{} hand(s) & {C:red}+#2#{} discard(s)",
 					"upon selecting a {C:attention}Blind{}.",
-					"Earn {C:money}$#3#{} at end of round.",
-					"If there are {C:attention}#5#{} or fewer",
-					"Jokers, get {X:money,C:white}X#4#{} the amount."
+					"If there are {C:attention}#4#{} or fewer",
+					"Jokers, get {C:attention}X#3#{} the amount."
 				}
 			},
 			j_toga_win98 = {
@@ -218,9 +248,8 @@ return {
 			j_toga_winmillenium = {
 				name = 'Windows ME',
 				text = {
-					"Each {C:attention}Joker{} held gives {C:chips}+#1#{} Chips.",
-					"Increase {C:attention}individual{} Joker bonus by {C:chips}+#2#{} Chips",
-					"for every {C:attention}unique Voucher{} redeemed.",
+					"Each {C:attention}Joker{} held gives {C:chips}+#1#{} Chips, with",
+					"additional {C:chips}+#2#{} Chips per {C:attention}Voucher{} redeemed.",
 					"{C:inactive,s:0.8}(Currently {}{C:chips,s:0.8}+#3#{}{C:inactive,s:0.8} per Joker){}"
 				}
 			},
@@ -244,9 +273,9 @@ return {
 			j_toga_winxp = {
 				name = 'Windows XP',
 				text = {
-					"Retrigger {C:attention}scored{} cards,",
-					"{C:attention}held in hand{} card abilities",
-					"and {C:attention}Jokers{} #1# time."
+					"{C:green}#1# in #2#{} chance to {C:attention}double{}",
+					"leveling amount before",
+					"{C:attention}upgrading{} a poker hand"
 				}
 			},
 			j_toga_jokersrb2kart = {
@@ -270,17 +299,18 @@ return {
 			j_toga_quacksoft = {
 				name = 'Duck?',
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Chips for each",
-					"remaining card in the {C:attention}deck{}",
-					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}"
+					"{X:dark_edition,C:white}^#1#{} Chips per card",
+					"in the {C:attention}full deck{}",
+					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}",
+					"{C:inactive,s:0.8,E:1}Quack.{}"
 				}
 			},
 			j_toga_winupdate = {
 				name = 'Joker Update',
 				text = {
-					"{C:attention}Numerical{} values of a random Joker are",
-					"increased by {C:attention}#1#%{} when defeating {C:attention}Blinds{}.",
-					"{C:inactive,s:0.8}Cannot affect self or copies of self.{}"
+					"When {C:attention}entering shop{}, {C:attention}add{} a random",
+					"{C:attention}Voucher{} and {C:attention}Booster Pack{} to shop",
+					"{C:inactive,s:0.8}Upgrades, upgrades!{}"
 				}
 			},
 			j_toga_virtualmemory = {
@@ -298,15 +328,21 @@ return {
 					"Right most {C:attention}scoring{} card gives {X:chips,C:white}X#2#{} Chips.",
 					"Destroying {C:attention}playing cards{} increases {X:chips,C:white}XChips{}",
 					"by {X:chips,C:white}X#1#{} or {X:chips,C:white}X#3#{} if destroyed",
-					"card is {C:attention}enhanced{}."
+					"card is {C:attention}enhanced{}.",
+					"{C:inactive,s:0.8}Taking out the trash...{}"
 				}
 			},
 			j_toga_clippit = {
 				name = 'Clippit',
 				text = {
-					"Retrigger all card",
-					"{C:attention}held in hand{}",
-					"abilities {C:attention}#1#{} times."
+					{
+						"Rescore all {C:attention}held in hand{}",
+						"card abilities {C:attention}#1#{} time(s).",
+					},
+					{
+						"{C:inactive,s:0.8}It looks like you're trying to naneinf.{}",
+						"{C:inactive,s:0.8}Would you like help?{}"
+					}
 				}
 			},
 			j_toga_asterism = {
@@ -324,7 +360,9 @@ return {
 					"{C:chips}+#2#{} Chips per",
 					"any {C:dark_edition}Consumable{}",
 					"used this run",
-					"{C:inactive}(Currently {}{C:chips}+#1#{}{C:inactive}){}"
+					"{C:inactive}(Currently {}{C:chips}+#1#{}{C:inactive}){}",
+					'{C:inactive,s:0.8}"the internet is{}',
+					'{C:inactive,s:0.8}gaming right now"'
 				}
 			},
 			j_toga_computerlock = {
@@ -343,15 +381,16 @@ return {
 					"cards become",
 					"{C:chips}Bonus{} cards",
 					"when scored",
+					"{C:inactive,s:0.8}Merasmus!{}"
 				}
 			},
 			j_toga_pso2ironwill = {
 				name = 'Skill: Iron Will',
 				text = {
-					"When ready and if you have at least {C:money}$1{},",
-					"lose all held {C:money}money{}, prevents death and",
-					"becomes {C:attention}inactive{}. Recharges after",
-					"defeating a {C:attention}Boss Blind{}.",
+					"Prevents death if active and at",
+					"least {C:money}$1{} is held, sets money to {C:money}$0{}",
+					"and becomes inactive. {C:attention}Recharges{}",
+					"upon {C:attention}defeating{} a Boss Blind.",
 					"{C:inactive,s:0.8}Currently: #2#{}"
 				}
 			},
@@ -367,11 +406,6 @@ return {
 			j_toga_spacecadetpinball = {
 				name = 'Space Cadet',
 				text = {
-					-- "{C:green}#3# in 3{} chance to {C:attention}rescore{} a",
-					-- "random scoring card by this",
-					-- "{C:attention}Joker{}. For every {C:money}$#1#{} held,",
-					-- "try to {C:attention}rescore{} again.",
-					-- "{C:inactive,s:0.8}Currently #2# attempts.{}",
 					"After the played cards are {C:attention}scored{},",
 					"{C:green}#3# in 3{} chance to perform {C:attention}additional scoring{}",
 					"of a {C:attention}random{} card in the scoring hand.",
@@ -383,7 +417,8 @@ return {
 				name = 'Hearty Spades',
 				text = {
 					"{C:hearts}Hearts{} and {C:spades}Spades{}",
-					"count as the same suit"
+					"count as the same suit",
+					"{C:inactive,s:0.8}Hearty meal...{}"
 				}
 			},
 			j_toga_rover = {
@@ -392,7 +427,8 @@ return {
 					"After scoring of {C:attention}played{} cards,",
 					"each card in the {C:attention}deck{} has a",
 					"{C:green}#1# in #2#{} chance to be {C:attention}scored{}",
-					"as well"
+					"as well",
+					"{C:inactive,s:0.8}woof.{}"
 				}
 			},
 			j_toga_binaryjkr = {
@@ -428,13 +464,9 @@ return {
 			j_toga_jimboplus = {
 				name = 'JimboPlus!',
 				text = {
-					"Scoring cards give {X:mult,C:white}XMult{}",
-					"depending on {C:attention}Jokers{} currently held.",
-					"{C:attention}Jimbos{} give {X:mult,C:white}X#1#{} Mult instead of",
-					"{X:mult,C:white}X#2#{} Mult for every other Joker.",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
-					"{C:inactive,s:0.8}Copies of this Joker{}",
-					"{C:inactive,s:0.8}do not contribute to XMult.{}"
+					"When playing a hand, {C:attention}leech{} {X:attention,C:white}X#1#{}",
+					"of {C:attention}Blind requirements{} to",
+					"currently scored chips."
 				}
 			},
 			j_toga_speedsneakers = {
@@ -442,15 +474,22 @@ return {
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for every {C:money}$#2#{} you have",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#3#{} {C:inactive}Mult){}",
+					"{C:inactive,s:0.8,E:1}Gotta go fast!{}"
 				}
 			},
 			j_toga_tomscott = {
 				name = 'Tom Scott',
 				text = {
-					"Gives {X:mult,C:white}X#1#{} Mult for every",
-					"{C:attention}copy{} of itself held",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{} {C:inactive}Mult){}",
-					"{C:inactive,s:0.8}Stacks multiplicatively.{}",
+					{
+						"Gives {X:mult,C:white}X#1#{} Mult for every",
+						"{C:attention}copy{} of itself held",
+						"{C:inactive}(Currently {}{X:mult,C:white}X#2#{} {C:inactive}Mult){}",
+						"{C:inactive,s:0.8}Stacks multiplicatively.{}",
+					},
+					{
+						"{C:inactive,s:0.8}I am currently a Joker{}",
+						"{C:inactive,s:0.8}in the Balatro video game.{}"
+					}
 				}
 			},
 			j_toga_megasxlr = {
@@ -464,12 +503,17 @@ return {
 			j_toga_jarate = {
 				name = 'Jarate',
 				text = {
-					"{C:attention}#1#% Blind{} requirements",
-					"when selecting a {C:attention}Boss Blind{}.",
-					"Scored cards {C:attention}lose{} their",
-					"enhancements, editions and seals.",
-					"Recharges when {C:attention}entering{} shop.",
-					"{C:inactive,s:0.8}#2#"
+					{
+						"{C:attention}#1#% Blind{} requirements",
+						"when selecting a {C:attention}Boss Blind{}.",
+						"Scored cards {C:attention}lose{} their",
+						"enhancements, editions and seals.",
+						"Recharges when {C:attention}entering{} shop.",
+						"{C:inactive,s:0.8}#2#",
+					},
+					{
+						"{C:inactive}Ah... {C:inactive,E:1}piss!{}"
+					}
 				}
 			},
 			j_toga_goldenwrench = {
@@ -477,15 +521,16 @@ return {
 				text = {
 					"Does nothing...",
 					"{C:inactive,s:0.8}Wonder what happens if this{}",
-					"{C:inactive,s:0.8}happened to be destroyed...{}",
+					"{C:inactive,s:0.8}were to be destroyed...{}",
 				}
 			},
 			j_toga_virtualpc = {
 				name = 'Virtual PC',
 				text = {
-					"{C:green}#1# in #2#{} chance to copy",
-					"an ability of {C:attention}any{}",
-					"compatible {C:attention}Joker{} held"
+					"When {C:attention}scoring starts{}, current",
+					"{C:blue}Chips{} and {C:red}Mult{} are {C:attention}added{}",
+					"to this Joker",
+					"{C:inactive,s:0.85}(Currently {C:blue,s:0.85}#1#{C:inactive,s:0.85} Chips / {C:red,s:0.85}#2#{C:inactive,s:0.85} Mult)"
 				}
 			},
 			j_toga_ie = {
@@ -517,9 +562,12 @@ return {
 			j_toga_win8 = {
 				name = 'Windows 8',
 				text = {
-					"Each {C:attention}8{} {C:red}discarded{} this round",
-					"or in the remaining {C:attention}deck{}",
-					"gives {X:mult,C:white}X#1#{} Mult",
+					-- "Each {C:attention}8{} {C:red}discarded{} this round",
+					-- "or in the remaining {C:attention}deck{}",
+					-- "gives {X:mult,C:white}X#1#{} Mult",
+					"Played {C:attention}8s{} gain",
+					"{C:attention}held in hand{}",
+					"{X:mult,C:white}X#1#{} Mult"
 				}
 			},
 			j_toga_penwheel = {
@@ -571,7 +619,8 @@ return {
 				name = 'Skype',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}each mod{} among",
-					"held {C:attention}Jokers{} and {C:attention}Consumeables{}.",
+					"redeemed {C:attention}Vouchers{}, held {C:attention}Jokers{}",
+					"and {C:attention}Consumeables{}.",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}, #3# mod.){}",
 					"{C:inactive,s:0.7}RIP Skype (2003 - 2025){}"
 				}
@@ -627,20 +676,20 @@ return {
 				}
 			},
 			j_toga_linux_debian = {
-				name= 'Debian',
-                text= {
-                    "Halves all {C:attention}listed",
-                    "{C:green,E:1,s:1.1}probabilities",
-                    "{C:inactive}(ex: {C:green}1 in 3{C:inactive} -> {C:green}0.5 in 3{C:inactive})",
-                },
+				name = 'Debian',
+				text = {
+					"Halves all {C:attention}listed",
+					"{C:green,E:1,s:1.1}probabilities",
+					"{C:inactive}(ex: {C:green}1 in 3{C:inactive} -> {C:green}0.5 in 3{C:inactive})",
+				},
 			},
 			j_toga_linux_slackware = {
 				name = 'Slackware Linux',
 				text = {
 					"If more than 2 suits are {C:attention}played{},",
 					"scoring cards give {X:mult,C:white}X#1#{} Mult per",
-					"{C:attention}additional{} suit in played hand.",
-					"{C:inactive,s:0.8}(Ignores Wild Card, Hearty Spades, etc.){}"
+					"{C:attention}additional{} base suit in played hand.",
+					"{C:inactive,s:0.8}(Ignores Wild Card, Smeared Joker, etc.){}"
 				}
 			},
 			j_toga_linux_slackware_cardsel = {
@@ -686,10 +735,229 @@ return {
 					"{C:inactive,s:0.75}(Excluding self and copies of self.){}"
 				}
 			},
+			j_toga_tempinternetfiles = {
+				name = 'Downloaded Program Files',
+				text = {
+					"Gains {X:mult,C:white}X#2#{} Mult when a card is drawn.",
+					"Resets if {C:blue}played{}/{C:red}discarded{} hand contains a {C:attention}Flush{}.",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
+				}
+			},
+			j_toga_google = {
+				name = 'Google',
+				text = {
+					"Adds a {C:attention}6{} to deck",
+					"when {C:attention}Blind{} is selected",
+					"{C:inactive,s:0.8}Don't be evil.{}"
+				},
+			},
+			j_toga_bonzibuddy = {
+				name = 'Bonzi Buddy',
+				text = {
+					"{C:attention}Strength{}-like effects",
+					"are inverted"
+				},
+			},
+			j_toga_netscapenavigator = {
+				name = 'Netscape Navigator',
+				text = {
+					"{C:dark_edition}Holographic{} {C:attention}Jokers{}",
+					"or {C:attention}held in hand{} cards",
+					"give {X:mult,C:white}X#1#{} Mult",
+				},
+			},
+			j_toga_diskcleanup = {
+				name = 'Disk Cleanup',
+				text = {
+					"Gain {C:money}$#1#{} per {C:red}destroyed{}",
+					"{C:attention}#2#{} card",
+					"{C:inactive,s:0.8}Suit changes every round.{}",
+				},
+			},
+			j_toga_regedit = {
+				name = 'Registry Editor',
+				text = {
+					"{C:attention}Overrides{} suit change to {C:attention}#1#{}.",
+					"Suit changes every round.",
+					"{C:inactive,s:0.9}Does not affect card copying.{}"
+				},
+			},
+			j_toga_msagent = {
+				name = 'Microsoft Agent',
+				text = {
+					"{C:dark_edition}Unbalances{}",
+					"{C:blue}Chips{} and {C:red}Mult{}",
+				},
+			},
+			j_toga_drwatson = {
+				name = 'Dr. Watson',
+				text = {
+					"After a hand is played, {C:red}destroy{}",
+					"debuffed {C:attention}played{}/{C:attention}held in hand{} cards",
+				},
+			},
+			j_toga_fontsfolder = {
+				name = 'Fonts',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for every",
+					"custom font loaded",
+					"{C:inactive,s:0.9}(Currently #2#, {X:mult,C:white,s:0.8}X#3#{C:inactive,s:0.8})",
+				},
+			},
+			j_toga_fontsfolder_inactive = {
+				name = 'Fonts',
+				text = {
+					"{E:2,s:1.2}Does nothing.{}",
+					"{C:inactive,s:0.85}Load some fonts, will ya?{}"
+				},
+			},
+			j_toga_pcmcia = {
+				name = 'PCMCIA Card',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult..?",
+				},
+			},
+			j_toga_scsi = {
+				name = 'SCSI',
+				text = {
+					"{C:attention}#1#{} hand size",
+					"Increase hand size by {C:attention}1{}",
+					"when {C:attention}redeeming{} a Voucher",
+				},
+			},
+			j_toga_visualstudio = {
+				name = 'Visual Studio',
+				text = {
+					"Rank of {C:attention}Strength{}-like effects",
+					"is increased by {C:attention}#1#{}",
+				},
+			},
+			j_toga_printershare = {
+				name = 'Printer Sharing',
+				text = {
+					"{C:green}#2# in #3#{} chance for held",
+					"{C:attention}Printers{} to give {X:mult,C:white}X#1#{} Mult",
+				},
+			},
+			j_toga_netshow = {
+				name = 'NetShow',
+				text = {
+					"When playing a hand, gain {X:mult,C:white}X#1#{} Mult",
+					"for every {C:attention}unique{} movie genre held",
+					"{C:inactive}(Currently #3#, {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+				},
+			},
+			j_toga_certserver = {
+				name = 'Certificate Server',
+				text = {
+					"{C:attention}Overrides{} rank change to {C:attention}#1#s{}.",
+					"Rank changes every round.",
+					"{C:inactive,s:0.9}Does not affect card copying.{}",
+				}
+			},
+			j_toga_cpu = {
+				name = 'CPU',
+				text = {
+					"{C:red}+#1#{} Mult per {C:dark_edition}logical{} processor",
+					"on current device",
+					"{C:inactive}(Currently #2#, {C:red}+#3#{C:inactive} Mult)",
+					"{C:inactive,s:0.8}P2W Joker?{}"
+				}
+			},
+			j_toga_ups = {
+				name = 'Uninterruptable Power Supply',
+				text = {
+					"When a {C:attention}card{} is {C:red}debuffed{}, gain {X:mult,C:white}X#1#{} Mult",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_hammer = {
+				name = 'Hammer',
+				text = {
+					"{C:attention}Held in hand Glass{} cards",
+					"are also {C:attention}scored{} as if they",
+					"had been {C:attention}played{} but their",
+					"{C:green}chance{} to {C:red}break{} is {C:attention}doubled{}",
+					"{C:inactive,s:0.8}Anyone remember Atom Smasher?{}"
+				}
+			},
+			j_toga_joker203 = {
+				name = 'Joker 2.03',
+				text = {
+					"{X:attention,C:white}X#1#{} Blind requirements",
+					"{X:purple,C:white}=0{} Score if {C:attention}scored hand{}",
+					"{C:red}does not{} beat the Blind.",
+				}
+			},
+			j_toga_activesync = {
+				name = 'ActiveSync',
+				text = {
+					"{C:green}#1# in #2#{} chance to {C:attention}swap{} any",
+					"{C:attention}operations{} on {C:blue}Chips{} or {C:red}Mult{}",
+					"to the {C:attention}other{} instead",
+				}
+			},
+			j_toga_chrome = {
+				name = 'Chrome',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult per {C:attention}process{} with '{C:attention}#4#{}'",
+					"in the {C:attention}name{} currently running.",
+					"{C:attention,s:0.8}Additional{s:0.8} processes give {C:red,s:0.8}diminishing{s:0.8} returns.{}",
+					"{C:inactive}(Currently {C:attention}#3#{}, {X:mult,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_firefox = {
+				name = 'Firefox',
+				text = {
+					"{X:chips,C:white}X#1#{} Chips per {C:attention}process{} with '{C:attention}#4#{}'",
+					"in the {C:attention}name{} currently running.",
+					"{C:attention,s:0.8}Additional{s:0.8} processes give {C:red,s:0.8}diminishing{s:0.8} returns.{}",
+					"{C:inactive}(Currently {C:attention}#3#{}, {X:chips,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_cavingjkr = {
+				name = 'Caving Joker',
+				text = {
+					{
+						"All played {C:attention}non-face{} cards",
+						"become {C:attention}Stone{} cards",
+						"afterwards",
+					},
+					{
+						"{C:inactive,s:0.75}May reveal rank or suit{}",
+						"{C:inactive,s:0.75}of certain cards...{}",
+					}
+				},
+			},
+			j_toga_miningjkr = {
+				name = 'Mining Joker',
+				text = {
+					"{C:attention}Unenhanced{} cards played on the",
+					"{C:attention}first hand{} of round are {C:attention}converted{}",
+					"to {C:attention}Mineral{} cards afterwards.",
+					"{C:inactive,s:0.8}Hold Left SHIFT before hovering over{}",
+					"{C:inactive,s:0.8}this card to show the Mineral pool.{}"
+				}
+			},
+			j_toga_miningjkr_showminerals = {
+				name = 'Mining Joker',
+				text = {
+					"{C:attention}Unenhanced{} cards played on the",
+					"{C:attention}first hand{} of round are {C:attention}converted{}",
+					"to {C:attention}Mineral{} cards afterwards.",
+				}
+			},
+			j_toga_tuneupwizard = {
+				name = 'Tune-up Wizard',
+				text = {
+					"{C:attention}Inverts{} face card",
+					"consideration"
+				}
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {
-				name = "Notification",
+				name = "Notification Card",
 				text = {
 					"{s:0.9}Wherever applicable,",
 					"{C:attention,s:0.9}always{s:0.9} gets drawn",
@@ -697,7 +965,7 @@ return {
 				},
 			},
 			m_toga_sms = {
-				name = "SMS",
+				name = "SMS Card",
 				text = {
 					"{s:0.9}Deprioritized when {C:attention,s:0.9}drawing{s:0.9} cards.",
 					"{s:0.9}If in {C:attention,s:0.9}deck{s:0.9} and playing a hand,",
@@ -763,6 +1031,55 @@ return {
 					"{X:chips,C:white}X#1#{} Chips",
 				},
 			},
+			m_toga_redstone = {
+				name = "Redstone Card",
+				text = {
+					"If {C:attention}played{}, draw a card",
+					"to {C:attention}hand{} from deck",
+				},
+			},
+			m_toga_nickel = {
+				name = "Nickel Card",
+				text = {
+					"Can't be debuffed"
+				},
+			},
+			m_toga_invar = {
+				name = "Invar Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"while this card",
+					"stays in hand",
+				},
+			},
+			m_toga_signalum = {
+				name = "Signalum Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+				},
+			},
+			m_toga_glowstone = {
+				name = "Glowstone Card",
+				text = {
+					"Does not count",
+					"as base rank",
+				},
+			},
+			m_toga_lumium = {
+				name = "Lumium Card",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult",
+					"while this card",
+					"stays in hand",
+				},
+			},
+			m_toga_refinedglowstone = {
+				name = "Refined Glowstone Card",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"{X:mult,C:white}X#2#{} Mult",
+				},
+			},
 		},
 		Tarot = {
 			c_toga_furnace = {
@@ -772,7 +1089,9 @@ return {
 					"depending on cards selected",
 					"Cost per use: {C:money}$#2#{}",
 					"{C:inactive,s:0.8}If you can pay for another{}",
-					"{C:inactive,s:0.8}use, keep on use.{}"
+					"{C:inactive,s:0.8}use, keep on use.{}",
+					"{C:inactive,s:0.8}(To see recipes, hold Left Shift{}",
+					"{C:inactive,s:0.8}before hovering over the card.){}",
 				}
 			},
 			c_toga_furnace_ready = {
@@ -795,7 +1114,9 @@ return {
 					"depending on cards selected",
 					"{C:inactive,s:0.9}#1#{}",
 					"{C:inactive,s:0.8}If you can pay for another{}",
-					"{C:inactive,s:0.8}use, keep on use.{}"
+					"{C:inactive,s:0.8}use, keep on use.{}",
+					"{C:inactive,s:0.8}(To see recipes, hold Left Shift{}",
+					"{C:inactive,s:0.8}before hovering over the card.){}",
 				}
 			},
 			c_toga_miningprospect = {
@@ -814,6 +1135,14 @@ return {
 					"Destroys {T:m_stone,C:attention}Stone Cards{} in the {C:attention}full deck{}.",
 					"{C:green}#1# in #2#{} chance for a {T:m_stone,C:attention}Stone Card{} to",
 					"convert into a {C:attention}Mineral{} card instead.",
+				}
+			},
+			c_toga_inbox = {
+				name = "Inbox",
+				text = {
+					"Destroy up to",
+					"{C:attention}#1# SMS Cards{}",
+					"in the {C:attention}full deck{}"
 				}
 			},
 			c_toga_bombshee = {
@@ -869,6 +1198,22 @@ return {
 					"card in your hand"
 				}
 			},
+			c_toga_alloyer = {
+				name = "Alloy",
+				text = {
+					"{C:green}#2# in #3#{} chance to enhance",
+					"{C:attention}#1#{} card to an {C:attention}Alloy{} card.",
+					"{C:inactive,s:0.8}Hold Left SHIFT before hovering over{}",
+					"{C:inactive,s:0.8}this card to show the Alloy pool.{}"
+				}
+			},
+			c_toga_alloyer_showalloys = {
+				name = "Alloy",
+				text = {
+					"{C:green}#2# in #3#{} chance to enhance",
+					"{C:attention}#1#{} card to an {C:attention}Alloy{} card.",
+				}
+			},
 		},
 		Tag = {
 			tag_toga_togajokershop = {
@@ -914,13 +1259,19 @@ return {
 					"{C:spectral}Black Hole{}",
 				},
 			},
+			tag_toga_thenet_cryptid = {
+				name = "Globe Tag",
+				text = {
+					"Gives a free {C:spectral}Black Hole{}",
+					"{C:green,s:0.75}#1# in #2# {C:inactive,s:0.75}chance for {C:spectral,s:0.75}White Hole{C:inactive,s:0.75} instead",
+				},
+			},
 			tag_toga_controlexe = {
 				name = "Settings Tag",
 				text = {
-					"Applies a random {C:dark_edition}edition{}",
+					"Applies a {C:attention}random{} {C:dark_edition}edition{}",
 					"to a random {C:attention}Joker{}",
-					"{C:inactive,s:0.8}May replace current edition{}",
-					"{C:inactive,s:0.8}if one is present.{}"
+					"{C:attention}without{} an {C:dark_edition}edition{}",
 				},
 			},
 			tag_toga_thelegend = {
@@ -1033,7 +1384,28 @@ return {
 				name = "Can I Offer You An Egg In These Times",
 				text = {
 					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} {E:1,C:green}will{} be {C:dark_edition}Negative{}.",
-					--"{E:1,C:green}will{} be {C:dark_edition}Negative{}.",
+				},
+			},
+			v_toga_spectralzipper = {
+				name = "Spectral Zipper",
+				text = {
+					"{C:attention}Joker.ZIP{} and {C:attention}CONSUMAB.RAR{}",
+					"have a {C:green}#1# in #2#{} chance to",
+					"contain {C:dark_edition}Legendary{} items."
+				},
+			},
+			v_toga_auroramatter = {
+				name = "Aurora Matter",
+				text = {
+					"{C:dark_edition}Negative{} cards are {X:attention,C:white}#1#X{}",
+					"more likely to appear"
+				},
+			},
+			v_toga_quantummatter = {
+				name = "Quantum Matter",
+				text = {
+					"{C:dark_edition}Negative{} cards are {X:dark_edition,C:white}#1#X{}",
+					"more likely to appear"
 				},
 			},
 		},
@@ -1064,9 +1436,6 @@ return {
 			toga_urlseal_seal = {
 				name = "Hyperlink Seal",
 				text = {
-					-- "{C:dark_edition,E:1,s:3}THIS IS NOT A JOKE{}",
-					-- "{s:2}You are the 100.000th visitor of the day!{}",
-					-- "{C:spectral,E:1,s:2}Click here{}"
 					"{C:attention}Held in hand{} abilities",
 					"of this card trigger",
 					"{C:attention}even{} if {C:attention}not{} in hand."
@@ -1157,7 +1526,7 @@ return {
 				name = "Formula",
 				text = {
 					"({C:attention}Joker slots{} + {C:attention}Consumable{} slots",
-					"+ {C:blue}hands{} left + {C:red}discards{} left) / 4",
+					"+ {C:blue}hands{} left + {C:red}discards{} left) / 8",
 				},
 			},
 			toga_roseneffects = {
@@ -1172,6 +1541,20 @@ return {
 					"{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^^#2#{} Chips, {X:dark_edition,C:white}^^^#3#{} Chips",
 					"{X:dark_edition,C:white}^#4#{} Mult, {X:dark_edition,C:white}^^#5#{} Mult, {X:dark_edition,C:white}^^^#6#{} Mult",
 					"{C:inactive,s:0.7}(10x, 20x and 40x less likely to be rolled respectively.){}",
+				},
+			},
+			toga_jokerzipupgrade = {
+				name = "Spectral Zipper",
+				text = {
+					"{C:green}#1# in #2#{} chance to have a",
+					"{C:dark_edition}Legendary{} {C:attention}Joker{}.",
+				},
+			},
+			toga_consumabrarupgrade = {
+				name = "Spectral Zipper",
+				text = {
+					"{C:green}#1# in #2#{} chance",
+					"to contain {C:dark_edition}The Soul{}.",
 				},
 			},
 			toga_scales1 = {
@@ -1196,59 +1579,94 @@ return {
 			toga_alloysteel = {
 				name = "Steel Card Recipe",
 				text = {
-					"1x Iron + 1x Coal Coke (consumed) = 1x Steel",
+					"1x Iron",
+					"+ 1x Coal Coke (consumed)",
+					"= 1x Steel",
 				},
 			},
 			toga_alloyelectrum = {
 				name = "Electrum Card Recipe",
 				text = {
-					"1x Gold + 1x Silver = 2x Electrum",
+					"1x Gold + 1x Silver",
+					"= 2x Electrum",
 				},
 			},
 			toga_alloybronze = {
 				name = "Bronze Card Recipe",
 				text = {
-					"3x Copper + 1x Tin = 4x Bronze",
+					"3x Copper + 1x Tin",
+					"= 4x Bronze",
+				},
+			},
+			toga_alloysignalum = {
+				name = "Signalum Card Recipe",
+				text = {
+					"3x Copper + 1x Silver",
+					"+ 1x Redstone (consumed)",
+					"= 4x Signalum",
+				},
+			},
+			toga_alloyinvar = {
+				name = "Invar Card Recipe",
+				text = {
+					"2x Copper + 1x Nickel",
+					"= 3x Invar",
+				},
+			},
+			toga_alloylumium = {
+				name = "Lumium Card Recipe",
+				text = {
+					"3x Tin + 1x Silver",
+					"+ 1x Glowstone (consumed)",
+					"= 4x Lumium",
+				},
+			},
+			toga_alloyrefglowstone = {
+				name = "Refined Glowstone Card Recipe",
+				text = {
+					"1x Osmium",
+					"+ 1x Glowstone (consumed)",
+					"= 1x Refined Glowstone",
 				},
 			},
 		},
 		Partner = {
 			pnr_toga_startupdisk={
-                name = "Startup Diskette",
-                text = {
-                    "Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
-                    "when {C:attention}Blind{} is selected.",
-                },
-                unlock={
-                    "Used a {C:attention}Windows OS{} Joker",
-                    "to win on {C:attention}Gold",
-                    "{C:attention}Stake{} difficulty",
-                },
-            },
+				name = "Startup Diskette",
+				text = {
+					"Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
+					"when {C:attention}Blind{} is selected.",
+				},
+				unlock={
+					"Used a {C:attention}Windows OS{} Joker",
+					"to win on {C:attention}Gold",
+					"{C:attention}Stake{} difficulty",
+				},
+			},
 			pnr_toga_startupdisk_buff={
-                name = "Startup Diskette",
-                text = {
-                    "Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
-                    "when {C:attention}Blind{} is selected, with additional {C:attention}#3#%{}",
+				name = "Startup Diskette",
+				text = {
+					"Reduces {C:attention}Blind requirements{} by {C:attention}#2#%{}",
+					"when {C:attention}Blind{} is selected, with additional {C:attention}#3#%{}",
 					"provided by currently held {C:attention}Windows OS Jokers{}.",
 					"{C:inactive}(Currently {C:attention}#1#%{C:inactive})"
-                },
-                unlock={
-                    "Used a {C:attention}Windows OS{} Joker",
-                    "to win on {C:attention}Gold",
-                    "{C:attention}Stake{} difficulty",
-                },
-            },
+				},
+				unlock={
+					"Used a {C:attention}Windows OS{} Joker",
+					"to win on {C:attention}Gold",
+					"{C:attention}Stake{} difficulty",
+				},
+			},
 			pnr_toga_amongusplushie={
-                name = "Among Us Plushie",
-                text = {
-                    "{C:green}#1# in #2#{} chance to give {C:attention}bonus{}",
+				name = "Among Us Plushie",
+				text = {
+					"{C:green}#1# in #2#{} chance to give {C:attention}bonus{}",
 					"{C:money}money{} at end of round.",
 					"{C:inactive,s:0.8}#3#% of currently held money or $10,{}",
 					"{C:inactive,s:0.8}whichever is higher.{}",
 					"{C:inactive,s:0.75}Spin speed is tied to money held.{}"
-                },
-            },
+				},
+			},
 		},
 		Colour = {
 			c_toga_classic = {
@@ -1258,7 +1676,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro and togabalatro.mf_art_credit("Multi")
 				},
 			},
 			c_toga_professional = {
@@ -1268,7 +1686,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro and togabalatro.mf_art_credit("Multi")
 				},
 			},
 			c_toga_luna = {
@@ -1278,7 +1696,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro and togabalatro.mf_art_credit("Multi")
 				},
 			},
 			c_toga_aero = {
@@ -1288,7 +1706,7 @@ return {
 					"for every {C:attention}#4#{} rounds",
 					"this has been held",
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive}, {}[{C:attention}#2#{C:inactive}#3#{}]{C:inactive})",
-					next(SMODS.find_mod('MoreFluff')) and togabalatro.mf_art_credit("Multi")
+					next(SMODS.find_mod('MoreFluff')) and togabalatro and togabalatro.mf_art_credit("Multi")
 				},
 			},
 		},
@@ -1341,6 +1759,8 @@ return {
 			toga_kartouch = "Ouch!",
 			toga_karteliminated = "Eliminated!",
 			toga_pagefileuse = "Swapped!",
+			toga_activesyncchip = "Chips!",
+			toga_activesyncmult = "Mult!",
 			toga_active = "Active!",
 			toga_inactive = "Inactive.",
 			toga_updated = "Update!",
@@ -1366,12 +1786,19 @@ return {
 			toga_steelrecipe = "1x Iron + 1x Coal Coke (consumed) = 1x Steel",
 			toga_electrumrecipe = "1x Gold + 1x Silver = 2x Electrum",
 			toga_bronzerecipe = "3x Copper + 1x Tin = 4x Bronze",
+			toga_signalumrecipe = "3x Copper + 1x Silver + 1x Redstone (consumed) = 4x Signalum",
+			toga_invarrecipe = "2x Iron + 1x Nickel = 3x Invar",
+			toga_lumiumrecipe = "3x Tin + 1x Silver + 1x Glowstone (consumed) = 4x Lumium",
+			toga_refglowstonerecipe = "1x Osmium + 1x Glowstone (consumed) = 1x Refined Glowstone",
 			toga_alloy = "Alloy",
 			toga_crafttarot = "Crafting Tarot",
 			toga_minetarot = "Mining Tarot",
 			toga_stonenothing = "Nothing...",
 			toga_stonefound = "!",
 			--
+			toga_unbalanced = "Unbalanced",
+			toga_pluscard = "+1 Card",
+			toga_solitairedraw = "Drawing...",
 			toga_32bits = "32-bit!",
 			toga_jimbo = "...",
 			toga_jimbo95txt1 = "Run!",
@@ -1391,17 +1818,32 @@ return {
 			toga_perlevel = "per-level",
 			toga_pinballing = "Score!",
 			toga_roverwoof = "Woof.",
+			toga_leech = "Leech",
+			toga_bonziinvert = "Inverted",
+			toga_hammersmash = "Smash!",
 			toga_configtab = "Mod Settings",
 			toga_logtab = "Logging Settings",
+			toga_startsfxtab = "Misc. Audio Options",
+			toga_startsfxoptions = "Sound:",
 			toga_sfxwhenadd = "SFX when getting some of the mods' items",
 			toga_sfxwhendel = "SFX when removing some of the mods' items",
 			toga_sfxwhenuse = "SFX when some of the mods' items trigger",
-			toga_musicpacks = "Custom music for own Booster Packs",
+			toga_musicpacks = "MIDI-fied music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
 			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",
+			toga_mainmenumusicswap = "MIDI-fy the Main Menu music",
+			toga_modtabmusicswap = "Custom music for own mod config menu",
 			toga_startupsfx = "Enable mod startup sound on initial load",
+			toga_startupsfxuse = "Use selected SFX for next game startup",
+			toga_crashsfxuse = "Play a sound when game crashes",
+			toga_qestuff = "Enable quantum enhancement deck (restart required)",
+			toga_sfxswaptext = "SFX Swap Level:",
+			toga_sfxswapnone = "None",
+			toga_sfxswapdefault = "Default",
+			toga_sfxswapall = "All",
+			toga_startupsfxtest = "Test",
 		},
 		labels = {
 			toga_sealseal_seal = "Seal^2",
@@ -1415,11 +1857,24 @@ return {
 			toga_EEmult = {"^^#1# Mult"},
 			toga_EEEmult = {"^^^#1# Mult"},
 		},
+		challenge_names = {
+			c_toga_jokerful = "Jokerful..?"
+		},
+		v_text = {
+			ch_c_toga_noplayedscore = {
+				"{C:attention}Vanilla{} scoring of {C:attention}played{} cards does not occur",
+			},
+			ch_c_toga_nohandscore = {
+				"{C:attention}Vanilla{} scoring of {C:attention}held in hand{} cards does not occur",
+			},
+		},
 		collab_palettes = {
 			toga_oldschool_Spades = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
 			toga_oldschool_Hearts = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
 			toga_oldschool_Clubs = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
 			toga_oldschool_Diamonds = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
+			toga_oldschool_bunc_Fleurons = { "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
+			toga_oldschool_bunc_Halberds = { "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },
 			toga_modern_Spades = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 			toga_modern_Hearts = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 			toga_modern_Clubs = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },

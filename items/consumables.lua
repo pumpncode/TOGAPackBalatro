@@ -26,11 +26,54 @@ togabalatro.oredict.tin = {'m_toga_tin'}
 togabalatro.oredict.iron = {'m_toga_iron'}
 togabalatro.oredict.coalcoke = {'m_toga_coalcoke'}
 togabalatro.oredict.silver = {'m_toga_silver'}
+togabalatro.oredict.osmium = {'m_toga_osmium'}
 togabalatro.oredict.electrum = {'m_toga_electrum'}
 togabalatro.oredict.bronze = {'m_toga_bronze'}
+togabalatro.oredict.redstone = {'m_toga_redstone'}
+togabalatro.oredict.signalum = {'m_toga_signalum'}
+togabalatro.oredict.nickel = {'m_toga_nickel'}
+togabalatro.oredict.invar = {'m_toga_invar'}
+togabalatro.oredict.glowstone = {'m_toga_glowstone'}
+togabalatro.oredict.lumium = {'m_toga_lumium'}
 
 -- Set up a global pool of 'minerals' in our OreDictionary.
-togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium'}
+togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium', 'm_toga_redstone', 'm_toga_nickel', 'm_toga_glowstone'}
+-- ...and one for alloys.
+togabalatro.oredict.alloys = {'m_toga_electrum', 'm_toga_bronze', 'm_toga_signalum', 'm_toga_invar', 'm_toga_lumium', 'm_toga_refinedglowstone'}
+
+togabalatro.is_mineral = function(card)
+	if not card then return false end
+	for k, v in pairs(togabalatro.oredict.minerals) do
+		if v and SMODS.has_enhancement(card, v) then return true end
+	end
+	return false
+end
+
+togabalatro.is_alloy = function(card)
+	if not card then return false end
+	for k, v in pairs(togabalatro.oredict.alloys) do
+		if v and SMODS.has_enhancement(card, v) then return true end
+	end
+	return false
+end
+
+togabalatro.has_mineral = function()
+	if G.playing_cards then
+		for i = 1, #G.playing_cards do
+			if togabalatro.is_mineral(G.playing_cards[i]) then return true end
+		end
+	end
+	return false
+end
+
+togabalatro.has_alloy = function()
+	if G.playing_cards then
+		for i = 1, #G.playing_cards do
+			if togabalatro.is_alloy(G.playing_cards[i]) then return true end
+		end
+	end
+	return false
+end
 
 togabalatro.add_to_oredict = function(key, material, quiet)
 	quiet = quiet or false
@@ -98,6 +141,74 @@ togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selca
 	return copper1 and copper2 and copper3 and tin and copper1 ~= tin and copper1 ~= copper2 and copper2 ~= copper3 and copper1 ~= copper3, { cards = { copper1, copper2, copper3, tin } }, 'm_toga_bronze', localize('toga_bronzerecipe')
 end
 
+-- 3x Copper + 1x Silver + 1 Redstone (consumed) = 4x Signalum
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local copper1, copper2, copper3, silver, redstone = nil, nil, nil, nil, nil
+	local copper1ok, copper2ok, copper3ok, silverok, redstoneok = false, false, false, false, false
+	local iter, iterlimit = 0, 100
+	for i, v in ipairs(selcards) do
+		repeat -- scary jank, but works.
+			iter = iter + 1
+			if not copper1ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper1 = v; copper1ok = true; break end
+			if not copper2ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper2 = v; copper2ok = true; break end
+			if not copper3ok and togabalatro.oredictcheck(v, togabalatro.oredict.copper) then copper3 = v; copper3ok = true; break end
+			if not silverok and togabalatro.oredictcheck(v, togabalatro.oredict.silver) then silver = v; break end
+			if not redstoneok and togabalatro.oredictcheck(v, togabalatro.oredict.redstone) then redstone = v; break end
+		until (copper1ok and copper2ok and copper3ok and silverok and redstoneok) or iter > iterlimit
+	end
+	return copper1 and copper2 and copper3 and silver and redstone and copper1 ~= silver and copper1 ~= redstone and copper1 ~= copper2 and copper2 ~= copper3 and copper1 ~= copper3,
+		 { cards = { copper1, copper2, copper3, silver }, destroycard = { redstone }, allcards = { copper1, copper2, copper3, silver, redstone } }, 'm_toga_signalum', localize('toga_signalumrecipe')
+end
+
+-- 2x Iron + 1x Nickel = 3x Invar
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local iron1, iron2, nickel = nil, nil, nil
+	local iron1ok, iron2ok, nickelok = false, false, false
+	local iter, iterlimit = 0, 100
+	for i, v in ipairs(selcards) do
+		repeat -- scary jank, but works.
+			iter = iter + 1
+			if not iron1ok and togabalatro.oredictcheck(v, togabalatro.oredict.iron) then iron1 = v; iron1ok = true; break end
+			if not iron2ok and togabalatro.oredictcheck(v, togabalatro.oredict.iron) then iron2 = v; iron2ok = true; break end
+			if not nickelok and togabalatro.oredictcheck(v, togabalatro.oredict.nickel) then nickel = v; break end
+		until (iron1ok and iron2ok and nickelok) or iter > iterlimit
+	end
+	return iron1 and iron2 and nickel and iron1 ~= nickel and iron1 ~= iron2, { cards = { iron1, iron2, nickel } }, 'm_toga_invar', localize('toga_invarrecipe')
+end
+
+-- 3x Tin + 1x Silver + 1x Glowstone = 4x Lumium
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local tin1, tin2, tin3, silver, glowstone = nil, nil, nil, nil, nil
+	local tin1ok, tin2ok, tin3ok, silverok, glowstoneok = false, false, false, false, false
+	local iter, iterlimit = 0, 100
+	for i, v in ipairs(selcards) do
+		repeat -- scary jank, but works.
+			iter = iter + 1
+			if not tin1ok and togabalatro.oredictcheck(v, togabalatro.oredict.tin) then tin1 = v; tin1ok = true; break end
+			if not tin2ok and togabalatro.oredictcheck(v, togabalatro.oredict.tin) then tin2 = v; tin2ok = true; break end
+			if not tin3ok and togabalatro.oredictcheck(v, togabalatro.oredict.tin) then tin3 = v; tin3ok = true; break end
+			if not silverok and togabalatro.oredictcheck(v, togabalatro.oredict.silver) then silver = v; break end
+			if not glowstoneok and togabalatro.oredictcheck(v, togabalatro.oredict.glowstone) then glowstone = v; break end
+		until (tin1ok and tin2ok and tin3ok and silverok and glowstoneok) or iter > iterlimit
+	end
+	return tin1 and tin2 and tin3 and silver and glowstone and tin1 ~= silver and tin1 ~= glowstone and tin1 ~= tin2 and tin2 ~= tin3 and tin1 ~= tin3,
+		 { cards = { tin1, tin2, tin3, silver }, destroycard = { glowstone }, allcards = { tin1, tin2, tin3, silver, glowstone } }, 'm_toga_signalum', localize('toga_signalumrecipe')
+end
+
+-- 1x Osmium + 1 Glowstone (consumed) = 1x Refined Glowstone
+togabalatro.validsmeltrecipes[#togabalatro.validsmeltrecipes+1] = function(selcards)
+	selcards = selcards or {}
+	local glowstone, osmium = nil, nil
+	for i, v in ipairs(selcards) do
+		if togabalatro.oredictcheck(v, togabalatro.oredict.glowstone) then glowstone = v end
+		if togabalatro.oredictcheck(v, togabalatro.oredict.osmium) then osmium = v end
+	end
+	return osmium and glowstone and osmium ~= glowstone, { cards = { osmium }, destroycard = { glowstone }, allcards = { osmium, glowstone } }, 'm_toga_refinedglowstone', localize('toga_refglowstonerecipe')
+end
+
 -- Check recipe.
 togabalatro.checkvalidrecipe = function()
 	local text, recipetxt, userecipetxt = localize('toga_novalidrecipe'), localize('toga_unknownvalidrecipe'), false
@@ -115,7 +226,7 @@ togabalatro.checkvalidrecipe = function()
 end
 
 -- Valid recipe text stuff.
-togabalatro.currentrecipetxt = {"toga_alloysteel", "toga_alloyelectrum", "toga_alloybronze"}
+togabalatro.currentrecipetxt = {"toga_alloysteel", "toga_alloyelectrum", "toga_alloybronze", "toga_alloysignalum", "toga_alloyinvar", "toga_alloylumium", "toga_alloyrefglowstone"}
 
 -- Feel the heat of the Smeltery.
 SMODS.Consumable{
@@ -127,14 +238,17 @@ SMODS.Consumable{
 	config = { extra = { usecost = 4 } },
 	loc_vars = function(self, info_queue, card)
 		local cando, txt = togabalatro.checkvalidrecipe()
-		if not cando then
+		if love.keyboard.isDown("lshift") then
 			if togabalatro.currentrecipetxt and #togabalatro.currentrecipetxt > 0 then
 				for i = 1, #togabalatro.currentrecipetxt do
 					info_queue[#info_queue + 1] = {key = togabalatro.currentrecipetxt[i], set = 'Other'}
 				end
 			end
 		end
-		return { key = cando and self.key..'_ready' or G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and self.key.."_novalidrecipe" or self.key, vars = { txt, card.ability.extra.usecost } }
+		return { key = cando and self.key..'_ready' or G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and self.key.."_novalidrecipe" or self.key, vars = { txt, (card.ability.extra or self.config.extra).usecost } }
+	end,
+	in_pool = function()
+		return togabalatro.has_mineral() -- Should only spawn if mineral cards.
 	end,
 	can_use = function(self, card, area, copier)
 		if togabalatro.validsmeltrecipes and #togabalatro.validsmeltrecipes < 0 then return false end
@@ -190,7 +304,7 @@ SMODS.Consumable{
 		end,}))
 	end,
 	keep_on_use = function(self, card)
-		if to_big(G.GAME.dollars) - to_big(card.ability.extra.usecost) > to_big(0) then return true end
+		if to_big(G.GAME.dollars) - to_big(card.ability.extra.usecost) >= to_big(G.GAME.bankrupt_at) then return true end
 	end,
 	set_badges = function(self, card, badges)
         badges[#badges] = create_badge(localize('toga_crafttarot'), G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1.2)
@@ -216,15 +330,28 @@ SMODS.Consumable {
 				info_queue[#info_queue + 1] = G.P_CENTERS[v]
 			end
 		end
-		return {key = love.keyboard.isDown("lshift") and self.key.."_showminerals" or self.key, vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds }}
+		return {key = love.keyboard.isDown("lshift") and self.key.."_showminerals" or self.key, vars = { SMODS.get_probability_vars(card or self, 1, (card.ability.extra or self.config.extra).odds) }}
+	end,
+	in_pool = function()
+		if G.playing_cards then
+			for i = 1, #G.playing_cards do
+				if SMODS.has_enhancement(G.playing_cards[i], "m_stone") then return true end -- Appear if there's a Stone card.
+			end
+		end
+		return false
 	end,
 	can_use = function(self, card, area, copier)
 		return G.playing_cards and #G.playing_cards > 1
 	end,
 	use = function(self, card, area, copier)
-		for i, v in ipairs(G.playing_cards) do
+		local cards = {}
+		for i = 1, #G.playing_cards do
+			cards[#cards+1] = G.playing_cards[i]
+		end
+		for k, v in ipairs(cards) do
 			if SMODS.has_enhancement(v, 'm_stone') then
-				if pseudorandom("toga_minediamonds") < G.GAME.probabilities.normal/card.ability.extra.odds then
+				--if pseudorandom("toga_minediamonds") < G.GAME.probabilities.normal/card.ability.extra.odds then
+				if SMODS.pseudorandom_probability(card, "toga_minediamonds", 1, card.ability.extra.odds, 'miningprospect') then
 					local enhancement = SMODS.poll_enhancement({ guaranteed = true, options = togabalatro.oredict.minerals, type_key = 'modmineral' })
 					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
 						card:juice_up()
@@ -233,7 +360,8 @@ SMODS.Consumable {
 					card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_stonefound'), sound = togabalatro.config.SFXWhenTriggered and 'toga_xporb'})
 				else
 					card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_stonenothing')})
-					G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1,func = function() card:juice_up(); SMODS.destroy_cards(v); return true end }))
+					card:juice_up()
+					SMODS.destroy_cards(v)
 				end
 			end
 		end
@@ -245,6 +373,50 @@ SMODS.Consumable {
 	perishable_compat = false,
 	eternal_compat = false,
 	can_stack = false
+}
+
+SMODS.Consumable {
+	key = 'inbox',
+	set = 'Tarot',
+	atlas = "TOGAConsumables",
+	pos = {x = 8, y = 0},
+	cost = 5,
+	config = { extra = { max_cards = 2 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS['m_toga_sms']
+		return { vars = { (card.ability or self.config).extra.max_cards } }
+	end,
+	in_pool = function()
+		if G.playing_cards then
+			for i = 1, #G.playing_cards do
+				if SMODS.has_enhancement(G.playing_cards[i], "m_toga_sms") then return true end -- Appear if there's a SMS card.
+			end
+		end
+		return false
+	end,
+	can_use = function(self, card, area, copier)
+		if G.playing_cards then
+			for i = 1, #G.playing_cards do
+				if SMODS.has_enhancement(G.playing_cards[i], "m_toga_sms") then return true end -- Can be used if an SMS card is present.
+			end
+		end
+		return false
+	end,
+	use = function(self, card, area, copier)
+		local cards = {}
+		for i = 1, #G.playing_cards do
+			if SMODS.has_enhancement(G.playing_cards[i], "m_toga_sms") then cards[#cards+1] = G.playing_cards[i] end
+		end
+		pseudoshuffle(cards, pseudoseed('yougotmail'))
+		local dcards = {}
+		for i = 1, card.ability.extra.max_cards or 2 do
+			if cards[i] then dcards[#dcards+1] = cards[i] end
+		end
+		if next(dcards) then SMODS.destroy_cards(dcards) end
+	end,
+	pixel_size = { w = 71, h = 77 },
+	perishable_compat = false,
+	eternal_compat = false,
 }
 
 -- SPB function.
@@ -277,7 +449,8 @@ SMODS.Consumable{
 	config = {extra = { cardlimit = spbcardmin, odds = 4, activated = false } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.cardlimit = math.max(G.deck and G.deck.cards and math.floor(#G.deck.cards*spbdeckpart) or 0, spbcardmin)
-		return {vars = { math.floor(card.ability.extra.cardlimit), card.ability.extra.odds, (G.GAME and G.GAME.probabilities.normal or 1), spbcardmin, spbdeckpart*100 } }
+		local basechance, odds = SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds)
+		return {vars = { math.floor(card.ability.extra.cardlimit), odds, basechance, spbcardmin, spbdeckpart*100 } }
 	end,
 	can_use = function(self, card, area, copier)
 		return G.deck and G.deck.cards and #G.deck.cards > 0
@@ -294,7 +467,8 @@ SMODS.Consumable{
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		if card.ability.extra.activated then return end
-		if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds then
+		--if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds then
+		if SMODS.pseudorandom_probability(card, "toga_selfpropelledbomb", 1, card.ability.extra.odds, 'theselfpropelledbomb') then
 			toga_spbdeckwreck(card, true)
 		else
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_safe_ex'), sound = togabalatro.config.SFXWhenRemoving and 'toga_thundershield'})
@@ -345,7 +519,7 @@ SMODS.Consumable {
 		return { vars = { card.ability.extra.cards } }
 	end,
 	can_use = function(self, card)
-		if G and G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.cards then 
+		if G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.cards then 
 			return true
 		end
 		return false
@@ -427,4 +601,65 @@ SMODS.Consumable {
 		end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
 	end
+}
+
+SMODS.Consumable {
+	key = 'alloyer',
+	set = 'Spectral',
+	atlas = "TOGAConsumables",
+	pos = {x = 7, y = 0},
+	cost = 5,
+	config = { extra = { max_highlighted = 1, odds = 4 } },
+	loc_vars = function(self, info_queue, card)
+		local alloypool = togabalatro.oredict.alloys
+		if alloypool and #alloypool > 0 and love.keyboard.isDown("lshift") then
+			for k, v in pairs(alloypool) do
+				info_queue[#info_queue + 1] = G.P_CENTERS[v]
+			end
+		end
+		return {key = love.keyboard.isDown("lshift") and self.key.."_showalloys" or self.key, vars = { (card.ability.extra or self.config.extra).max_highlighted, SMODS.get_probability_vars(card or self, 1, (card.ability.extra or self.config.extra).odds) } }
+	end,
+	can_use = function(self, card)
+		if G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.max_highlighted then
+			return true
+		end
+		return false
+	end,
+	use = function(self, card, area, copier)
+		if SMODS.pseudorandom_probability(card, "toga_alloyingmyingots", 1, card.ability.extra.odds, 'alloyer') then
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+			return true end }))
+			delay(0.2)
+			for i, v in pairs(G.hand.highlighted) do
+				local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+				local alloyenh = SMODS.poll_enhancement({ key = 'thealloying', guaranteed = true, options = togabalatro.oredict.alloys })
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() v:flip();play_sound('card1', percent, 1);v:juice_up(0.3, 0.3);return true end }))
+				G.E_MANAGER:add_event(Event({trigger = 'after',func = function() v:set_ability(alloyenh);return true end }))
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() v:flip();play_sound('tarot2', percent, 0.6);v:juice_up(0.3, 0.3);return true end }))
+			end
+			delay(0.2)
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+		else
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+				attention_text({
+					text = localize('k_nope_ex'),
+					scale = 1.3, 
+					hold = 1.4,
+					major = card,
+					backdrop_colour = G.C.SECONDARY_SET.Tarot,
+					align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and 'tm' or 'cm',
+					offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0},
+					silent = true
+					})
+					G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+						play_sound('tarot2', 0.76, 0.4);return true end}))
+					play_sound('tarot2', 1, 0.4)
+					card:juice_up(0.3, 0.5)
+			return true end }))
+			delay(0.2)
+		end
+	end,
+	pixel_size = { w = 71, h = 77 },
 }

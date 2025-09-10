@@ -22,6 +22,7 @@ if SDM_0s_Stuff_Config and SDM_0s_Stuff_Config.sdm_bakery then
 		atlas = 'TOGAJokersOtherDiffSize',
 		pos = { x = 6, y = 0 },
 		cost = 5,
+		pools = { ["TOGAJKR"] = true },
 		blueprint_compat = true,
 		calculate = function(self, card, context)
 			if context.before then

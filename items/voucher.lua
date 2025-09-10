@@ -52,9 +52,11 @@ SMODS.Voucher{
 		return {vars = {card.ability.extra.probabilitymult}}
 	end,
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
-		for k, v in pairs(G.GAME.probabilities) do
-			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Added X"..(card and card.ability.extra or self.config.extra).probabilitymult.." probability multiplier.", "TOGAPack") end
+	end,
+	calculate = function(self, card, context)
+		if context.mod_probability and not context.blueprint then
+			return { numerator = context.numerator * (card and card.ability.extra or self.config.extra).probabilitymult }
 		end
 	end,
 }
@@ -72,9 +74,11 @@ SMODS.Voucher{
 	end,
 	requires = {'v_toga_hardwarewizard'},
 	redeem = function(self, card)
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Multiplied chance by X"..(card and card.ability.extra or self.config.extra).probabilitymult..".", "TOGAPack") end
-		for k, v in pairs(G.GAME.probabilities) do
-			G.GAME.probabilities[k] = v*(card and card.ability.extra or self.config.extra).probabilitymult
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Added X"..(card and card.ability.extra or self.config.extra).probabilitymult.." probability multiplier.", "TOGAPack") end
+	end,
+	calculate = function(self, card, context)
+		if context.mod_probability and not context.blueprint then
+			return { numerator = context.numerator * (card and card.ability.extra or self.config.extra).probabilitymult }
 		end
 	end,
 }
@@ -93,7 +97,6 @@ SMODS.Voucher{
 	redeem = function(self, card)
 		togabalatro.handlimitchange(math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect)))
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased card selection limit by "..math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))..".", "TOGAPack") end
-		--G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + math.max(1, math.floor((card and card.ability.extra or self.config.extra).moreselect))
 	end,
 }
 
@@ -121,7 +124,6 @@ SMODS.Voucher{
 		G.consumeables.config.card_limit = cardlimitavrg
 		G.hand.config.card_limit = cardlimitavrg
 		togabalatro.handlimitchange(cardlimitavrg, true)
-		--G.hand.config.highlighted_limit = cardlimitavrg
 		-- poker hand levels.
 		local totallevel = 0
 		for _, v in ipairs(G.handlist) do
@@ -197,17 +199,17 @@ SMODS.Voucher{
 		if card.ability.extra.copies < 1 then card.ability.extra.copies = 1 end -- at least one.
 		
 		if context.pre_discard then
-			return { func = function()
-				local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-				if next(pokerhands['Flush']) and G.consumeables.cards[1] then
+			local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+			if next(pokerhands['Flush']) and G.consumeables.cards[1] then
+				return { func = function()
 					for i = 1, math.floor(card.ability.extra.copies) do
 						local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed('dnsflush')), nil)
 						card:set_edition({negative = true}, true)
 						card:add_to_deck()
 						G.consumeables:emplace(card)
 					end
-				end
-			end }
+				end }
+			end
 		end
 	end,
 }
@@ -221,7 +223,7 @@ SMODS.Voucher{
 	rarity = 3,
 	config = { rarity = 3 },
 	loc_vars = function(self, info_queue, card)
-		return {vars = { G.GAME.probabilities.normal or 1, G.P_SEALS.toga_sealseal.config.odds or 1337 }}
+		return {vars = { SMODS.get_probability_vars(card or self, 1, G.P_SEALS.toga_sealseal.config.odds or 1337) }}
 	end,
 }
 
@@ -240,4 +242,59 @@ SMODS.Voucher{
 	set_badges = function(self, card, badges)
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end
+}
+
+SMODS.Voucher{
+	key = 'auroramatter',
+	pos = { x = 5, y = 1 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 15,
+	rarity = 3,
+	config = { rarity = 3, extra = { negchance = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.negchance}}
+	end,
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Negative edition chance multiplied by "..math.ceil((card and card.ability.extra or self.config.extra).negchance).."X.", "TOGAPack") end
+		G.GAME.toga_negchance = (G.GAME.toga_negchance or 1)*(card and card.ability.extra or self.config.extra).negchance
+	end,
+}
+
+SMODS.Voucher{
+	key = 'quantummatter',
+	pos = { x = 5, y = 2 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 20,
+	rarity = 4,
+	config = { rarity = 4, extra = { negchance = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.negchance}}
+	end,
+	requires = {'v_auroramatter'},
+	redeem = function(self, card)
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Negative edition chance multiplied by "..math.ceil((card and card.ability.extra or self.config.extra).negchance).."X.", "TOGAPack") end
+		G.GAME.toga_negchance = (G.GAME.toga_negchance or 1)*(card and card.ability.extra or self.config.extra).negchance
+	end,
+}
+
+SMODS.Voucher{
+	key = 'spectralzipper',
+	pos = { x = 6, y = 1 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 20,
+	rarity = 4,
+	config = { rarity = 4, extra = { odds = 500 } },
+	requires = {'v_omen_globe'},
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togaziparchivepack
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_toga_togararpack
+		return {vars = { SMODS.get_probability_vars(card or self, 1, card.ability.extra.odds or 500) } }
+	end,
+	redeem = function(self, card)
+		G.GAME.spectralzipper_chance = (card and card.ability.extra or self.config.extra).odds or 500
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Spectral Zipper chance set to "..G.GAME.spectralzipper_chance..".", "TOGAPack") end
+	end,
 }

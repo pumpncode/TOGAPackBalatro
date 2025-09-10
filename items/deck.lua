@@ -164,3 +164,57 @@ SMODS.Back{
 		G.GAME.modifiers.toga_randomscore = true
 	end
 }
+
+if togabalatro.config.EnableQE then
+	SMODS.Back{
+		key = "blissful",
+		atlas = "TOGADeckBack",
+		pos = { x = 8, y = 0 },
+		config = {ante_scaling = 2, hands = -1, discards = -1, joker_slot = -1, consumable_slot = -1, extraante = 2},
+		loc_vars = function(self, info_queue, center)
+			return { vars = { self.config.hands, self.config.discards, self.config.joker_slot, self.config.consumable_slot, self.config.ante_scaling, self.config.extraante } }
+		end,
+		apply = function(self, back)
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.GAME and G.GAME.win_ante then
+						G.GAME.win_ante = G.GAME.win_ante + self.config.extraante
+						return true
+					end
+				end,
+			}))
+		end,
+		calculate = function(self, card, context)
+			if (context.retrigger_joker_check or context.retrigger_joker or context.blueprint) then return end
+			if context.check_enhancement and context.other_card and context.no_blueprint then
+				local curenh = {}
+				if G.playing_cards and #G.playing_cards > 0 then
+					for i = 1, #G.playing_cards do
+						if G.playing_cards[i].ability.set == 'Enhanced' and G.playing_cards[i].config and not curenh[G.playing_cards[i].config.center_key] then curenh[G.playing_cards[i].config.center_key] = true end
+					end
+				end
+				return curenh
+			end
+		end
+	}
+end
+
+SMODS.Back{
+	key = "prairie",
+	pos = { x = 9, y = 0 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.modifiers.toga_noplayedscore = true
+	end
+}
+
+SMODS.Back{
+	key = "betafish",
+	pos = { x = 10, y = 0 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.GAME.modifiers.toga_nohandscore = true
+	end
+}
