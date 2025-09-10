@@ -7,7 +7,7 @@ SMODS.Blind{
 	pos = { x = 0, y = 0 },
 	vars = { reducedhandsel = 1, activated = false },
 	dollars = 6,
-	mult = 5.6,
+	mult = 2.8,
 	boss = { min = 4 },
 	loc_vars = function(self)
 		return { vars = { -self.vars.reducedhandsel } }
@@ -45,7 +45,7 @@ SMODS.Blind{
 	pos = { x = 0, y = 0 },
 	vars = { increasehandsel = 3, activated = false },
 	dollars = 6,
-	mult = 56.6,
+	mult = 14.4,
 	boss = { min = 3.11, showdown = true },
 	in_pool = function(self)
 		return G.GAME.dialupmodem or false

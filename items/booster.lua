@@ -53,7 +53,11 @@ SMODS.Booster{
 		--return create_card("Joker", G.pack_cards, leg, nil, true, true, nil, 'toga')
 		return SMODS.create_card({ set = 'Joker', area = G.pack_cards, legendary = leg, skip_materialize = true, soulable = true, key_append = 'toga'})
 	end,
-	kind = 'TOGABoostPack'
+	kind = 'TOGABoostPack',
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Booster{
@@ -81,7 +85,11 @@ SMODS.Booster{
 		--return create_card("Consumeables", G.pack_cards, nil, nil, true, true, leg and 'c_soul' or togabalatro.getrandcons('rar'), 'toga')
 		return SMODS.create_card({ set = 'Consumables', area = G.pack_cards, legendary = leg, skip_materialize = true, soulable = true, key = leg and 'c_soul' or togabalatro.getrandcons('rar'), key_append = 'toga'})
 	end,
-	kind = 'TOGABoostPack'
+	kind = 'TOGABoostPack',
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Booster{
@@ -106,7 +114,11 @@ SMODS.Booster{
 		--return {set = (pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", edition = _edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "playcardcab"}
 		return SMODS.create_card({set = 'Playing Card', edition = _edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "playcardcab"})
 	end,
-	kind = 'TOGABoostPack'
+	kind = 'TOGABoostPack',
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Booster{

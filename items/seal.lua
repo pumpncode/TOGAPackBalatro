@@ -8,6 +8,8 @@ SMODS.Seal{
 	pos = { x = 0, y = 0 },
 	config = { odds = 25 },
 	loc_vars = function(self, info_queue, card)
+		if not togabalatro.config.ShowPower then return { key = self.key.."_locked" } end
+		
 		if G and G.GAME and G.GAME.used_vouchers then
 			return { key = G.GAME.used_vouchers['v_toga_caniofferyouanegg'] == true and self.key..'_alt2' or G.GAME.used_vouchers['v_toga_sealegg'] == true and self.key..'_alt1'
 				or self.key, vars = G.GAME.used_vouchers['v_toga_sealegg'] == true and { SMODS.get_probability_vars(card or self, 1, (card.ability.seal or self.config).odds or 25) } }
@@ -38,6 +40,7 @@ SMODS.Seal{
 			}
 		end
 	end,
+	poweritem = true
 }
 
 SMODS.Seal{
@@ -45,5 +48,9 @@ SMODS.Seal{
 	badge_colour = HEX("0000ff"),
 	atlas = "TOGASeals",
 	pos = { x = 1, y = 0 },
-	sound = { sound = "gold_seal", per = 1.2, vol = 0.4 }
+	loc_vars = function(self, info_queue, card)
+		if not togabalatro.config.ShowPower then return { key = self.key.."_locked" } end
+	end,
+	sound = { sound = "gold_seal", per = 1.2, vol = 0.4 },
+	poweritem = true
 }

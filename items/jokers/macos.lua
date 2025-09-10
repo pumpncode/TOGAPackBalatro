@@ -1,6 +1,6 @@
 sendInfoMessage("Loading Jokers - Mac OS...", "TOGAPack")
 
-local macos9_hxmult, macosx_hxchips = 1.25, 1.5
+local macos9_hxmult, macosx_hxchips = 1.25, 1.25
 
 SMODS.Joker{
 	key = 'mac_os_9',

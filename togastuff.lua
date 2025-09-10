@@ -95,7 +95,7 @@ SMODS.Sound({key = "rosenah", path = "rosenah.ogg"}) -- self explanatory, same a
 SMODS.Sound({key = "scalesofjustice", path = "ScalesOfJustice.wav"}) -- self explanatory, Worms Armageddon/World Party.
 SMODS.Sound({key = "failsfx", path = "comedicfail.ogg"}) -- fart.mp3
 SMODS.Sound({key = "goldenhit", path = "Saxxy_impact_gen_06.ogg"}) -- getting a kill with a Golden Wrench, Saxxy or Golden Frying Pan, TF2
-SMODS.Sound({key = "jaratehit", path = "jar_explode.ogg"}) -- Jarate hitting something, TF2
+SMODS.Sound({key = "jaratehit", path = "crit_hit_mini.wav"}) -- Minicrits, TF2
 SMODS.Sound({key = "soldierscream", path = "screm.ogg"}) -- TF2 Soldier screaming?
 SMODS.Sound({key = "w95restup", path = "Windows 95 restore up.ogg"}) -- Plus! 95, Windows 95 restore up.wav
 SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
@@ -231,6 +231,8 @@ togabalatro.systemtype = function()
 	elseif stype == 'Android' or stype == 'iOS' then return 'Mobile ('..stype..')'
 	end
 end
+
+togabalatro.curcpucount = love.system.getProcessorCount()
 
 -- Check for specific process name.
 togabalatro.getprocessamount = function(process)
@@ -398,7 +400,54 @@ G.FUNCS.togabalatro_playsfx = function()
 	play_sound(togabalatro.startupsfx[togabalatro.config.StartUpSFX.Selected], 1, 0.5)
 end
 G.FUNCS.togabalatro_sfxswapcfg = function(args)
+	if not args or args.to_key == nil then return end
 	togabalatro.config.SFXSwapLevel = args.to_key
+end
+G.FUNCS.togabalatro_jokeitems = function(args)
+	if not args or args.to_key == nil then return end
+	togabalatro.config.JokeJokersActive = args.to_key == 1 and true or false
+	togabalatro.updatecollectionitems()
+	G.FUNCS.openModUI_TOGAPack()
+end
+G.FUNCS.togabalatro_poweritems = function(args)
+	if not args or args.to_key == nil then return end
+	togabalatro.config.ShowPower = args.to_key == 1 and true or false
+	togabalatro.updatecollectionitems()
+	G.FUNCS.openModUI_TOGAPack()
+end
+
+togabalatro.updatecollectionitems = function()
+	for _, t in ipairs{G.P_CENTERS, G.P_TAGS, G.P_SEALS} do
+		for k, v in pairs(t) do
+			if (v.original_mod or {}).id == 'TOGAPack' then
+				if v.jokeitem then
+					if togabalatro.config.JokeJokersActive then v.no_collection = nil else v.no_collection = true end
+				end
+				if v.poweritem then
+					if togabalatro.config.ShowPower then v.no_collection = nil else v.no_collection = true end
+				end
+			end
+		end
+	end
+end
+
+-- Prevent seals spawning if power items disabled.
+sendInfoMessage("Hooking SMODS.poll_seal...", "TOGAPack")
+local smodssealref = SMODS.poll_seal
+function SMODS.poll_seal(args)
+	local resultseal = smodssealref(args) -- original result.
+	local iter, iterlimit = 0, 100 -- just so we don't lock the game up.
+	
+	if not togabalatro.config.ShowPower and resultseal ~= nil and (resultseal == 'toga_sealseal' or resultseal == 'toga_urlseal') then
+		repeat
+			iter = iter + 1
+			smodssealref(args)
+		until (resultseal ~= 'toga_sealseal' and resultseal ~= 'toga_urlseal') or iter > iterlimit
+		
+		if (resultseal == 'toga_sealseal' or resultseal == 'toga_urlseal') then resultseal = nil end
+	end
+	
+	return resultseal
 end
 
 -- Still kept for colouring the button with higher allowed amount of cards to play, but also backwards compat.
@@ -637,13 +686,12 @@ function G.FUNCS.draw_from_deck_to_hand(e)
 	}))
 end
 
--- for Jarate & a Boss/Showdown Blind...
+-- for a Boss/Showdown Blind...
 sendInfoMessage("Hooking Blind:defeat...", "TOGAPack")
 local blindkillref = Blind.defeat
 function Blind:defeat(silent)
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("Blind:defeat hook.", "TOGAPack") end
 	blindkillref(self, silent)
-	G.GAME.blind.jarated = nil
 	if not G.GAME.dialupmodem and self.name == 'bl_toga_dialupmodem' then G.GAME.dialupmodem = true end
 end
 
@@ -724,7 +772,7 @@ sendInfoMessage("Hooking level_up_hand...", "TOGAPack")
 local lvluphandref = level_up_hand
 function level_up_hand(card, hand, instant, amount)
 	amount = amount or to_big(1)
-	if amount > to_big(0) then
+	if to_big(amount) > to_big(0) then
 		local xpcalc = {}
 		SMODS.calculate_context({ toga_xplvlup = true }, xpcalc)
 		for _, eval in pairs(xpcalc) do
@@ -797,6 +845,23 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 						card_eval_status_text(activesyncs[i], 'extra', nil, nil, nil, {message = msg, colour = string.find(key, 'chip') and G.C.CHIPS or string.find(key, 'mult') and G.C.MULT, delay = 0.2})
 					end
 					key = togabalatro.chipmultopswap[key]
+				end
+			end
+		end
+		local jarate = SMODS.find_card('j_toga_jarate')
+		if next(jarate) and amount then
+			for i = 1, #jarate do
+				if SMODS.pseudorandom_probability(jarate[i], "tf2jarate", 1, jarate[i].ability.extra.odds or 15, 'tf2jarate') then
+					if not (Talisman and Talisman.config_file.disable_anims) then
+						card_eval_status_text(jarate[i], 'extra', nil, nil, nil, {
+							message = localize('toga_jarated'),
+							sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_jaratehit",
+							pitch = not silent and togabalatro.config.SFXWhenTriggered and togabalatro.randompitch(),
+							volume = 0.3,
+							delay = 0.2
+						})
+					end
+					amount = amount*jarate[i].ability.extra.minicrit
 				end
 			end
 		end

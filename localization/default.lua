@@ -104,7 +104,8 @@ return {
 				text = {
 					"{C:attention}Vanilla{} scoring of",
 					"{C:attention}played{} cards",
-					"does not occur."
+					"does not occur.",
+					"{C:attention}X#1#{} base Blind size",
 				}
 			},
 			b_toga_betafish = {
@@ -112,7 +113,8 @@ return {
 				text = {
 					"{C:attention}Vanilla{} scoring of",
 					"{C:attention}held in hand{} cards",
-					"does not occur."
+					"does not occur.",
+					"{C:attention}X#1#{} base Blind size"
 				}
 			},
 		},
@@ -161,13 +163,23 @@ return {
 					"{C:inactive,s:0.8}Have you updated your system yet?{}",
 				}
 			},
+			j_toga_y2kbug_lite = {
+				name = 'Y2K Bug',
+				text = {
+					"If the played hand contains a",
+					"{C:attention}2{} and a {C:attention}King{}, scoring cards",
+					"give {C:red}+#2#{} Mult",
+					"{C:inactive,s:0.8}Have you updated your system yet?{}",
+				}
+			},
 			j_toga_controlpanel = {
 				name = 'Control Panel',
 				text = {
-					"Gives {C:money}$#1#{} for every Joker and",
-					"Consumable slots at end of round.",
-					"Defeating {C:attention}Boss Blinds{} upgrades",
-					"individual slot payout by {C:money}$#2#{}.",
+					--"Gain {C:money}$#1#{} for every {C:attention}Joker{} and",
+					"For every {C:attention}Joker{} and {C:attention}Consumable{}",
+					"slots, gain {C:money}$#1#{} at end of round.",
+					-- "Defeating {C:attention}Boss Blinds{} upgrades",
+					-- "individual slot payout by {C:money}$#2#{}.",
 					"{C:inactive,s:0.8}(Currently {}{C:money,s:0.8}$#3#{}{C:inactive,s:0.8}){}",
 					"{C:inactive,s:0.8}Look at all them settings!{}"
 				}
@@ -175,10 +187,14 @@ return {
 			j_toga_mcanvil = {
 				name = 'Anvil',
 				text = {
-					"Retrigger a scoring card",
-					"#1# time(s) per {C:attention}4 Steel Cards{}",
-					"in your {C:important}full deck{}.",
-					"{C:inactive,s:0.8}(Currently #2#){}"
+					-- "Retrigger a scoring card",
+					-- "#1# time(s) per {C:attention}4 Steel Cards{}",
+					-- "in your {C:important}full deck{}.",
+					-- "{C:inactive,s:0.8}(Currently #2#){}"
+					"This Joker gains {X:mult,C:white}X#2#{} Mult",
+					"per scoring {C:attention}Steel{} card played,",
+					"removes card {C:attention}Enhancement{}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
 				}
 			},
 			j_toga_taskmgr = {
@@ -213,7 +229,7 @@ return {
 				name = 'Solitaire Joker',
 				text = {
 					"When playing a hand {C:attention}containing{} a {C:attention}Straight{},",
-					"draw remaining {C:attention}#2#s{} in the deck to hand.",
+					"draw remaining {C:attention}#1#s{} in the deck to hand.",
 					"Rank changes every round.",
 					"{C:inactive,s:0.8}An Office regular.{}"
 				}
@@ -234,6 +250,13 @@ return {
 					"upon selecting a {C:attention}Blind{}.",
 					"If there are {C:attention}#4#{} or fewer",
 					"Jokers, get {C:attention}X#3#{} the amount."
+				}
+			},
+			j_toga_win95_lite = {
+				name = 'Windows 95',
+				text = {
+					"{C:chips}+#1#{} hand(s) & {C:red}+#2#{} discard(s)",
+					"upon selecting a {C:attention}Blind{}.",
 				}
 			},
 			j_toga_win98 = {
@@ -286,6 +309,17 @@ return {
 					"{C:red,s:0.8}Self debuffs if {X:mult,C:white,s:0.8}XMult{C:red,s:0.8} goes below {X:mult,C:white,s:0.8}X1{}{C:red,s:0.8}.{}",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
 					"{C:inactive,s:0.7}I am literally a racer, what's your excuse?{}"
+				}
+			},
+			j_toga_jokersrb2kart_lite = {
+				name = 'Karting Joker',
+				text = {
+					"Gains {X:mult,C:white}X#2#{} Mult when",
+					"{C:attention}entering{} or {C:attention}leaving shop{}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
+					"{C:inactive,s:0.7}I am literally a racer, what's your excuse?{}"
+					-- "{C:inactive,s:0.7}I am literally nerfed right now{}",
+					-- "{C:inactive,s:0.7}, what's your excuse?{}"
 				}
 			},
 			j_toga_whatisthis = {
@@ -397,10 +431,10 @@ return {
 			j_toga_systemrestore = {
 				name = 'System Restore',
 				text = {
-					"When {C:attention}playing cards{} are {C:red}destroyed{}, copy the",
-					"{C:attention}first{} destroyed card into the deck with",
-					"additional duplicates of it for",
-					"{C:attention}each{} other destroyed card.",
+					"When {C:attention}playing cards{} are {C:red}destroyed{}, copy a",
+					"{C:attention}random{} destroyed card into the deck",
+					-- "additional duplicates of it for",
+					-- "{C:attention}each{} other destroyed card.",
 				}
 			},
 			j_toga_spacecadetpinball = {
@@ -504,12 +538,9 @@ return {
 				name = 'Jarate',
 				text = {
 					{
-						"{C:attention}#1#% Blind{} requirements",
-						"when selecting a {C:attention}Boss Blind{}.",
-						"Scored cards {C:attention}lose{} their",
-						"enhancements, editions and seals.",
-						"Recharges when {C:attention}entering{} shop.",
-						"{C:inactive,s:0.8}#2#",
+						"{C:green}#2# in #3#{} chance to",
+						"{X:attention,C:white}X#1#{} operation amount",
+						"on {C:chips}Chips{} or {C:mult}Mult{}"
 					},
 					{
 						"{C:inactive}Ah... {C:inactive,E:1}piss!{}"
@@ -527,9 +558,10 @@ return {
 			j_toga_virtualpc = {
 				name = 'Virtual PC',
 				text = {
-					"When {C:attention}scoring starts{}, current",
-					"{C:blue}Chips{} and {C:red}Mult{} are {C:attention}added{}",
-					"to this Joker",
+					"When {C:attention}scoring starts{},",
+					"base {C:blue}Chips{} and {C:red}Mult{}",
+					"of played {C:attention}poker hand{}",
+					"are added to this Joker",
 					"{C:inactive,s:0.85}(Currently {C:blue,s:0.85}#1#{C:inactive,s:0.85} Chips / {C:red,s:0.85}#2#{C:inactive,s:0.85} Mult)"
 				}
 			},
@@ -761,8 +793,7 @@ return {
 			j_toga_netscapenavigator = {
 				name = 'Netscape Navigator',
 				text = {
-					"{C:dark_edition}Holographic{} {C:attention}Jokers{}",
-					"or {C:attention}held in hand{} cards",
+					"{C:dark_edition}Holographic{} {C:attention}held in hand{} cards",
 					"give {X:mult,C:white}X#1#{} Mult",
 				},
 			},
@@ -785,15 +816,20 @@ return {
 			j_toga_msagent = {
 				name = 'Microsoft Agent',
 				text = {
-					"{C:dark_edition}Unbalances{}",
+					"{C:dark_edition}Unbalances{} {C:attention}#1#%{} of",
 					"{C:blue}Chips{} and {C:red}Mult{}",
 				},
 			},
 			j_toga_drwatson = {
 				name = 'Dr. Watson',
 				text = {
-					"After a hand is played, {C:red}destroy{}",
-					"debuffed {C:attention}played{}/{C:attention}held in hand{} cards",
+					-- "After a hand is played, {C:red}destroy{}",
+					-- "debuffed {C:attention}played{}/{C:attention}held in hand{} cards",
+					--"{X:mult,C:white}X#1#{} / {X:mult,C:white}X#2#{}"
+					"This Joker gains {X:mult,C:white}X#2#{} Mult",
+					"when played hand triggers",
+					"the {C:attention}Boss Blind{} ability",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
 				},
 			},
 			j_toga_fontsfolder = {
@@ -889,10 +925,17 @@ return {
 					"{C:red}does not{} beat the Blind.",
 				}
 			},
+			j_toga_joker203_lite = {
+				name = 'Joker 2.03',
+				text = {
+					"{X:purple,C:white}=0{} Score if {C:attention}scored hand{}",
+					"{C:red}does not{} beat the Blind.",
+				}
+			},
 			j_toga_activesync = {
 				name = 'ActiveSync',
 				text = {
-					"{C:green}#1# in #2#{} chance to {C:attention}swap{} any",
+					"{C:green}#1# in #2#{} chance to {C:attention}swap{}",
 					"{C:attention}operations{} on {C:blue}Chips{} or {C:red}Mult{}",
 					"to the {C:attention}other{} instead",
 				}
@@ -1418,6 +1461,13 @@ return {
 					"{C:inactive}(Must have room){}"
 				},
 			},
+			toga_sealseal_locked = {
+				name = "Seal^2",
+				text = {
+					"'Broken' item, spawn disabled",
+					"by config"
+				},
+			},
 			toga_sealseal_alt1 = {
 				name = "Seal^2 - Upgraded",
 				text = {
@@ -1439,6 +1489,13 @@ return {
 					"{C:attention}Held in hand{} abilities",
 					"of this card trigger",
 					"{C:attention}even{} if {C:attention}not{} in hand."
+				},
+			},
+			toga_urlseal_locked = {
+				name = "Hyperlink Seal",
+				text = {
+					"'Broken' item, spawn disabled",
+					"by config"
 				},
 			},
 			toga_albavirusinfo = {
@@ -1775,7 +1832,7 @@ return {
 			toga_spbavoidfail = "Hit!",
 			toga_spbavoidsuccess = "Safe!",
 			toga_bonusapply = "Bonus!",
-			toga_anviltrigger = "Hit it!",
+			toga_anviltrigger = "Hit!",
 			toga_colourful = "Colourful!",
 			toga_floppypartner = "Floppy!",
 			toga_suspartner = "amogus.",
@@ -1811,16 +1868,15 @@ return {
 			toga_Emultmod = "^#1# Mult",
 			toga_EEmultmod = "^^#1# Mult",
 			toga_EEEmultmod = "^^^#1# Mult",
-			toga_jaraterecharging = "Waiting for resupply...",
-			toga_jaraterestocked = "Resupplied!",
-			toga_jarateready = "Ready!",
-			toga_jarated = "Washed!",
+			toga_jarated = "Minicrit!",
 			toga_perlevel = "per-level",
 			toga_pinballing = "Score!",
 			toga_roverwoof = "Woof.",
 			toga_leech = "Leech",
 			toga_bonziinvert = "Inverted",
 			toga_hammersmash = "Smash!",
+			toga_itemon = "Enabled",
+			toga_itemoff = "Disabled",
 			toga_configtab = "Mod Settings",
 			toga_logtab = "Logging Settings",
 			toga_startsfxtab = "Misc. Audio Options",
@@ -1830,6 +1886,9 @@ return {
 			toga_sfxwhenuse = "SFX when some of the mods' items trigger",
 			toga_musicpacks = "MIDI-fied music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
+			toga_jokeactive = "'Joke' items:",
+			toga_usenerfedver = "If available, use nerfed version of an item",
+			toga_strongstate = "'Mainline' items:",
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
 			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",

@@ -5,11 +5,11 @@ SMODS.Joker{
 	config = { extra = { hands = 1, discards = 1, xhd = 2, slots = 3 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xhd = math.max(card.ability.extra.xhd, 2)
-		return { vars = { card.ability.extra.hands, card.ability.extra.discards, card.ability.extra.xhd, card.ability.extra.slots } }
+		return { key = togabalatro.config.UseNerfed and self.key.."_lite" or self.key, vars = { card.ability.extra.hands, card.ability.extra.discards, card.ability.extra.xhd, card.ability.extra.slots } }
 	end,
 	unlocked = true,
 	discovered = true,
-	rarity = 2,
+	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 0 },
 	cost = 7,
@@ -17,7 +17,7 @@ SMODS.Joker{
 	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if (context.setting_blind or context.forcetrigger) and not (context.blueprint_card or card).getting_sliced then
-			local handdiscardmult = G.jokers and #G.jokers.cards <= card.ability.extra.slots and math.max(card.ability.extra.xhd, 2) or 1
+			local handdiscardmult = G.jokers and #G.jokers.cards <= card.ability.extra.slots and not togabalatro.config.UseNerfed and math.max(card.ability.extra.xhd, 2) or 1
 			ease_hands_played(card.ability.extra.hands*handdiscardmult)
 			ease_discard(card.ability.extra.discards*handdiscardmult)
 			return { message = localize('toga_32bits') }
@@ -33,7 +33,10 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_win95tada")
 			else play_sound("toga_chordold") end
 		end
-	end
+	end,
+	set_badges = function(self, card, badges)
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+	end,
 }
 
 local function toga_gettotaljokervalue()
@@ -91,7 +94,9 @@ SMODS.Joker{
 	key = 'winmillenium',
 	config = { extra = { basechips = 25, chipbonus = 25, totalbonus = 25 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.basechips, card.ability.extra.chipbonus, card.ability.extra.totalbonus } }
+		local nerfy = togabalatro.config.UseNerfed and 0.2 or 1
+		card.ability.extra.totalbonus = card.ability.extra.basechips + (card.ability.extra.chipbonus*nerfy)*toga_vouchcount()
+		return { vars = { card.ability.extra.basechips, (card.ability.extra.chipbonus*nerfy), card.ability.extra.totalbonus } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -100,7 +105,8 @@ SMODS.Joker{
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus*toga_vouchcount()
+		local nerfy = togabalatro.config.UseNerfed and 0.2 or 1
+		card.ability.extra.totalbonus = card.ability.extra.basechips + (card.ability.extra.chipbonus*nerfy)*toga_vouchcount()
 		
 		if context.other_joker then
 			return { chips = card.ability.extra.totalbonus }
@@ -117,9 +123,9 @@ SMODS.Joker{
 			else play_sound("toga_chord") end
 		end
 	end,
-	update = function(self, card, context)
-		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus*toga_vouchcount()
-	end
+	set_badges = function(self, card, badges)
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+	end,
 }
 
 SMODS.Joker{
@@ -231,13 +237,17 @@ SMODS.Joker{
 SMODS.Joker{
 	key = 'winvista',
 	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
 	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 2 },
 	cost = 10,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	demicolon_compat = true,
 	calculate = function(self, card, context)
+		if context.blueprint or context.retrigger_joker then return end
 		if (context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6) or context.forcetrigger then
 			return {
 				remove = true,
@@ -274,7 +284,8 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_winvista78logoff")
 			else play_sound("toga_winvista7critstop") end
 		end
-	end
+	end,
+	poweritem = true
 }
 
 SMODS.Joker{
@@ -284,6 +295,9 @@ SMODS.Joker{
 		return { vars = { card.ability.extra.x_mult } }
 	end,
 	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
 	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 1, y = 2 },
@@ -321,7 +335,8 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_winvista78logoff")
 			else play_sound("toga_winvista7critstop") end
 		end
-	end
+	end,
+	poweritem = true
 }
 
 SMODS.Joker{
@@ -331,6 +346,9 @@ SMODS.Joker{
 		return { vars = { card.ability.extra.xmult } }
 	end,
 	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
 	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 2, y = 2 },
@@ -365,5 +383,6 @@ SMODS.Joker{
 			else play_sound("toga_win8error") end
 		end
 	end,
-	pixel_size = { w = 70, h = 84 }
+	pixel_size = { w = 70, h = 84 },
+	poweritem = true
 }

@@ -16,6 +16,10 @@ SMODS.Voucher{
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Increased hand size by "..math.ceil(G.hand.config.card_limit*(card and card.ability.extra or self.config.extra).h_size_scale)..".", "TOGAPack") end
 		G.hand:change_size(math.ceil(G.hand.config.card_limit*(card and card.ability.extra or self.config.extra).h_size_scale))
 	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Voucher{
@@ -180,6 +184,10 @@ if Talisman then
 				}
 			end
 		end,
+		in_pool = function()
+			return togabalatro.config.ShowPower
+		end,
+		poweritem = true
 	}
 end
 
@@ -212,6 +220,10 @@ SMODS.Voucher{
 			end
 		end
 	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Voucher{
@@ -225,6 +237,10 @@ SMODS.Voucher{
 	loc_vars = function(self, info_queue, card)
 		return {vars = { SMODS.get_probability_vars(card or self, 1, G.P_SEALS.toga_sealseal.config.odds or 1337) }}
 	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Voucher{
@@ -241,7 +257,11 @@ SMODS.Voucher{
 	requires = {'v_toga_sealegg'},
 	set_badges = function(self, card, badges)
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
-	end
+	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Voucher{

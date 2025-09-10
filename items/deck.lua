@@ -204,6 +204,10 @@ SMODS.Back{
 	pos = { x = 9, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
+	config = {ante_scaling = 0.8},
+	loc_vars = function(self, info_queue, center)
+		return { vars = { self.config.ante_scaling } }
+	end,
 	apply = function(self, back)
 		G.GAME.modifiers.toga_noplayedscore = true
 	end
@@ -214,6 +218,10 @@ SMODS.Back{
 	pos = { x = 10, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
+	config = {ante_scaling = 0.8},
+	loc_vars = function(self, info_queue, center)
+		return { vars = { self.config.ante_scaling } }
+	end,
 	apply = function(self, back)
 		G.GAME.modifiers.toga_nohandscore = true
 	end

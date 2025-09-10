@@ -65,9 +65,10 @@ SMODS.Tag{
 	atlas = "TOGATags",
 	pos = { x = 6, y = 0 },
 	config = { type = "new_blind_choice" },
-	in_pool = function(self, args)
-		return true
+	in_pool = function()
+		return togabalatro.config.ShowPower
 	end,
+	poweritem = true,
 	apply = function(self, tag, context)
 		local lock = tag.ID
 		if context.type == "new_blind_choice" then
@@ -123,6 +124,7 @@ SMODS.Tag{
 	pos = { x = 3, y = 0 },
 	config = { type = "store_joker_create" },
 	in_pool = function(self, args)
+		if not togabalatro.config.ShowPower then return false end
 		if #SMODS.find_card('j_oops', true) > 0 then return false
 		else return true end
 	end,
@@ -141,6 +143,7 @@ SMODS.Tag{
 			return card
 		end
 	end,
+	poweritem = true
 }
 
 SMODS.Tag{
@@ -215,6 +218,9 @@ SMODS.Tag{
 	atlas = "TOGATags",
 	pos = { x = 7, y = 0 },
 	config = { type = "store_joker_create" },
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
 	min_ante = 2,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
@@ -230,6 +236,7 @@ SMODS.Tag{
 			return card
 		end
 	end,
+	poweritem = true
 }
 
 SMODS.Tag{
@@ -240,9 +247,10 @@ SMODS.Tag{
 	atlas = "TOGATags",
 	pos = { x = 8, y = 0 },
 	config = { type = "new_blind_choice" },
-	in_pool = function(self, args)
-		return true
+	in_pool = function()
+		return togabalatro.config.ShowPower
 	end,
+	poweritem = true,
 	apply = function(self, tag, context)
 		local lock = tag.ID
 		if context.type == "new_blind_choice" then
@@ -272,9 +280,10 @@ SMODS.Tag{
 	atlas = "TOGATags",
 	pos = { x = 9, y = 0 },
 	config = { type = "new_blind_choice" },
-	in_pool = function(self, args)
-		return true
+	in_pool = function()
+		return togabalatro.config.ShowPower
 	end,
+	poweritem = true,
 	apply = function(self, tag, context)
 		local lock = tag.ID
 		if context.type == "new_blind_choice" then

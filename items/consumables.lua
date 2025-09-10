@@ -248,7 +248,7 @@ SMODS.Consumable{
 		return { key = cando and self.key..'_ready' or G.hand and G.hand.highlighted and #G.hand.highlighted > 0 and self.key.."_novalidrecipe" or self.key, vars = { txt, (card.ability.extra or self.config.extra).usecost } }
 	end,
 	in_pool = function()
-		return togabalatro.has_mineral() -- Should only spawn if mineral cards.
+		return togabalatro.config.ShowPower and togabalatro.has_mineral() -- Should only spawn if mineral cards.
 	end,
 	can_use = function(self, card, area, copier)
 		if togabalatro.validsmeltrecipes and #togabalatro.validsmeltrecipes < 0 then return false end
@@ -312,7 +312,8 @@ SMODS.Consumable{
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
 	eternal_compat = false,
-	can_stack = false
+	can_stack = false,
+	poweritem = true
 }
 
 -- Find the metal pages... wait what?
@@ -387,6 +388,7 @@ SMODS.Consumable {
 		return { vars = { (card.ability or self.config).extra.max_cards } }
 	end,
 	in_pool = function()
+		if not togabalatro.config.ShowPower then return false end
 		if G.playing_cards then
 			for i = 1, #G.playing_cards do
 				if SMODS.has_enhancement(G.playing_cards[i], "m_toga_sms") then return true end -- Appear if there's a SMS card.
@@ -417,6 +419,7 @@ SMODS.Consumable {
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
 	eternal_compat = false,
+	poweritem = true
 }
 
 -- SPB function.
@@ -490,6 +493,9 @@ SMODS.Consumable {
 		info_queue[#info_queue+1] = G.P_SEALS[(card.ability or self.config).extra]
 		return {vars = {(card.ability or self.config).max_highlighted}}
 	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
 	use = function(self, card, area, copier)
 		for i = 1, math.min(#G.hand.highlighted, card.ability.max_highlighted) do
 			G.E_MANAGER:add_event(Event({func = function()
@@ -504,7 +510,8 @@ SMODS.Consumable {
 			delay(0.5)
 		end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
-	end
+	end,
+	poweritem = true
 }
 
 SMODS.Consumable {
@@ -517,6 +524,9 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_toga_notification
 		return { vars = { card.ability.extra.cards } }
+	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
 	end,
 	can_use = function(self, card)
 		if G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.cards then 
@@ -539,6 +549,7 @@ SMODS.Consumable {
 		delay(0.2)
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
 	end,
+	poweritem = true
 }
 
 SMODS.Consumable {
@@ -551,6 +562,9 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_toga_sms
 		return { vars = { card.ability.extra.cards } }
+	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
 	end,
 	can_use = function(self, card)
 		if G and G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.cards then 
@@ -573,6 +587,7 @@ SMODS.Consumable {
 		delay(0.2)
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
 	end,
+	poweritem = true
 }
 
 SMODS.Consumable {
@@ -585,6 +600,9 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_SEALS[(card.ability or self.config).extra]
 		return {vars = {(card.ability or self.config).max_highlighted}}
+	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, math.min(#G.hand.highlighted, card.ability.max_highlighted) do
@@ -600,7 +618,8 @@ SMODS.Consumable {
 			delay(0.5)
 		end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
-	end
+	end,
+	poweritem = true
 }
 
 SMODS.Consumable {
@@ -618,6 +637,9 @@ SMODS.Consumable {
 			end
 		end
 		return {key = love.keyboard.isDown("lshift") and self.key.."_showalloys" or self.key, vars = { (card.ability.extra or self.config.extra).max_highlighted, SMODS.get_probability_vars(card or self, 1, (card.ability.extra or self.config.extra).odds) } }
+	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
 	end,
 	can_use = function(self, card)
 		if G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.extra.max_highlighted then
@@ -662,4 +684,5 @@ SMODS.Consumable {
 		end
 	end,
 	pixel_size = { w = 71, h = 77 },
+	poweritem = true
 }

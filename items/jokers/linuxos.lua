@@ -4,7 +4,8 @@ SMODS.Joker{
 	key = 'linux_ubuntu',
 	config = { extra = { percentage = 0.2 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { 100*card.ability.extra.percentage, 1/card.ability.extra.percentage } }
+		local nerfy = togabalatro.config.UseNerfed and 0.5 or 1
+		return { vars = { 100*(card.ability.extra.percentage*nerfy), 1/card.ability.extra.percentage } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -14,12 +15,16 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		local curcard = context.other_joker or context.other_consumeable or nil
-		if curcard and curcard ~= card and curcard.sell_cost*card.ability.extra.percentage > 0 then
-			local xmultval = curcard and curcard.sell_cost*card.ability.extra.percentage or 0
+		local nerfy = togabalatro.config.UseNerfed and 0.5 or 1
+		if curcard and curcard ~= card and curcard.sell_cost*(card.ability.extra.percentage*nerfy) > 0 then
+			local xmultval = curcard and curcard.sell_cost*(card.ability.extra.percentage*nerfy) or 0
 			return { xmult = xmultval > 0 and 1+xmultval or 1, message_card = curcard or context.blueprint_card or card }
 		end
 	end,
-	pixel_size = { w = 69, h = 69 }
+	pixel_size = { w = 69, h = 69 },
+	set_badges = function(self, card, badges)
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+	end,
 }
 
 SMODS.Joker{
@@ -53,7 +58,8 @@ SMODS.Joker{
 			end
 		end
 		if suitcount-1 > 0 then diffkey = true end
-		return { key = diffkey and self.key.."_cardsel" or self.key, vars = { card.ability.extra.persuit, 1+(suitcount-1)*card.ability.extra.persuit > 0 and 1+(suitcount-1)*card.ability.extra.persuit or 0 } }
+		local persuitval = card.ability.extra.persuit*(togabalatro.config.UseNerfed and 0.5 or 1)
+		return { key = diffkey and self.key.."_cardsel" or self.key, vars = { persuitval, 1+(suitcount-1)*persuitval > 0 and 1+(suitcount-1)*persuitval or 0 } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -67,10 +73,13 @@ SMODS.Joker{
 			for i = 1, #G.play.cards do
 				if G.play.cards[i] and not uniquesuits[G.play.cards[i].base.suit] then uniquesuits[G.play.cards[i].base.suit] = true; suits = suits + 1 end
 			end
-			return { xmult = suits > 1 and 1+(suits-1)*card.ability.extra.persuit }
+			return { xmult = suits > 1 and 1+(suits-1)*(card.ability.extra.persuit*(togabalatro.config.UseNerfed and 0.5 or 1)) }
 		end
 	end,
-	pixel_size = { w = 69, h = 62 }
+	pixel_size = { w = 69, h = 62 },
+	set_badges = function(self, card, badges)
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+	end,
 }
 
 SMODS.Joker{
