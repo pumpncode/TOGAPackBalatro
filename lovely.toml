@@ -13,6 +13,14 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
+target = "game.lua"
+pattern = "if G.SETTINGS.skip_splash == 'Yes' then"
+position = "before"
+payload = "togabalatro.updatecollectionitems()"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = "functions/state_events.lua"
 pattern = "check_for_unlock({type = 'run_card_replays'})"
 position = "before"

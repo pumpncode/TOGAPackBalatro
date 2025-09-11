@@ -16,4 +16,6 @@ return {
 	["SFXSwapLevel"] = 2,
 	["DoCrashSFX"] = false
 	["EnableQE"] = true,
+	["UseNerfed"] = false,
+	["ShowPower"] = true
 }

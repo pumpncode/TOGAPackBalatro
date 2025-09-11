@@ -4,7 +4,11 @@ SMODS.Enhancement{
 	key = 'notification',
 	atlas = "TOGAEnhancements",
 	pos = { x = 0, y = 0 },
-	weight = 3
+	weight = 3,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -57,6 +61,7 @@ SMODS.Enhancement{
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('e4d691'), G.C.WHITE, 1)
     end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -67,6 +72,10 @@ SMODS.Enhancement{
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.h_x_chips } }
 	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -92,6 +101,7 @@ SMODS.Enhancement{
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('a87544'), G.C.WHITE, 1)
     end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -108,21 +118,29 @@ SMODS.Enhancement{
 	key = 'sms',
 	atlas = "TOGAEnhancements",
 	pos = { x = 9, y = 0 },
-	weight = 2
+	weight = 2,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
 	key = 'redstone',
 	atlas = "TOGAEnhancements",
 	pos = { x = 0, y = 1 },
-	weight = 4
+	weight = 4,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
 	key = 'signalum',
 	atlas = "TOGAEnhancements",
 	pos = { x = 1, y = 1 },
-	config = { x_mult = 2.25 },
+	config = { x_mult = 2 },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.x_mult } }
 	end,
@@ -133,13 +151,18 @@ SMODS.Enhancement{
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('db4600'), G.C.WHITE, 1)
     end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
 	key = 'nickel',
 	atlas = "TOGAEnhancements",
 	pos = { x = 2, y = 1 },
-	weight = 12
+	weight = 12,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -157,6 +180,7 @@ SMODS.Enhancement{
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('6f7975'), G.C.WHITE, 1)
     end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -164,7 +188,7 @@ SMODS.Enhancement{
 	atlas = "TOGAEnhancements",
 	pos = { x = 4, y = 1 },
 	no_rank = true,
-	replace_base_card = false
+	replace_base_card = false,
 }
 
 SMODS.Enhancement{
@@ -182,6 +206,7 @@ SMODS.Enhancement{
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('cf8f42'), G.C.WHITE, 1)
     end,
+	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -199,4 +224,5 @@ SMODS.Enhancement{
 	set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge(localize('toga_alloy'), HEX('d4bc41'), G.C.WHITE, 1)
     end,
+	poweritem = true
 }
