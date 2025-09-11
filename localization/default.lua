@@ -538,7 +538,7 @@ return {
 				name = 'Jarate',
 				text = {
 					{
-						"{C:green}#2# in #3#{} chance to",
+            "{C:green}#2# in #3#{} chance to",
 						"{X:attention,C:white}X#1#{} operation amount",
 						"on {C:chips}Chips{} or {C:mult}Mult{}"
 					},
