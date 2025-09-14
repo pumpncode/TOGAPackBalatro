@@ -39,7 +39,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -176,13 +176,14 @@ SMODS.Joker{
 	key = 'recyclebin',
 	config = { extra = { xchip_increase = 0.05, xchip_mod = 1 } },
 	loc_vars = function(self, info_queue, card)
+		if to_number(card.ability.extra.xchip_mod) < 1 then card.ability.extra.xchip_mod = 1 end
 		return { vars = { card.ability.extra.xchip_increase, card.ability.extra.xchip_mod, card.ability.extra.xchip_increase*3 } }
 	end,
 	unlocked = true,
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 2, y = 2 },
-	cost = 12,
+	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		local xchipval = card.ability.extra and card.ability.extra.xchip_mod or 1
@@ -236,9 +237,6 @@ SMODS.Joker{
 			play_sound("toga_plus98emptybin")
 		end
 	end,
-	update = function(self, card, context)
-		if card.ability.extra.xchip_mod < 1 then card.ability.extra.xchip_mod = 1 end
-	end
 }
 
 SMODS.Joker{
@@ -270,7 +268,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -332,7 +330,7 @@ SMODS.Joker{
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 2, y = 3 },
-	cost = 12,
+	cost = 10,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.initial_scoring_step and not context.blueprint and context.scoring_name and G.GAME.hands[context.scoring_name] then
@@ -453,7 +451,7 @@ SMODS.Joker{
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 0, y = 3 },
-	cost = 12,
+	cost = 8,
 	blueprint_compat = true,
 	perishable_compat = false,
 	calculate = function(self, card, context)
@@ -608,6 +606,7 @@ SMODS.Joker{
 	pos = { x = 2, y = 1 },
 	cost = 25,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		if card.ability.extra.reduce > 1 then card.ability.extra.reduce = 0.97 end -- catch.
 		
@@ -866,7 +865,7 @@ SMODS.Joker{
 	rarity = 2,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 5, y = 2 },
-	cost = 8,
+	cost = 5,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.debuffed_hand and not context.blueprint then
@@ -908,6 +907,7 @@ SMODS.Joker{
 	rarity = 3,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 5, y = 3 },
+	no_collection = true,
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -916,7 +916,8 @@ SMODS.Joker{
 			if fontamount > 0 then return { xmult = math.max(card.ability.extra.perfontxmult, 1)*fontamount } end
 		end
 	end,
-	poweritem = true
+	poweritem = true,
+	remainhidden = true
 }
 
 SMODS.Joker{
@@ -937,6 +938,12 @@ SMODS.Joker{
 		if context.joker_main then return { xmult = math.max(card.ability.extra.xmult, 1) } end
 		if context and next(context) and not context.blueprint and math.random(1, 20) == 5 then togabalatro.performpseudolag() end
 	end,
+	add_to_deck = function(self, card, from_debuff)
+		togabalatro.pseudolag = nil
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		togabalatro.pseudolag = nil
+	end,
 }
 
 SMODS.Joker{
@@ -951,6 +958,7 @@ SMODS.Joker{
 	pos = { x = 5, y = 4 },
 	cost = 6,
 	blueprint_compat = true,
+	perishable_compat = false,
 	calculate = function(self, card, context)
 		if context.redeem_individual_voucher then
 			G.hand:change_size(1)
@@ -1057,6 +1065,7 @@ SMODS.Joker{
 	pos = { x = 1, y = 6 },
 	cost = 20,
 	blueprint_compat = false,
+	perishable_compat = false,
 }
 
 SMODS.Joker{
@@ -1375,7 +1384,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -1456,7 +1465,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'mcanvil',
-	config = { extra = { curxmult = 0, steelxmult = 0.25 } },
+	config = { extra = { curxmult = 0, steelxmult = 0.4 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
 		card.ability.extra.steelxmult = math.max(card.ability.extra.steelxmult, 0.4)
@@ -1467,7 +1476,7 @@ SMODS.Joker{
 	atlas = 'TOGAJokersOther',
 	pos = { x = 2, y = 1 },
 	soul_pos = { x = 4, y = 1 },
-	cost = 10,
+	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
@@ -1522,7 +1531,7 @@ SMODS.Joker{
 	rarity = 3,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 0, y = 2 },
-	cost = 15,
+	cost = 10,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.before then card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint) end
@@ -1779,7 +1788,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -1813,7 +1822,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -2128,7 +2137,8 @@ SMODS.Joker{
 	set_badges = function(self, card, badges)
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
-	jokeitem = true
+	jokeitem = true,
+	poweritem = true
 }
 
 SMODS.Joker{
@@ -2179,7 +2189,8 @@ SMODS.Joker{
 	set_badges = function(self, card, badges)
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
-	jokeitem = true
+	jokeitem = true,
+	remainhidden = true
 }
 
 -- Joke Joker. Originally had 'whatthefuck' as key.
@@ -2234,7 +2245,8 @@ if Talisman then
 		set_badges = function(self, card, badges)
 			badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 		end,
-		jokeitem = true
+		jokeitem = true,
+		poweritem = true
 	}
 end
 
@@ -2281,6 +2293,7 @@ if Talisman then
 		set_badges = function(self, card, badges)
 			badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 		end,
-		jokeitem = true
+		jokeitem = true,
+		poweritem = true
 	}
 end

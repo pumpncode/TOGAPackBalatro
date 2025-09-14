@@ -34,8 +34,11 @@ SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 32, py = 32}
 SMODS.Sound({key = "win95start", path = "win95start.ogg"}) -- The Microsoft Sound (95 & NT4)
 SMODS.Sound({key = "win95tada", path = "win95tada.ogg"}) -- tada.wav (3.x, 95 & NT4)
 SMODS.Sound({key = "bells", path = "startup/bells.wav"}) -- Windows 3.0 MME
+SMODS.Sound({key = "gong", path = "startup/GONG.WAV"}) -- Windows 3.0 MME
 SMODS.Sound({key = "w96", path = "startup/w96.wav"}) -- Custom Windows Startup
 SMODS.Sound({key = "w94", path = "startup/w94.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "money9597", path = "startup/mm9597.wav"}) -- Microsoft Money 95/97
+SMODS.Sound({key = "money9899", path = "startup/mm9899.ogg"}) -- Microsoft Money 98/99
 SMODS.Sound({key = "longhorn", path = "startup/longhorn.wav"}) -- "Longhorn Startup" / Samsung Theme for Windows XP
 SMODS.Sound({key = "ntreskit", path = "startup/ntreskit.ogg"}) -- Windows NT4 Resource Kit
 SMODS.Sound({key = "chordold", path = "chordold.wav"}) -- chord.wav (95 & NT4)
@@ -310,7 +313,7 @@ end
 togabalatro.thread = love.thread.newThread(tasklistcode)
 togabalatro.thread:start(togabalatro.tasklisttable)
 
-togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit', 'toga_longhorn'}
+togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit', 'toga_longhorn', 'toga_gong', 'toga_money9597', 'toga_money9899'}
 togabalatro.verifysfxconfig = function()
 	togabalatro.config.StartUpSFX = type(togabalatro.config.StartUpSFX) == 'table' and togabalatro.config.StartUpSFX or {}
 	togabalatro.config.StartUpSFX.Selected = togabalatro.config.StartUpSFX.Selected or 1
@@ -419,7 +422,7 @@ end
 togabalatro.updatecollectionitems = function()
 	for _, t in ipairs{G.P_CENTERS, G.P_TAGS, G.P_SEALS} do
 		for k, v in pairs(t) do
-			if (v.original_mod or {}).id == 'TOGAPack' then
+			if (v.original_mod or {}).id == 'TOGAPack' and not v.remainhidden then
 				if v.jokeitem then
 					if togabalatro.config.JokeJokersActive then v.no_collection = nil else v.no_collection = true end
 				end
@@ -448,6 +451,15 @@ function SMODS.poll_seal(args)
 	end
 	
 	return resultseal
+end
+
+-- Tom Scott?!
+sendInfoMessage("Hooking SMODS.showman...", "TOGAPack")
+local showmansmodsref = SMODS.showman
+function SMODS.showman(card_key)
+	if card_key == 'j_toga_tomscott' and next(SMODS.find_card('j_toga_tomscott')) then return true end
+	
+	return showmansmodsref(card_key)
 end
 
 -- Still kept for colouring the button with higher allowed amount of cards to play, but also backwards compat.
@@ -1326,7 +1338,7 @@ end
 -- Check for Overflow or Incantation...
 togabalatro.stackingcompat = function(consumable)
 	-- The new and shiny Overflow!
-	if Overflow and consumable and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
+	if Overflow and consumable and consumable.ability and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
 		return true, consumable.ability.immutable.overflow_amount
 	-- ...though, backwards compatibility wouldn't hurt...
 	elseif Incantation and consumable and consumable.ability and consumable.ability.qty then

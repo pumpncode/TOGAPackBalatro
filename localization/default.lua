@@ -175,11 +175,8 @@ return {
 			j_toga_controlpanel = {
 				name = 'Control Panel',
 				text = {
-					--"Gain {C:money}$#1#{} for every {C:attention}Joker{} and",
 					"For every {C:attention}Joker{} and {C:attention}Consumable{}",
 					"slots, gain {C:money}$#1#{} at end of round.",
-					-- "Defeating {C:attention}Boss Blinds{} upgrades",
-					-- "individual slot payout by {C:money}$#2#{}.",
 					"{C:inactive,s:0.8}(Currently {}{C:money,s:0.8}$#3#{}{C:inactive,s:0.8}){}",
 					"{C:inactive,s:0.8}Look at all them settings!{}"
 				}
@@ -187,10 +184,6 @@ return {
 			j_toga_mcanvil = {
 				name = 'Anvil',
 				text = {
-					-- "Retrigger a scoring card",
-					-- "#1# time(s) per {C:attention}4 Steel Cards{}",
-					-- "in your {C:important}full deck{}.",
-					-- "{C:inactive,s:0.8}(Currently #2#){}"
 					"This Joker gains {X:mult,C:white}X#2#{} Mult",
 					"per scoring {C:attention}Steel{} card played,",
 					"removes card {C:attention}Enhancement{}",
@@ -318,8 +311,6 @@ return {
 					"{C:attention}entering{} or {C:attention}leaving shop{}",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
 					"{C:inactive,s:0.7}I am literally a racer, what's your excuse?{}"
-					-- "{C:inactive,s:0.7}I am literally nerfed right now{}",
-					-- "{C:inactive,s:0.7}, what's your excuse?{}"
 				}
 			},
 			j_toga_whatisthis = {
@@ -433,8 +424,6 @@ return {
 				text = {
 					"When {C:attention}playing cards{} are {C:red}destroyed{}, copy a",
 					"{C:attention}random{} destroyed card into the deck",
-					-- "additional duplicates of it for",
-					-- "{C:attention}each{} other destroyed card.",
 				}
 			},
 			j_toga_spacecadetpinball = {
@@ -594,9 +583,6 @@ return {
 			j_toga_win8 = {
 				name = 'Windows 8',
 				text = {
-					-- "Each {C:attention}8{} {C:red}discarded{} this round",
-					-- "or in the remaining {C:attention}deck{}",
-					-- "gives {X:mult,C:white}X#1#{} Mult",
 					"Played {C:attention}8s{} gain",
 					"{C:attention}held in hand{}",
 					"{X:mult,C:white}X#1#{} Mult"
@@ -823,9 +809,6 @@ return {
 			j_toga_drwatson = {
 				name = 'Dr. Watson',
 				text = {
-					-- "After a hand is played, {C:red}destroy{}",
-					-- "debuffed {C:attention}played{}/{C:attention}held in hand{} cards",
-					--"{X:mult,C:white}X#1#{} / {X:mult,C:white}X#2#{}"
 					"This Joker gains {X:mult,C:white}X#2#{} Mult",
 					"when played hand triggers",
 					"the {C:attention}Boss Blind{} ability",
@@ -1666,7 +1649,7 @@ return {
 			toga_alloyinvar = {
 				name = "Invar Card Recipe",
 				text = {
-					"2x Copper + 1x Nickel",
+					"2x Iron + 1x Nickel",
 					"= 3x Invar",
 				},
 			},
@@ -1875,6 +1858,7 @@ return {
 			toga_leech = "Leech",
 			toga_bonziinvert = "Inverted",
 			toga_hammersmash = "Smash!",
+			toga_nerfedver = "Toned Down",
 			toga_itemon = "Enabled",
 			toga_itemoff = "Disabled",
 			toga_configtab = "Mod Settings",
@@ -1887,7 +1871,7 @@ return {
 			toga_musicpacks = "MIDI-fied music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
 			toga_jokeactive = "'Joke' items:",
-			toga_usenerfedver = "If available, use nerfed version of an item",
+			toga_usenerfedver = "If available, use a toned down version of item",
 			toga_strongstate = "'Mainline' items:",
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",

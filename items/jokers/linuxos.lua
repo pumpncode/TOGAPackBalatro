@@ -2,10 +2,9 @@ sendInfoMessage("Loading Jokers - Linux OS...", "TOGAPack")
 
 SMODS.Joker{
 	key = 'linux_ubuntu',
-	config = { extra = { percentage = 0.2 } },
+	config = { extra = { percentage = 0.1 } },
 	loc_vars = function(self, info_queue, card)
-		local nerfy = togabalatro.config.UseNerfed and 0.5 or 1
-		return { vars = { 100*(card.ability.extra.percentage*nerfy), 1/card.ability.extra.percentage } }
+		return { vars = { 100*card.ability.extra.percentage, 1/card.ability.extra.percentage } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -15,16 +14,12 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		local curcard = context.other_joker or context.other_consumeable or nil
-		local nerfy = togabalatro.config.UseNerfed and 0.5 or 1
-		if curcard and curcard ~= card and curcard.sell_cost*(card.ability.extra.percentage*nerfy) > 0 then
-			local xmultval = curcard and curcard.sell_cost*(card.ability.extra.percentage*nerfy) or 0
+		if curcard and curcard ~= card and curcard.sell_cost*card.ability.extra.percentage > 0 then
+			local xmultval = curcard and curcard.sell_cost*card.ability.extra.percentage or 0
 			return { xmult = xmultval > 0 and 1+xmultval or 1, message_card = curcard or context.blueprint_card or card }
 		end
 	end,
 	pixel_size = { w = 69, h = 69 },
-	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
-	end,
 }
 
 SMODS.Joker{
@@ -78,7 +73,7 @@ SMODS.Joker{
 	end,
 	pixel_size = { w = 69, h = 62 },
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 

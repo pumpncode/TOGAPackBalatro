@@ -35,7 +35,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -124,7 +124,7 @@ SMODS.Joker{
 		end
 	end,
 	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge("Nerfed Ver.", G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
+		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 

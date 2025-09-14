@@ -72,10 +72,6 @@ SMODS.Enhancement{
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.h_x_chips } }
 	end,
-	in_pool = function()
-		return togabalatro.config.ShowPower
-	end,
-	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -130,10 +126,6 @@ SMODS.Enhancement{
 	atlas = "TOGAEnhancements",
 	pos = { x = 0, y = 1 },
 	weight = 4,
-	in_pool = function()
-		return togabalatro.config.ShowPower
-	end,
-	poweritem = true
 }
 
 SMODS.Enhancement{
@@ -159,10 +151,6 @@ SMODS.Enhancement{
 	atlas = "TOGAEnhancements",
 	pos = { x = 2, y = 1 },
 	weight = 12,
-	in_pool = function()
-		return togabalatro.config.ShowPower
-	end,
-	poweritem = true
 }
 
 SMODS.Enhancement{

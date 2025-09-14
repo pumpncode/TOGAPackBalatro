@@ -35,7 +35,7 @@ SMODS.Back{
 	pos = { x = 2, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
-	config = {spectral_rate = 1, joker_slot = -2},
+	config = {spectral_rate = 1, joker_slot = -1},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { self.config.ante_scaling or 1, self.config.joker_slot } }
 	end,
@@ -98,7 +98,6 @@ SMODS.Back{
 				G.GAME.win_ante = G.GAME.win_ante + self.config.extraante
 				if G.hand then
 					togabalatro.handlimitchange(self.config.reducehandsel)
-					--G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + self.config.reducehandsel
 					return true
 				end
 			end,
