@@ -1347,7 +1347,7 @@ togabalatro.stackingcompat = function(consumable)
 end
 
 -- In case Incantation is used, check if it is the specific fork version so that the consumeables don't do unintended things...
-if SMODS.Mods['incantation'] and not SMODS.Mods['incantation'].togafork and not string.find(SMODS.Mods['incantation'].version, '-TOGA_fork') then
+if SMODS.Mods['incantation'] and SMODS.Mods['incantation'].can_load and not SMODS.Mods['incantation'].togafork and not string.find(SMODS.Mods['incantation'].version, '-TOGA_fork') then
 	error([[
 	Please obtain TheOneGoofAli's fork of Incantation to prevent unintended behaviour of the consumeables
 	added by TOGA's Stuff at https://github.com/TheOneGoofAli/JensBalatroCollection in order to continue.
