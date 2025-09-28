@@ -306,19 +306,16 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.cardarea == G.hand and context.other_card and not context.end_of_round and not context.repetition and not context.repetition_only and not context.other_card.debuff then
 			local houseofcommons = {}
-			if G.jokers and #G.jokers.cards > 1 then
-				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].config.center.rarity == 1 then houseofcommons[#houseofcommons+1] = G.jokers.cards[i] end
+			if G.consumeables and #G.consumeables.cards > 0 then
+				for i = 1, #G.consumeables.cards do
+					if G.consumeables.cards[i].ability.consumeable and not houseofcommons[G.consumeables.cards[i].ability.set] then houseofcommons[G.consumeables.cards[i].ability.set] = i end
 				end
 			end
-			if #houseofcommons > 0 then
-				local result = { x_mult = card.ability.extra.x_mult, card = houseofcommons[1] }
-				if #houseofcommons >= 2 then
-					-- nh6574 was here.
-					local return_table = result
-					for i = 2, #houseofcommons do
-						return_table.extra = { x_mult = card.ability.extra.x_mult, card = houseofcommons[i] }
-						return_table = return_table.extra
+			if next(houseofcommons) then
+				local result = {}
+				for k, v in pairs(houseofcommons) do
+					if type(v) == 'number' then
+						result = SMODS.merge_effects({ result, { x_mult = card.ability.extra.x_mult, message_card = context.other_card, card = context.blueprint_card or card }})
 					end
 				end
 				return result

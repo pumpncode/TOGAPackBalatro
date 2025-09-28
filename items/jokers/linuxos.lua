@@ -41,7 +41,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'linux_slackware',
-	config = { extra = { persuit = 0.2 } },
+	config = { extra = { persuit = 0.1 } },
 	loc_vars = function(self, info_queue, card)
 		local uniquesuits, suitcount, diffkey = {}, 0, false
 		if (G.play and G.play.cards and #G.play.cards > 0) and (G.hand and G.hand.cards and #G.hand.cards > 0) then
@@ -53,7 +53,7 @@ SMODS.Joker{
 			end
 		end
 		if suitcount-1 > 0 then diffkey = true end
-		local persuitval = card.ability.extra.persuit*(togabalatro.config.UseNerfed and 0.5 or 1)
+		local persuitval = card.ability.extra.persuit
 		return { key = diffkey and self.key.."_cardsel" or self.key, vars = { persuitval, 1+(suitcount-1)*persuitval > 0 and 1+(suitcount-1)*persuitval or 0 } }
 	end,
 	unlocked = true,
@@ -68,13 +68,10 @@ SMODS.Joker{
 			for i = 1, #G.play.cards do
 				if G.play.cards[i] and not uniquesuits[G.play.cards[i].base.suit] then uniquesuits[G.play.cards[i].base.suit] = true; suits = suits + 1 end
 			end
-			return { xmult = suits > 1 and 1+(suits-1)*(card.ability.extra.persuit*(togabalatro.config.UseNerfed and 0.5 or 1)) }
+			return { xmult = suits > 1 and 1+(suits-1)*card.ability.extra.persuit }
 		end
 	end,
 	pixel_size = { w = 69, h = 62 },
-	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
-	end,
 }
 
 SMODS.Joker{

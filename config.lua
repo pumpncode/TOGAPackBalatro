@@ -12,7 +12,8 @@ return {
 		["UseSelected"] = false
 	}
 	["UseCustomMMMusic"] = true
-	["UseCustomModTabMusic"] = true
+	["UseCustomModTabMusic"] = true,
+	["SpecialDeckMusic"] = false,
 	["SFXSwapLevel"] = 2,
 	["DoCrashSFX"] = false
 	["EnableQE"] = true,

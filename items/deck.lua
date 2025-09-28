@@ -30,6 +30,8 @@ SMODS.Back{
 	end
 }
 
+
+
 SMODS.Back{
 	key = "srb2kartdeck",
 	pos = { x = 2, y = 0 },
@@ -48,6 +50,9 @@ SMODS.Back{
 				end
 			end,
 		}))
+	end,
+	quip_filter = function(quip, type)
+		if (quip.mod and quip.mod.id == 'TOGAPack' and togabalatro.config.SpecialDeckMusic) or not togabalatro.config.SpecialDeckMusic then return true else return false end
 	end
 }
 

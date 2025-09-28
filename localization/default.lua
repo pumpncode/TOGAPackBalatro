@@ -76,15 +76,15 @@ return {
 			b_toga_drunkdeck = {
 				name = 'Drunk',
 				text = {
-					"Scoring is triggered",
-					"in reverse order.",
+					"Scoring {C:attention}order{} of",
+					"cards is reversed",
 				}
 			},
 			b_toga_waitthatsillegaldeck = {
 				name = "Wait. That's Illegal.",
 				text = {
-					"Scoring is triggered",
-					"in random order.",
+					"Scoring {C:attention}order{} of",
+					"cards is randomised",
 				}
 			},
 			b_toga_blissful = {
@@ -424,6 +424,8 @@ return {
 				text = {
 					"When {C:attention}playing cards{} are {C:red}destroyed{}, copy a",
 					"{C:attention}random{} destroyed card into the deck",
+					"with {C:attention}additional duplicates{} for every",
+					"{C:attention}other{} {C:red}destroyed{} card"
 				}
 			},
 			j_toga_spacecadetpinball = {
@@ -547,11 +549,15 @@ return {
 			j_toga_virtualpc = {
 				name = 'Virtual PC',
 				text = {
-					"When {C:attention}scoring starts{},",
-					"base {C:blue}Chips{} and {C:red}Mult{}",
-					"of played {C:attention}poker hand{}",
-					"are added to this Joker",
-					"{C:inactive,s:0.85}(Currently {C:blue,s:0.85}#1#{C:inactive,s:0.85} Chips / {C:red,s:0.85}#2#{C:inactive,s:0.85} Mult)"
+					-- "When {C:attention}scoring starts{},",
+					-- "base {C:blue}Chips{} and {C:red}Mult{}",
+					-- "of played {C:attention}poker hand{}",
+					-- "are added to this Joker",
+					-- "{C:inactive,s:0.85}(Currently {C:blue,s:0.85}#1#{C:inactive,s:0.85} Chips / {C:red,s:0.85}#2#{C:inactive,s:0.85} Mult)"
+					"At end of {C:attention}shop{}, gain {C:red}+#2#{} Mult",
+					"per {C:money}$1{} of cost of {C:attention}leftover{}",
+					"{C:attention}items{} in {C:attention}shop{}",
+					"{C:inactive}(Currently {}{C:mult}+#1#{}{C:inactive} Mult){}"
 				}
 			},
 			j_toga_ie = {
@@ -575,9 +581,9 @@ return {
 			j_toga_win7 = {
 				name = 'Windows 7',
 				text = {
-					"Cards {C:attention}held in hand{}",
-					"give {X:mult,C:white}X#1#{} Mult for",
-					"every {C:blue}Common{} Joker held",
+					"{C:attention}Held in hand{} cards give",
+					"{X:mult,C:white}X#1#{} Mult per {C:attention}unique{}",
+					"Consumable {C:attention}type{} held",
 				}
 			},
 			j_toga_win8 = {
@@ -614,7 +620,7 @@ return {
 				text = {
 					"If {C:attention}played hand{} contains",
 					"only {C:spades}Spades{}, each held",
-					"{C:attention}Consumeable{} gives {X:chips,C:white}X#1#{} Chips",
+					"{C:attention}Consumable{} gives {X:chips,C:white}X#1#{} Chips",
 					"per {C:attention}Ahead Joker{} held."
 				}
 			},
@@ -638,7 +644,7 @@ return {
 				text = {
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}each mod{} among",
 					"redeemed {C:attention}Vouchers{}, held {C:attention}Jokers{}",
-					"and {C:attention}Consumeables{}.",
+					"and {C:attention}Consumables{}.",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}, #3# mod.){}",
 					"{C:inactive,s:0.7}RIP Skype (2003 - 2025){}"
 				}
@@ -647,7 +653,7 @@ return {
 				name = 'Skype',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}each mod{} among",
-					"held {C:attention}Jokers{} and {C:attention}Consumeables{}.",
+					"held {C:attention}Jokers{} and {C:attention}Consumables{}.",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}, #3# mods.){}",
 					"{C:inactive,s:0.7}RIP Skype (2003 - 2025){}"
 				}
@@ -689,7 +695,7 @@ return {
 			j_toga_linux_ubuntu = {
 				name = 'Ubuntu',
 				text = {
-					"{C:attention}Jokers{} and {C:attention}Consumeables{} give {C:attention}#1#%{}",
+					"{C:attention}Jokers{} and {C:attention}Consumables{} give {C:attention}#1#%{}",
 					"of their {C:money}sell value{} as {X:mult,C:white}XMult{}."
 				}
 			},
@@ -901,14 +907,6 @@ return {
 				}
 			},
 			j_toga_joker203 = {
-				name = 'Joker 2.03',
-				text = {
-					"{X:attention,C:white}X#1#{} Blind requirements",
-					"{X:purple,C:white}=0{} Score if {C:attention}scored hand{}",
-					"{C:red}does not{} beat the Blind.",
-				}
-			},
-			j_toga_joker203_lite = {
 				name = 'Joker 2.03',
 				text = {
 					"{X:purple,C:white}=0{} Score if {C:attention}scored hand{}",
@@ -1845,6 +1843,14 @@ return {
 			toga_jimbo95txt2 = "Again?",
 			toga_jimbo95txt3 = "Another one!",
 			toga_jimbo95txt4 = "Thread!",
+			toga_srb2kartwin_1 = "The Ultimate Legend",
+			toga_srb2kartwin_2 = "Not Porter",
+			toga_srb2kartwin_3 = "Smokin' Sick Style!",
+			toga_srb2kartwin_4 = "YOU'AR COOL!!",
+			toga_srb2kartwin_5 = "Frontrun Legend",
+			toga_srb2kartwin_6 = "Actually God",
+			toga_srb2kartwin_7 = "BIGKART",
+			toga_srb2kartwin_8 = "Tatsunical!",
 			toga_Echipmod = "^#1# Chips",
 			toga_EEchipmod = "^^#1# Chips",
 			toga_EEEchipmod = "^^^#1# Chips",
@@ -1864,6 +1870,7 @@ return {
 			toga_configtab = "Mod Settings",
 			toga_logtab = "Logging Settings",
 			toga_startsfxtab = "Misc. Audio Options",
+			toga_itemoptionstab = "Item Options",
 			toga_startsfxoptions = "Sound:",
 			toga_sfxwhenadd = "SFX when getting some of the mods' items",
 			toga_sfxwhendel = "SFX when removing some of the mods' items",
@@ -1871,13 +1878,14 @@ return {
 			toga_musicpacks = "MIDI-fied music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
 			toga_jokeactive = "'Joke' items:",
-			toga_usenerfedver = "If available, use a toned down version of item",
+			toga_usenerfedver = "Items shown above use nerfed versions",
 			toga_strongstate = "'Mainline' items:",
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
 			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",
 			toga_mainmenumusicswap = "MIDI-fy the Main Menu music",
 			toga_modtabmusicswap = "Custom music for own mod config menu",
+			toga_specialdecktunes = "Karting Deck: enable win/lose extras",
 			toga_startupsfx = "Enable mod startup sound on initial load",
 			toga_startupsfxuse = "Use selected SFX for next game startup",
 			toga_crashsfxuse = "Play a sound when game crashes",
@@ -1922,6 +1930,6 @@ return {
 			toga_modern_Hearts = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 			toga_modern_Clubs = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 			toga_modern_Diamonds = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
-		}
+		},
 	}
 }

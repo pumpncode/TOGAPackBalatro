@@ -132,6 +132,28 @@ SMODS.Sound({
 })
 
 SMODS.Sound({
+	key = "music_spbattacklose",
+	path = "O_SPBA_L.ogg",
+	select_music_track = function()
+		return G.STATE == G.STATES.GAME_OVER and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and 69420
+	end,
+	sync = false,
+	pitch = 1,
+	volume = 0.2
+})
+
+SMODS.Sound({
+	key = "music_spbattackwin",
+	path = "O_SPBA_W.ogg",
+	select_music_track = function()
+		return G.SETTINGS.paused and G.GAME.won and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and 69420
+	end,
+	sync = false,
+	pitch = 1,
+	volume = 0.2
+})
+
+SMODS.Sound({
 	key = "music_upgradestation",
 	path = "upgradestation.ogg",
 	pitch = 1,
@@ -434,6 +456,63 @@ togabalatro.updatecollectionitems = function()
 	end
 end
 
+-- Yoinked from Aikoyori.
+togabalatro.cagen = function(cardArea, desc_nodes, config)
+    if not config then config = {} end
+    local height = config.h or 1.25
+    local width = config.w or 1
+    local original_card = config.original_card or nil
+    local speed_mul = config.speed
+    local card_limit = config.card_limit or #config.cards or 1
+    local override = config.override or false
+    local cards = config.cards or {}
+    local padding = config.padding or 0.07
+    local func_after = config.func_after or nil
+    local init_delay = config.init_delay or 1
+    local func_list = config.func_list or nil
+    local func_delay = config.func_delay or 0.2
+    local margin_left = config.ml or 0.2
+    local margin_top = config.mt or 0
+    local alignment = config.alignment or "cm"
+    local scale = config.scale or 1
+    local type = config.type or "title"
+    local box_height = config.box_height or 0
+    local highlight_limit = config.highlight_limit or 0
+    if override or not cardArea then
+        cardArea = CardArea(
+            G.ROOM.T.x + margin_left * G.ROOM.T.w, G.ROOM.T.h + margin_top
+            , width * G.CARD_W, height * G.CARD_H,
+            {card_limit = card_limit, type = type, highlight_limit = highlight_limit, collection = true, temporary = true}
+        )
+        for i, card in ipairs(cards) do
+            card.T.w = card.T.w * scale
+            card.T.h = card.T.h * scale
+            card.VT.h = card.T.h
+            card.VT.h = card.T.h
+            local area = cardArea
+            if (card.config.center) then
+                card:set_sprites(card.config.center)
+            end
+            area:emplace(card)
+        end
+    end
+    local uiEX = {
+        n = G.UIT.R,
+        config = { align = alignment , padding = padding, no_fill = true, minh = box_height },
+        nodes = {
+            {n = G.UIT.O, config = { object = cardArea }}
+        }
+    }
+    if cardArea then
+        if desc_nodes then
+            desc_nodes[#desc_nodes+1] = {
+                uiEX
+            }
+        end
+    end
+    return uiEX
+end
+
 -- Prevent seals spawning if power items disabled.
 sendInfoMessage("Hooking SMODS.poll_seal...", "TOGAPack")
 local smodssealref = SMODS.poll_seal
@@ -558,6 +637,19 @@ togabalatro.randompitch = function()
 	local genvalue = math.random(50, 150)/100
 	if togabalatro.config.DoMoreLogging then sendInfoMessage("Random pitch of "..genvalue.." returned.", "TOGAPack") end
 	return genvalue
+end
+
+togabalatro.shopitemcost = function()
+	local areas = {G.shop_jokers, G.shop_vouchers, G.shop_booster}
+	local totalitemcost = to_big(0)
+	for k, v in pairs(areas) do
+		if v and v.cards then
+			for i, c in pairs(v.cards or {}) do
+				if c and c.cost then totalitemcost = totalitemcost + c.cost end
+			end
+		end
+	end
+	return totalitemcost
 end
 
 -- Rosen sound swap stuff.
@@ -723,9 +815,144 @@ local ugoref = Game.update_game_over
 function Game:update_game_over(dt)
 	if not G.STATE_COMPLETE then
 		if G.GAME.selected_back.effect.center.key == 'b_toga_screamingdeck' and togabalatro.config.SFXWhenTriggered then play_sound('toga_soldierscream', 1, 0.4) end
+		if G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and togabalatro.config.SpecialDeckMusic then G.toga_customdeckmusic = true; G.normal_music_speed = true end
 		if next(SMODS.find_card('j_toga_spacecadetpinball', true)) and togabalatro.config.SFXWhenTriggered then play_sound('toga_pinballshutdown', 1, 0.4) end
 	end
 	ugoref(self, dt)
+end
+
+togabalatro.randomwintext = function()
+	if togabalatro.config.SpecialDeckMusic then return localize('toga_srb2kartwin_'..math.random(1, 8)) end
+end
+
+local cuiboxwinref = create_UIBox_win
+function create_UIBox_win()
+	if togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' then
+		local show_lose_cta = false
+		local eased_green = copy_table(G.C.GREEN)
+		eased_green[4] = 0
+		ease_value(eased_green, 4, 0.5, nil, nil, true)
+		local t = create_UIBox_generic_options({ padding = 0, bg_colour = eased_green, colour = G.C.BLACK, outline_colour = G.C.EDITION, no_back = true, no_esc = true, contents = {
+			{n=G.UIT.R, config={align = "cm"}, nodes={
+				{n=G.UIT.O, config={object = DynaText({string = {togabalatro.randomwintext() or localize('ph_you_win')}, colours = {G.C.EDITION}, shadow = true, float = true, spacing = 10, rotate = true, scale = 1.5, pop_in = 0.4, maxw = 6.5})}},
+			}},
+			{n=G.UIT.R, config={align = "cm", padding = 0.15}, nodes={
+				{n=G.UIT.C, config={align = "cm"}, nodes={
+					{n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
+						create_UIBox_round_scores_row('hand'),
+						create_UIBox_round_scores_row('poker_hand'),
+					}},
+					{n=G.UIT.R, config={align = "cm"}, nodes={
+						{n=G.UIT.C, config={align = "cm", padding = 0.08}, nodes={
+							create_UIBox_round_scores_row('cards_played', G.C.BLUE),
+							create_UIBox_round_scores_row('cards_discarded', G.C.RED),
+							create_UIBox_round_scores_row('cards_purchased', G.C.MONEY),
+							create_UIBox_round_scores_row('times_rerolled', G.C.GREEN),
+							create_UIBox_round_scores_row('new_collection', G.C.WHITE),
+							create_UIBox_round_scores_row('seed', G.C.WHITE),
+							UIBox_button({button = 'copy_seed', label = {localize('b_copy')}, colour = G.C.BLUE, scale = 0.3, minw = 2.3, minh = 0.4,}),
+						}},
+						{n=G.UIT.C, config={align = "tr", padding = 0.08}, nodes={
+							create_UIBox_round_scores_row('furthest_ante', G.C.FILTER),
+							create_UIBox_round_scores_row('furthest_round', G.C.FILTER),
+							{n=G.UIT.R, config={align = "cm", minh = 0.4, minw = 0.1}, nodes={}},
+							show_win_cta and UIBox_button({id = 'win_cta', button = 'show_main_cta', label = {localize('b_next')}, colour = G.C.GREEN, scale = 0.8, minw = 2.5, minh = 2.5, focus_args = {nav = 'wide', snap_to = true}}) or nil,
+							not show_win_cta and UIBox_button({id = 'from_game_won', button = 'notify_then_setup_run', label = {localize('b_start_new_run')}, minw = 2.5, maxw = 2.5, minh = 1, focus_args = {nav = 'wide', snap_to = true}}) or nil,
+							not show_win_cta and {n=G.UIT.R, config={align = "cm", minh = 0.2, minw = 0.1}, nodes={}} or nil,
+							not show_win_cta and UIBox_button({button = 'go_to_menu', label = {localize('b_main_menu')}, minw = 2.5, maxw = 2.5, minh = 1, focus_args = {nav = 'wide'}}) or nil,
+						}}
+					}},
+					{n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
+						UIBox_button({button = 'exit_overlay_menu', label = {localize('b_endless')}, minw = 6.5, maxw = 5, minh = 1.2, scale = 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),
+					}},
+				}}
+			}}
+		}})
+		t.config.id = 'you_win_UI'
+		return t
+	else
+		return cuiboxwinref()
+	end
+end
+
+local cuiboxgameoverref = create_UIBox_game_over
+function create_UIBox_game_over()
+	if togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' then
+		local show_lose_cta = false
+		local eased_red = copy_table(G.GAME.round_resets.ante <= G.GAME.win_ante and G.C.RED or G.C.BLUE)
+		eased_red[4] = 0
+		ease_value(eased_red, 4, 0.8, nil, nil, true)
+		local t = create_UIBox_generic_options({ bg_colour = eased_red ,no_back = true, padding = 0, contents = {
+			{n=G.UIT.R, config={align = "cm"}, nodes={
+				{n=G.UIT.O, config={object = DynaText({string = {localize('ph_game_over')}, colours = {G.C.RED},shadow = true, float = true, scale = 1.5, pop_in = 0.4, maxw = 6.5})}},
+			}},
+			{n=G.UIT.R, config={align = "cm", padding = 0.15}, nodes={
+				{n=G.UIT.C, config={align = "cm"}, nodes={
+					{n=G.UIT.R, config={align = "cm", padding = 0.05, colour = G.C.BLACK, emboss = 0.05, r = 0.1}, nodes={
+						{n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
+							create_UIBox_round_scores_row('hand'),
+							create_UIBox_round_scores_row('poker_hand'),
+						}},
+						{n=G.UIT.R, config={align = "cm"}, nodes={
+							{n=G.UIT.C, config={align = "cm", padding = 0.08}, nodes={
+								create_UIBox_round_scores_row('cards_played', G.C.BLUE),
+								create_UIBox_round_scores_row('cards_discarded', G.C.RED),
+								create_UIBox_round_scores_row('cards_purchased', G.C.MONEY),
+								create_UIBox_round_scores_row('times_rerolled', G.C.GREEN),
+								create_UIBox_round_scores_row('new_collection', G.C.WHITE),
+								create_UIBox_round_scores_row('seed', G.C.WHITE),
+								UIBox_button({button = 'copy_seed', label = {localize('b_copy')}, colour = G.C.BLUE, scale = 0.3, minw = 2.3, minh = 0.4, focus_args = {nav = 'wide'}}),
+							}},
+							{n=G.UIT.C, config={align = "tr", padding = 0.08}, nodes={
+								create_UIBox_round_scores_row('furthest_ante', G.C.FILTER),
+								create_UIBox_round_scores_row('furthest_round', G.C.FILTER),
+								create_UIBox_round_scores_row('defeated_by'),
+							}}
+						}}
+					}},
+					show_lose_cta and 
+					{n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
+						{n=G.UIT.C, config={id = 'lose_cta', align = "cm", minw = 5, padding = 0.1, r = 0.1, hover = true, colour = G.C.GREEN, button = "show_main_cta", shadow = true}, nodes={
+							{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes={
+							{n=G.UIT.T, config={text = localize('b_next'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, focus_args = {nav = 'wide', snap_to = true}}}
+							}}
+						}}
+					}} or
+					{n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
+						{n=G.UIT.R, config={id = 'from_game_over', align = "cm", minw = 5, padding = 0.1, r = 0.1, hover = true, colour = G.C.RED, button = "notify_then_setup_run", shadow = true, focus_args = {nav = 'wide', snap_to = true}}, nodes={
+							{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true, maxw = 4.8}, nodes={
+							{n=G.UIT.T, config={text = localize('b_start_new_run'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT}}
+							}}
+						}},
+						{n=G.UIT.R, config={align = "cm", minw = 5, padding = 0.1, r = 0.1, hover = true, colour = G.C.RED, button = "go_to_menu", shadow = true, focus_args = {nav = 'wide'}}, nodes={
+							{n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true, maxw = 4.8}, nodes={
+							{n=G.UIT.T, config={text = localize('b_main_menu'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT}}
+							}}
+						}}
+					}}
+				}},
+			}}
+		}})
+		t.config.id = 'game_over_UI'
+		return t
+	else
+		return cuiboxgameoverref
+	end
+end
+
+sendInfoMessage("Hooking Game:start_run...", "TOGAPack")
+local gsrref = Game.start_run
+function Game:start_run(args)
+	local ret = gsrref(self, args)
+	if self.toga_customdeckmusic then self.toga_customdeckmusic = nil; self.normal_music_speed = nil end
+	return ret
+end
+
+sendInfoMessage("Hooking win_game...", "TOGAPack")
+local yourewinner = win_game
+function win_game()
+	if G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and togabalatro.config.UseCustomModTabMusic then G.normal_music_speed = true; G.toga_normal_music_speed = true; G.toga_customdeckmusic = true end
+	yourewinner()
 end
 
 -- Hook for Strength-like stuff.
@@ -1206,6 +1433,20 @@ togabalatro.handlimitchange = function(val, set_to)
 	end
 end
 
+sendInfoMessage("Hooking Card_Character:add_speech_bubble...", "TOGAPack")
+local cardcharaddspeechbubbleref = Card_Character.add_speech_bubble
+function Card_Character:add_speech_bubble(text_key, align, loc_vars, quip_args)
+	if self.config.args.center == 'c_toga_selfpropelledbomb' then return end
+	cardcharaddspeechbubbleref(self, text_key, align, loc_vars, quip_args)
+end
+
+sendInfoMessage("Hooking Card_Character:say_stuff...", "TOGAPack")
+local cardcharsaystuffref = Card_Character.say_stuff
+function Card_Character:say_stuff(n, not_first, quip_key)
+	if self.config.args.center == 'c_toga_selfpropelledbomb' then return end
+	cardcharsaystuffref(self, n, not_first, quip_key)
+end
+
 -- weaponized negativity.
 local negweightref = G.P_CENTERS['e_negative'].get_weight
 G.P_CENTERS['e_negative'].get_weight = function(self)
@@ -1357,7 +1598,7 @@ if SMODS.Mods['incantation'] and SMODS.Mods['incantation'].can_load and not SMOD
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
-for _, file in ipairs{"joker.lua", "deck.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "crossmod.lua"} do
+for _, file in ipairs{"joker.lua", "deck.lua", "quips.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "crossmod.lua"} do
 	sendDebugMessage("Executing items/"..file, "TOGAPack")
 	assert(SMODS.load_file("items/"..file))()
 end
