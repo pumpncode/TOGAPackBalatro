@@ -135,7 +135,7 @@ SMODS.Sound({
 	key = "music_spbattacklose",
 	path = "O_SPBA_L.ogg",
 	select_music_track = function()
-		return G.STATE == G.STATES.GAME_OVER and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and 69420
+		return G.STATE == G.STATES.GAME_OVER and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('game_over_UI') and 69420
 	end,
 	sync = false,
 	pitch = 1,
@@ -146,7 +146,7 @@ SMODS.Sound({
 	key = "music_spbattackwin",
 	path = "O_SPBA_W.ogg",
 	select_music_track = function()
-		return G.SETTINGS.paused and G.GAME.won and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and 69420
+		return G.SETTINGS.paused and G.GAME.won and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('you_win_UI') and 69420
 	end,
 	sync = false,
 	pitch = 1,
@@ -936,7 +936,7 @@ function create_UIBox_game_over()
 		t.config.id = 'game_over_UI'
 		return t
 	else
-		return cuiboxgameoverref
+		return cuiboxgameoverref()
 	end
 end
 
