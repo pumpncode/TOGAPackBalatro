@@ -21,7 +21,6 @@ return {
 					"{C:attention}+#6#{} hand size, +{C:money}$6{} on start",
 					"{C:red}#1#{} hand, {C:red}#2#{} discard",
 					"{C:red}X#5#{} base Blind size",
-					--"Start with {C:money}$6{} more",
 					"{C:inactive,s:0.8}What {C:spectral,s:0.8}secrets{C:inactive,s:0.8} does the frog hold?{}"
 				}
 			},
@@ -184,10 +183,17 @@ return {
 			j_toga_mcanvil = {
 				name = 'Anvil',
 				text = {
-					"This Joker gains {X:mult,C:white}X#2#{} Mult",
-					"per scoring {C:attention}Steel{} card played,",
-					"removes card {C:attention}Enhancement{}",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
+					{
+						"Played {C:attention}Steel Cards{} are",
+						"{C:attention}converted{} to {C:attention}Iron Cards{}",
+						"when scored"
+					},
+					{
+						"This Joker gains {X:mult,C:white}X#2#{} Mult",
+						"for every {C:attention}Steel Card{}",
+						"converted this way",
+						"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
+					}
 				}
 			},
 			j_toga_taskmgr = {
@@ -549,11 +555,6 @@ return {
 			j_toga_virtualpc = {
 				name = 'Virtual PC',
 				text = {
-					-- "When {C:attention}scoring starts{},",
-					-- "base {C:blue}Chips{} and {C:red}Mult{}",
-					-- "of played {C:attention}poker hand{}",
-					-- "are added to this Joker",
-					-- "{C:inactive,s:0.85}(Currently {C:blue,s:0.85}#1#{C:inactive,s:0.85} Chips / {C:red,s:0.85}#2#{C:inactive,s:0.85} Mult)"
 					"At end of {C:attention}shop{}, gain {C:red}+#2#{} Mult",
 					"per {C:money}$1{} of cost of {C:attention}leftover{}",
 					"{C:attention}items{} in {C:attention}shop{}",
@@ -1804,6 +1805,7 @@ return {
 			toga_updated = "Update!",
 			toga_updateready = "Ready!",
 			toga_pso2ironwillready = "Ready!",
+			toga_pso2ironwillinactive = "Inactive",
 			toga_pso2ironwillproc = "Procced!",
 			toga_pso2ironwillrecharge = "Recharging...",
 			toga_pso2ironwillsave = "Iron Will was triggered.",
@@ -1835,8 +1837,13 @@ return {
 			toga_stonefound = "!",
 			--
 			toga_unbalanced = "Unbalanced",
+			toga_chips = "Chips",
+			toga_mult = "Mult",
+			toga_rosenclick = "*click*",
+			toga_rosennice = "Nice.",
 			toga_pluscard = "+1 Card",
 			toga_solitairedraw = "Drawing...",
+			toga_hsize = "hand size",
 			toga_32bits = "32-bit!",
 			toga_jimbo = "...",
 			toga_jimbo95txt1 = "Run!",

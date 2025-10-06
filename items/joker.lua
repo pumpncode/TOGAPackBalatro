@@ -1,17 +1,20 @@
 sendInfoMessage("Loading Jokers...", "TOGAPack")
 
 -- Check for 2 and King.
-togabalatro.y2kcheck = function(context)
+togabalatro.y2kcheck = function(hand)
 	local twopresent, kingpresent = false, false
 	local twos, kings = 0, 0
-	for i = 1, #context.full_hand do
-		if context.full_hand[i]:get_id() == 2 then
-			twopresent = true
-			twos = twos + 1
-		end
-		if context.full_hand[i]:get_id() == 13 then
-			kingpresent = true
-			kings = kings + 1
+	hand = hand or {}
+	for i = 1, #hand do
+		if hand[i] then
+			if hand[i]:get_id() == 2 then
+				twopresent = true
+				twos = twos + 1
+			end
+			if hand[i]:get_id() == 13 then
+				kingpresent = true
+				kings = kings + 1
+			end
 		end
 	end
 	return twopresent, kingpresent, twos, kings
@@ -32,7 +35,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
-			local twos, kings = togabalatro.y2kcheck(context)
+			local twos, kings = togabalatro.y2kcheck(context.full_hand)
 			if twos and kings then
 				return { chips = card.ability.extra.chips, mult = card.ability.extra.mult }
 			end
@@ -463,27 +466,7 @@ SMODS.Joker{
 	config = { extra = { permodxmult = 2 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.permodxmult = math.max(card.ability.extra.permodxmult, 1)
-		local mods, modcount = {['TOGAPack'] = true}, 1 -- count ourselves.
-		if G.jokers and G.consumeables and G.vouchers then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].config.center.original_mod and not mods[G.jokers.cards[i].config.center.original_mod.id] then
-					mods[G.jokers.cards[i].config.center.original_mod.id] = true
-					modcount = modcount + 1
-				end
-			end
-			for i = 1, #G.consumeables.cards do
-				if G.consumeables.cards[i].config.center.original_mod and not mods[G.consumeables.cards[i].config.center.original_mod.id] then
-					mods[G.consumeables.cards[i].config.center.original_mod.id] = true
-					modcount = modcount + 1
-				end
-			end
-			for i = 1, #G.vouchers.cards do
-				if G.vouchers.cards[i].config.center.original_mod and not mods[G.vouchers.cards[i].config.center.original_mod.id] then
-					mods[G.vouchers.cards[i].config.center.original_mod.id] = true
-					modcount = modcount + 1
-				end
-			end
-		end
+		local mods, modcount = togabalatro.checkownedmoditems()
 		return { key = modcount > 1 and self.key.."_moremod" or self.key, vars = { card.ability.extra.permodxmult, card.ability.extra.permodxmult*modcount, modcount } }
 	end,
 	unlocked = true,
@@ -1455,10 +1438,11 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'mcanvil',
-	config = { extra = { curxmult = 0, steelxmult = 0.25 } },
+	config = { extra = { curxmult = 0, steelxmult = 0.5 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
-		card.ability.extra.steelxmult = math.max(card.ability.extra.steelxmult, 0.25)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_toga_iron
+		card.ability.extra.steelxmult = math.max(card.ability.extra.steelxmult, 0.5)
 		return { vars = { 1+card.ability.extra.curxmult, card.ability.extra.steelxmult } }
 	end,
 	unlocked = true,
@@ -1480,7 +1464,7 @@ SMODS.Joker{
 						G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
 							card:juice_up()
 							v.anviled = nil
-							v:set_ability(G.P_CENTERS.c_base)
+							v:set_ability(G.P_CENTERS.m_toga_iron)
 						return true end }))
 						card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize('toga_anviltrigger'), sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_anviluse', pitch = not silent and togabalatro.config.SFXWhenTriggered and togabalatro.randompitch()})
 					end
@@ -1507,15 +1491,15 @@ SMODS.Joker{
 togabalatro.cashpointmulitple = function(cashpoint)
 	local getmultiples = to_big(G.GAME.dollars)/to_big(cashpoint)
 	if Talisman and type(getmultiples) == 'table' then getmultiples = getmultiples:to_number() end
-	return math.min(math.floor(getmultiples), 65535) + 1
+	return math.min(math.floor(getmultiples), 65535)
 end
 
 SMODS.Joker{
 	key = 'spacecadetpinball',
 	config = { extra = { cashpoint = 20, alltrig = 1 } },
 	loc_vars = function(self, info_queue, card)
-		card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint) or 1
-		return { vars = { card.ability.extra.cashpoint, math.max(card.ability.extra.alltrig-1, 1), SMODS.get_probability_vars(card or self, 1, 3) } }
+		card.ability.extra.alltrig = 1+togabalatro.cashpointmulitple(card.ability.extra.cashpoint)
+		return { vars = { card.ability.extra.cashpoint, math.max(card.ability.extra.alltrig, 1), SMODS.get_probability_vars(card or self, 1, 3) } }
 	end,
 	unlocked = true,
 	rarity = 3,
@@ -1524,7 +1508,7 @@ SMODS.Joker{
 	cost = 10,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.before then card.ability.extra.alltrig = togabalatro.cashpointmulitple(card.ability.extra.cashpoint) end
+		if context.before then card.ability.extra.alltrig = 1+togabalatro.cashpointmulitple(card.ability.extra.cashpoint) end
 		if context.spacecadetscore then return { spacecadet = card.ability.extra.alltrig, card = context.blueprint_card or card } end
 		if context.after then card.ability.pinballscore = nil end
 	end,
@@ -1886,6 +1870,8 @@ SMODS.Joker{
 	config = { extra = { xmult = 1.5, process = 'Chrome', totalxmult = 0 } },
 	loc_vars = function(self, info_queue, card)
 		local count = togabalatro.getprocessamount(card.ability.extra.process)
+		if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
+		togabalatro.processcounts.chrome = count
 		local bonus, totalbonus = card.ability.extra.xmult, 0
 		for i = 1, count do
 			totalbonus = totalbonus + bonus
@@ -1906,6 +1892,8 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.before then
 			local count = togabalatro.getprocessamount(card.ability.extra.process)
+			if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
+			togabalatro.processcounts.chrome = count
 			local bonus, totalbonus = card.ability.extra.xmult, 0
 			for i = 1, count do
 				totalbonus = totalbonus + bonus
@@ -1927,6 +1915,8 @@ SMODS.Joker{
 	config = { extra = { xchips = 1.5, process = 'Firefox', totalxchips = 0 } },
 	loc_vars = function(self, info_queue, card)
 		local count = togabalatro.getprocessamount(card.ability.extra.process)
+		if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
+		togabalatro.processcounts.firefox = count
 		local bonus, totalbonus = card.ability.extra.xchips, 0
 		for i = 1, count do
 			totalbonus = totalbonus + bonus
@@ -1947,6 +1937,8 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.before then
 			local count = togabalatro.getprocessamount(card.ability.extra.process)
+			if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
+			togabalatro.processcounts.firefox = count
 			local bonus, totalbonus = card.ability.extra.xchips, 0
 			for i = 1, count do
 				totalbonus = totalbonus + bonus

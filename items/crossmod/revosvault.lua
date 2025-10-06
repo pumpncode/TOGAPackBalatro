@@ -26,7 +26,7 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.other_joker and context.other_joker.config and context.other_joker.config.center and context.other_joker.config.center.rarity == "crv_p"
 		and SMODS.pseudorandom_probability(card, 'toga_bogosbinted', 1, card.ability.extra.odds, 'printersharing') then
-			return { x_mult = card.ability.extra.printxmult }
+			return { x_mult = card.ability.extra.printxmult, message_card = context.other_joker }
 		end
 	end,
 	set_badges = function(self, card, badges)

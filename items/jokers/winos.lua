@@ -39,7 +39,7 @@ SMODS.Joker{
 	end,
 }
 
-local function toga_gettotaljokervalue()
+togabalatro.gettotaljokervalue = function()
 	local value = 0
 	if G.jokers then
 		for i = 1, #G.jokers.cards do
@@ -56,7 +56,7 @@ SMODS.Joker{
 	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.15 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.totalconsslotbonus = togabalatro.getconscount()*card.ability.extra.consslotbonus or 0
-		return { vars = { card.ability.extra.consslotbonus*100, card.ability.extra.totalconsslotbonus*100, card.ability.extra.percentage*100, toga_gettotaljokervalue()*card.ability.extra.percentage } }
+		return { vars = { card.ability.extra.consslotbonus*100, card.ability.extra.totalconsslotbonus*100, card.ability.extra.percentage*100, togabalatro.gettotaljokervalue()*card.ability.extra.percentage } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -66,7 +66,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play then
-			local sellvalues = toga_gettotaljokervalue()*card.ability.extra.percentage
+			local sellvalues = togabalatro.gettotaljokervalue()*card.ability.extra.percentage
 			local slotbonus = sellvalues*togabalatro.getconscount()*card.ability.extra.consslotbonus or 0
 			return {
 				mult = sellvalues + slotbonus
@@ -252,7 +252,7 @@ SMODS.Joker{
 			return {
 				remove = true,
 				func = function()
-					if #G.jokers.cards > 1 then
+					if #G.jokers.cards > 0 then
 						local iter, iterlimit, seljoker = 0, 10*#G.jokers.cards, nil
 						repeat
 							iter = iter + 1
