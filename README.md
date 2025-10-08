@@ -10,7 +10,7 @@ A personal timewaster project that is a mod for Balatro.
 Don't forget to check mod config menu, especially on first load or fresh profile.
 
 Modded Balatro Wiki page:
-[https://balatromods.miraheze.org/wiki/TOGA's_Stuff](https://balatromods.miraheze.org/wiki/TOGA%27s_Stuff)
+https://balatromods.miraheze.org/wiki/TOGA%27s_Stuff
 
 Uses Steamodded 1.0.0-BETA and a bit of Lovely patching.
 https://github.com/Steamodded/smods
