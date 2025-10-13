@@ -158,38 +158,28 @@ SMODS.Voucher{
 	end,
 }
 
-if Talisman then
-	SMODS.Voucher{
-		key = 'mspaint',
-		pos = { x = 3, y = 1 },
-		atlas = 'TOGAConsumables',
-		unlocked = true,
-		cost = 20,
-		rarity = 3,
-		config = { rarity = 3, extra = { echip = 1.05, jokerslot = -2 } },
-		loc_vars = function(self, info_queue, card)
-			return {vars = { card.ability.extra.echip, card.ability.extra.jokerslot }}
-		end,
-		redeem = function(self, card)
-			local card = card and card.ability and card or self and self.ability and self
-			G.jokers.config.card_limit = G.jokers.config.card_limit + (card and card.ability.extra or self.config.extra).jokerslot
-		end,
-		requires = {'v_paint_brush'},
-		calculate = function(self, card, context)
-			if context.cardarea == G.hand and context.other_card and not context.repetition and not context.repetition_only and not context.end_of_round and not context.other_card.debuff then
-				return {
-					card = context.other_card,
-					echips = card.ability.extra.echip,
-					echip_message = {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.echip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"}
-				}
-			end
-		end,
-		in_pool = function()
-			return togabalatro.config.ShowPower
-		end,
-		poweritem = true
-	}
-end
+SMODS.Voucher{
+	key = 'mspaint',
+	pos = { x = 3, y = 1 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 20,
+	rarity = 3,
+	config = { rarity = 3, extra = { opamtincr = 0.1 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = {key = "toga_chipmultmodinfo", set = 'Other'}
+		local chipmod, multmod = tonumber(G.GAME.modifiers.toga_chipamtmod) or 1, tonumber(G.GAME.modifiers.toga_multamtmod) or 1
+		return { vars = { card.ability.extra.opamtincr, chipmod or 1, multmod or 1 } }
+	end,
+	redeem = function(self, card)
+		G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + (card and card.ability.extra or self.config.extra).opamtincr
+		G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + (card and card.ability.extra or self.config.extra).opamtincr
+	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	poweritem = true
+}
 
 SMODS.Voucher{
 	key = 'dataflush',

@@ -30,22 +30,20 @@ SMODS.Back{
 	end
 }
 
-
-
 SMODS.Back{
 	key = "srb2kartdeck",
 	pos = { x = 2, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
-	config = {spectral_rate = 1, joker_slot = -1},
+	config = {spectral_rate = 1},
 	loc_vars = function(self, info_queue, center)
-		return { vars = { self.config.ante_scaling or 1, self.config.joker_slot } }
+		return { vars = { self.config.ante_scaling or 1 } }
 	end,
 	apply = function(self, back)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					SMODS.add_card({ key = "j_toga_jokersrb2kart", stickers = { "eternal" } })
+					SMODS.add_card({ key = "j_toga_jokersrb2kart", stickers = { "eternal" }, force_stickers = true })
 					return true
 				end
 			end,
@@ -228,5 +226,23 @@ SMODS.Back{
 	end,
 	apply = function(self, back)
 		G.GAME.modifiers.toga_nohandscore = true
+	end
+}
+
+SMODS.Back{
+	key = "wharariki",
+	pos = { x = 11, y = 0 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	config = { ante_scaling = 2, opamtmod = 0.2 },
+	loc_vars = function(self, info_queue, center)
+		return { vars = { self.config.ante_scaling, self.config.opamtmod } }
+	end,
+	apply = function(self, back)
+		G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.config.opamtmod
+		G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + self.config.opamtmod
+		G.STATE = G.STATES.SHOP
+		G.GAME.shop_free = nil
+		G.GAME.shop_d6ed = nil
 	end
 }

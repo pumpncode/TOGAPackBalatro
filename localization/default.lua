@@ -27,8 +27,8 @@ return {
 			b_toga_spacedeck = {
 				name = 'Spaceman Deck',
 				text = {
-					"Start the run",
-					"with a {C:planet,T:j_space}Space Joker{}",
+					"Start the run with a",
+					"special {C:planet,T:j_space}Space Joker{}",
 					"{C:planet,T:v_planet_merchant}Planet Merchant{},",
 					"{C:planet,T:v_planet_tycoon}Planet Tycoon{}",
 					"{C:spectral,s:0.8}Spectral{s:0.8} cards",
@@ -40,7 +40,6 @@ return {
 				text = {
 					"Start run with",
 					"a special {C:attention,T:j_toga_jokersrb2kart}Karting Joker{}",
-					"{C:red}#2#{} {C:attention}Joker{} slots",
 					"{C:spectral,s:0.8}Spectral{s:0.8} cards",
 					"{s:0.8}may appear in shop"
 				}
@@ -116,6 +115,15 @@ return {
 					"{C:attention}X#1#{} base Blind size"
 				}
 			},
+			b_toga_wharariki = {
+				name = "Wharariki Deck",
+				text = {
+					"{X:attention,C:white}+X#2#{} {C:blue}Chips{} and {C:red}Mult",
+					"operation amount",
+					"Start in the {C:attention}Shop",
+					"{C:red}X#1#{} base Blind size"
+				}
+			},
 		},
 		Blind = {
 			bl_toga_dialupmodem = {
@@ -149,6 +157,20 @@ return {
 				name = "The Experience",
 				text = {
 					"The Experience",
+				}
+			},
+			bl_toga_tasks = {
+				name = "The Tasks",
+				text = {
+					"-X#1# Mult",
+					"operation amount"
+				}
+			},
+			bl_toga_accountant = {
+				name = "The Accountant",
+				text = {
+					"-X#1# Chips",
+					"operation amount"
 				}
 			},
 		},
@@ -243,15 +265,6 @@ return {
 				}
 			},
 			j_toga_win95 = {
-				name = 'Windows 95',
-				text = {
-					"{C:chips}+#1#{} hand(s) & {C:red}+#2#{} discard(s)",
-					"upon selecting a {C:attention}Blind{}.",
-					"If there are {C:attention}#4#{} or fewer",
-					"Jokers, get {C:attention}X#3#{} the amount."
-				}
-			},
-			j_toga_win95_lite = {
 				name = 'Windows 95',
 				text = {
 					"{C:chips}+#1#{} hand(s) & {C:red}+#2#{} discard(s)",
@@ -582,7 +595,7 @@ return {
 			j_toga_win7 = {
 				name = 'Windows 7',
 				text = {
-					"{C:attention}Held in hand{} cards give",
+					"{C:attention}Held in hand{} {C:attention}7s{} give",
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}unique{}",
 					"Consumable {C:attention}type{} held",
 				}
@@ -979,6 +992,84 @@ return {
 					"consideration"
 				}
 			},
+			j_toga_desktop = {
+				name = 'Desktop',
+				text = {
+					"This Joker gains {X:mult,C:white}X#2#{} Mult",
+					"when a {C:attention}Tag{} {C:attention}triggers",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{C:inactive} Mult){}"
+				}
+			},
+			j_toga_mswallet = {
+				name = 'Microsoft Wallet',
+				text = {
+					"{C:attention}Inverts{} {C:gold}money{} change",
+					"{C:attention}outside{} of {C:attention}Shop",
+					"{C:inactive,s:0.8}Does not stack with copies{}"
+				}
+			},
+			j_toga_nonebattery = {
+				name = 'None Battery',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult when system",
+					"does {C:attention}not{} have a {C:attention}battery",
+				}
+			},
+			j_toga_dragndrop = {
+				name = "Drag'n'Drop",
+				text = {
+					"This Joker gives {C:blue}Chips{} equal to the {C:attention}size{}",
+					"of last file {C:attention}dropped{} into the game",
+					"{C:inactive,s:0.9}(Currently {C:blue,s:0.9}+#1#{C:inactive,s:0.9}/#2# MB, caps at {C:blue,s:0.9}+#3#{C:inactive,s:0.9})",
+					"{C:inactive,s:0.8}(Cap increases by {C:blue,s:0.8}+#4#{C:inactive,s:0.8} for every ante past 0.)"
+				}
+			},
+			j_toga_repairdisk = {
+				name = 'Repair Disk',
+				text = {
+					"This Joker gains {X:mult,C:white}X#2#{} Mult",
+					"for every {C:money}${} spent or lost",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}"
+				}
+			},
+			j_toga_merlin = {
+				name = 'Merlin',
+				text = {
+					"This Joker gains",
+					"{X:mult,C:white}X#2#{} Mult every time",
+					"a {C:tarot}Tarot{} card is used",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}"
+				}
+			},
+			j_toga_briefcase = {
+				name = 'Briefcase',
+				text = {
+					{
+						"{C:attention}Held in hand{} cards",
+						"give {C:blue}+#1#{} Chips"
+					},
+					{
+						"When {C:attention}changing{} Antes,",
+						"increase amount by {C:blue}+#2#{}"
+					}
+				}
+			},
+			j_toga_vga = {
+				name = 'Video Adapter',
+				text = {
+					"Held {C:attention}Consumables{} give {X:mult,C:white}X#1#{} Mult",
+					"if {C:attention}game resolution{} aspect ratio is {C:dark_edition}4:3",
+					"{C:inactive}({V:1}#3#x#4#{C:inactive})"
+				}
+			},
+			j_toga_mshome = {
+				name = 'Microsoft Home',
+				text = {
+					"This Joker gives {C:attention}double{} of current",
+					"{C:attention}Score requirement scaling{} as {X:mult,C:white}XMult{}",
+					"{C:inactive}(Currently {X:attention,C:white}#1#X{C:inactive}/{X:mult,C:white}X#2#{}{C:inactive} Mult)"
+				}
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {
@@ -1116,7 +1207,7 @@ return {
 					"{C:inactive,s:0.8}If you can pay for another{}",
 					"{C:inactive,s:0.8}use, keep on use.{}",
 					"{C:inactive,s:0.8}(To see recipes, hold Left Shift{}",
-					"{C:inactive,s:0.8}before hovering over the card.){}",
+					"{C:inactive,s:0.8}before hovering over this card.){}",
 				}
 			},
 			c_toga_furnace_ready = {
@@ -1141,7 +1232,7 @@ return {
 					"{C:inactive,s:0.8}If you can pay for another{}",
 					"{C:inactive,s:0.8}use, keep on use.{}",
 					"{C:inactive,s:0.8}(To see recipes, hold Left Shift{}",
-					"{C:inactive,s:0.8}before hovering over the card.){}",
+					"{C:inactive,s:0.8}before hovering over this card.){}",
 				}
 			},
 			c_toga_miningprospect = {
@@ -1363,9 +1454,9 @@ return {
 			v_toga_mspaint = {
 				name = "Microsoft Paint",
 				text = {
-					"{C:red}#2#{} {C:attention}Joker{} slots",
-					"{C:attention}Held in hand{} cards give",
-					"{X:dark_edition,C:white}^#1#{} Chips this run"
+					"{X:attention,C:white}+X#1#{} {C:blue}Chips{} and {C:red}Mult",
+					"operation amount",
+					"{C:inactive}(Currently {X:blue,C:white}X#2#{C:inactive}/{X:red,C:white}X#3#{C:inactive})"
 				},
 			},
 			v_toga_dataflush = {
@@ -1434,6 +1525,16 @@ return {
 				},
 			},
 		},
+		Stake = {
+			stake_toga_togateal = {
+				name = "Teal Stake (TOGA)",
+				text = {
+					"{X:attention,C:white}-X0.1{} {C:blue}Chip{} and {C:red}Mult{} operation amount",
+					"{s:0.75}Applies all previous Stakes. {s:0.75,C:inactive}Some sources of {s:0.75,C:blue}Chips{s:0.75,C:inactive}/{s:0.75,C:red}Mult",
+					"{s:0.75,C:inactive}may {s:0.75,C:red}not{s:0.75,C:inactive} {s:0.75,C:attention}display modified{s:0.75,C:inactive} values"
+				},
+			}
+		},
 		Other = {
 			toga_sealseal = {
 				name = "Seal^2",
@@ -1489,6 +1590,14 @@ return {
 					"lose the run. If this tooltip",
 					"does not appear, it is",
 					"safe to remove."
+				},
+			},
+			toga_chipmultmodinfo = {
+				name = "Chip/Mult Operation Amount Note",
+				text = {
+					"Some sources of {C:blue}Chips{} or {C:red}Mult{}",
+					"may {C:red}not{} {C:attention}display{} the {C:attention}modified{} values",
+					"{s:0.8,C:inactive}This is purely a visual bug."
 				},
 			},
 			p_toga_togazipboosterpack = {
@@ -1668,6 +1777,14 @@ return {
 					"= 1x Refined Glowstone",
 				},
 			},
+			toga_togateal_sticker={
+                name = "Teal (TOGA) Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Teal (TOGA)",
+                    "{C:attention}Stake{} difficulty",
+                },
+            },
 		},
 		Partner = {
 			pnr_toga_startupdisk={
@@ -1839,6 +1956,7 @@ return {
 			toga_unbalanced = "Unbalanced",
 			toga_chips = "Chips",
 			toga_mult = "Mult",
+			toga_megabyte = "MB",
 			toga_rosenclick = "*click*",
 			toga_rosennice = "Nice.",
 			toga_pluscard = "+1 Card",
@@ -1885,7 +2003,7 @@ return {
 			toga_musicpacks = "MIDI-fied music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
 			toga_jokeactive = "'Joke' items:",
-			toga_usenerfedver = "Items shown above use nerfed versions",
+			toga_usenerfedver = "Items above use nerfed versions",
 			toga_strongstate = "'Mainline' items:",
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",

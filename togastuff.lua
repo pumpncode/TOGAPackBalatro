@@ -22,9 +22,11 @@ SMODS.Atlas{key = "TOGADeckBack", path = "togadeck.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGATags", path = "togatags.png", px = 34, py = 34}
 SMODS.Atlas{key = "TOGASeals", path = "togaseal.png", px = 71, py = 95}
 SMODS.Atlas{key = "TOGAEnhancements", path = "togaenh.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGAStickers", path = "togastickers.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGAStakes", path = "togastake.png", px = 29, py = 29}
 SMODS.Atlas{key = "TOGADialUpBlind", path = "togadialupblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 24}
 SMODS.Atlas{key = "TOGAWWWBlind", path = "togawwwblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 32}
-SMODS.Atlas{key = "TOGAJoyStickBlind", path = "togajoystickblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 1}
+SMODS.Atlas{key = "TOGAOtherBlind", path = "togaotherblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 1}
 SMODS.Atlas{key = "TOGAMoreIcons", path = "togamoricons.png", px = 36, py = 36, disable_mipmap = true}
 SMODS.Atlas{key = "TOGAFunny", path = "togazefunny.png", px = 64, py = 64, atlas_table = 'ANIMATION_ATLAS', frames = 9}
 SMODS.Atlas{key = "TOGAFunnyStatic", path = "togazefunny.png", px = 64, py = 64}
@@ -212,6 +214,11 @@ togabalatro.errorhandler = function()
 		end
 	end
 	togabalatro.crashtrig = true
+end
+
+togabalatro.reloadloctext = function()
+	G:set_language()
+	G:init_item_prototypes()
 end
 
 togabalatro.getrandcons = function(seed)
@@ -512,6 +519,31 @@ togabalatro.cagen = function(cardArea, desc_nodes, config)
         end
     end
     return uiEX
+end
+
+-- File shenanigans.
+local lastfilesizedropped, filedropref = 0, love.filedropped
+function love.filedropped(file)
+	togabalatro.updatelastfilesize(tonumber(file:getSize("r")))
+	if filedropref then return filedropref(file) end
+end
+
+togabalatro.lastfilesize = function()
+	return lastfilesizedropped or 0
+end
+
+togabalatro.updatelastfilesize = function(val)
+	lastfilesizedropped = tonumber(val) and val or lastfilesizedropped or 0
+end
+
+togabalatro.check43 = function(width, height)
+	width, height = tonumber(width) or 1, tonumber(height) or 1
+	return width/height == 4/3
+end
+
+togabalatro.round = function(num, dplaces)
+	local m = 10^(dplaces or 0)
+	return math.floor(num * m + 0.5) / m
 end
 
 -- As Talisman is now optional and we have some items using this, best keep these.
@@ -1036,7 +1068,7 @@ if SMODS.Mods['incantation'] and SMODS.Mods['incantation'].can_load and not SMOD
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
-for _, file in ipairs{"hooks.lua", "joker.lua", "deck.lua", "quips.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "crossmod.lua"} do
+for _, file in ipairs{"hooks.lua", "joker.lua", "deck.lua", "quips.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "stakes.lua", "crossmod.lua"} do
 	sendDebugMessage("Executing items/"..file, "TOGAPack")
 	assert(SMODS.load_file("items/"..file))()
 end

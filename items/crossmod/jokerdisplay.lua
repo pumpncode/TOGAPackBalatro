@@ -580,7 +580,7 @@ togabalatro.jd_def["j_toga_win7"] = {
 		local count = 0
 		for _, playing_card in ipairs(G.hand.cards) do
 			if playing_hand or not playing_card.highlighted then
-				if not (playing_card.facing == 'back') and not playing_card.debuff then
+				if not (playing_card.facing == 'back') and not playing_card.debuff and playing_card:get_id() and playing_card:get_id() == 7 then
 					count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
 				end
 			end
@@ -1047,6 +1047,186 @@ togabalatro.jd_def["j_toga_firefox"] = {
 	calc_function = function(card)
 		card.joker_display_values.xchips = card.ability.extra.totalxchips
 		card.joker_display_values.processes = (togabalatro.processcounts or {}).firefox or '???'
+	end,
+}
+
+togabalatro.jd_def["j_toga_desktop"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.joker_display_values", ref_value = "curxmult", retrigger_type = "exp" },
+			},
+		},
+	},
+	calc_function = function(card)
+		card.joker_display_values.curxmult = 1+card.ability.extra.curxmult
+	end,
+}
+
+togabalatro.jd_def["j_toga_nonebattery"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
+			},
+		},
+	},
+	reminder_text = {
+		{ text = "(" },
+		{ ref_table = "card.joker_display_values", ref_value = "battery" },
+		{ text = ")" },
+	},
+	calc_function = function(card)
+		card.joker_display_values.battery = love.system.getPowerInfo()
+	end,
+	style_function = function(card, text, reminder_text, extra)
+		if reminder_text and reminder_text.children[1] and reminder_text.children[2] and card.joker_display_values then
+			reminder_text.children[2].config.colour = card.joker_display_values.battery == 'nobattery' and G.C.FILTER or G.C.UI.TEXT_INACTIVE
+		end
+		return false
+	end
+}
+
+togabalatro.jd_def["j_toga_dragndrop"] = {
+	text = {
+		{ text = "+",	colour = G.C.CHIPS },
+		{ ref_table = "card.joker_display_values", ref_value = "curchips", colour = G.C.CHIPS, retrigger_type = "mult" },
+		{ text = "/" },
+		{ ref_table = "card.joker_display_values", ref_value = "cap", colour = G.C.CHIPS },
+	},
+	reminder_text = {
+		{ text = "(" },
+		{ ref_table = "card.joker_display_values", ref_value = "mbsize" },
+		{ text = ")" },
+	},
+	calc_function = function(card)
+		local ante, filesize = math.abs(to_number(G.GAME.round_resets.ante)) or 1, togabalatro.lastfilesize()
+		card.joker_display_values.curchips = math.min(filesize/1048576, card.ability.extra.cap+card.ability.extra.antecaplift*ante)
+		card.joker_display_values.cap = card.ability.extra.cap+card.ability.extra.antecaplift*ante
+		card.joker_display_values.mbsize = togabalatro.round(filesize/1048576, 2) .. " " .. localize('toga_megabyte')
+	end,
+}
+
+togabalatro.jd_def["j_toga_repairdisk"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
+			}
+		},
+	},
+	reminder_text = {
+		{
+			border_nodes = {
+				{ text = "+X", colour = G.C.UI.TEXT_LIGHT },
+				{ ref_table = "card.ability.extra", ref_value = "dxmult", colour = G.C.UI.TEXT_LIGHT }
+			}
+		},
+		{ text = "/" },
+		{ text = "$", colour = G.C.RED },
+	},
+	calc_function = function(card)
+		card.joker_display_values.xmult = 1+card.ability.extra.curxmult
+	end
+}
+
+togabalatro.jd_def["j_toga_merlin"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.joker_display_values", ref_value = "curxmult", retrigger_type = "exp" },
+			},
+		},
+	},
+	calc_function = function(card)
+		card.joker_display_values.curxmult = 1+card.ability.extra.curxmult
+	end,
+}
+
+togabalatro.jd_def["j_toga_briefcase"] = {
+	text = {
+		{ text = "+", colour = G.C.CHIPS },
+		{ ref_table = "card.joker_display_values", ref_value = "curchips", colour = G.C.CHIPS, retrigger_type = "mult" },
+	},
+	calc_function = function(card)
+		local playing_hand = next(G.play.cards)
+		local count = 0
+		for _, playing_card in ipairs(G.hand.cards) do
+			if playing_hand or not playing_card.highlighted then
+				if not (playing_card.facing == 'back') and not playing_card.debuff then
+					count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+				end
+			end
+		end
+		card.joker_display_values.curchips = card.ability.extra.curhchips*count
+	end,
+}
+
+togabalatro.jd_def["j_toga_vga"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.joker_display_values", ref_value = "curxmult", retrigger_type = "exp" },
+			},
+		},
+	},
+	reminder_text = {
+		{ text = "(" },
+		{ ref_table = "card.joker_display_values", ref_value = "res" },
+		{ text = ")" },
+	},
+	calc_function = function(card)
+		local cons = 0
+		if G.consumeables and G.consumeables.cards and G.consumeables.cards[1] then
+			for i = 1, #G.consumeables.cards do
+				local stacked, stackamount = togabalatro.stackingcompat(G.consumeables.cards[i])
+				if stacked then
+					for i = 1, stackamount do cons = cons + 1 end
+				else
+					cons = cons + 1
+				end
+			end
+		end
+		local width, height = love.window.getMode()
+		local is43 = togabalatro.check43(width, height)
+		card.joker_display_values.active = is43
+		card.joker_display_values.curxmult = is43 and card.ability.extra.xmult^cons or 1
+		card.joker_display_values.res = width .. "x" .. height
+	end,
+	style_function = function(card, text, reminder_text, extra)
+		if reminder_text and reminder_text.children[1] and reminder_text.children[2] and card.joker_display_values then
+			reminder_text.children[2].config.colour = card.joker_display_values.active and G.C.DARK_EDITION or G.C.UI.TEXT_INACTIVE
+		end
+		return false
+	end
+}
+
+togabalatro.jd_def["j_toga_mshome"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.joker_display_values", ref_value = "curxmult", retrigger_type = "exp" },
+			},
+		},
+	},
+	reminder_text = {
+		{
+			border_nodes = {
+				{ text = "X", colour = G.C.UI.TEXT_LIGHT },
+				{ ref_table = "card.joker_display_values", ref_value = "curscale", colour = G.C.UI.TEXT_LIGHT }
+			},
+			border_colour = G.C.FILTER
+		},
+	},
+	calc_function = function(card)
+		card.joker_display_values.curxmult = G.GAME and G.GAME.modifiers.scaling and 2*G.GAME.modifiers.scaling or 2
+		card.joker_display_values.curscale = G.GAME and G.GAME.modifiers.scaling or 1
 	end,
 }
 

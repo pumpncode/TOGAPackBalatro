@@ -92,7 +92,7 @@ SMODS.Blind{
 -- You have given me how many hours of trouble?
 SMODS.Blind{
 	key = 'joystick',
-	atlas = 'TOGAJoyStickBlind',
+	atlas = 'TOGAOtherBlind',
 	boss_colour = HEX('76992b'),
 	pos = { x = 0, y = 0 },
 	dollars = 8,
@@ -109,4 +109,68 @@ SMODS.Blind{
 			end
 		end
 	end,
+}
+
+SMODS.Blind{
+	key = 'tasks',
+	atlas = 'TOGAOtherBlind',
+	boss_colour = HEX('008080'),
+	pos = { x = 0, y = 1 },
+	vars = { multamtred = 0.2, activated = false },
+	dollars = 6,
+	mult = 2,
+	boss = { min = 3 },
+	loc_vars = function(self)
+		return { vars = { self.vars.multamtred } }
+	end,
+	collection_loc_vars = function(self)
+		return { vars = { self.vars.multamtred } }
+	end,
+	set_blind = function(self)
+		self.vars.activated = true
+		G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) - self.vars.multamtred
+	end,
+	disable = function(self)
+		if self.vars.activated then
+			self.vars.activated = false
+			G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + self.vars.multamtred
+		end
+	end,
+	defeat = function(self)
+		if self.vars.activated then
+			G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + self.vars.multamtred
+		end
+	end
+}
+
+SMODS.Blind{
+	key = 'accountant',
+	atlas = 'TOGAOtherBlind',
+	boss_colour = HEX('808080'),
+	pos = { x = 0, y = 2 },
+	vars = { chipamtred = 0.25, activated = false },
+	dollars = 6,
+	mult = 2,
+	boss = { min = 3 },
+	loc_vars = function(self)
+		return { vars = { self.vars.chipamtred } }
+	end,
+	collection_loc_vars = function(self)
+		return { vars = { self.vars.chipamtred } }
+	end,
+	set_blind = function(self)
+		self.vars.activated = true
+		G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) - self.vars.chipamtred
+	end,
+	disable = function(self)
+		if self.vars.activated then
+			self.vars.activated = false
+			G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.vars.chipamtred
+		end
+	end,
+	defeat = function(self)
+		if self.vars.activated then
+			G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.vars.chipamtred
+		end
+	end
 }

@@ -612,9 +612,9 @@ SMODS.Joker{
 	atlas = 'TOGAJokersMain',
 	pos = { x = 4, y = 0 },
 	cost = 6,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	calculate = function(self, card, context)
-		if context.bonzi_modify_rank then return { amount = -1, card = context.blueprint_card or card } end
+		if context.bonzi_modify_rank and not context.blueprint and not context.retrigger_joker then return { amount = -1, card = card } end
 	end,
 }
 
@@ -956,7 +956,7 @@ SMODS.Joker{
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.vs_modify_rank then return { amount = math.floor(card.ability.extra.mrank), card = context.blueprint_card or card } end
+		if context.vs_modify_rank and not context.retrigger_joker then return { amount = math.floor(card.ability.extra.mrank), card = context.blueprint_card or card } end
 	end,
 }
 
@@ -1023,6 +1023,249 @@ SMODS.Joker{
 }
 
 SMODS.Joker{
+	key = 'desktop',
+	config = { extra = { curxmult = 0, tagxmult = 0.25 } },
+	loc_vars = function(self, info_queue, card)
+		card.ability.extra.tagxmult = math.max(card.ability.extra.tagxmult, 0.25)
+		return { vars = { 1+card.ability.extra.curxmult, card.ability.extra.tagxmult } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 3, y = 6 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.tag_triggered and not context.blueprint then
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "curxmult",
+				scalar_value = "tagxmult",
+			})
+			return nil, true
+		end
+		
+		if context.joker_main then return { xmult = 1+card.ability.extra.curxmult } end
+	end,
+}
+
+SMODS.Joker{
+	key = 'mswallet',
+	unlocked = true,
+	rarity = 3,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 4, y = 6 },
+	cost = 8,
+	poweritem = true,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+}
+
+SMODS.Joker{
+	key = 'nonebattery',
+	config = { extra = { xmult = 2 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmult } }
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.JokeJokersActive
+	end,
+	rarity = 1,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 5, y = 6 },
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			local state = love.system.getPowerInfo()
+			if state == 'nobattery' then return { xmult = card.ability.extra.xmult } end
+		end
+	end,
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+	end,
+	jokeitem = true,
+}
+
+SMODS.Joker{
+	key = 'dragndrop',
+	config = { extra = { chips = 0, cap = 0, antecaplift = 75 } },
+	loc_vars = function(self, info_queue, card)
+		local ante, filesize = math.abs(to_number(G.GAME.round_resets.ante)) or 1, togabalatro.lastfilesize()
+		card.ability.extra.chips = math.min(filesize/1048576, card.ability.extra.cap+card.ability.extra.antecaplift*ante)
+		return { vars = { card.ability.extra.chips, filesize/1048576, card.ability.extra.cap+card.ability.extra.antecaplift*ante, card.ability.extra.antecaplift } } -- 1 MB, up to 500 MB
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.JokeJokersActive
+	end,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 0, y = 7 },
+	cost = 5,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			local ante, filesize = math.abs(to_number(G.GAME.round_resets.ante)) or 1, togabalatro.lastfilesize()
+			card.ability.extra.chips = math.min(filesize/1048576, card.ability.extra.cap+card.ability.extra.antecaplift*ante)
+			return { chips = card.ability.extra.chips }
+		end
+	end,
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+	end,
+	jokeitem = true,
+}
+
+SMODS.Joker{
+	key = 'repairdisk',
+	config = { extra = { curxmult = 0, dxmult = 0.02 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { 1+card.ability.extra.curxmult, card.ability.extra.dxmult } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 1, y = 7 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.money_altered and context.amount and to_number(context.amount) < to_number(0) and not context.blueprint then
+			local mchange = math.abs(context.amount)
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "curxmult",
+				scalar_value = "dxmult",
+				operation = function(ref_table, ref_value, initial, change)
+					ref_table[ref_value] = initial + change*mchange
+				end,
+			})
+			return nil, true
+		end
+		
+		if context.joker_main then return { xmult = 1+card.ability.extra.curxmult } end
+	end,
+}
+
+SMODS.Joker{
+	key = 'merlin',
+	config = { extra = { curxmult = 0, txmult = 0.1 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { 1+card.ability.extra.curxmult, card.ability.extra.txmult } }
+	end,
+	unlocked = true,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 2, y = 7 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == 'Tarot' and not context.blueprint then
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "curxmult",
+				scalar_value = "txmult",
+			})
+			return nil, true
+		end
+		
+		if context.joker_main then return { xmult = 1+card.ability.extra.curxmult } end
+	end,
+}
+
+SMODS.Joker{
+	key = 'briefcase',
+	config = { extra = { curhchips = 10, ahchips = 5 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.curhchips, card.ability.extra.ahchips } }
+	end,
+	unlocked = true,
+	rarity = 1,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 3, y = 7 },
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.ante_change and not context.blueprint then
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "curhchips",
+				scalar_value = "ahchips",
+			})
+			return nil, true
+		end
+		
+		if context.cardarea == G.hand and context.other_card and not context.end_of_round and not context.repetition and not context.repetition_only and not context.other_card.debuff then
+			return { chips = card.ability.extra.curhchips }
+		end
+	end,
+}
+
+SMODS.Joker{
+	key = 'vga',
+	config = { extra = { xmult = 1.33 } },
+	loc_vars = function(self, info_queue, card)
+		local width, height = love.window.getMode()
+		local is43 = togabalatro.check43(width, height)
+		return { vars = { card.ability.extra.xmult, is43, width, height, colours = { is43 and G.C.DARK_EDITION or G.C.UI.TEXT_INACTIVE } } }
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.JokeJokersActive
+	end,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 4, y = 7 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.other_consumeable then
+			local width, height = love.window.getMode()
+			if togabalatro.check43(width, height) then
+				local effects = { xmult = card.ability.extra.xmult, card = context.blueprint_card or card, message_card = context.other_consumeable }
+				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
+				if stacked and stackamount then
+					return {
+						func = function()
+							for i = 1, stackamount do
+								SMODS.calculate_individual_effect(effects, context.other_consumeable, 'xmult', effects.xmult, false)
+							end
+						end
+					}
+				else return effects end
+			end
+		end
+	end,
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+	end,
+	jokeitem = true,
+}
+
+SMODS.Joker{
+	key = 'mshome',
+	loc_vars = function(self, info_queue, card)
+		local curscale = G.GAME and G.GAME.modifiers.scaling or 1
+		return { vars = { curscale, 2*curscale } }
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 5, y = 7 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then return { xmult = G.GAME and G.GAME.modifiers.scaling and 2*G.GAME.modifiers.scaling or 2 } end
+	end,
+	poweritem = true
+}
+
+SMODS.Joker{
 	key = 'activesync',
 	config = { extra = { odds = 8 } },
 	loc_vars = function(self, info_queue, card)
@@ -1050,10 +1293,6 @@ SMODS.Joker{
 	blueprint_compat = false,
 	calculate = function(self, card, context)
 		if context.hammerscore then return { card = context.blueprint_card or card } end
-		if context.destroy_card then
-			if context.destroy_card.atomsmashed and SMODS.has_enhancement(context.destroy_card, "m_glass") then return { remove = true }
-			else context.destroy_card.atomsmashed = nil end
-		end
 	end,
 	poweritem = true
 }
@@ -1797,6 +2036,7 @@ SMODS.Joker{
 	key = 'jarate',
 	config = { extra = { minicrit = 1.35, odds = 15 }},
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = {key = "toga_chipmultmodinfo", set = 'Other'}
 		return { vars = { card.ability.extra.minicrit, SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds, 'tf2jarate') } }
 	end,
 	unlocked = true,

@@ -5,7 +5,7 @@ SMODS.Joker{
 	config = { extra = { hands = 1, discards = 1, xhd = 2, slots = 3 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xhd = math.max(card.ability.extra.xhd, 2)
-		return { key = togabalatro.config.UseNerfed and self.key.."_lite" or self.key, vars = { card.ability.extra.hands, card.ability.extra.discards, card.ability.extra.xhd, card.ability.extra.slots } }
+		return { vars = { card.ability.extra.hands, card.ability.extra.discards } }
 	end,
 	unlocked = true,
 	discovered = true,
@@ -17,9 +17,8 @@ SMODS.Joker{
 	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if (context.setting_blind or context.forcetrigger) and not (context.blueprint_card or card).getting_sliced then
-			local handdiscardmult = G.jokers and #G.jokers.cards <= card.ability.extra.slots and not togabalatro.config.UseNerfed and math.max(card.ability.extra.xhd, 2) or 1
-			ease_hands_played(card.ability.extra.hands*handdiscardmult)
-			ease_discard(card.ability.extra.discards*handdiscardmult)
+			ease_hands_played(card.ability.extra.hands)
+			ease_discard(card.ability.extra.discards)
 			return { message = localize('toga_32bits') }
 		end
 	end,
@@ -33,9 +32,6 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_win95tada")
 			else play_sound("toga_chordold") end
 		end
-	end,
-	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -92,11 +88,10 @@ end
 
 SMODS.Joker{
 	key = 'winmillenium',
-	config = { extra = { basechips = 25, chipbonus = 25, totalbonus = 25 } },
+	config = { extra = { basechips = 25, chipbonus = 5, totalbonus = 25 } },
 	loc_vars = function(self, info_queue, card)
-		local nerfy = togabalatro.config.UseNerfed and 0.2 or 1
-		card.ability.extra.totalbonus = card.ability.extra.basechips + (card.ability.extra.chipbonus*nerfy)*toga_vouchcount()
-		return { vars = { card.ability.extra.basechips, (card.ability.extra.chipbonus*nerfy), card.ability.extra.totalbonus } }
+		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus * toga_vouchcount()
+		return { vars = { card.ability.extra.basechips, card.ability.extra.chipbonus, card.ability.extra.totalbonus } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -105,8 +100,7 @@ SMODS.Joker{
 	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		local nerfy = togabalatro.config.UseNerfed and 0.2 or 1
-		card.ability.extra.totalbonus = card.ability.extra.basechips + (card.ability.extra.chipbonus*nerfy)*toga_vouchcount()
+		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus * toga_vouchcount()
 		
 		if context.other_joker then
 			return { chips = card.ability.extra.totalbonus }
@@ -122,9 +116,6 @@ SMODS.Joker{
 			if not from_debuff then play_sound("toga_winme2000shutdown")
 			else play_sound("toga_chord") end
 		end
-	end,
-	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 }
 
@@ -290,7 +281,7 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'win7',
-	config = { extra = { x_mult = 1.2 } },
+	config = { extra = { x_mult = 1.25 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.x_mult } }
 	end,
@@ -304,18 +295,18 @@ SMODS.Joker{
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.cardarea == G.hand and context.other_card and not context.end_of_round and not context.repetition and not context.repetition_only and not context.other_card.debuff then
+		if context.cardarea == G.hand and context.other_card and context.other_card:get_id() == 7 and not context.end_of_round and not context.repetition and not context.repetition_only and not context.other_card.debuff then
 			local houseofcommons = {}
 			if G.consumeables and #G.consumeables.cards > 0 then
 				for i = 1, #G.consumeables.cards do
-					if G.consumeables.cards[i].ability.consumeable and not houseofcommons[G.consumeables.cards[i].ability.set] then houseofcommons[G.consumeables.cards[i].ability.set] = i end
+					if G.consumeables.cards[i].ability.consumeable and not houseofcommons[G.consumeables.cards[i].ability.set] then houseofcommons[G.consumeables.cards[i].ability.set] = G.consumeables.cards[i] end
 				end
 			end
 			if next(houseofcommons) then
 				local result = {}
 				for k, v in pairs(houseofcommons) do
-					if type(v) == 'number' then
-						result = SMODS.merge_effects({ result, { x_mult = card.ability.extra.x_mult, message_card = context.other_card, card = context.blueprint_card or card }})
+					if next(v) then
+						result = SMODS.merge_effects({ result, { x_mult = card.ability.extra.x_mult, message_card = context.other_card, card = context.blueprint_card or card, juice_card = v }})
 					end
 				end
 				return result

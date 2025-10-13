@@ -465,6 +465,26 @@ togabalatro.chipmultopswap = {
 	-- Other mods can add their custom operations to this table.
 }
 
+togabalatro.chipmodkeys = {
+	['chips'] = 'add', ['h_chips'] = 'add', ['chip_mod'] = 'add',
+	['x_chips'] = 'mult', ['xchips'] = 'mult', ['Xchip_mod'] = 'mult',
+	['e_chips'] = 'mult', ['echips'] = 'mult', ['Echip_mod'] = 'mult',
+	['ee_chips'] = 'mult', ['eechips'] = 'mult', ['EEchip_mod'] = 'mult',
+	['eee_chips'] = 'mult', ['eeechips'] = 'mult', ['EEEchip_mod'] = 'mult',
+	['hyperchips'] = 'mult', ['hyper_chips'] = 'mult', ['hyperchip_mod'] = 'mult',
+	-- Other mods can add their custom operations to this table.
+}
+
+togabalatro.multmodkeys = {
+	['mult'] = 'add', ['h_mult'] = 'add', ['mult_mod'] = 'add',
+	['x_mult'] = 'mult', ['xmult'] = 'mult', ['Xmult'] = 'mult', ['x_mult_mod'] = 'mult', ['Xmult_mod'] = 'mult',
+	['e_mult'] = 'mult', ['emult'] = 'mult', ['Emult_mod'] = 'mult',
+	['ee_mult'] = 'mult', ['eemult'] = 'mult', ['EEmult_mod'] = 'mult',
+	['eee_mult'] = 'mult', ['eeemult'] = 'mult', ['EEEmult_mod'] = 'mult',
+	['hypermult'] = 'mult', ['hyper_mult'] = 'mult', ['hypermult_mod'] = 'mult',
+	-- Other mods can add their custom operations to this table.
+}
+
 sendInfoMessage("Hooking SMODS.calculate_individual_effect...", "TOGAPack")
 local calcindiveffectref = SMODS.calculate_individual_effect
 SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, from_edition)
@@ -500,6 +520,15 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 				end
 			end
 		end
+	end
+	if not tonumber(G.GAME.modifiers.toga_chipamtmod) then G.GAME.modifiers.toga_chipamtmod = 1 end
+	if not tonumber(G.GAME.modifiers.toga_multamtmod) then G.GAME.modifiers.toga_multamtmod = 1 end
+	local mspaintcalc = {}
+	local chipmod, multmod = 0+tonumber(G.GAME.modifiers.toga_chipamtmod), 0+tonumber(G.GAME.modifiers.toga_multamtmod)
+	if togabalatro.chipmodkeys[key] and tonumber(chipmod) then
+		amount = amount*chipmod
+	elseif togabalatro.multmodkeys[key] and tonumber(multmod) then
+		amount = amount*multmod
 	end
 	local ret = calcindiveffectref(effect, scored_card, key, amount, from_edition)
 	if ret then return ret end
@@ -592,4 +621,26 @@ function Card:set_debuff(should_debuff)
 	local prevstate = self.debuff
 	setdebuffref(self, should_debuff)
     if self.debuff ~= prevstate and self.debuff == true then SMODS.calculate_context({ debuffed_ups = true, card = self }) end
+end
+
+local oldcalcdestroycard = SMODS.calculate_destroying_cards
+function SMODS.calculate_destroying_cards(context, cards_destroyed, scoring_hand)
+	oldcalcdestroycard(context, cards_destroyed, scoring_hand)
+	for i,card in ipairs((context.cardarea or {}).cards or {}) do
+		if card.atomsmashed then
+			card.getting_sliced = true
+			if SMODS.shatters(card) then
+				card.shattered = true
+			else
+				card.destroyed = true
+			end
+			cards_destroyed[#cards_destroyed+1] = card
+		end
+	end
+end
+
+local easedolref = ease_dollars
+function ease_dollars(mod, instant)
+	if next(SMODS.find_card('j_toga_mswallet')) and G.STATE ~= G.STATES.SHOP and not G.shop then mod = mod * -1 end
+    easedolref(mod, instant)
 end
