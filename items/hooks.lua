@@ -341,6 +341,7 @@ local gsrref = Game.start_run
 function Game:start_run(args)
 	local ret = gsrref(self, args)
 	if self.toga_customdeckmusic then self.toga_customdeckmusic = nil; self.normal_music_speed = nil end
+	if togabalatro.smiletriggeronce then togabalatro.smiletriggeronce = nil end
 	return ret
 end
 
@@ -643,4 +644,54 @@ local easedolref = ease_dollars
 function ease_dollars(mod, instant)
 	if next(SMODS.find_card('j_toga_mswallet')) and G.STATE ~= G.STATES.SHOP and not G.shop then mod = mod * -1 end
     easedolref(mod, instant)
+end
+
+local quitref = love.quit
+function love.quit()
+	if G.jokers and next(SMODS.find_card('j_toga_notsosmileyface', true)) then
+		local nssms = SMODS.find_card('j_toga_notsosmileyface', true)
+		local nssm = pseudorandom_element(nssms, pseudoseed('toga_:)'))
+		if nssm then
+			G.FUNCS:exit_overlay_menu()
+			card_eval_status_text(nssm, 'extra', nil, nil, nil, {message = localize('k_nope_ex'), colour = G.C.PURPLE, sound = 'tarot2'})
+			return true
+		end
+	end
+	quitref()
+end
+
+local gotomenuref = G.FUNCS.go_to_menu
+function G.FUNCS.go_to_menu(e)
+	if G.jokers and next(SMODS.find_card('j_toga_notsosmileyface', true)) then
+		local nssms = SMODS.find_card('j_toga_notsosmileyface', true)
+		local nssm = pseudorandom_element(nssms, pseudoseed('toga_:)'))
+		if nssm and (not togabalatro.smiletriggeronce or math.random(1, 2) == 1) then
+			togabalatro.smiletriggeronce = true
+			G.FUNCS:exit_overlay_menu()
+			card_eval_status_text(nssm, 'extra', nil, nil, nil, {message = localize('k_nope_ex'), colour = G.C.PURPLE, sound = 'tarot2'})
+			return true
+		end
+	end
+	gotomenuref(e)
+end
+
+local ismin, ismax = false, false
+local loveupdref = love.update
+function love.update( dt )
+	-- Hello everybody, my name is Windiplier.
+	if love.window.isMinimized() and not ismin then
+		ismin = true
+		togabalatro.playwindowsfx('min')
+	elseif ismin and not love.window.isMinimized() then
+		ismin = false
+		togabalatro.playwindowsfx('restup')
+	elseif love.window.isMaximized() and not ismax then
+		ismax = true
+		togabalatro.playwindowsfx('max')
+	elseif ismax and not love.window.isMaximized() then
+		ismax = false
+		togabalatro.playwindowsfx('restdw')
+	end
+	
+	loveupdref(dt)
 end

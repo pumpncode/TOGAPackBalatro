@@ -31,7 +31,7 @@ Partner_API.Partner{
 				G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)
 				G.HUD_blind:recalculate()
 				G.hand_text_area.blind_chips:juice_up()
-				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_floppypartner'), sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_w95restup'})
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_floppypartner'), sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_win95plusrestup12'})
 			return true end }))
 		end
 	end,

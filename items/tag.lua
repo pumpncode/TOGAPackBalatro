@@ -180,27 +180,34 @@ SMODS.Tag{
 	pos = { x = 5, y = 0 },
 	config = { type = "immediate" },
 	in_pool = function(self, args)
-		return true
+		return G.jokers and next(G.jokers.cards)
 	end,
 	apply = function(self, tag, context)
 		local lock = tag.ID
 		if context.type == "immediate" then
-			if #G.jokers.cards > 0 then
-				local jokerlist, itercount, iterlimit = G.jokers.cards, 0, 64
-				local seljoker = pseudorandom_element(jokerlist, pseudoseed('controlpanel'))
-				while seljoker.edition and itercount < iterlimit do
-					itercount = itercount + 1
-					seljoker = pseudorandom_element(jokerlist, pseudoseed('controlpanel'))
+			if next(G.jokers.cards) then
+				local jks, noed, seljoker = {}, {}, nil
+				for k, v in pairs(G.jokers.cards) do
+					if not v.edition then table.insert(noed, v) end
+					table.insert(jks, v)
 				end
-				
-				if not seljoker.edition then
-					G.CONTROLLER.locks[lock] = true
-					tag:yep('+', G.C.ORANGE,function() 
-						local seledition = poll_edition('98se', nil, false, true)
-						seljoker:set_edition(seledition, true)
-						G.CONTROLLER.locks[lock] = nil
-						return true
-					end)
+				if next(noed) then
+					seljoker = pseudorandom_element(noed, pseudoseed('controlpanel'))
+				else
+					seljoker = pseudorandom_element(jks, pseudoseed('controlpanel'))
+				end
+				if seljoker then
+					local seledition = SMODS.poll_edition({ key = '98se', no_negative = false, guaranteed = true })
+					if seledition then
+						G.CONTROLLER.locks[lock] = true
+						tag:yep('+', G.C.ORANGE,function() 
+							seljoker:set_edition(seledition, true)
+							G.CONTROLLER.locks[lock] = nil
+							return true
+						end)
+					else
+						tag:nope()
+					end
 				else
 					tag:nope()
 				end

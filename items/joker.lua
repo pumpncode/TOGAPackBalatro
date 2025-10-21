@@ -559,7 +559,7 @@ SMODS.Joker{
 
 -- Random SFX.
 togabalatro.plus95rndsfx = function()
-	return 'toga_win95pluscmd'..math.random(1, 12)
+	return 'toga_win95pluscmd'..math.random(1, 13)
 end
 
 SMODS.Joker{
@@ -1281,6 +1281,161 @@ SMODS.Joker{
 }
 
 SMODS.Joker{
+	key = 'monitor',
+	loc_vars = function(self, info_queue, card)
+		return { vars = { love.window.getDisplayCount() } }
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.JokeJokersActive
+	end,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 2, y = 8 },
+	cost = 6,
+	blueprint_compat = false,
+	perishable_compat = false,
+	calculate = function(self, card, context)
+		if context.mod_probability and not context.blueprint and love.window.getDisplayCount() > 0 then
+			return { numerator = context.numerator + love.window.getDisplayCount() }
+		end
+	end,
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+	end,
+	jokeitem = true,
+}
+
+SMODS.Joker{
+	key = 'notsosmileyface',
+	config = { extra = { xmult = 2 } },
+	loc_vars = function(self, info_queue, card)
+		return { key = card.ability.thesmile and math.random(1,4) == 1 and self.key.."_full" or self.key, vars = { card.ability.extra.xmult } }
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.JokeJokersActive
+	end,
+	rarity = 1,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 3, y = 8 },
+	cost = 4,
+	blueprint_compat = true,
+	perishable_compat = false,
+	calculate = function(self, card, context)
+		if context.joker_main then return { xmult = card.ability.extra.xmult } end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		card.ability.thesmile = true
+	end,
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
+	end,
+	jokeitem = true,
+}
+
+SMODS.Joker{
+	key = 'wscript',
+	config = { extra = { blindred = 0.75, odds = 4 } },
+	loc_vars = function(self, info_queue, card)
+		card.ability.extra.blindred = math.min(card.ability.extra.blindred, 1)
+		return { vars = { card.ability.extra.blindred, SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds) } }
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	rarity = 1,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 4, y = 8 },
+	cost = 4,
+	blueprint_compat = false,
+	calculate = function(self, card, context)
+		if context.setting_blind and SMODS.pseudorandom_probability(card, 'toga_wscript', 1, card.ability.extra.odds, 'wscript') and not context.blueprint and not context.retrigger_joker then
+			card.ability.extra.blindred = math.min(card.ability.extra.blindred, 1)
+			if to_number(card.ability.extra.blindred) < 1 then
+				if Talisman and Talisman.config_file.disable_anims then
+					G.GAME.blind.chips = math.floor(G.GAME.blind.chips*card.ability.extra.blindred)
+					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+					G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)
+					G.HUD_blind:recalculate()
+					return nil, true
+				else
+					G.E_MANAGER:add_event(Event({func = function()
+						G.GAME.blind.chips = math.floor(G.GAME.blind.chips*card.ability.extra.blindred)
+						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+						G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)
+						G.HUD_blind:recalculate()
+						G.hand_text_area.blind_chips:juice_up()
+						card:juice_up()
+					return true end }))
+					return nil, true
+				end
+			end
+		end
+	end,
+	poweritem = true
+}
+
+SMODS.Joker{
+	key = 'gamecontrollers',
+	config = { extra = { xmult = 2 } },
+	loc_vars = function(self, info_queue, card)
+		local gc = love.joystick.getJoystickCount()
+		return { vars = { card.ability.extra.xmult, gc, gc > 0 and card.ability.extra.xmult*gc or 1 } }
+	end,
+	unlocked = true,
+	rarity = 1,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 0, y = 8 },
+	cost = 4,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			local gc = love.joystick.getJoystickCount()
+			return gc > 1 and { xmult = card.ability.extra.xmult*gc }
+		end
+	end,
+}
+
+SMODS.Joker{
+	key = 'wincatalog',
+	config = { extra = { mult = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult } }
+	end,
+	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	rarity = 2,
+	atlas = 'TOGAJokersMain',
+	pos = { x = 1, y = 8 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.initial_scoring_step then
+			local commons = {}
+			for k, v in ipairs((G.jokers or {}).cards) do
+				if v.config.center.rarity == 1 then table.insert(commons, v) end
+			end
+			if next(commons) then
+				return {
+					func = function()
+						local proc = togabalatro.areaprocess(commons)
+						for k, v in ipairs(proc) do
+							local effects = { mult = card.ability.extra.mult, card = context.blueprint_card or card, message_card = v }
+							SMODS.calculate_individual_effect(effects, v, 'mult', effects.mult, false)
+						end
+					end
+				}
+			end
+		end
+	end,
+	poweritem = true
+}
+
+SMODS.Joker{
 	key = 'hammer',
 	unlocked = true,
 	in_pool = function()
@@ -1290,14 +1445,14 @@ SMODS.Joker{
 	atlas = 'TOGAJokersMain',
 	pos = { x = 5, y = 5 },
 	cost = 8,
-	blueprint_compat = false,
+	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.hammerscore then return { card = context.blueprint_card or card } end
+		if context.hammerscore and not context.retrigger_joker then return { card = context.blueprint_card or card } end
 	end,
 	poweritem = true
 }
 
-local function toga_randomruntext()
+function togabalatro.randomruntext()
 	local stringtable = { localize('toga_jimbo95txt1'), localize('k_again_ex'), localize('toga_jimbo95txt2'), localize('toga_jimbo95txt3'), localize('toga_jimbo95txt4') }
 	return stringtable[math.random(#stringtable)]
 end
@@ -1341,7 +1496,7 @@ SMODS.Joker{
 		if context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_jimbo95' then
 			if card.ability.extra.retriggers < 1 then card.ability.extra.retriggers = 1 end -- always at least once.
 			return {
-				message = toga_randomruntext(),
+				message = togabalatro.randomruntext() or localize('k_again_ex'),
 				repetitions = math.floor(card.ability.extra.retriggers),
 				card = context.blueprint_card or card,
 			}
@@ -1777,20 +1932,20 @@ SMODS.Joker{
 SMODS.Joker{
 	key = 'binaryjkr',
 	unlocked = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 0, y = 3 },
-	cost = 8,
+	cost = 6,
 	blueprint_compat = false
 }
 
 SMODS.Joker{
 	key = 'hexadecimaljkr',
 	unlocked = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 1, y = 3 },
-	cost = 8,
+	cost = 6,
 	blueprint_compat = false
 }
 
@@ -1954,11 +2109,11 @@ local AstronomicaEQScore = next(SMODS.find_mod('Astronomica')) and AST
 SMODS.Joker{
 	key = 'joker203',
 	unlocked = true,
-	rarity = 2,
+	rarity = 1,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 0, y = 6 },
 	soul_pos = { x = 7, y = 6 },
-	cost = 6,
+	cost = 3,
 	blueprint_compat = false,
 	eternal_compat = false,
 	demicolon_compat = true,
@@ -2025,10 +2180,10 @@ SMODS.Joker{
 SMODS.Joker{
 	key = 'megasxlr',
 	unlocked = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 0, y = 4 },
-	cost = 8,
+	cost = 6,
 	blueprint_compat = false,
 }
 
@@ -2069,6 +2224,34 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.blueprint or context.retrigger_joker then return end
 		if (context.selling_self or context.selling_card) and context.card == card then card.ability.sold = true elseif context.forcetrigger then togabalatro.goldenwrench(card) end
+	end,
+}
+
+SMODS.Joker{
+	key = 'rloctane',
+	config = { extra = { mult = 15 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult } }
+	end,
+	unlocked = true,
+	rarity = 1,
+	atlas = 'TOGAJokersOtherDiffSize',
+	pos = { x = 10, y = 0 },
+	cost = 4,
+	blueprint_compat = true,
+	pixel_size = { w = 69, h = 74 },
+	calculate = function(self, card, context)
+		if context.joker_main then return { mult = card.ability.extra.mult } end
+		if context.after and G.GAME.current_round.hands_left == 0 and not SMODS.is_eternal(card) then
+			G.E_MANAGER:add_event(Event({delay = 1, func = function()
+				SMODS.calculate_effect({ message = localize('toga_rlwas'), card = card })
+				return true
+			end}))
+			G.E_MANAGER:add_event(Event({func = function()
+				SMODS.destroy_cards(card)
+				return true
+			end}))
+		end
 	end,
 }
 
@@ -2296,7 +2479,7 @@ SMODS.Joker{
 	end,
 	unlocked = true,
 	in_pool = function()
-		return togabalatro.config.JokeJokersActive -- Should only spawn if allowed to via config!
+		return togabalatro.config.JokeJokersActive and togabalatro.config.ShowPower -- Should only spawn if allowed to via config!
 	end,
 	rarity = 4,
 	atlas = 'TOGAJokersOther',
@@ -2408,7 +2591,7 @@ if Talisman then
 		end,
 		unlocked = true,
 		in_pool = function()
-			return togabalatro.config.JokeJokersActive -- Should only spawn if allowed to via config!
+			return togabalatro.config.JokeJokersActive and togabalatro.config.ShowPower -- Should only spawn if allowed to via config!
 		end,
 		rarity = 4,
 		atlas = 'TOGAJokersMain',
@@ -2465,7 +2648,7 @@ if Talisman then
 		end,
 		unlocked = true,
 		in_pool = function()
-			return togabalatro.config.JokeJokersActive -- Should only spawn if allowed to via config!
+			return togabalatro.config.JokeJokersActive and togabalatro.config.ShowPower -- Should only spawn if allowed to via config!
 		end,
 		rarity = 4,
 		atlas = 'TOGAJokersOther',

@@ -177,6 +177,7 @@ SMODS.Enhancement{
 	pos = { x = 4, y = 1 },
 	no_rank = true,
 	replace_base_card = false,
+	shatters = true
 }
 
 SMODS.Enhancement{

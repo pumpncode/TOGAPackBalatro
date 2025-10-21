@@ -135,7 +135,7 @@ togabalatro.jd_def["j_toga_theinternet"] = {
 togabalatro.jd_def["j_toga_virtualpc"] = {
 	text = {
 		{ text = "+", colour = G.C.MULT },
-		{ ref_table = "card.joker_display_values", ref_value = "mult", colour = G.C.MULT },
+		{ ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult", colour = G.C.MULT },
 	},
 	reminder_text = {
 		{ text = "(+" },
@@ -417,6 +417,80 @@ togabalatro.jd_def["j_toga_activesync"] = {
 		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'space')
 		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { numerator, denominator } }
 	end,
+}
+
+togabalatro.jd_def["j_toga_hammer"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" },
+			}
+		}
+	},
+	calc_function = function(card)
+		local playing_hand = next(G.play.cards)
+		local totalxmult = 1
+		for _, playing_card in ipairs(G.hand.cards) do
+			if playing_hand or not playing_card.highlighted then
+				if not (playing_card.facing == 'back') and not playing_card.debuff and SMODS.has_enhancement(playing_card, "m_glass") then
+					totalxmult = totalxmult * ((playing_card.ability or G.P_CENTERS['m_glass'].config).Xmult * JokerDisplay.calculate_card_triggers(playing_card, true))
+				end
+			end
+		end
+		card.joker_display_values.xmult = totalxmult
+	end,
+}
+
+togabalatro.jd_def["j_toga_wscript"] = {
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds" },
+			{ text = ")" },
+		}
+	},
+	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+	calc_function = function(card)
+		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, '8ball')
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { numerator, denominator } }
+	end
+}
+
+togabalatro.jd_def["j_toga_notsosmileyface"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
+			}
+		}
+	},
+}
+
+togabalatro.jd_def["j_toga_gamecontrollers"] = {
+	text = {
+		{
+			border_nodes = {
+				{ text = "X" },
+				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" },
+			}
+		},
+		{ text = " (", colour = G.C.UI.TEXT_INACTIVE },
+		{ ref_table = "card.joker_display_values", ref_value = "gc", colour = G.C.UI.TEXT_INACTIVE },
+		{ text = ")", colour = G.C.UI.TEXT_INACTIVE },
+	},
+	calc_function = function(card)
+		local gc = love.joystick.getJoystickCount()
+		card.joker_display_values.xmult = gc > 0 and card.ability.extra.xmult*gc or 1
+		card.joker_display_values.gc = gc
+	end,
+}
+
+togabalatro.jd_def["j_toga_wincatalog"] = {
+	mod_function = function(card, mod_joker)
+		return { mult = card ~= mod_joker and card.config.center.rarity == 1 and mod_joker.ability.extra.mult*JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+	end
 }
 
 togabalatro.jd_def["j_toga_jimbo95"] = {
@@ -1007,6 +1081,14 @@ togabalatro.jd_def["j_toga_quacksoft"] = {
 		card.joker_display_values.totalechips = G.playing_cards and 1 + (card.ability.extra.cardechip*#G.playing_cards) or 1
 		card.joker_display_values.fulldeckcards = G.playing_cards and #G.playing_cards or 0
 	end,
+}
+
+togabalatro.jd_def["j_toga_rloctane"] = {
+	text = {
+		{ text = "+" },
+		{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" }
+	},
+	text_config = { colour = G.C.MULT },
 }
 
 togabalatro.jd_def["j_toga_chrome"] = {

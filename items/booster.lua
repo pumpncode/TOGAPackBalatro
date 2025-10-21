@@ -109,7 +109,7 @@ SMODS.Booster{
 		ease_background_colour({ new_colour = HEX("6BC0FD"), special_colour = HEX("00379D"), contrast = 1.2 })
 	end,
 	create_card = function(self, card)
-		local _edition = poll_edition('standard_edition'..G.GAME.round_resets.ante, 2, true)
+		local _edition = SMODS.poll_edition({ key = 'standard_edition'..G.GAME.round_resets.ante, mod = 2, no_negative = true })
 		local _seal = SMODS.poll_seal({mod = 10})
 		--return {set = (pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", edition = _edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "playcardcab"}
 		return SMODS.create_card({set = 'Playing Card', edition = _edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "playcardcab"})

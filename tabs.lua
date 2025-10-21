@@ -37,7 +37,7 @@ togabalatro.config_tab = function()
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "StartUpSound" },
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				{n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_startupsfx1'), localize('toga_desc_startupsfx2')} } }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
@@ -61,7 +61,7 @@ togabalatro.config_tab = function()
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SpecialDeckMusic" },
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_specialdecktunes'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				{n = G.UIT.T, config = { text = localize('toga_specialdecktunes'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_kartingdeckextras1'), localize('toga_desc_kartingdeckextras2')} } }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
@@ -130,14 +130,14 @@ togabalatro.startupsfx_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_mainmenumusicswap'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "UseCustomModTabMusic" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_modtabmusicswap'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
+		-- {n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			-- {n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				-- create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "UseCustomModTabMusic" },
+			-- }},
+			-- {n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				-- {n = G.UIT.T, config = { text = localize('toga_modtabmusicswap'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			-- }},
+		-- }},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "BoosterPackMusic" },
@@ -146,28 +146,45 @@ togabalatro.startupsfx_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_musicpacks'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "StartUpSound" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
-			}},
-		}},
+		-- {n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			-- {n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				-- create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "StartUpSound" },
+			-- }},
+			-- {n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				-- {n = G.UIT.T, config = { text = localize('toga_startupsfx'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			-- }},
+		-- }},
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config.StartUpSFX, ref_value = "UseSelected" },
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_startupsfxuse'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				{n = G.UIT.T, config = { text = localize('toga_startupsfxuse'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_startupsfxsel1'), localize('toga_desc_startupsfxsel2'), localize('toga_desc_startupsfxsel3')} } }},
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = -0.2 }, nodes = {
+				create_option_cycle({w = 3.5, colour = HEX('808080'), scale = 0.8, options = togabalatro.startupsfx, opt_callback = 'togabalatro_startupsfx', current_option = togabalatro.config.StartUpSFX and togabalatro.config.StartUpSFX.Selected or 1}),
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				UIBox_button({label = {localize('toga_startupsfxtest')}, button = "togabalatro_playsfx", minw = 1.3, minh = 0.7})
 			}},
 		}},
-		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
-				create_option_cycle({w = 3.5, colour = HEX('808080'), scale = 1, options = togabalatro.startupsfx, opt_callback = 'togabalatro_startupsfx', current_option = togabalatro.config.StartUpSFX and togabalatro.config.StartUpSFX.Selected or 1}),
+		-- {n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
+			-- {n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
+				-- create_option_cycle({w = 3.5, colour = HEX('808080'), scale = 1, options = togabalatro.startupsfx, opt_callback = 'togabalatro_startupsfx', current_option = togabalatro.config.StartUpSFX and togabalatro.config.StartUpSFX.Selected or 1}),
+			-- }},
+			-- {n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
+				-- UIBox_button({label = {localize('toga_startupsfxtest')}, button = "togabalatro_playsfx", minw = 1.3})
+			-- }},
+		-- }},
+		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "WindowSFXUse" },
 			}},
-			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
-				UIBox_button({label = {localize('toga_startupsfxtest')}, button = "togabalatro_playsfx", minw = 1.3})
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_windowsfxuse'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_windowsfx1'), localize('toga_desc_windowsfx2')} } }},
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = -0.2 }, nodes = {
+				create_option_cycle({w = 3.5, colour = HEX('808080'), w = 4.5, scale = 0.8, options = togabalatro.plussfxthemes, opt_callback = 'togabalatro_themeselect', current_option = togabalatro.config.WindowSFXTheme or 1}),
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
@@ -175,7 +192,7 @@ togabalatro.startupsfx_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_sfxswaptext'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
-				create_option_cycle({w = 2.2, colour = HEX('808080'), scale = 1, options = {localize('toga_sfxswapnone'), localize('toga_sfxswapdefault'), localize('toga_sfxswapall')}, opt_callback = 'togabalatro_sfxswapcfg', current_option = togabalatro.config.SFXSwapLevel or 2}),
+				create_option_cycle({w = 2.2, colour = HEX('808080'), scale = 0.8, options = {localize('toga_sfxswapnone'), localize('toga_sfxswapdefault'), localize('toga_sfxswapall')}, opt_callback = 'togabalatro_sfxswapcfg', current_option = togabalatro.config.SFXSwapLevel or 2}),
 			}},
 		}},
 	}}
@@ -214,12 +231,12 @@ togabalatro.itemoptions_tab = function()
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "UseNerfed" },
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_usenerfedver'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				{n = G.UIT.T, config = { text = localize('toga_usenerfedver'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_nerfver')} } }},
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_jokeactive'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				{n = G.UIT.T, config = { text = localize('toga_jokeactive'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_jokeitems')} } }},
 			}},
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
 				create_option_cycle({w = 1.8, colour = HEX('808080'), scale = 0.85, options = {localize('toga_itemon'), localize('toga_itemoff')}, opt_callback = 'togabalatro_jokeitems', current_option = togabalatro.config.JokeJokersActive and 1 or 2}),
@@ -227,7 +244,7 @@ togabalatro.itemoptions_tab = function()
 		}},
 		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_strongstate'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				{n = G.UIT.T, config = { text = localize('toga_strongstate'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_poweritems')} } }},
 			}},
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
 				create_option_cycle({w = 1.8, colour = HEX('808080'), scale = 0.85, options = {localize('toga_itemon'), localize('toga_itemoff')}, opt_callback = 'togabalatro_poweritems', current_option = togabalatro.config.ShowPower and 1 or 2}),
@@ -245,3 +262,5 @@ togabalatro.extra_tabs = function()
 		{ label = 'Misc. Audio', tab_definition_function = togabalatro.tabs[2] },
 	}
 end
+
+togabalatro.ui_config = { colour = HEX('4f4f4f'), tab_button_colour = HEX('e77938'), back_colour = HEX('a8a8a8'), bg_colour = HEX('0080809f') }

@@ -102,7 +102,6 @@ SMODS.Sound({key = "failsfx", path = "comedicfail.ogg"}) -- fart.mp3
 SMODS.Sound({key = "goldenhit", path = "Saxxy_impact_gen_06.ogg"}) -- getting a kill with a Golden Wrench, Saxxy or Golden Frying Pan, TF2
 SMODS.Sound({key = "jaratehit", path = "crit_hit_mini.wav"}) -- Minicrits, TF2
 SMODS.Sound({key = "soldierscream", path = "screm.ogg"}) -- TF2 Soldier screaming?
-SMODS.Sound({key = "w95restup", path = "Windows 95 restore up.ogg"}) -- Plus! 95, Windows 95 restore up.wav
 SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
 SMODS.Sound({key = "mcprf5400", path = "macperforma5400.ogg"}) -- Mac Performa 5400 (Death Chime)
 
@@ -119,6 +118,7 @@ SMODS.Sound({key = "win95pluscmd9", path = "plus95/Sports menu command.ogg"})
 SMODS.Sound({key = "win95pluscmd10", path = "plus95/The 60's USA menu command.ogg"})
 SMODS.Sound({key = "win95pluscmd11", path = "plus95/The Golden Era menu command.ogg"})
 SMODS.Sound({key = "win95pluscmd12", path = "plus95/Windows 95 menu command.ogg"})
+SMODS.Sound({key = "win95pluscmd13", path = "plus95/Travel menu command.ogg"})
 
 -- wmplayer.exe > balatro♠ost.mid
 SMODS.Sound({
@@ -187,6 +187,14 @@ togabalatro.description_loc_vars = function(self)
 	}
 end
 
+togabalatro.debug_info = {
+	QEDeck = togabalatro.config.EnableQE,
+	JokeItems = togabalatro.config.JokeJokersActive,
+	MainlineItems = togabalatro.config.ShowPower,
+	NerfedItems = togabalatro.config.UseNerfed,
+	Logging = togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging and "Full" or togabalatro.config.DoMoreLogging and "Normal" or false
+}
+
 togabalatro.optional_features = function()
 	return {
 		retrigger_joker = true,
@@ -216,9 +224,13 @@ togabalatro.errorhandler = function()
 	togabalatro.crashtrig = true
 end
 
-togabalatro.reloadloctext = function()
+togabalatro.rlt = function()
 	G:set_language()
 	G:init_item_prototypes()
+end
+
+togabalatro.mancrash = function()
+	error('Manually initiated crash.', 0)
 end
 
 togabalatro.getrandcons = function(seed)
@@ -243,13 +255,13 @@ end
 togabalatro.performpseudolag = function()
 	if not togabalatro.pseudolag then
 		togabalatro.pseudolag = true
-		if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("waitarrow")) end
+		if togabalatro.cursorsupport then love.mouse.setCursor(love.mouse.getSystemCursor("waitarrow")) end
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
 			delay = math.random()*G.SETTINGS.GAMESPEED/2,
 			func = function()
 				togabalatro.pseudolag = nil
-				if love.mouse.isCursorSupported() then love.mouse.setCursor(love.mouse.getSystemCursor("arrow")) end
+				if togabalatro.cursorsupport then love.mouse.setCursor(love.mouse.getSystemCursor("arrow")) end
 				return true
 			end
 		}))
@@ -265,6 +277,7 @@ togabalatro.systemtype = function()
 end
 
 togabalatro.curcpucount = love.system.getProcessorCount()
+togabalatro.cursorsupport = love.mouse.isCursorSupported()
 
 -- Check for specific process name.
 togabalatro.getprocessamount = function(process)
@@ -419,7 +432,12 @@ SMODS.ObjectType{
 		["j_toga_netshow"] = true, ["j_toga_certserver"] = true, ["j_toga_cpu"] = true,
 		["j_toga_ups"] = true, ["j_toga_hammer"] = true, ["j_toga_joker203"] = true,
 		["j_toga_chrome"] = true, ["j_toga_firefox"] = true, ["j_toga_cavingjkr"] = true,
-		["j_toga_miningjkr"] = true, ["j_toga_virtualpc"] = true, ["j_toga_tuneupwizard"] = true, 
+		["j_toga_miningjkr"] = true, ["j_toga_virtualpc"] = true, ["j_toga_tuneupwizard"] = true,
+		["j_toga_desktop"] = true, ["j_toga_mswallet"] = true, ["j_toga_nonebattery"] = true,
+		["j_toga_dragndrop"] = true, ["j_toga_repairdisk"] = true, ["j_toga_merlin"] = true,
+		["j_toga_briefcase"] = true, ["j_toga_vga"] = true, ["j_toga_mshome"] = true,
+		["j_toga_gamecontrollers"] = true, ["j_toga_wincatalog"] = true, ["j_toga_monitor"] = true,
+		["j_toga_notsosmileyface"] = true, ["j_toga_rloctane"] = true, ["j_toga_wscript"] = true,
 	}
 }
 
@@ -427,6 +445,7 @@ G.FUNCS.togabalatro_startupsfx = function(args)
 	if not args or args.to_key == nil then return end
 	togabalatro.verifysfxconfig()
 	togabalatro.config.StartUpSFX.Selected = args.to_key
+	SMODS.save_mod_config(togabalatro)
 end
 G.FUNCS.togabalatro_playsfx = function()
 	togabalatro.verifysfxconfig()
@@ -435,18 +454,26 @@ end
 G.FUNCS.togabalatro_sfxswapcfg = function(args)
 	if not args or args.to_key == nil then return end
 	togabalatro.config.SFXSwapLevel = args.to_key
+	SMODS.save_mod_config(togabalatro)
 end
 G.FUNCS.togabalatro_jokeitems = function(args)
 	if not args or args.to_key == nil then return end
 	togabalatro.config.JokeJokersActive = args.to_key == 1 and true or false
 	togabalatro.updatecollectionitems()
+	SMODS.save_mod_config(togabalatro)
 	G.FUNCS.openModUI_TOGAPack()
 end
 G.FUNCS.togabalatro_poweritems = function(args)
 	if not args or args.to_key == nil then return end
 	togabalatro.config.ShowPower = args.to_key == 1 and true or false
 	togabalatro.updatecollectionitems()
+	SMODS.save_mod_config(togabalatro)
 	G.FUNCS.openModUI_TOGAPack()
+end
+G.FUNCS.togabalatro_themeselect = function(args)
+	if not args or args.to_key == nil then return end
+	togabalatro.config.WindowSFXTheme = args.to_key
+	SMODS.save_mod_config(togabalatro)
 end
 
 togabalatro.updatecollectionitems = function()
@@ -462,6 +489,95 @@ togabalatro.updatecollectionitems = function()
 			end
 		end
 	end
+end
+
+-- The window do be moving.
+SMODS.Sound({key = "win95plusmin1", path = "plus95/Dangerous Creatures minimize.ogg"})
+SMODS.Sound({key = "win95plusmax1", path = "plus95/Dangerous Creatures maximize.ogg"})
+
+SMODS.Sound({key = "win95plusmin2", path = "plus95/Inside your Computer minimize.ogg"})
+SMODS.Sound({key = "win95plusmax2", path = "plus95/Inside your Computer maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup2", path = "plus95/Inside your Computer restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw2", path = "plus95/Inside your Computer restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin3", path = "plus95/Jungle minimize.ogg"})
+SMODS.Sound({key = "win95plusmax3", path = "plus95/Jungle maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup3", path = "plus95/Jungle restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw3", path = "plus95/Jungle restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin4", path = "plus95/Leonardo da Vinci minimize.ogg"})
+SMODS.Sound({key = "win95plusmax4", path = "plus95/Leonardo da Vinci maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup4", path = "plus95/Leonardo da Vinci restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw4", path = "plus95/Leonardo da Vinci restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin5", path = "plus95/Mystery minimize.ogg"})
+SMODS.Sound({key = "win95plusmax5", path = "plus95/Mystery maximize.ogg"})
+
+SMODS.Sound({key = "win95plusmin6", path = "plus95/Nature minimize.ogg"})
+SMODS.Sound({key = "win95plusmax6", path = "plus95/Nature maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup6", path = "plus95/Nature restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw6", path = "plus95/Nature restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin7", path = "plus95/Science minimize.ogg"})
+SMODS.Sound({key = "win95plusmax7", path = "plus95/Science maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup7", path = "plus95/Science restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw7", path = "plus95/Science restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin8", path = "plus95/Space minimize.ogg"})
+SMODS.Sound({key = "win95plusmax8", path = "plus95/Space maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup8", path = "plus95/Space restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw8", path = "plus95/Space restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin9", path = "plus95/Sports minimize.ogg"})
+SMODS.Sound({key = "win95plusmax9", path = "plus95/Sports maximize.ogg"})
+
+SMODS.Sound({key = "win95plusmin10", path = "plus95/The 60's USA minimize.ogg"})
+SMODS.Sound({key = "win95plusmax10", path = "plus95/The 60's USA maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup10", path = "plus95/The 60's USA restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw10", path = "plus95/The 60's USA restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin11", path = "plus95/The Golden Era minimize.ogg"})
+SMODS.Sound({key = "win95plusmax11", path = "plus95/The Golden Era maximize.ogg"})
+
+SMODS.Sound({key = "win95plusmin12", path = "plus95/Travel minimize.ogg"})
+SMODS.Sound({key = "win95plusmax12", path = "plus95/Travel maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup12", path = "plus95/Travel restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw12", path = "plus95/Travel restore down.ogg"})
+
+SMODS.Sound({key = "win95plusmin13", path = "plus95/Windows 95 minimize.ogg"})
+SMODS.Sound({key = "win95plusmax13", path = "plus95/Windows 95 maximize.ogg"})
+SMODS.Sound({key = "win95plusrestup13", path = "plus95/Windows 95 restore up.ogg"})
+SMODS.Sound({key = "win95plusrestdw13", path = "plus95/Windows 95 restore down.ogg"})
+
+togabalatro.plussfxthemes = {"Dangerous Creatures", "Inside Your Computer", "Jungle", "Leonardo Da Vinci", "Mystery", "Nature", "Science", "Space", "Sports", "The 60's USA", "The Golden Era", "Travel", "Windows 95"}
+togabalatro.plussfxtype = { min = 1, max = 2, restup = 3, restdw = 4 }
+
+togabalatro.plussfxtheme = {
+	{"toga_win95plusmin1", "toga_win95plusmax1"},
+	{"toga_win95plusmin2", "toga_win95plusmax2", "toga_win95plusrestup2", "toga_win95plusrestdw2"},
+	{"toga_win95plusmin3", "toga_win95plusmax3", "toga_win95plusrestup3", "toga_win95plusrestdw3"},
+	{"toga_win95plusmin4", "toga_win95plusmax4", "toga_win95plusrestup4", "toga_win95plusrestdw4"},
+	{"toga_win95plusmin5", "toga_win95plusmax5"},
+	{"toga_win95plusmin6", "toga_win95plusmax6", "toga_win95plusrestup6", "toga_win95plusrestdw6"},
+	{"toga_win95plusmin7", "toga_win95plusmax7", "toga_win95plusrestup7", "toga_win95plusrestdw7"},
+	{"toga_win95plusmin8", "toga_win95plusmax8", "toga_win95plusrestup8", "toga_win95plusrestdw8"},
+	{"toga_win95plusmin9", "toga_win95plusmax9", "toga_win95plusrestup9", "toga_win95plusrestdw9"},
+	{"toga_win95plusmin10", "toga_win95plusmax10", "toga_win95plusrestup10", "toga_win95plusrestdw10"},
+	{"toga_win95plusmin11", "toga_win95plusmax11"},
+	{"toga_win95plusmin12", "toga_win95plusmax12", "toga_win95plusrestup12", "toga_win95plusrestdw12"},
+	{"toga_win95plusmin13", "toga_win95plusmax13", "toga_win95plusrestup13", "toga_win95plusrestdw13"},
+}
+
+togabalatro.playwindowsfx = function(_t)
+	if type(togabalatro.config.WindowSFXUse) ~= 'boolean' then togabalatro.config.WindowSFXUse = false end
+	if type(togabalatro.config.WindowSFXTheme) ~= 'number' then togabalatro.config.WindowSFXTheme = 1 end
+	if not togabalatro.config.WindowSFXUse then return end
+	if not togabalatro.plussfxtype[_t] then return end
+	
+	local sfxtype = togabalatro.plussfxtype[_t]
+	local selectedsfx = togabalatro.plussfxtheme[togabalatro.config.WindowSFXTheme][togabalatro.plussfxtype[_t]]
+	
+	if sfxtype and selectedsfx and SMODS.Sounds[selectedsfx] then play_sound(selectedsfx) end
 end
 
 -- Yoinked from Aikoyori.

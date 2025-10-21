@@ -18,5 +18,7 @@ return {
 	["DoCrashSFX"] = false
 	["EnableQE"] = true,
 	["UseNerfed"] = false,
-	["ShowPower"] = true
+	["ShowPower"] = true,
+	["WindowSFXUse"] = true,
+	["WindowSFXTheme"] = 13
 }

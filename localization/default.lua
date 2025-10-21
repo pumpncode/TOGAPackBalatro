@@ -1070,6 +1070,64 @@ return {
 					"{C:inactive}(Currently {X:attention,C:white}#1#X{C:inactive}/{X:mult,C:white}X#2#{}{C:inactive} Mult)"
 				}
 			},
+			j_toga_gamecontrollers = {
+				name = 'Game Controllers',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult per connected",
+					"{C:attention}game controller{}",
+					"{C:inactive}(Currently #2#, {X:mult,C:white}X#3#{C:inactive} Mult)"
+				}
+			},
+			j_toga_wincatalog = {
+				name = 'Windows Catalog',
+				text = {
+					"{C:blue}Common{} Jokers",
+					"give {C:red}+#1#{} Mult",
+					"before scoring",
+				}
+			},
+			j_toga_monitor = {
+				name = 'Monitor',
+				text = {
+					"{C:green}+1{} to {C:green}numerator",
+					"per {C:attention}monitor",
+					"{C:inactive,s:0.8}P2W Joker?{}"
+				}
+			},
+			j_toga_notsosmileyface = {
+				name = 'Smiley Face?',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult..?",
+				}
+			},
+			j_toga_notsosmileyface_full = {
+				name = 'Smiley Face?',
+				text = {
+					{
+						"{X:mult,C:white}X#1#{} Mult..?",
+					},
+					{
+						"{C:inactive,s:0.75}Is it just me or",
+						"{C:inactive,s:0.75}the game won't close?",
+					}
+				}
+			},
+			j_toga_rloctane = {
+				name = 'Octane',
+				text = {
+					"{C:red}+#1#{} Mult",
+					"{C:red}self destructs{}",
+					"after {C:attention}last hand{}",
+					"is played"
+				}
+			},
+			j_toga_wscript = {
+				name = 'Windows Based Script Host',
+				text = {
+					"{C:green}#2# in #3#{} chance to {X:attention,C:white}X#1#{} {C:attention}Blind requirements{}",
+					"when {C:attention}Blind{} is selected",
+				}
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {
@@ -1385,9 +1443,10 @@ return {
 			tag_toga_controlexe = {
 				name = "Settings Tag",
 				text = {
-					"Applies a {C:attention}random{} {C:dark_edition}edition{}",
+					"Applies a {C:attention}random{} {C:dark_edition}Edition{}",
 					"to a random {C:attention}Joker{}",
-					"{C:attention}without{} an {C:dark_edition}edition{}",
+					"{C:inactive,s:0.8}Jokers without an Edition",
+					"{C:inactive,s:0.8}are prioritized",
 				},
 			},
 			tag_toga_thelegend = {
@@ -1936,6 +1995,7 @@ return {
 			toga_colourful = "Colourful!",
 			toga_floppypartner = "Floppy!",
 			toga_suspartner = "amogus.",
+			toga_rlwas = "What a save!",
 			--
 			toga_furnaceprocess = "Smelted...",
 			toga_novalidrecipe = "No recipes match selected cards.",
@@ -2013,6 +2073,7 @@ return {
 			toga_specialdecktunes = "Karting Deck: enable win/lose extras",
 			toga_startupsfx = "Enable mod startup sound on initial load",
 			toga_startupsfxuse = "Use selected SFX for next game startup",
+			toga_windowsfxuse = "SFX when window state changes",
 			toga_crashsfxuse = "Play a sound when game crashes",
 			toga_qestuff = "Enable quantum enhancement deck (restart required)",
 			toga_sfxswaptext = "SFX Swap Level:",
@@ -2020,6 +2081,20 @@ return {
 			toga_sfxswapdefault = "Default",
 			toga_sfxswapall = "All",
 			toga_startupsfxtest = "Test",
+			-- tooltips
+			toga_description = "Description:",
+			toga_desc_startupsfx1 = "You can configure which one plays",
+			toga_desc_startupsfx2 = "in the Misc. Audio tab",
+			toga_desc_startupsfxsel1 = "If mod startup sound is enabled,",
+			toga_desc_startupsfxsel2 = "selects which one is used.",
+			toga_desc_startupsfxsel3 = "Otherwise, uses a random one.",
+			toga_desc_kartingdeckextras1 = "Contains music from",
+			toga_desc_kartingdeckextras2 = "beatmania IIDX 26 Rootage",
+			toga_desc_jokeitems = "Memes, shitposts, etc",
+			toga_desc_poweritems = "Stronger items of base mod",
+			toga_desc_nerfver = "Changes functionality/values",
+			toga_desc_windowsfx1 = "When window is minimized or maximized",
+			toga_desc_windowsfx2 = "(Uses sounds from Plus! 95)",
 		},
 		labels = {
 			toga_sealseal_seal = "Seal^2",
