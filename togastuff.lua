@@ -206,10 +206,10 @@ togabalatro.set_debuff = function(card)
 	if SMODS.has_enhancement(card, 'm_toga_nickel') then return 'prevent_debuff' end
 end
 
-local nfs = require('nativefs')
+togabalatro.nfs = require('nativefs')
 togabalatro.errorhandler = function()
 	if togabalatro.config.DoCrashSFX and not togabalatro.crashtrig then
-		local crashdata = love.filesystem.newFileData(nfs.read(togabalatro.path.."/assets/sounds/macperforma5400.ogg"))
+		local crashdata = love.filesystem.newFileData(togabalatro.nfs.read(togabalatro.path.."/assets/sounds/macperforma5400.ogg"))
 		if crashdata then
 			local crashsfx = love.sound.newSoundData(crashdata)
 			if crashsfx then
@@ -375,6 +375,7 @@ togabalatro.execstartupsfx = function()
 	
 	-- Sneak our title screen card addition here.
 	local replace_card = Card(G.title_top.T.x, G.title_top.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.j_toga_win95)
+	replace_card.click = function() G.FUNCS.openModUI_TOGAPack() end
 	G.title_top.T.w = G.title_top.T.w*1.7675
 	G.title_top.T.x = G.title_top.T.x - 0.8
 	replace_card.T.w = replace_card.T.w*1.1*1.2
