@@ -2044,6 +2044,7 @@ return {
 			toga_EEEmultmod = "^^^#1# Mult",
 			toga_jarated = "Minicrit!",
 			toga_perlevel = "per-level",
+			toga_basecm = "base",
 			toga_pinballing = "Score!",
 			toga_roverwoof = "Woof.",
 			toga_leech = "Leech",

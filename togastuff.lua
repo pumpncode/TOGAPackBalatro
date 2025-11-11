@@ -253,7 +253,7 @@ togabalatro.iswindows = function(card)
 end
 
 togabalatro.performpseudolag = function()
-	if not togabalatro.pseudolag then
+	if not togabalatro.pseudolag then -- restrict so we don't go too crazy.
 		togabalatro.pseudolag = true
 		if togabalatro.cursorsupport then love.mouse.setCursor(love.mouse.getSystemCursor("waitarrow")) end
 		G.E_MANAGER:add_event(Event({
@@ -272,7 +272,7 @@ togabalatro.systemtype = function()
 	local stype = love.system.getOS()
 	if stype == 'Windows' then return 'Windows'
 	elseif stype == 'OS X' or stype == 'Linux' then return 'UNIX'
-	elseif stype == 'Android' or stype == 'iOS' then return 'Mobile ('..stype..')'
+	elseif stype == 'Android' or stype == 'iOS' then return 'Mobile ('..stype..')' -- how.
 	end
 end
 
@@ -645,19 +645,23 @@ function love.filedropped(file)
 	if filedropref then return filedropref(file) end
 end
 
+-- Return number of bytes of last dropped file.
 togabalatro.lastfilesize = function()
 	return lastfilesizedropped or 0
 end
 
+-- Update the aforementioned number above.
 togabalatro.updatelastfilesize = function(val)
 	lastfilesizedropped = tonumber(val) and val or lastfilesizedropped or 0
 end
 
+-- Check if our resolution is 4:3, like 320x240, 640x480, 800x600 and so on.
 togabalatro.check43 = function(width, height)
 	width, height = tonumber(width) or 1, tonumber(height) or 1
 	return width/height == 4/3
 end
 
+-- Return a rounded up number.
 togabalatro.round = function(num, dplaces)
 	local m = 10^(dplaces or 0)
 	return math.floor(num * m + 0.5) / m
@@ -667,6 +671,7 @@ end
 to_big = to_big or function(a) return a end
 to_number = to_number or function(a) return a end
 
+-- Choose rank for drawing if meeting conditions for Solitaire Joker.
 togabalatro.reset_solitaire = function(run_start)
 	if run_start then G.GAME.current_round.togabalatro.solitaire = {} end
 	G.GAME.current_round.togabalatro.solitaire.rank = 'Ace'
@@ -686,6 +691,7 @@ togabalatro.reset_solitaire = function(run_start)
 	end
 end
 
+-- Choose suit for Disk Cleanup Joker.
 togabalatro.reset_diskcleanup = function(run_start)
 	if run_start then G.GAME.current_round.togabalatro.diskcleanup = {}; G.GAME.current_round.togabalatro.diskcleanup.suit = 'Hearts' end
 	local dc_suits = {}
@@ -701,6 +707,7 @@ togabalatro.reset_diskcleanup = function(run_start)
 	if next(valid_dc_suits) then G.GAME.current_round.togabalatro.diskcleanup.suit = pseudorandom_element(valid_dc_suits, pseudoseed('diskcleanup'..G.GAME.round_resets.ante)) end
 end
 
+-- Choose overriding suit for Registry Editor Joker.
 togabalatro.reset_regedit = function(run_start)
 	if run_start then G.GAME.current_round.togabalatro.regedit = {}; G.GAME.current_round.togabalatro.regedit.suit = 'Hearts' end
 	local regedit_suits = {}
@@ -710,6 +717,7 @@ togabalatro.reset_regedit = function(run_start)
     G.GAME.current_round.togabalatro.regedit.suit = pseudorandom_element(regedit_suits, pseudoseed('regedit'..G.GAME.round_resets.ante))
 end
 
+-- Choose overriding rank for Certificate Server Joker.
 togabalatro.reset_certificateserver = function(run_start)
 	if run_start then G.GAME.current_round.togabalatro.certserver = {} end
 	G.GAME.current_round.togabalatro.certserver.rank = 'Ace'
@@ -723,6 +731,7 @@ togabalatro.reset_certificateserver = function(run_start)
 	end
 end
 
+-- Per-round functions.
 togabalatro.reset_game_globals = function(run_start)
 	if run_start then G.GAME.current_round.togabalatro = {} end
 	
@@ -741,6 +750,7 @@ togabalatro.randompitch = function()
 	return genvalue
 end
 
+-- Calculate cost of items in specified locations. Can be hooked for adding to the cost by other areas.
 togabalatro.shopitemcost = function()
 	local areas = {G.shop_jokers, G.shop_vouchers, G.shop_booster}
 	local totalitemcost = to_big(0)
@@ -754,6 +764,7 @@ togabalatro.shopitemcost = function()
 	return totalitemcost
 end
 
+-- Count how many unique mods are in the currently owned Jokers, Consumables and Vouchers.
 togabalatro.checkownedmoditems = function()
 	local mods, modcount = {['TOGAPack'] = true}, 1 -- count ourselves.
 	if G.jokers and G.consumeables and G.vouchers then
@@ -779,12 +790,13 @@ togabalatro.checkownedmoditems = function()
 	return mods, modcount
 end
 
+-- Drawing of Notification cards...
 togabalatro.drawextracards = function()
 	local anycarddrawn = false
 	
 	local allnotifcards = {}
 	for i = 1, #G.deck.cards do
-		if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then --if G.deck.cards[i].config.center_key == 'm_toga_notification' then
+		if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_notification') then
 			allnotifcards[#allnotifcards+1] = G.deck.cards[i]
 		end
 	end
@@ -1021,6 +1033,7 @@ togabalatro.kartsleevescoring = function(context, scoring_hand)
 	end
 end
 
+-- Check if a given CardArea can score.
 togabalatro.canareascore = function(cardarea)
 	local can = true
 	if cardarea then
@@ -1104,7 +1117,7 @@ togabalatro.handlimitchange = function(val, set_to)
 		SMODS.change_play_limit(set_to and G.GAME.starting_params.play_limit - val or val)
 		SMODS.change_discard_limit(set_to and G.GAME.starting_params.discard_limit - val or val)
 	else
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Backwards compatibility... "..val, "TOGAPack") end
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("How did you even trigger this? "..val, "TOGAPack") end
 		G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + val, val < 0 and 1 or 5)
 	end
 end
@@ -1152,6 +1165,7 @@ togabalatro.playextracards = function()
 	end
 end
 
+-- Count how many consumables we are holding, including stacked if present.
 togabalatro.getconscount = function()
 	local count = 0
 	if G.consumeables and G.consumeables.cards then

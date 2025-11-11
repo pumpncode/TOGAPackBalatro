@@ -345,8 +345,11 @@ SMODS.Joker{
 	end
 }
 
-togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult, context)
-	lchips, lmult = lchips or 0, lmult or 0
+togabalatro.modifyhandchipsmult = function(card, hand, instant, context, bchips, bmult, lchips, lmult)
+	bchips, bmult, lchips, lmult = bchips or 0, bmult or 0, lchips or 0, lmult or 0
+	context = context or {}
+	local cbase, clevel = (to_number(bchips) ~= 0 or to_number(bmult) ~= 0) and true or false, (to_number(lchips) ~= 0 or to_number(lmult) ~= 0) and true or false
+	if not (cbase or clevel) then return end
 	local prevals
 	if SMODS.displaying_scoring and not (SMODS.displayed_hand == hand) then
 		prevals = copy_table(G.GAME.current_round.current_hand)
@@ -355,33 +358,60 @@ togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult, 
 		prevals.mult = mult
 	end
 	if not (instant or Talisman and Talisman.config_file.disable_anims) then
-		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult, level=''})
-		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-			play_sound('tarot1')
-			if card then card:juice_up(0.8, 0.5) end
-			G.TAROT_INTERRUPT_PULSE = true
-			return true end }))
-		if lmult and lmult ~= 0 then
-			update_hand_text({delay = 0}, {mult = G.GAME.hands[hand].l_mult + to_big(lmult), StatusText = true})
-			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+		if cbase then
+			update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_basecm').." "..localize(hand, 'poker_hands'), chips = G.GAME.hands[hand].s_chips, mult = G.GAME.hands[hand].s_mult, level=''})
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 				play_sound('tarot1')
 				if card then card:juice_up(0.8, 0.5) end
-			return true end }))
-		end
-		if lchips and lchips ~= 0 then
-			update_hand_text({delay = 0}, {chips = G.GAME.hands[hand].l_chips + to_big(lchips), StatusText = true})
+				G.TAROT_INTERRUPT_PULSE = true
+				return true end }))
+			if bmult and to_number(bmult) ~= 0 then
+				update_hand_text({delay = 0}, {mult = G.GAME.hands[hand].s_mult + bmult, StatusText = true})
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+					play_sound('tarot1')
+					if card then card:juice_up(0.8, 0.5) end
+				return true end }))
+			end
+			if bchips and to_number(bchips) ~= 0 then
+				update_hand_text({delay = 0}, {chips = G.GAME.hands[hand].s_chips + bchips, StatusText = true})
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+					play_sound('tarot1')
+					if card then card:juice_up(0.8, 0.5) end
+				return true end }))
+			end
 			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+				G.TAROT_INTERRUPT_PULSE = nil
+			return true end }))
+			delay(1.3)
+		end
+		if clevel then
+			update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult, level=''})
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 				play_sound('tarot1')
 				if card then card:juice_up(0.8, 0.5) end
+				G.TAROT_INTERRUPT_PULSE = true
+				return true end }))
+			if lmult and to_number(lmult) ~= 0 then
+				update_hand_text({delay = 0}, {mult = G.GAME.hands[hand].l_mult + lmult, StatusText = true})
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+					play_sound('tarot1')
+					if card then card:juice_up(0.8, 0.5) end
+				return true end }))
+			end
+			if lchips and to_number(lchips) ~= 0 then
+				update_hand_text({delay = 0}, {chips = G.GAME.hands[hand].l_chips + lchips, StatusText = true})
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+					play_sound('tarot1')
+					if card then card:juice_up(0.8, 0.5) end
+				return true end }))
+			end
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+				G.TAROT_INTERRUPT_PULSE = nil
 			return true end }))
+			delay(1.3)
 		end
-		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-			G.TAROT_INTERRUPT_PULSE = nil
-		return true end }))
-		delay(1.3)
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.5}, prevals or {mult = 0, chips = 0, handname = '', level = ''})
 	else
-		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('toga_perlevel').." "..localize(hand, 'poker_hands'), chips = to_big(G.GAME.hands[hand].l_chips) + to_big(lchips), mult = G.GAME.hands[hand].l_mult + to_big(lmult), level=''})
 		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.5}, prevals or {mult = 0, chips = 0, handname = '', level = ''})
 	end
 	
@@ -392,6 +422,8 @@ togabalatro.modifylevelchipsmult = function(card, hand, instant, lchips, lmult, 
 	end
 	
 	if togabalatro.config.DoMoreLogging then sendInfoMessage(localize('toga_perlevel').." "..localize(hand, 'poker_hands'), "TOGAPack") end
+	G.GAME.hands[hand].s_chips = to_big(G.GAME.hands[hand].s_chips) + to_big(bchips)
+	G.GAME.hands[hand].s_mult = to_big(G.GAME.hands[hand].s_mult) + to_big(bmult)
 	G.GAME.hands[hand].l_chips = to_big(G.GAME.hands[hand].l_chips) + to_big(lchips)
 	G.GAME.hands[hand].l_mult = to_big(G.GAME.hands[hand].l_mult) + to_big(lmult)
 	G.GAME.hands[hand].mult = math.max(to_big(G.GAME.hands[hand].s_mult) + to_big(G.GAME.hands[hand].l_mult)*(to_big(G.GAME.hands[hand].level) - to_big(1)), to_big(1))
@@ -422,7 +454,7 @@ SMODS.Joker{
 						if G.GAME.hands[v] and G.GAME.hands[v].visible then names[#names+1] = v end
 					end
 					local hand = pseudorandom_element(names, pseudoseed('ie'))
-					togabalatro.modifylevelchipsmult(curcard, hand, false, G.GAME.hands[hand].s_chips/card.ability.extra.phchips, G.GAME.hands[hand].s_mult/card.ability.extra.phmult, cxt)
+					togabalatro.modifyhandchipsmult(curcard, hand, false, cxt, nil, nil, G.GAME.hands[hand].s_chips/card.ability.extra.phchips, G.GAME.hands[hand].s_mult/card.ability.extra.phmult )
 				end
 			}
 		end
@@ -817,7 +849,7 @@ SMODS.Joker{
 					return true
 				end)
 			}))
-			SMODS.calculate_effect({message = localize('toga_unbalanced'), colour =  {0.8, 0.45, 0.85, 1}}, context.blueprint_card or card)
+			SMODS.calculate_effect({message = localize('toga_unbalanced'), colour = {0.8, 0.45, 0.85, 1}}, context.blueprint_card or card)
 			delay(0.6)
 		end
 	end,
@@ -1224,17 +1256,14 @@ SMODS.Joker{
 		if context.other_consumeable then
 			local width, height = love.window.getMode()
 			if togabalatro.check43(width, height) then
-				local effects = { xmult = card.ability.extra.xmult, card = context.blueprint_card or card, message_card = context.other_consumeable }
 				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
 				if stacked and stackamount then
-					return {
-						func = function()
-							for i = 1, stackamount do
-								SMODS.calculate_individual_effect(effects, context.other_consumeable, 'xmult', effects.xmult, false)
-							end
-						end
-					}
-				else return effects end
+					local results = {}
+					for i = 1, stackamount do
+						table.insert(results, { xmult = card.ability.extra.xmult, card = context.blueprint_card or card, message_card = context.other_consumeable })
+					end
+					return SMODS.merge_effects(results)
+				else return { xmult = card.ability.extra.xmult, card = context.blueprint_card or card, message_card = context.other_consumeable } end
 			end
 		end
 	end,
@@ -1417,19 +1446,9 @@ SMODS.Joker{
 		if context.initial_scoring_step then
 			local commons = {}
 			for k, v in ipairs((G.jokers or {}).cards) do
-				if v.config.center.rarity == 1 then table.insert(commons, v) end
+				if v.config.center.rarity == 1 then table.insert(commons, { mult = card.ability.extra.mult, card = context.blueprint_card or card, message_card = v }) end
 			end
-			if next(commons) then
-				return {
-					func = function()
-						local proc = togabalatro.areaprocess(commons)
-						for k, v in ipairs(proc) do
-							local effects = { mult = card.ability.extra.mult, card = context.blueprint_card or card, message_card = v }
-							SMODS.calculate_individual_effect(effects, v, 'mult', effects.mult, false)
-						end
-					end
-				}
-			end
+			if next(commons) then return SMODS.merge_effects(commons) end
 		end
 	end,
 	poweritem = true
@@ -2602,20 +2621,22 @@ if Talisman then
 		perishable_compat = false,
 		calculate = function(self, card, context)
 			if context.other_consumeable then
-				local effects = {
-					ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
-					eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
-				}
 				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
 				if stacked and stackamount then
+					local results = {}
+					for i = 1, stackamount do
+						table.insert(results, {
+							ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
+							eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
+						})
+					end
+					return SMODS.merge_effects(results)
+				else
 					return {
-						func = function()
-							for i = 1, stackamount do
-								SMODS.calculate_individual_effect(effects, context.other_consumeable, 'ee_mult', effects.ee_mult, false)
-							end
-						end
+						ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
+						eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
 					}
-				else return effects end
+				end
 			end
 		end,
 		add_to_deck = function(self, card, from_debuff)

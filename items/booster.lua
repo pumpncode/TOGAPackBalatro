@@ -23,7 +23,6 @@ SMODS.Booster{
 		ease_background_colour(toga_bgcolorfunc[math.random(1, #toga_bgcolorfunc)])
 	end,
 	create_card = function(self, card)
-		--return create_card('TOGAJKR', G.pack_cards, nil, nil, nil, nil, nil, 'toga')
 		return SMODS.create_card({ set = 'TOGAJKR', area = G.pack_cards, key_append = 'toga'})
 	end,
 	kind = 'TOGABoostPack'
@@ -50,7 +49,6 @@ SMODS.Booster{
 	end,
 	create_card = function(self, card)
 		local leg = G.GAME and G.GAME.used_vouchers['v_toga_spectralzipper'] == true and G.GAME.spectralzipper_chance and SMODS.pseudorandom_probability(card or self, "toga_leg", 1, G.GAME.spectralzipper_chance, 'togaziparchivepack') or nil
-		--return create_card("Joker", G.pack_cards, leg, nil, true, true, nil, 'toga')
 		return SMODS.create_card({ set = 'Joker', area = G.pack_cards, legendary = leg, skip_materialize = true, soulable = true, key_append = 'toga'})
 	end,
 	kind = 'TOGABoostPack',
@@ -82,7 +80,6 @@ SMODS.Booster{
 	end,
 	create_card = function(self, card)
 		local leg = G.GAME and G.GAME.used_vouchers['v_toga_spectralzipper'] == true and SMODS.pseudorandom_probability(card or self, "toga_leg", 1, G.GAME.spectralzipper_chance, 'togararpack') or nil
-		--return create_card("Consumeables", G.pack_cards, nil, nil, true, true, leg and 'c_soul' or togabalatro.getrandcons('rar'), 'toga')
 		return SMODS.create_card({ set = 'Consumables', area = G.pack_cards, legendary = leg, skip_materialize = true, soulable = true, key = leg and 'c_soul' or togabalatro.getrandcons('rar'), key_append = 'toga'})
 	end,
 	kind = 'TOGABoostPack',
@@ -111,7 +108,6 @@ SMODS.Booster{
 	create_card = function(self, card)
 		local _edition = SMODS.poll_edition({ key = 'standard_edition'..G.GAME.round_resets.ante, mod = 2, no_negative = true })
 		local _seal = SMODS.poll_seal({mod = 10})
-		--return {set = (pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", edition = _edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "playcardcab"}
 		return SMODS.create_card({set = 'Playing Card', edition = _edition, seal = _seal, area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "playcardcab"})
 	end,
 	kind = 'TOGABoostPack',

@@ -524,7 +524,6 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 	end
 	if not tonumber(G.GAME.modifiers.toga_chipamtmod) then G.GAME.modifiers.toga_chipamtmod = 1 end
 	if not tonumber(G.GAME.modifiers.toga_multamtmod) then G.GAME.modifiers.toga_multamtmod = 1 end
-	local mspaintcalc = {}
 	local chipmod, multmod = 0+tonumber(G.GAME.modifiers.toga_chipamtmod), 0+tonumber(G.GAME.modifiers.toga_multamtmod)
 	if togabalatro.chipmodkeys[key] and tonumber(chipmod) then
 		amount = amount*chipmod
