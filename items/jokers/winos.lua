@@ -227,6 +227,10 @@ SMODS.Joker{
 
 SMODS.Joker{
 	key = 'winvista',
+	config = { extra = { active = true } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { localize(card.ability.extra.active and 'toga_active' or 'toga_inactive') } }
+	end,
 	unlocked = true,
 	in_pool = function()
 		return togabalatro.config.ShowPower
@@ -236,10 +240,10 @@ SMODS.Joker{
 	pos = { x = 0, y = 2 },
 	cost = 10,
 	blueprint_compat = false,
-	demicolon_compat = true,
+	demicolon_compat = false,
 	calculate = function(self, card, context)
 		if context.blueprint or context.retrigger_joker then return end
-		if (context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6) or context.forcetrigger then
+		if card.ability.extra.active and context.destroy_card and context.cardarea == G.play and context.scoring_hand and #context.scoring_hand == 1 and #context.full_hand == 1 and context.destroy_card:get_id() == 6 then
 			return {
 				remove = true,
 				func = function()
@@ -253,9 +257,10 @@ SMODS.Joker{
 						if seljoker and seljoker.edition and not seljoker.edition.negative then
 							G.E_MANAGER:add_event(Event({func = function()
 								if seljoker and seljoker.edition and not seljoker.edition.negative then
-									local curcard = context.blueprint_card or card
-									curcard:juice_up()
+									card:juice_up()
 									seljoker:set_edition('e_negative')
+									card.ability.extra.active = false
+									SMODS.calculate_effect({message = localize('toga_inactive')}, card)
 								end
 							return true end }))
 						end
@@ -263,6 +268,10 @@ SMODS.Joker{
 					return true
 				end
 			}
+		end
+		if context.end_of_round and context.beat_boss and not card.ability.extra.active then
+			card.ability.extra.active = true
+			return { message = localize('k_active_ex') }
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)

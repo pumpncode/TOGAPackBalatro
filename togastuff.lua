@@ -278,32 +278,7 @@ end
 
 togabalatro.curcpucount = love.system.getProcessorCount()
 togabalatro.cursorsupport = love.mouse.isCursorSupported()
-
--- Check for specific process name.
-togabalatro.getprocessamount = function(process)
-	process = string.lower(process) or 'whereismysupersuit'
-	-- If a new table exists on the message queue on the Channel, set table to it. Otherwise, stay as-is.
-	togabalatro.tasklisttable = love.thread.getChannel('togatasklist'):pop() or togabalatro.tasklisttable
-	local count = 0
-	for k, v in pairs(togabalatro.tasklisttable) do
-		if string.find(v, process) then count = count + 1 end
-	end
-	return count
-end
-
-togabalatro.tasklisttable = {}
-
--- This code is for the thread that's initialized below. (although this could be its' own file, lmao.)
--- Upon loading, it preps some of the functions, checks what system we're on and assigns the appropriate command,
--- then it gets the initial list of processes without writing to an actual file and pushes the table in a message
--- via the channel and stores the ID of the pushed message, constantly checking whether the message is still there.
--- When the message is read with :pop(), the message is removed and the table is obtained, leading to the Table
--- being reset and repopulated, then pushing and waiting again all over again.
-local tasklistcode = [[
-require 'love.timer'
-require 'love.system'
-require 'io'
-require 'os'
+togabalatro.curos = togabalatro.systemtype()
 
 function os.capture(cmd, raw)
 	local f = assert(io.popen(cmd, 'r'))
@@ -316,7 +291,7 @@ function os.capture(cmd, raw)
 	return s
 end
 
-local function mlineproc(s)
+function togabalatro.mlineproc(s)
 	local t = {}
 	local i = 1
 	for str in string.gmatch(s, "[^\r\n]+") do
@@ -326,35 +301,29 @@ local function mlineproc(s)
 	return t
 end
 
-local function sendMsg(level, logger, message)
-    level = level or "DEBUG"
-    logger = logger or "DefaultLogger"
-    message = message or "Default log message"
-    date = os.date('%Y-%m-%d %H:%M:%S')
-    print(date .. " :: " .. level .. " :: " .. logger .. " :: " .. message)
-end
+-- Initialize the process information during load of this mod into a table. Previously, this was active
+-- in a constant loop, which could cause excessive unfocusing of the game as the system executed the function.
+-- Now, we do it just once here instead.
+if togabalatro.curos == 'Windows' then togabalatro.tasklisttable = togabalatro.mlineproc(os.capture('tasklist', true))
+elseif togabalatro.curos == 'UNIX' then togabalatro.tasklisttable = togabalatro.mlineproc(os.capture('ps -e', true)) end
 
-local stype = love.system.getOS()
-if stype == 'OS X' or stype == 'Linux' then stype = 'UNIX' elseif stype == 'Android' or stype == 'iOS' then stype = 'Mobile ('..stype..')' end
-local cmd = stype == 'Windows' and "tasklist" or (stype == 'OS X' or stype == 'UNIX') and "ps -e" or nil
-if cmd then
-	local table, strcapture = {}, mlineproc(os.capture(cmd, true))
-	local togachannel = love.thread.getChannel('togatasklist')
-	local id = togachannel:push(table)
-	while true do
-		if togachannel:hasRead(id) then
-			table = mlineproc(os.capture(cmd, true))
-			id = togachannel:push(table)
-			sendMsg('INFO ', 'TOGAPack', 'love2d Channel <> Thread - Table refreshed and sent.')
-		end
+-- If we still got nothing, just make the table blank.
+if not togabalatro.tasklisttable then togabalatro.tasklisttable = {} end
+
+-- Check for specific process name.
+togabalatro.getprocessamount = function(process)
+	process = string.lower(process) or 'whereismysupersuit'
+	-- If a new table exists on the message queue on the Channel, set table to it. Otherwise, stay as-is.
+	local count = 0
+	for k, v in pairs(togabalatro.tasklisttable or {}) do
+		if string.find(v, process) then count = count + 1 end
 	end
+	return count
 end
-]]
 
--- Create Thread object using the code above and then start it.
-togabalatro.thread = love.thread.newThread(tasklistcode)
-togabalatro.thread:start(togabalatro.tasklisttable)
 togabalatro.processcounts = {}
+togabalatro.processcounts.chrome = togabalatro.getprocessamount('Chrome')
+togabalatro.processcounts.firefox = togabalatro.getprocessamount('Firefox')
 
 togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit', 'toga_longhorn', 'toga_gong', 'toga_money9597', 'toga_money9899'}
 togabalatro.verifysfxconfig = function()
@@ -365,7 +334,6 @@ end
 togabalatro.execstartupsfx = function()
 	if not togabalatro.has_tried_startup and togabalatro.config.StartUpSound then
 		togabalatro.verifysfxconfig()
-		togabalatro.tasklisttable = love.thread.getChannel('togatasklist'):pop()
 		if not togabalatro.config.StartUpSFX.UseSelected or togabalatro.config.StartUpSFX.Selected == nil then
 			togabalatro.config.StartUpSFX.Selected = math.random(1, #togabalatro.startupsfx)
 		end

@@ -606,7 +606,7 @@ togabalatro.jd_def["j_toga_winvista"] = {
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i].edition and not G.jokers.cards[i].edition.negative then editioned = editioned + 1 end
 		end
-		card.joker_display_values.ready = card.joker_display_values.active and editioned > 0 and vista or false
+		card.joker_display_values.ready = card.joker_display_values.active and card.ability.extra.active and editioned > 0 and vista or false
 		card.joker_display_values.readytext = card.joker_display_values.ready and "!" or "..."
 	end,
 	style_function = function(card, text, reminder_text, extra)
@@ -1022,9 +1022,7 @@ togabalatro.jd_def["j_toga_tomscott"] = {
 }
 
 togabalatro.jd_def["j_toga_michaelrosen"] = {
-	text = { { text = localize('toga_rosennice') } },
-	extra = { { { text = localize('toga_rosenclick'), colour = G.C.UI.TEXT_INACTIVE, scale = 0.3 } } },
-	reminder_text = {
+	text = {
 		{ text = "(", scale = 0.3, colour = G.C.GREEN },
 		{ ref_table = "card.joker_display_values", ref_value = "odds", scale = 0.3, colour = G.C.GREEN },
 		{ text = ")", scale = 0.3, colour = G.C.GREEN },

@@ -2311,9 +2311,7 @@ SMODS.Joker{
 	key = 'chrome',
 	config = { extra = { xmult = 1.5, process = 'Chrome', totalxmult = 0 } },
 	loc_vars = function(self, info_queue, card)
-		local count = togabalatro.getprocessamount(card.ability.extra.process)
-		if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
-		togabalatro.processcounts.chrome = count
+		local count = togabalatro.processcounts.chrome
 		local bonus, totalbonus = card.ability.extra.xmult, 0
 		for i = 1, count do
 			totalbonus = totalbonus + bonus
@@ -2333,9 +2331,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.before then
-			local count = togabalatro.getprocessamount(card.ability.extra.process)
-			if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
-			togabalatro.processcounts.chrome = count
+			local count = togabalatro.processcounts.chrome
 			local bonus, totalbonus = card.ability.extra.xmult, 0
 			for i = 1, count do
 				totalbonus = totalbonus + bonus
@@ -2356,9 +2352,7 @@ SMODS.Joker{
 	key = 'firefox',
 	config = { extra = { xchips = 1.5, process = 'Firefox', totalxchips = 0 } },
 	loc_vars = function(self, info_queue, card)
-		local count = togabalatro.getprocessamount(card.ability.extra.process)
-		if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
-		togabalatro.processcounts.firefox = count
+		local count = togabalatro.processcounts.firefox
 		local bonus, totalbonus = card.ability.extra.xchips, 0
 		for i = 1, count do
 			totalbonus = totalbonus + bonus
@@ -2378,9 +2372,7 @@ SMODS.Joker{
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.before then
-			local count = togabalatro.getprocessamount(card.ability.extra.process)
-			if type(togabalatro.processcounts) ~= 'table' then togabalatro.processcounts = {} end
-			togabalatro.processcounts.firefox = count
+			local count = togabalatro.processcounts.firefox
 			local bonus, totalbonus = card.ability.extra.xchips, 0
 			for i = 1, count do
 				totalbonus = totalbonus + bonus

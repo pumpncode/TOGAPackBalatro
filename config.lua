@@ -9,13 +9,13 @@ return {
 	["BoosterPackMusic"] = true,
 	["StartUpSFX"] = {
 		["Selected"] = 1,
-		["UseSelected"] = false
-	}
-	["UseCustomMMMusic"] = true
+		["UseSelected"] = false,
+	},
+	["UseCustomMMMusic"] = true,
 	["UseCustomModTabMusic"] = true,
 	["SpecialDeckMusic"] = false,
 	["SFXSwapLevel"] = 2,
-	["DoCrashSFX"] = false
+	["DoCrashSFX"] = false,
 	["EnableQE"] = true,
 	["UseNerfed"] = false,
 	["ShowPower"] = true,

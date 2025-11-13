@@ -308,9 +308,10 @@ return {
 			j_toga_winxp = {
 				name = 'Windows XP',
 				text = {
-					"{C:green}#1# in #2#{} chance to {C:attention}double{}",
+					"{C:green}#1# in #2#{} chance to {X:attention,C:white}X2{}",
 					"leveling amount before",
-					"{C:attention}upgrading{} a poker hand"
+					"{C:attention}upgrading{} a poker hand",
+					"{C:inactive}(1 level > 2 levels)"
 				}
 			},
 			j_toga_jokersrb2kart = {
@@ -585,11 +586,17 @@ return {
 			j_toga_winvista = {
 				name = 'Windows Vista',
 				text = {
-					"If the played hand contains",
-					"a single {C:attention}6{}, {C:red}destroy{} it and",
-					"convert the existing {C:attention}Edition{} of",
-					"a {C:attention}random{} Joker to {C:dark_edition}Negative{}",
-					"{C:inactive,s:0.8}(Cannot target already {C:dark_edition,s:0.8}Negative{C:inactive,s:0.8} Jokers.){}",
+					{
+						"If the played hand contains a single {C:attention}6{},",
+						"{C:red}destroy{} it and apply {C:dark_edition}Negative{} to",
+						"a {C:attention}random Editioned{} Joker",
+						"{C:inactive,s:0.8}(Cannot target already {C:dark_edition,s:0.8}Negative{C:inactive,s:0.8} Jokers.){}",
+					},
+					{
+						"Becomes {C:red}inactive{} when applying {C:dark_edition}Negative",
+						"Becomes {C:attention}active{} when defeating {C:attention}Boss Blinds",
+						"{C:inactive}#1#{}"
+					},
 				}
 			},
 			j_toga_win7 = {
@@ -939,7 +946,7 @@ return {
 				name = 'Chrome',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}process{} with '{C:attention}#4#{}'",
-					"in the {C:attention}name{} currently running.",
+					"in the {C:attention}name{} during Balatro initialization.",
 					"{C:attention,s:0.8}Additional{s:0.8} processes give {C:red,s:0.8}diminishing{s:0.8} returns.{}",
 					"{C:inactive}(Currently {C:attention}#3#{}, {X:mult,C:white}X#2#{}{C:inactive}){}",
 				}
@@ -948,7 +955,7 @@ return {
 				name = 'Firefox',
 				text = {
 					"{X:chips,C:white}X#1#{} Chips per {C:attention}process{} with '{C:attention}#4#{}'",
-					"in the {C:attention}name{} currently running.",
+					"in the {C:attention}name{} during Balatro initialization.",
 					"{C:attention,s:0.8}Additional{s:0.8} processes give {C:red,s:0.8}diminishing{s:0.8} returns.{}",
 					"{C:inactive}(Currently {C:attention}#3#{}, {X:chips,C:white}X#2#{}{C:inactive}){}",
 				}
