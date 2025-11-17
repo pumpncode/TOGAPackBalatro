@@ -15,7 +15,7 @@ https://balatromods.miraheze.org/wiki/TOGA%27s_Stuff
 Uses Steamodded 1.0.0-BETA and a bit of Lovely patching.
 https://github.com/Steamodded/smods
 
-Talisman 2.2.0 (development builds work too) is an optional dependency as of 1.0.2.
+Talisman 2.4.0+ is an optional dependency for a bit of extra content.
 https://github.com/MathIsFun0/Talisman
 
 If Incantation is to be used alongside, please obtain the [forked version](https://github.com/TheOneGoofAli/JensBalatroCollection/tree/main/Incantation) to prevent unintended behaviour by some of the Consumeables of this mod.
