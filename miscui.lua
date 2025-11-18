@@ -1,0 +1,334 @@
+sendInfoMessage("Initializing additional UI...", "TOGAPack")
+
+local clr = {0,0,0,0.8}
+function G.FUNCS.toga_execrestart(e)
+	SMODS.full_restart = (SMODS.full_restart or 0) + 1
+	G.FUNCS.exit_mods(e)
+end
+
+function G.FUNCS.toga_closeprompt(e)
+	if G.ACTIVE_MOD_UI == togabalatro then G.FUNCS.openModUI_TOGAPack(e) else G.FUNCS.exit_overlay_menu(e) end
+end
+
+function togabalatro.oobeuifunc()
+	local introtext = G.localization.misc.ui_strings.toga_intro
+	play_sound('toga_chord', 1, 0.5)
+	play_sound('toga_winnt4startorig', 1, 0.5)
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_intro'}, nodes = {
+		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
+			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 11.5}, nodes = {
+				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {
+					{n = G.UIT.T, config = { text = introtext[1], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				}},
+			}},
+			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
+				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
+					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 5, y = 0 }) } },
+				}},
+				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
+					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = introtext[2], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = introtext[3], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = introtext[4], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = introtext[5], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = introtext[6], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+					}},
+				}},
+			}},
+			{n = G.UIT.R, config = {align = "cm", colour = HEX('c0c0c0'), padding = 0.15}, nodes = {
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_yes') }, button = "openModUI_TOGAPack", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_no') }, button = "toga_closeprompt", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+			}},
+		}},
+	}}
+end
+
+function togabalatro.needrestartui()
+	local rtxt = G.localization.misc.ui_strings.toga_needrestart
+	play_sound('toga_chord', 1, 0.5)
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_needrestart'}, nodes = {
+		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
+			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
+				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {
+					{n = G.UIT.T, config = { text = rtxt[1], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				}},
+			}},
+			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
+				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
+					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 6, y = 0 }) } },
+				}},
+				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
+					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[2], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[3], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[4], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[5], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+					}},
+				}},
+			}},
+			{n = G.UIT.R, config = {align = "cm", colour = HEX('c0c0c0'), padding = 0.15}, nodes = {
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_yes') }, button = "toga_execrestart", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_no') }, button = "toga_closeprompt", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+			}},
+		}},
+	}}
+end
+
+function G.FUNCS.toga_enableallitemsBMP(e)
+	togabalatro.config.BMPAllItems = true
+	G.FUNCS.exit_overlay_menu(e)
+end
+
+function G.FUNCS.toga_disableallitemsBMP(e)
+	togabalatro.config.BMPAllItems = nil
+	G.FUNCS.exit_overlay_menu(e)
+end
+
+function togabalatro.bmpnoteui_normal()
+	local bmpntxt = G.localization.misc.ui_strings.toga_bmpnormal
+	play_sound('toga_dingy', 1, 0.8)
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_bmpnote'}, nodes = {
+		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
+			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
+				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {
+					{n = G.UIT.T, config = { text = bmpntxt[1], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				}},
+			}},
+			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
+				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
+					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['mp_modicon'], { x = 0, y = 0 }) } },
+				}},
+				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
+					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpntxt[2], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpntxt[3], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpntxt[4], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+					}},
+				}},
+			}},
+			{n = G.UIT.R, config = {align = "cm", colour = HEX('c0c0c0'), padding = 0.15}, nodes = {
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_ok') }, button = "exit_overlay_menu", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_loaddisitems') }, button = "toga_enableallitemsBMP", minw = 4.6, minh = 0.65, colour = HEX('555555')})
+				}},
+			}},
+		}},
+	}}
+end
+
+function togabalatro.bmpnoteui_allitems()
+	local bmpatxt = G.localization.misc.ui_strings.toga_bmpallitems
+	play_sound('toga_dingy', 1, 0.8)
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_bmpnote_alt'}, nodes = {
+		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
+			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
+				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {
+					{n = G.UIT.T, config = { text = bmpatxt[1], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				}},
+			}},
+			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
+				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
+					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['mp_modicon'], { x = 0, y = 0 }) } },
+				}},
+				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
+					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpatxt[2], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpatxt[3], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpatxt[4], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpatxt[5], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmpatxt[6], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+					}},
+				}},
+			}},
+			{n = G.UIT.R, config = {align = "cm", colour = HEX('c0c0c0'), padding = 0.15}, nodes = {
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_ok') }, button = "exit_overlay_menu", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_unloaddisitems') }, button = "toga_disableallitemsBMP", minw = 6, minh = 0.65, colour = HEX('555555')})
+				}},
+			}},
+		}},
+	}}
+end
+
+function togabalatro.needrestartbmpui()
+	local bmprtxt = G.localization.misc.ui_strings.toga_needrestartbmp
+	play_sound('toga_chord', 1, 0.5)
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_needrestartbmp'}, nodes = {
+		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
+			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
+				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {
+					{n = G.UIT.T, config = { text = bmprtxt[1], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				}},
+			}},
+			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
+				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
+					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 6, y = 0 }) } },
+				}},
+				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
+					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmprtxt[2], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmprtxt[3], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmprtxt[4], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = bmprtxt[5], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+					}},
+				}},
+			}},
+			{n = G.UIT.R, config = {align = "cm", colour = HEX('c0c0c0'), padding = 0.15}, nodes = {
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_yes') }, button = "toga_execrestart", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_no') }, button = "toga_closeprompt", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+			}},
+		}},
+	}}
+end
+
+function togabalatro.needrestartkingcdi()
+	local rtxt = G.localization.misc.ui_strings.toga_needrestartkingcdi
+	play_sound('toga_chord', 1, 0.5)
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_needrestart'}, nodes = {
+		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
+			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
+				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {
+					{n = G.UIT.T, config = { text = rtxt[1], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				}},
+			}},
+			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
+				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
+					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 6, y = 0 }) } },
+				}},
+				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
+					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[2], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[3], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[4], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[5], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+					}},
+				}},
+			}},
+			{n = G.UIT.R, config = {align = "cm", colour = HEX('c0c0c0'), padding = 0.15}, nodes = {
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_yes') }, button = "toga_execrestart", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_no') }, button = "toga_closeprompt", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+			}},
+		}},
+	}}
+end
+
+function togabalatro.msoobe()
+	if togabalatro.config and not togabalatro.config.oobe then
+		togabalatro.config.oobe = true
+		togabalatro.has_tried_startup = true
+		SMODS.save_mod_config(togabalatro)
+		G.SETTINGS.paused = true
+		G.FUNCS.overlay_menu({
+			definition = togabalatro.oobeuifunc(),
+			config = {
+				align = "cm",
+				offset = {x = 0, y = 0},
+				bond = 'Weak',
+				no_esc = true,
+				no_back = true,
+			}
+		})
+	end
+end
+
+function togabalatro.systemchanges(args)
+	args = args or {}
+	G.SETTINGS.paused = true
+	G.FUNCS.overlay_menu({
+		definition = args.bmp and togabalatro.needrestartbmpui() or args.kingcdi and togabalatro.needrestartkingcdi() or togabalatro.needrestartui(),
+		config = {
+			align = "cm",
+			offset = {x = 0, y = 0},
+			bond = 'Weak',
+			no_esc = true,
+			no_back = true,
+		}
+	})
+end
+
+function togabalatro.bmpnote()
+	if not togabalatro.config.mpnotice then
+		togabalatro.config.mpnotice = true
+		G.SETTINGS.paused = true
+		G.FUNCS.overlay_menu({
+			definition = togabalatro.config.BMPAllItems and togabalatro.bmpnoteui_allitems() or togabalatro.bmpnoteui_normal(),
+			config = {
+				align = "cm",
+				offset = {x = 0, y = 0},
+				bond = 'Weak',
+				no_esc = true,
+				no_back = true,
+			}
+		})
+	end
+end

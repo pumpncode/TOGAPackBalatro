@@ -93,8 +93,7 @@ return {
 					"{C:red}X#5#{} base Blind size",
 					"{C:red,s:0.8}#1# {s:0.8}hand, {C:red,s:0.8}#2# {s:0.8}discard, {C:attention,s:0.8}+#6#{s:0.8} Ante to win",
 					"{C:red,s:0.8}#3# {s:0.8}Joker slot, {C:red,s:0.8}#4# {s:0.8}Consumable slot",
-					"{C:inactive,s:0.9}Can get quite laggy, be warned!{}",
-					"{C:inactive,s:0.8}Animation skipping mods recommended.{}",
+					"{C:inactive,s:0.8}Warning: game may lag heavily.{}",
 				}
 			},
 			b_toga_prairie = {
@@ -122,6 +121,14 @@ return {
 					"operation amount",
 					"Start in the {C:attention}Shop",
 					"{C:red}X#1#{} base Blind size"
+				}
+			},
+			b_toga_kingharkinian = {
+				name = "Harkinian Deck",
+				text = {
+					"Start with a {C:attention}random{}",
+					"{C:dark_edition}Eternal{} {C:enhanced}Rental",
+					"{C:legendary}Legendary{} Joker"
 				}
 			},
 		},
@@ -944,6 +951,15 @@ return {
 			},
 			j_toga_chrome = {
 				name = 'Chrome',
+				text = {
+					"{X:mult,C:white}X#1#{} Mult per {C:attention}process{} with '{C:attention}#4#{}'",
+					"in the {C:attention}name{} during Balatro initialization.",
+					"{C:attention,s:0.8}Additional{s:0.8} processes give {C:red,s:0.8}diminishing{s:0.8} returns.{}",
+					"{C:inactive}(Currently {C:attention}#3#{}, {X:mult,C:white}X#2#{}{C:inactive}){}",
+				}
+			},
+			j_toga_chrome_poly = {
+				name = '{s:0.5}Poly{}Chrome',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}process{} with '{C:attention}#4#{}'",
 					"in the {C:attention}name{} during Balatro initialization.",
@@ -2073,6 +2089,7 @@ return {
 			toga_jokeactive = "'Joke' items:",
 			toga_usenerfedver = "Items above use nerfed versions",
 			toga_strongstate = "'Mainline' items:",
+			toga_bmploadall = "BMP: load all items anyway",
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
 			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",
@@ -2084,11 +2101,17 @@ return {
 			toga_windowsfxuse = "SFX when window state changes",
 			toga_crashsfxuse = "Play a sound when game crashes",
 			toga_qestuff = "Enable quantum enhancement deck (restart required)",
+			toga_kingcdideck = "Enable Harkinian Deck (restart required)",
 			toga_sfxswaptext = "SFX Swap Level:",
 			toga_sfxswapnone = "None",
 			toga_sfxswapdefault = "Default",
 			toga_sfxswapall = "All",
 			toga_startupsfxtest = "Test",
+			toga_yes = "Yes",
+			toga_no = "No",
+			toga_ok = "OK",
+			toga_loaddisitems = "Load disabled items",
+			toga_unloaddisitems = "Do not load disabled items",
 			-- tooltips
 			toga_description = "Description:",
 			toga_desc_startupsfx1 = "You can configure which one plays",
@@ -2138,6 +2161,30 @@ return {
 			toga_modern_Hearts = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 			toga_modern_Clubs = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
 			toga_modern_Diamonds = { "Classic", "Hearts Deck", "Seasons Deck", "Large Print Deck", },
+		},
+		ui_strings = {
+			toga_intro = {
+				"Thank you for installing TOGA's Stuff!", "Welcome to TOGA's Stuff. As this mod has a lot of additions,", "it is advised that you take a bit of time to peruse the",
+				"the list of settings to configure the mod.", "", "Would you like to open the mod config menu?"
+			},
+			toga_needrestart = {
+				"Mod Config Change", "You must restart Balatro before changes to the", "quantum enhancement deck will take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_needrestartbmp = {
+				"Mod Config Change", "You must restart Balatro before changes to loading of", "enabled/disabled items with BMP in mind can take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_needrestartkingcdi = {
+				"Mod Config Change", "You must restart Balatro before changes to the", "Harkinian Deck will take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_bmpnormal = {
+				"Balatro Multiplayer detected", "Because TOGA's Stuff has not been tested with Balatro Multiplayer,", "you may experience unexpected crashes with specific items.",
+				"In addition, some items of this mod were omitted from loading."
+			},
+			toga_bmpallitems = {
+				"Balatro Multiplayer detected", "Because TOGA's Stuff has not been tested with Balatro Multiplayer, you may", "experience unexpected crashes with specific items. Per config, items that",
+				"would be usually omitted from loading are loaded regardless, potentially", "causing desynchronizations and/or unfair advantages.",
+				"Have fun, but don't try to cheat, will you?"
+			},
 		},
 	}
 }

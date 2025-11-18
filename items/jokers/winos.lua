@@ -1,6 +1,8 @@
 sendInfoMessage("Loading Jokers - Windows OS...", "TOGAPack")
 
-SMODS.Joker{
+local winj = {}
+
+table.insert(winj, {
 	key = 'win95',
 	config = { extra = { hands = 1, discards = 1, xhd = 2, slots = 3 } },
 	loc_vars = function(self, info_queue, card)
@@ -33,7 +35,7 @@ SMODS.Joker{
 			else play_sound("toga_chordold") end
 		end
 	end,
-}
+})
 
 togabalatro.gettotaljokervalue = function()
 	local value = 0
@@ -47,7 +49,7 @@ togabalatro.gettotaljokervalue = function()
 	return value
 end
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'win98',
 	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.15 } },
 	loc_vars = function(self, info_queue, card)
@@ -80,13 +82,13 @@ SMODS.Joker{
 			else play_sound("toga_chord") end
 		end
 	end
-}
+})
 
 local function toga_vouchcount()
 	return G.vouchers and G.vouchers.cards and #G.vouchers.cards or 0
 end
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'winmillenium',
 	config = { extra = { basechips = 25, chipbonus = 5, totalbonus = 25 } },
 	loc_vars = function(self, info_queue, card)
@@ -117,9 +119,9 @@ SMODS.Joker{
 			else play_sound("toga_chord") end
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'winnt4',
 	config = { extra = { repetitions = 1 } },
 	loc_vars = function(self, info_queue, card)
@@ -154,9 +156,9 @@ SMODS.Joker{
 			else play_sound("toga_chordold") end
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'win2000',
 	unlocked = true,
 	rarity = 2,
@@ -195,9 +197,9 @@ SMODS.Joker{
 			else play_sound("toga_chord") end
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'winxp',
 	config = { extra = { odds = 4 } },
 	loc_vars = function(self, info_queue, card)
@@ -223,9 +225,9 @@ SMODS.Joker{
 			else play_sound("toga_winxpcritstop") end
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'winvista',
 	config = { extra = { active = true } },
 	loc_vars = function(self, info_queue, card)
@@ -286,9 +288,9 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'win7',
 	config = { extra = { x_mult = 1.25 } },
 	loc_vars = function(self, info_queue, card)
@@ -334,9 +336,9 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(winj, {
 	key = 'win8',
 	config = { extra = { xmult = 0.08 } },
 	loc_vars = function(self, info_queue, card)
@@ -382,4 +384,6 @@ SMODS.Joker{
 	end,
 	pixel_size = { w = 70, h = 84 },
 	poweritem = true
-}
+})
+
+return winj

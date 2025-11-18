@@ -8,7 +8,7 @@ priority = 1
 target = "game.lua"
 pattern = "play_sound('whoosh1', 0.4, 0.8)"
 position = "before"
-payload = "togabalatro.execstartupsfx()"
+payload = "togabalatro.execstartupsfx(change_context)"
 match_indent = true
 
 [[patches]]
@@ -16,7 +16,7 @@ match_indent = true
 target = "game.lua"
 pattern = "if G.SETTINGS.skip_splash == 'Yes' then"
 position = "before"
-payload = "togabalatro.updatecollectionitems()"
+payload = "if togabalatro then togabalatro.updatecollectionitems() end"
 match_indent = true
 
 [[patches]]

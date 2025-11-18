@@ -676,6 +676,10 @@ end
 
 local ismin, ismax = false, false
 local loveupdref = love.update
+local qeval, notifyrestart = togabalatro.config.EnableQE, false
+local bmpcurval, notifyitemreinit = togabalatro.config.BMPAllItems, false
+local kingcdival, notifykingcdi = togabalatro.config.KingCDIDeck, false
+local cfgrestartval = { ['EnableQE'] = true }
 function love.update( dt )
 	-- Hello everybody, my name is Windiplier.
 	if love.window.isMinimized() and not ismin then
@@ -692,5 +696,35 @@ function love.update( dt )
 		togabalatro.playwindowsfx('restdw')
 	end
 	
+	if togabalatro.config.EnableQE ~= qeval and not notifyrestart then
+		notifyrestart = true
+		togabalatro.systemchanges()
+	end
+	
+	if togabalatro.config.BMPAllItems ~= bmpcurval and not notifyitemreinit then
+		notifyitemreinit = true
+		togabalatro.config.mpnotice = nil
+		togabalatro.systemchanges({ bmp = true })
+	end
+	
+	if togabalatro.config.KingCDIDeck ~= kingcdival and not notifykingcdi then
+		notifykingcdi = true
+		togabalatro.systemchanges({ kingcdi = true })
+	end
+	
 	loveupdref(dt)
+end
+
+local mmhook = Game.main_menu
+function Game:main_menu(ctx)
+    local r = mmhook(self,ctx)
+	G.E_MANAGER:add_event(Event({
+		func = function() togabalatro.msoobe() return true end
+	}))
+	if togabalatro.checkbmp() then
+		G.E_MANAGER:add_event(Event({
+			func = function() togabalatro.bmpnote() return true end
+		}))
+	end
+    return r
 end

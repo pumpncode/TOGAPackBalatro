@@ -246,3 +246,22 @@ SMODS.Back{
 		G.GAME.shop_d6ed = nil
 	end
 }
+
+if togabalatro.config.KingCDIDeck then
+	SMODS.Back{
+		key = "kingharkinian",
+		pos = { x = 12, y = 0 },
+		atlas = "TOGADeckBack",
+		unlocked = true,
+		apply = function(self, back)
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.jokers then
+						SMODS.add_card({ set = 'Joker', legendary = true, stickers = { "eternal", "rental" }, force_stickers = true })
+						return true
+					end
+				end,
+			}))
+		end
+	}
+end

@@ -1,6 +1,8 @@
 sendInfoMessage("Loading Jokers - Linux OS...", "TOGAPack")
 
-SMODS.Joker{
+local lj = {}
+
+table.insert(lj, {
 	key = 'linux_ubuntu',
 	config = { extra = { percentage = 0.1 } },
 	loc_vars = function(self, info_queue, card)
@@ -20,9 +22,9 @@ SMODS.Joker{
 		end
 	end,
 	pixel_size = { w = 69, h = 69 },
-}
+})
 
-SMODS.Joker{
+table.insert(lj, {
 	key = 'linux_debian',
 	unlocked = true,
 	rarity = 2,
@@ -37,9 +39,9 @@ SMODS.Joker{
 		end
 	end,
 	pixel_size = { w = 69, h = 94 }
-}
+})
 
-SMODS.Joker{
+table.insert(lj, {
 	key = 'linux_slackware',
 	config = { extra = { persuit = 0.1 } },
 	loc_vars = function(self, info_queue, card)
@@ -72,9 +74,9 @@ SMODS.Joker{
 		end
 	end,
 	pixel_size = { w = 69, h = 62 },
-}
+})
 
-SMODS.Joker{
+table.insert(lj, {
 	key = 'linux_redhat',
 	config = { extra = { phandscale = 0.1, xmbonus = 0} },
 	loc_vars = function(self, info_queue, card)
@@ -125,4 +127,6 @@ SMODS.Joker{
 		if context.joker_main or context.forcetrigger then return { xmult = 1+math.max(card.ability.extra.xmbonus, 0) } end
 	end,
 	pixel_size = { w = 69, h = 84 }
-}
+})
+
+return lj

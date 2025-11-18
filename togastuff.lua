@@ -49,6 +49,7 @@ SMODS.Sound({key = "win98start", path = "win98start.ogg"}) -- The Microsoft Soun
 SMODS.Sound({key = "win98tada", path = "win98tada.ogg"}) -- tada.wav (98, ME, 2000 and XP)
 SMODS.Sound({key = "winme2000start", path = "winmestart.ogg"}) -- Windows Logon Sound for ME/2000 [edited]
 SMODS.Sound({key = "winme2000shutdown", path = "winmeshutdown.ogg"}) -- Windows Logoff Sound for ME/2000 [edited]
+SMODS.Sound({key = "winnt4startorig", path = "Windows NT Logon Sound.wav"}) -- Windows Logon Sound for NT4 [original]
 SMODS.Sound({key = "winnt4start", path = "winnt4start.ogg"}) -- Windows Logon Sound for NT4 [edited]
 SMODS.Sound({key = "winnt4shutdown", path = "winnt4shutdown.ogg"}) -- Windows Logoff Sound for NT4 [edited]
 SMODS.Sound({key = "winxplogon", path = "Windows XP Logon Sound.wav"}) -- Windows Logon Sound, XP
@@ -104,6 +105,7 @@ SMODS.Sound({key = "jaratehit", path = "crit_hit_mini.wav"}) -- Minicrits, TF2
 SMODS.Sound({key = "soldierscream", path = "screm.ogg"}) -- TF2 Soldier screaming?
 SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
 SMODS.Sound({key = "mcprf5400", path = "macperforma5400.ogg"}) -- Mac Performa 5400 (Death Chime)
+SMODS.Sound({key = "dingy", path = "ding.wav"}) -- ding.wav (98, ME, 2000 and XP)
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
@@ -162,6 +164,16 @@ SMODS.Sound({
 	select_music_track = function()
 		return togabalatro.config.UseCustomModTabMusic and SMODS.LAST_SELECTED_MOD_TAB and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "TOGAPack" and 2
 	end,
+})
+
+SMODS.Sound({
+	key = "music_shhh",
+	path = "silence.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('toga_intro') and 69e42
+	end,
+	sync = false,
 })
 
 -- I think, therefore, I am.
@@ -331,7 +343,7 @@ togabalatro.verifysfxconfig = function()
 	togabalatro.config.StartUpSFX.Selected = togabalatro.config.StartUpSFX.Selected or 1
 	togabalatro.config.StartUpSFX.UseSelected = togabalatro.config.StartUpSFX.UseSelected or false
 end
-togabalatro.execstartupsfx = function()
+togabalatro.execstartupsfx = function(change_context)
 	if not togabalatro.has_tried_startup and togabalatro.config.StartUpSound then
 		togabalatro.verifysfxconfig()
 		if not togabalatro.config.StartUpSFX.UseSelected or togabalatro.config.StartUpSFX.Selected == nil then
@@ -633,6 +645,10 @@ end
 togabalatro.round = function(num, dplaces)
 	local m = 10^(dplaces or 0)
 	return math.floor(num * m + 0.5) / m
+end
+
+togabalatro.checkbmp = function()
+	return next(SMODS.find_mod('Multiplayer')) or false
 end
 
 -- As Talisman is now optional and we have some items using this, best keep these.
@@ -1167,7 +1183,12 @@ if SMODS.Mods['incantation'] and SMODS.Mods['incantation'].can_load and not SMOD
 end
 
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
+-- This loads the actual content...
 for _, file in ipairs{"hooks.lua", "joker.lua", "deck.lua", "quips.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "stakes.lua", "crossmod.lua"} do
 	sendDebugMessage("Executing items/"..file, "TOGAPack")
 	assert(SMODS.load_file("items/"..file))()
 end
+
+-- Load other UI stuff.
+sendDebugMessage("Executing miscui.lua", "TOGAPack")
+assert(SMODS.load_file("miscui.lua"))()

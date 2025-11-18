@@ -20,7 +20,9 @@ togabalatro.y2kcheck = function(hand)
 	return twopresent, kingpresent, twos, kings
 end
 
-SMODS.Joker{
+local jokers = {}
+
+table.insert(jokers, {
 	key = 'y2kbug',
 	config = { extra = { chips = 10, mult = 2 } },
 	loc_vars = function(self, info_queue, card)
@@ -41,9 +43,9 @@ SMODS.Joker{
 			end
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'controlpanel',
 	config = { extra = { money = 1, totalmoney = 5 } },
 	loc_vars = function(self, info_queue, card)
@@ -68,9 +70,9 @@ SMODS.Joker{
 			return math.ceil(card.ability.extra.totalmoney)
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'taskmgr',
 	unlocked = true,
 	rarity = 3,
@@ -104,7 +106,7 @@ SMODS.Joker{
 			play_sound("toga_infraredend")
 		end
 	end
-}
+})
 
 -- Add up our 4 values and divide by 4 for their average.
 togabalatro.multaverage = function(card)
@@ -115,7 +117,7 @@ togabalatro.multaverage = function(card)
 end
 
 -- Was previously Task Manager.
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'useraccounts',
 	config = { extra = { baseXmult = 1, totalXmult = 1, odds = 4 } },
 	loc_vars = function(self, info_queue, card)
@@ -142,9 +144,9 @@ SMODS.Joker{
 			end
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'virtualmemory',
 	config = { extra = { odds = 4 }, bypasswu = true },
 	loc_vars = function(self, info_queue, card)
@@ -170,9 +172,9 @@ SMODS.Joker{
 			end
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'recyclebin',
 	config = { extra = { xchip_increase = 0.05, xchip_mod = 1 } },
 	loc_vars = function(self, info_queue, card)
@@ -237,9 +239,9 @@ SMODS.Joker{
 			play_sound("toga_plus98emptybin")
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'theinternet',
 	config = { extra = { curchips = 0, bonuschips = 5 } },
 	loc_vars = function(self, info_queue, card)
@@ -263,9 +265,9 @@ SMODS.Joker{
 			return { chips = card.ability.extra.curchips }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'computerlock',
 	unlocked = true,
 	in_pool = function()
@@ -311,9 +313,9 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'virtualpc',
 	config = { extra = { mult = 0, itemmult = 0.2 } },
 	loc_vars = function(self, info_queue, card)
@@ -343,7 +345,7 @@ SMODS.Joker{
 		
 		if context.joker_main then return { mult = card.ability.extra.mult } end
 	end
-}
+})
 
 togabalatro.modifyhandchipsmult = function(card, hand, instant, context, bchips, bmult, lchips, lmult)
 	bchips, bmult, lchips, lmult = bchips or 0, bmult or 0, lchips or 0, lmult or 0
@@ -430,7 +432,7 @@ togabalatro.modifyhandchipsmult = function(card, hand, instant, context, bchips,
 	G.GAME.hands[hand].chips = math.max(to_big(G.GAME.hands[hand].s_chips) + to_big(G.GAME.hands[hand].l_chips)*(to_big(G.GAME.hands[hand].level) - to_big(1)), to_big(0))
 end
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'ie',
 	config = { extra = { phchips = 5, phmult = 4 } },
 	loc_vars = function(self, info_queue, card)
@@ -459,9 +461,9 @@ SMODS.Joker{
 			}
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'systemrestore',
 	unlocked = true,
 	in_pool = function()
@@ -491,9 +493,9 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'skype',
 	config = { extra = { permodxmult = 2 } },
 	loc_vars = function(self, info_queue, card)
@@ -536,11 +538,11 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
 local msncount = false
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'msn',
 	config = { extra = { perenhxmult = 1.5 } },
 	loc_vars = function(self, info_queue, card)
@@ -587,14 +589,14 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
 -- Random SFX.
 togabalatro.plus95rndsfx = function()
 	return 'toga_win95pluscmd'..math.random(1, 13)
 end
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'drivespace',
 	config = { extra = { reduce = 0.97 }, bypasswu = true },
 	loc_vars = function(self, info_queue, card)
@@ -635,9 +637,9 @@ SMODS.Joker{
 			end
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'bonzibuddy',
 	unlocked = true,
 	rarity = 2,
@@ -648,9 +650,9 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.bonzi_modify_rank and not context.blueprint and not context.retrigger_joker then return { amount = -1, card = card } end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'netscapenavigator',
 	config = { extra = { holoxmult = 1.5 } },
 	loc_vars = function(self, info_queue, card)
@@ -675,9 +677,9 @@ SMODS.Joker{
 			return { xmult = card.ability.extra.holoxmult, message_card = context.other_card }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'diskcleanup',
 	config = { extra = { destroymoney = 4 } },
 	loc_vars = function(self, info_queue, card)
@@ -706,9 +708,9 @@ SMODS.Joker{
 			return { message = localize('k_reset') }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'tempinternetfiles',
 	config = { extra = { curxmult = 1, percard = 0.01 } },
 	loc_vars = function(self, info_queue, card)
@@ -755,9 +757,9 @@ SMODS.Joker{
 	end,
 	display_size = { w = 71 * 1.27, h = 95 },
 	pixel_size = { w = 71, h = 95 }
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'regedit',
 	loc_vars = function(self, info_queue, card)
 		local togaregeditsuit = G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.regedit and G.GAME.current_round.togabalatro.regedit.suit
@@ -774,9 +776,9 @@ SMODS.Joker{
 			return { message = localize('k_reset') }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'certserver',
 	loc_vars = function(self, info_queue, card)
 		local togacertserver = G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.certserver or {}
@@ -793,9 +795,9 @@ SMODS.Joker{
 			return { message = localize('k_reset') }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'msagent',
 	config = { extra = { unbalance = 1.2 } },
 	loc_vars = function(self, info_queue, card)
@@ -853,9 +855,9 @@ SMODS.Joker{
 			delay(0.6)
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'drwatson',
 	config = { extra = { curxmult = 0, trigxmult = 0.25 } },
 	loc_vars = function(self, info_queue, card)
@@ -889,9 +891,9 @@ SMODS.Joker{
 			return { xmult = 1+card.ability.extra.curxmult }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'fontsfolder',
 	config = { extra = { perfontxmult = 1.5 } },
 	loc_vars = function(self, info_queue, card)
@@ -919,9 +921,9 @@ SMODS.Joker{
 	end,
 	poweritem = true,
 	remainhidden = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'pcmcia',
 	config = { extra = { xmult = 3 } },
 	loc_vars = function(self, info_queue, card)
@@ -945,9 +947,9 @@ SMODS.Joker{
 	remove_from_deck = function(self, card, from_debuff)
 		togabalatro.pseudolag = nil
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'scsi',
 	config = { extra = { hsize = -1 } },
 	loc_vars = function(self, info_queue, card)
@@ -973,9 +975,9 @@ SMODS.Joker{
 	remove_from_deck = function(self, card, from_debuff)
 		G.hand:change_size(-(card.ability.extra.hsize or -1))
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'visualstudio',
 	config = { extra = { mrank = 1 } },
 	loc_vars = function(self, info_queue, card)
@@ -990,9 +992,9 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.vs_modify_rank and not context.retrigger_joker then return { amount = math.floor(card.ability.extra.mrank), card = context.blueprint_card or card } end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'cpu',
 	config = { extra = { coremult = 1 } },
 	loc_vars = function(self, info_queue, card)
@@ -1013,9 +1015,9 @@ SMODS.Joker{
 		if context.joker_main or context.force_trigger then return { mult = (togabalatro.curcpucount or 1)*card.ability.extra.coremult } end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'ups',
 	config = { extra = { debuffxmult = 0.2, bonusxmult = 0 } },
 	loc_vars = function(self, info_queue, card)
@@ -1039,9 +1041,9 @@ SMODS.Joker{
 			return nil, true
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'tuneupwizard',
 	unlocked = true,
 	rarity = 2,
@@ -1052,9 +1054,9 @@ SMODS.Joker{
 	calculate = function(self, card, context)
 		if context.tuneupwizard then return { flip = true, card = card } end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'desktop',
 	config = { extra = { curxmult = 0, tagxmult = 0.25 } },
 	loc_vars = function(self, info_queue, card)
@@ -1079,9 +1081,9 @@ SMODS.Joker{
 		
 		if context.joker_main then return { xmult = 1+card.ability.extra.curxmult } end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'mswallet',
 	unlocked = true,
 	rarity = 3,
@@ -1092,9 +1094,9 @@ SMODS.Joker{
 	in_pool = function()
 		return togabalatro.config.ShowPower
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'nonebattery',
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)
@@ -1119,9 +1121,9 @@ SMODS.Joker{
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	jokeitem = true,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'dragndrop',
 	config = { extra = { chips = 0, cap = 0, antecaplift = 75 } },
 	loc_vars = function(self, info_queue, card)
@@ -1149,9 +1151,9 @@ SMODS.Joker{
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	jokeitem = true,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'repairdisk',
 	config = { extra = { curxmult = 0, dxmult = 0.02 } },
 	loc_vars = function(self, info_queue, card)
@@ -1179,9 +1181,9 @@ SMODS.Joker{
 		
 		if context.joker_main then return { xmult = 1+card.ability.extra.curxmult } end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'merlin',
 	config = { extra = { curxmult = 0, txmult = 0.1 } },
 	loc_vars = function(self, info_queue, card)
@@ -1205,9 +1207,9 @@ SMODS.Joker{
 		
 		if context.joker_main then return { xmult = 1+card.ability.extra.curxmult } end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'briefcase',
 	config = { extra = { curhchips = 10, ahchips = 5 } },
 	loc_vars = function(self, info_queue, card)
@@ -1233,9 +1235,9 @@ SMODS.Joker{
 			return { chips = card.ability.extra.curhchips }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'vga',
 	config = { extra = { xmult = 1.33 } },
 	loc_vars = function(self, info_queue, card)
@@ -1271,9 +1273,9 @@ SMODS.Joker{
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	jokeitem = true,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'mshome',
 	loc_vars = function(self, info_queue, card)
 		local curscale = G.GAME and G.GAME.modifiers.scaling or 1
@@ -1292,9 +1294,9 @@ SMODS.Joker{
 		if context.joker_main then return { xmult = G.GAME and G.GAME.modifiers.scaling and 2*G.GAME.modifiers.scaling or 2 } end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'activesync',
 	config = { extra = { odds = 8 } },
 	loc_vars = function(self, info_queue, card)
@@ -1307,9 +1309,9 @@ SMODS.Joker{
 	cost = 20,
 	blueprint_compat = false,
 	perishable_compat = false,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'monitor',
 	loc_vars = function(self, info_queue, card)
 		return { vars = { love.window.getDisplayCount() } }
@@ -1333,9 +1335,9 @@ SMODS.Joker{
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	jokeitem = true,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'notsosmileyface',
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)
@@ -1361,9 +1363,9 @@ SMODS.Joker{
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	jokeitem = true,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'wscript',
 	config = { extra = { blindred = 0.75, odds = 4 } },
 	loc_vars = function(self, info_queue, card)
@@ -1404,9 +1406,9 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'gamecontrollers',
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)
@@ -1425,9 +1427,9 @@ SMODS.Joker{
 			return gc > 1 and { xmult = card.ability.extra.xmult*gc }
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'wincatalog',
 	config = { extra = { mult = 4 } },
 	loc_vars = function(self, info_queue, card)
@@ -1452,9 +1454,9 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'hammer',
 	unlocked = true,
 	in_pool = function()
@@ -1469,14 +1471,14 @@ SMODS.Joker{
 		if context.hammerscore and not context.retrigger_joker then return { card = context.blueprint_card or card } end
 	end,
 	poweritem = true
-}
+})
 
 function togabalatro.randomruntext()
 	local stringtable = { localize('toga_jimbo95txt1'), localize('k_again_ex'), localize('toga_jimbo95txt2'), localize('toga_jimbo95txt3'), localize('toga_jimbo95txt4') }
 	return stringtable[math.random(#stringtable)]
 end
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'jimbo95',
 	config = { extra = { h_size = 2, retriggers = 1, x_chips = 1.5, x_mult = 1.5} },
 	loc_vars = function(self, info_queue, card)
@@ -1521,16 +1523,25 @@ SMODS.Joker{
 			}
 		end
 	end
-}
+})
 
 -- Windows OS Jokers moved to separate file...
-assert(SMODS.load_file("items/jokers/winos.lua"))()
+local winosj = assert(SMODS.load_file("items/jokers/winos.lua"))()
 
 -- ...with non-Windows OS Jokers also being from their own files.
-assert(SMODS.load_file("items/jokers/macos.lua"))()
-assert(SMODS.load_file("items/jokers/linuxos.lua"))()
+local macosj = assert(SMODS.load_file("items/jokers/macos.lua"))()
+local linuxj = assert(SMODS.load_file("items/jokers/linuxos.lua"))()
 
-SMODS.Joker{
+local extjokers = { winosj, macosj, linuxj }
+for i, v in ipairs(extjokers) do
+	if type(v) == 'table' then
+		for k, j in ipairs(v) do
+			table.insert(jokers, j)
+		end
+	end
+end
+
+table.insert(jokers, {
 	key = 'clippit',
 	config = { extra = { rescores = 1 } },
 	loc_vars = function(self, info_queue, card)
@@ -1562,9 +1573,9 @@ SMODS.Joker{
 			play_sound("toga_o97glide")
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'rover',
 	config = { extra = { odds = 8, curstate = "shop" }, bypasswu = true },
 	loc_vars = function(self, info_queue, card)
@@ -1620,9 +1631,9 @@ SMODS.Joker{
 			card.children.floating_sprite:set_sprite_pos({x = 1, y = 0})
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'solitairejoker',
 	loc_vars = function(self, info_queue, card)
 		local togasolitaire = G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.solitaire or {}
@@ -1639,14 +1650,14 @@ SMODS.Joker{
 			return { message = localize('k_reset') }
 		end
 	end,
-}
+})
 
 togabalatro.checkxmultsafe = function(card)
 	local xmultcheck = card.ability.extra.Xmult_current / card.ability.extra.shortcutfailmult
 	if xmultcheck < 1 then return false else return true end
 end
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'jokersrb2kart',
 	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.75, shortcutfailmult = 1.33, maxchance = 3} },
 	loc_vars = function(self, info_queue, card)
@@ -1772,9 +1783,9 @@ SMODS.Joker{
 		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'asterism',
 	config = { extra = { curmult = 0, bonusmult = 2 } },
 	loc_vars = function(self, info_queue, card)
@@ -1796,9 +1807,9 @@ SMODS.Joker{
 		
 		if (context.joker_main or context.forcetrigger) and card.ability.extra.curmult > 0 then return { mult = card.ability.extra.curmult } end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'bonusducks',
 	unlocked = true,
 	loc_vars = function(self, info_queue, card)
@@ -1847,9 +1858,9 @@ SMODS.Joker{
 			play_sound("toga_kcud")
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'mcanvil',
 	config = { extra = { curxmult = 0, steelxmult = 0.5 } },
 	loc_vars = function(self, info_queue, card)
@@ -1898,7 +1909,7 @@ SMODS.Joker{
 		
 		if context.joker_main then return { xmult = 1+card.ability.extra.curxmult } end
 	end
-}
+})
 
 -- Get repeats, up to 65536. Will use Talisman functions if present.
 togabalatro.cashpointmulitple = function(cashpoint)
@@ -1907,7 +1918,7 @@ togabalatro.cashpointmulitple = function(cashpoint)
 	return math.min(math.floor(getmultiples), 65535)
 end
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'spacecadetpinball',
 	config = { extra = { cashpoint = 20, alltrig = 1 } },
 	loc_vars = function(self, info_queue, card)
@@ -1935,9 +1946,9 @@ SMODS.Joker{
 			play_sound("toga_pinballloseball")
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'heartyspades',
 	unlocked = true,
 	rarity = 2,
@@ -1946,9 +1957,9 @@ SMODS.Joker{
 	cost = 6,
 	blueprint_compat = false,
 	pixel_size = { w = 69, h = 74 }
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'binaryjkr',
 	unlocked = true,
 	rarity = 2,
@@ -1956,9 +1967,9 @@ SMODS.Joker{
 	pos = { x = 0, y = 3 },
 	cost = 6,
 	blueprint_compat = false
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'hexadecimaljkr',
 	unlocked = true,
 	rarity = 2,
@@ -1966,9 +1977,9 @@ SMODS.Joker{
 	pos = { x = 1, y = 3 },
 	cost = 6,
 	blueprint_compat = false
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'cavingjkr',
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
@@ -1995,9 +2006,9 @@ SMODS.Joker{
 			end
 		end
 	end
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'miningjkr',
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card)
@@ -2038,9 +2049,9 @@ SMODS.Joker{
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'y2ksticker',
 	unlocked = true,
 	rarity = 3,
@@ -2049,9 +2060,9 @@ SMODS.Joker{
 	cost = 7,
 	blueprint_compat = false,
 	pixel_size = { w = 69, h = 38 }
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'pso2ironwill',
 	config = { extra = { skillactive = true } },
 	loc_vars = function(self, info_queue, card)
@@ -2077,15 +2088,15 @@ SMODS.Joker{
 			}
 		end
 		
-		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and G.GAME.blind.boss and not card.ability.extra.skillactive then
+		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and G.GAME.blind.boss and not card.ability.extra.skillactive and not context.game_over then
 			card.ability.extra.skillactive = true
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pso2ironwillready')})
 		end
 	end,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'jimboplus',
 	config = { extra = { leech = 0.05 } },
 	loc_vars = function(self, info_queue, card)
@@ -2120,12 +2131,12 @@ SMODS.Joker{
 		end
 		if context.end_of_round then card.ability.extra.chips = nil end
 	end
-}
+})
 
 -- Check for Astronomica being present for setting score sound.
 local AstronomicaEQScore = next(SMODS.find_mod('Astronomica')) and AST
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'joker203',
 	unlocked = true,
 	rarity = 1,
@@ -2160,7 +2171,7 @@ SMODS.Joker{
 			return true end }))
 		end
 	end,
-}
+})
 
 togabalatro.gethowmuch = function(div, inputxmult)
 	local dol, dolbuffer = G.GAME.dollars, G.GAME.dollar_buffer and G.GAME.dollar_buffer > 0 and G.GAME.dollar_buffer or 0
@@ -2168,7 +2179,7 @@ togabalatro.gethowmuch = function(div, inputxmult)
 	return math.floor(to_big(amount)/to_big(div))
 end
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'speedsneakers',
 	config = { extra = { xmultpart = 0.2, dollars = 5 } },
 	loc_vars = function(self, info_queue, card)
@@ -2194,9 +2205,9 @@ SMODS.Joker{
 	set_badges = function(self, card, badges)
 		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'megasxlr',
 	unlocked = true,
 	rarity = 2,
@@ -2204,9 +2215,9 @@ SMODS.Joker{
 	pos = { x = 0, y = 4 },
 	cost = 6,
 	blueprint_compat = false,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'jarate',
 	config = { extra = { minicrit = 1.35, odds = 15 }},
 	loc_vars = function(self, info_queue, card)
@@ -2226,9 +2237,9 @@ SMODS.Joker{
 	eternal_compat = false,
 	pixel_size = { w = 69, h = 73 },
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'goldenwrench',
 	unlocked = true,
 	rarity = 2,
@@ -2244,9 +2255,9 @@ SMODS.Joker{
 		if context.blueprint or context.retrigger_joker then return end
 		if (context.selling_self or context.selling_card) and context.card == card then card.ability.sold = true elseif context.forcetrigger then togabalatro.goldenwrench(card) end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'rloctane',
 	config = { extra = { mult = 15 } },
 	loc_vars = function(self, info_queue, card)
@@ -2272,9 +2283,9 @@ SMODS.Joker{
 			end}))
 		end
 	end,
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'google',
 	unlocked = true,
 	rarity = 2,
@@ -2305,9 +2316,9 @@ SMODS.Joker{
 		end
 	end,
 	pixel_size = { w = 69, h = 69 }
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'chrome',
 	config = { extra = { xmult = 1.5, process = 'Chrome', totalxmult = 0 } },
 	loc_vars = function(self, info_queue, card)
@@ -2318,7 +2329,7 @@ SMODS.Joker{
 			bonus = bonus * 0.8
 		end
 		card.ability.extra.totalxmult = 1+totalbonus
-		return { vars = { card.ability.extra.xmult, card.ability.extra.totalxmult, count, card.ability.extra.process } }
+		return { key = card.edition and card.edition.polychrome and self.key.."_poly" or self.key, vars = { card.ability.extra.xmult, card.ability.extra.totalxmult, count, card.ability.extra.process } }
 	end,
 	unlocked = true,
 	in_pool = function()
@@ -2346,9 +2357,9 @@ SMODS.Joker{
 	end,
 	pixel_size = { w = 69, h = 69 },
 	jokeitem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'firefox',
 	config = { extra = { xchips = 1.5, process = 'Firefox', totalxchips = 0 } },
 	loc_vars = function(self, info_queue, card)
@@ -2387,10 +2398,10 @@ SMODS.Joker{
 	end,
 	pixel_size = { w = 69, h = 67 },
 	jokeitem = true
-}
+})
 
 local winupdateframes = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1}
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'winupdate',
 	unlocked = true,
 	rarity = 4,
@@ -2424,7 +2435,7 @@ SMODS.Joker{
 		local wrapped_value = (math.floor(timer) - 1) % frame_amount + 1
 		card.children.center:set_sprite_pos({x = winupdateframes[wrapped_value], y = 0})
 	end,
-}
+})
 
 togabalatro.calccopiesofself = function(jkey)
 	local count = #SMODS.find_card(jkey)
@@ -2432,7 +2443,7 @@ togabalatro.calccopiesofself = function(jkey)
 end
 
 -- I am currently in a video game where I give XMult for every copy of me held.
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'tomscott',
 	config = { extra = { basexmult = 2 } },
 	loc_vars = function(self, info_queue, card)
@@ -2458,7 +2469,7 @@ SMODS.Joker{
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	jokeitem = true
-}
+})
 
 togabalatro.rosencheck = function(card)
 	card.ability.extra.heldmoney = math.max(card.ability.extra.heldmoney, 10)
@@ -2473,7 +2484,7 @@ togabalatro.rosencheck = function(card)
 end
 
 -- The plumtastic man himself. Joke Joker.
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'michaelrosen',
 	config = { extra = { heldmoney = 10, heldxchip = 1.75, heldxmult = 2, heldechip = 1.3, heldeechip = 1.1, heldeeechip = 1.05, heldemult = 1.2, heldeemult = 1.08, heldeeemult = 1.04, odds = 25 } },
 	loc_vars = function(self, info_queue, card)
@@ -2538,9 +2549,9 @@ SMODS.Joker{
 	end,
 	jokeitem = true,
 	poweritem = true
-}
+})
 
-SMODS.Joker{
+table.insert(jokers, {
 	key = 'albanianvirus',
 	loc_vars = function(self, info_queue, card)
 		if card.ability.albavirusactive then
@@ -2590,11 +2601,11 @@ SMODS.Joker{
 	end,
 	jokeitem = true,
 	remainhidden = true
-}
+})
 
 -- Joke Joker. Originally had 'whatthefuck' as key.
 if Talisman then
-	SMODS.Joker{
+	table.insert(jokers, {
 		key = 'whatisthis',
 		config = { extra = { part = 1.05 } },
 		loc_vars = function(self, info_queue, card)
@@ -2648,12 +2659,12 @@ if Talisman then
 		end,
 		jokeitem = true,
 		poweritem = true
-	}
+	})
 end
 
 -- Joke Joker. Bit of an inside funny.
 if Talisman then
-	SMODS.Joker{
+	table.insert(jokers, {
 		key = 'quacksoft',
 		config = { extra = { cardechip = 0.02 } },
 		loc_vars = function(self, info_queue, card)
@@ -2696,5 +2707,30 @@ if Talisman then
 		end,
 		jokeitem = true,
 		poweritem = true
-	}
+	})
+end
+
+-- Balatro Multiplayer exclusions.
+togabalatro.bmpexclude = {
+	['monitor'] = true, ['chrome'] = true, ['firefox'] = true, ['jimboplus'] = true, ['gamecontrollers'] = true,
+	['notsosmileyface'] = true, ['dragndrop'] = true, ['nonebattery'] = true, ['cpu'] = true, ['pcmcia'] = true,
+	['pso2ironwill'] = true,
+}
+
+-- Actually go through the initialization of Jokers.
+local intjkrname = "j_toga_"
+togabalatro.canjokerload = function(key)
+	if type(key) ~= 'string' then return false end
+	if togabalatro.checkbmp() and togabalatro.bmpexclude[key] and not togabalatro.config.BMPAllItems then
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Skipping loading of "..intjkrname..key.." due to presence of Balatro Multiplayer.", "TOGAPack") end
+		return false
+	end
+	return true
+end
+
+for i, j in ipairs(jokers) do
+	if togabalatro.canjokerload(j.key) then
+		if togabalatro.config.DoMoreLogging then sendInfoMessage("Initializing "..intjkrname..j.key, "TOGAPack") end
+		SMODS.Joker(j)
+	end
 end

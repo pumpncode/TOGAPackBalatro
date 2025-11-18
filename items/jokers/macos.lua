@@ -1,8 +1,8 @@
 sendInfoMessage("Loading Jokers - Mac OS...", "TOGAPack")
 
-local macos9_hxmult, macosx_hxchips = 1.25, 1.25
+local macos9_hxmult, macosx_hxchips, macj = 1.25, 1.25, {}
 
-SMODS.Joker{
+table.insert(macj, {
 	key = 'mac_os_9',
 	config = { extra = { hxmult = macos9_hxmult } },
 	loc_vars = function(self, info_queue, card)
@@ -23,9 +23,9 @@ SMODS.Joker{
 		end
 	end,
 	pixel_size = { w = 71, h = 84 }
-}
+})
 
-SMODS.Joker{
+table.insert(macj, {
 	key = 'mac_os_x',
 	config = { extra = { hxchips = macosx_hxchips } },
 	loc_vars = function(self, info_queue, card)
@@ -46,4 +46,6 @@ SMODS.Joker{
 		end
 	end,
 	pixel_size = { w = 71, h = 84 }
-}
+})
+
+return macj
