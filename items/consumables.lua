@@ -313,6 +313,7 @@ SMODS.Consumable{
 	perishable_compat = false,
 	eternal_compat = false,
 	can_stack = false,
+	select_card = 'consumeables',
 	poweritem = true
 }
 

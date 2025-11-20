@@ -622,7 +622,7 @@ table.insert(jokers, {
 					G.HUD_blind:recalculate()
 					return nil, true
 				else
-					G.E_MANAGER:add_event(Event({func = function()
+					G.E_MANAGER:add_event(Event({delay = 0, func = function()
 						G.GAME.blind.chips = math.floor(G.GAME.blind.chips*card.ability.extra.reduce)
 						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 						G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)
@@ -2070,7 +2070,8 @@ table.insert(jokers, {
 	end,
 	unlocked = true,
 	in_pool = function()
-		return togabalatro.config.ShowPower
+		-- return togabalatro.config.ShowPower
+		return false -- This Joker will be reworked...
 	end,
 	rarity = 4,
 	atlas = 'TOGAJokersOther',
@@ -2093,7 +2094,9 @@ table.insert(jokers, {
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('toga_pso2ironwillready')})
 		end
 	end,
-	poweritem = true
+	poweritem = true,
+	no_collection = true,
+	remainhidden = true
 })
 
 table.insert(jokers, {
@@ -2583,7 +2586,10 @@ table.insert(jokers, {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		card.ability.albavirusactive = true
+		if G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			card.ability.albavirusactive = true
+			togabalatro.albavirusnoted()
+		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		if card.ability.albavirusactive then

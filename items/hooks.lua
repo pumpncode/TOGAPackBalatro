@@ -679,6 +679,7 @@ local loveupdref = love.update
 local qeval, notifyrestart = togabalatro.config.EnableQE, false
 local bmpcurval, notifyitemreinit = togabalatro.config.BMPAllItems, false
 local kingcdival, notifykingcdi = togabalatro.config.KingCDIDeck, false
+local wtfdeckval, notifywtfdeck = togabalatro.config.WTFDeck, false
 local cfgrestartval = { ['EnableQE'] = true }
 function love.update( dt )
 	-- Hello everybody, my name is Windiplier.
@@ -712,6 +713,11 @@ function love.update( dt )
 		togabalatro.systemchanges({ kingcdi = true })
 	end
 	
+	if togabalatro.config.WTFDeck ~= wtfdeckval and not notifywtfdeck then
+		notifywtfdeck = true
+		togabalatro.systemchanges({ wtfdeck = true })
+	end
+	
 	loveupdref(dt)
 end
 
@@ -727,4 +733,16 @@ function Game:main_menu(ctx)
 		}))
 	end
     return r
+end
+
+local calcrentref = Card.calculate_rental
+function Card:calculate_rental()
+    if G.GAME.modifiers.toga_norentperish then return end
+	return calcrentref(self)
+end
+
+local calcperishref = Card.calculate_perishable
+function Card:calculate_perishable()
+	if self.ability.perish_tally > 0 and G.GAME.modifiers.toga_norentperish then return end
+	return calcperishref(self)
 end

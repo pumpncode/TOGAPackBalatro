@@ -14,6 +14,7 @@ local basecrossmod = {
 	next(SMODS.find_mod('GSPhanta')) and 'phanta.lua',
 	next(SMODS.find_mod('aikoyorisshenanigans')) and 'aiko.lua',
 	next(SMODS.find_mod('JokerDisplay')) and JokerDisplay and 'jokerdisplay.lua',
+	next(SMODS.find_mod('HotPotato')) and HPTN and 'hotpotato.lua',
 }
 
 -- If none of these are valid, stop here.

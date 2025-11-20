@@ -78,7 +78,7 @@ table.insert(lj, {
 
 table.insert(lj, {
 	key = 'linux_redhat',
-	config = { extra = { phandscale = 0.1, xmbonus = 0} },
+	config = { extra = { phandscale = 0.08, xmbonus = 0} },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xmbonus = math.max(card.ability.extra.xmbonus, 0)
 		local phands, diffkey = 0, false

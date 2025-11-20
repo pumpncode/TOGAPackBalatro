@@ -127,8 +127,13 @@ return {
 				name = "Harkinian Deck",
 				text = {
 					"Start with a {C:attention}random{}",
-					"{C:dark_edition}Eternal{} {C:enhanced}Rental",
-					"{C:legendary}Legendary{} Joker"
+					"{C:dark_edition}Eternal{} {C:legendary}Legendary{} Joker",
+				}
+			},
+			b_toga_wtfdeck = {
+				name = "What Is This",
+				text = {
+					"{C:dark_edition,E:1,s:2}???"
 				}
 			},
 		},
@@ -2081,9 +2086,10 @@ return {
 			toga_startsfxtab = "Misc. Audio Options",
 			toga_itemoptionstab = "Item Options",
 			toga_startsfxoptions = "Sound:",
-			toga_sfxwhenadd = "SFX when getting some of the mods' items",
-			toga_sfxwhendel = "SFX when removing some of the mods' items",
-			toga_sfxwhenuse = "SFX when some of the mods' items trigger",
+			toga_sfxwhenmain = "SFX when some of the mods' items are:",
+			toga_sfxwhenadd = "obtained",
+			toga_sfxwhendel = "removed",
+			toga_sfxwhenuse = "triggered",
 			toga_musicpacks = "MIDI-fied music for own Booster Packs",
 			toga_jokejokers = "Allow 'Joke' items to appear in pool",
 			toga_jokeactive = "'Joke' items:",
@@ -2100,8 +2106,10 @@ return {
 			toga_startupsfxuse = "Use selected SFX for next game startup",
 			toga_windowsfxuse = "SFX when window state changes",
 			toga_crashsfxuse = "Play a sound when game crashes",
-			toga_qestuff = "Enable quantum enhancement deck (restart required)",
-			toga_kingcdideck = "Enable Harkinian Deck (restart required)",
+			toga_qestuff = "Quantum enhancement / Blissful Deck*",
+			toga_kingcdideck = "Harkinian Deck*",
+			toga_wtfdecktoggle = "WIT Deck*",
+			toga_restartrequire = "* Restart required",
 			toga_sfxswaptext = "SFX Swap Level:",
 			toga_sfxswapnone = "None",
 			toga_sfxswapdefault = "Default",
@@ -2175,6 +2183,12 @@ return {
 			},
 			toga_needrestartkingcdi = {
 				"Mod Config Change", "You must restart Balatro before changes to the", "Harkinian Deck will take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_needrestartwtfdeck = {
+				"Mod Config Change", "You must restart Balatro before changes to the", "WIT Deck will take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_albavirusnote = {
+				"WARNING", "You just obtained Albanian Virus for the first time!", "You are recommended to read the 'Heads Up!' tooltip", "for your own sake."
 			},
 			toga_bmpnormal = {
 				"Balatro Multiplayer detected", "Because TOGA's Stuff has not been tested with Balatro Multiplayer,", "you may experience unexpected crashes with specific items.",

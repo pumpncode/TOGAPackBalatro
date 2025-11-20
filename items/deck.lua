@@ -253,15 +253,93 @@ if togabalatro.config.KingCDIDeck then
 		pos = { x = 12, y = 0 },
 		atlas = "TOGADeckBack",
 		unlocked = true,
+		config = { ante_scaling = 2 },
 		apply = function(self, back)
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					if G.jokers then
-						SMODS.add_card({ set = 'Joker', legendary = true, stickers = { "eternal", "rental" }, force_stickers = true })
+						local leg = SMODS.add_card({ set = 'Joker', legendary = true, stickers = { "eternal" }, force_stickers = true })
+						if leg.config.center.key == 'j_toga_michaelrosen' then leg.ability.extra.odds = 15 end
 						return true
 					end
 				end,
 			}))
 		end
+	}
+end
+
+if togabalatro.config.WTFDeck then
+	SMODS.Back{
+		key = "wtfdeck",
+		pos = { x = 13, y = 0 },
+		atlas = "TOGADeckBack",
+		unlocked = true,
+		config = { ante_scaling = 4, dollars = -4, hand_size = 18 },
+		loc_vars = function(self, info_queue, center)
+			return { vars = { self.config.ante_scaling, self.config.dollars } }
+		end,
+		apply = function(self, back)
+			for i = 1, math.random(2, 34) do
+				math.random()
+			end
+			
+			G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + math.random(1, 1000)/100
+			G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + math.random(1, 1000)/100
+			G.GAME.modifiers.toga_randomscore = true
+			G.GAME.modifiers.toga_norentperish = true
+			
+			G.GAME.toga_negchance = (G.GAME.toga_negchance or 1)*16
+			
+			for _, v in ipairs(G.handlist) do
+				G.GAME.hands[v].s_mult = G.GAME.hands[v].s_mult * (math.random(1, 1000)/100)
+				G.GAME.hands[v].l_mult = G.GAME.hands[v].l_mult * (math.random(1, 1000)/100)
+				G.GAME.hands[v].s_chips = G.GAME.hands[v].s_chips * (math.random(1, 200)/100)
+				G.GAME.hands[v].l_chips = G.GAME.hands[v].l_chips * (math.random(1, 200)/100)
+				G.GAME.hands[v].mult = math.max(G.GAME.hands[v].s_mult + G.GAME.hands[v].l_mult*(G.GAME.hands[v].level - 1), 1)
+				G.GAME.hands[v].chips = math.max(G.GAME.hands[v].s_chips + G.GAME.hands[v].l_chips*(G.GAME.hands[v].level - 1), 0)
+				G.GAME.hands[v].visible = true
+			end
+			
+			change_shop_size(1)
+			
+			G.STATE = G.STATES.SHOP
+			G.GAME.shop_free = nil
+			G.GAME.shop_d6ed = nil
+			
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.jokers then
+						local leg = SMODS.add_card({ set = 'Joker', legendary = true })
+						return true
+					end
+				end,
+			}))
+			
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.playing_cards then
+						add_tag(Tag('tag_coupon'))
+						play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
+						play_sound('holo1', 0.4, 1)
+						return true
+					end
+				end,
+			}))
+		end,
+		calculate = function(self, back, context)
+			if context.before then back.effect.config.repeatamount = G.jokers and G.jokers.cards and #G.jokers.cards or 0 end
+			
+			if context.cardarea == G.play and context.repetition and not context.repetition_only
+			and context.other_card and back.effect.config.repeatamount and back.effect.config.repeatamount > 0 then
+				return {
+					repetitions = back.effect.config.repeatamount,
+					message = localize('k_again_ex'),
+				}
+			end
+			
+			if context.after then back.effect.config.repeatamount = 0 end
+			
+			if context.mod_probability then return { denominator = context.denominator / 2 } end
+		end,
 	}
 end

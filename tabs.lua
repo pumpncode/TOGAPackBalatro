@@ -8,6 +8,11 @@ togabalatro.config_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_configtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
+		{n = G.UIT.R, config = {align = "cl", padding = 0.1 }, nodes = {
+			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_sfxwhenmain'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+		}},
 		{n = G.UIT.R, config = {align = "cl", padding = 0 }, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenAdding" },
@@ -15,16 +20,12 @@ togabalatro.config_tab = function()
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_sfxwhenadd'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenRemoving" },
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_sfxwhendel'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
-		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenTriggered" },
 			}},
@@ -78,6 +79,17 @@ togabalatro.config_tab = function()
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_kingcdideck'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "WTFDeck" },
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_wtfdecktoggle'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+		}},
+		{n = G.UIT.R, config = {align = "cr", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "cr", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_restartrequire'), scale = 0.4, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
 	}}
@@ -205,12 +217,12 @@ togabalatro.itemoptions_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_itemoptionstab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
-		(cards and #cards > 0 and {n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
+		(cards and #cards > 0 and {n = G.UIT.R, config = {align = "cm", padding = -0.2}, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
 				togabalatro.cagen(nil, nil, {cards = cards, w = #cards}),
 			}},
 		}} or nil),
-		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "UseNerfed" },
 			}},
