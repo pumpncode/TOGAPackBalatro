@@ -204,7 +204,10 @@ togabalatro.debug_info = {
 	JokeItems = togabalatro.config.JokeJokersActive,
 	MainlineItems = togabalatro.config.ShowPower,
 	NerfedItems = togabalatro.config.UseNerfed,
-	Logging = togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging and "Full" or togabalatro.config.DoMoreLogging and "Normal" or false
+	Logging = togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging and "Full" or togabalatro.config.DoMoreLogging and "Normal" or false,
+	BMPForceAllItems = BMP and togabalatro.config.BMPAllItems or nil,
+	KingCDIDeck = togabalatro.config.KingCDIDeck,
+	WITDeck = togabalatro.config.WTFDeck,
 }
 
 togabalatro.optional_features = function()
@@ -391,10 +394,8 @@ SMODS.ObjectType{
 	key = "TOGAJKR",
 	default = "j_toga_win95",
 	cards = {
-		["j_toga_y2kbug"] = true, ["j_toga_controlpanel"] = true, ["j_toga_mcanvil"] = true,
-		["j_toga_taskmgr"] = true, ["j_toga_solitairejoker"] = true, ["j_toga_win95"] = true,
-		["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
-		["j_toga_win2000"] = true, ["j_toga_winvista"] = true, ["j_toga_win7"] = true,
+		["j_toga_win95"] = true, ["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
+		["j_toga_win2000"] = true, ["j_toga_winxp"] = true, ["j_toga_winvista"] = true, ["j_toga_win7"] = true,
 		["j_toga_win8"] = true, ["j_toga_useraccounts"] = true, ["j_toga_virtualmemory"] = true,
 		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
 		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
@@ -419,6 +420,7 @@ SMODS.ObjectType{
 		["j_toga_briefcase"] = true, ["j_toga_vga"] = true, ["j_toga_mshome"] = true,
 		["j_toga_gamecontrollers"] = true, ["j_toga_wincatalog"] = true, ["j_toga_monitor"] = true,
 		["j_toga_notsosmileyface"] = true, ["j_toga_rloctane"] = true, ["j_toga_wscript"] = true,
+		["j_toga_toiletrock"] = true, ["j_toga_wishingstones"] = true, ["j_toga_stoneroad"] = true,
 	}
 }
 

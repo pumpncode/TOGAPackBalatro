@@ -413,7 +413,7 @@ function togabalatro.albavirusnoted()
 	end
 end
 
-function togabalatro.albavirusnote()
+function togabalatro.bmpnote()
 	if not togabalatro.config.mpnotice then
 		togabalatro.config.mpnotice = true
 		G.SETTINGS.paused = true

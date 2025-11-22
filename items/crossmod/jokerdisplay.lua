@@ -1310,6 +1310,37 @@ togabalatro.jd_def["j_toga_mshome"] = {
 	end,
 }
 
+togabalatro.jd_def["j_toga_stoneroad"] = {
+	text = {
+		{ ref_table = "card.joker_display_values", ref_value = "count",   retrigger_type = "mult" },
+		{ text = "x",                              scale = 0.35 },
+		{ text = "$",                              colour = G.C.GOLD },
+		{ ref_table = "card.ability.extra",        ref_value = "hm", colour = G.C.GOLD },
+	},
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds" },
+			{ text = ")" },
+		}
+	},
+	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+	calc_function = function(card)
+		local playing_hand = next(G.play.cards)
+		local count = 0
+		for _, playing_card in ipairs(G.hand.cards) do
+			if playing_hand or not playing_card.highlighted then
+				if playing_card.facing and not (playing_card.facing == 'back') and SMODS.has_enhancement(playing_card, 'm_stone') then
+					count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+				end
+			end
+		end
+		card.joker_display_values.count = count
+		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { numerator, denominator } }
+	end
+}
+
 -- MoreFluff crossmod
 if next(SMODS.find_mod('MoreFluff')) and SMODS.Mods['MoreFluff'].config['Colour Cards'] then
 	togabalatro.jd_def["j_toga_penwheel"] = {

@@ -1156,6 +1156,29 @@ return {
 					"when {C:attention}Blind{} is selected",
 				}
 			},
+			j_toga_toiletrock = {
+				name = 'Toilet Rock',
+				text = {
+					"{C:attention}Flushes{} can be made",
+					"out of {C:attention}Stone Cards{}",
+				}
+			},
+			j_toga_wishingstones = {
+				name = 'Wishing Stones',
+				text = {
+					"{C:attention}Straights{} can be made",
+					"out of {C:attention}Stone Cards{}",
+				}
+			},
+			j_toga_stoneroad = {
+				name = 'Stone Road',
+				text = {
+					"Each {C:attention}Stone Card{}",
+					"held in hand has",
+					"a {C:green}#2# in #3#{} chance",
+					"to give {C:money}$#1#{}",
+				},
+			},
 		},
 		Enhanced = {
 			m_toga_notification = {

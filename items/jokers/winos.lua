@@ -201,15 +201,15 @@ table.insert(winj, {
 
 table.insert(winj, {
 	key = 'winxp',
-	config = { extra = { odds = 4 } },
+	config = { extra = { odds = 8 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds) } }
 	end,
 	unlocked = true,
-	rarity = 4,
+	rarity = 3,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 2, y = 1 },
-	cost = 20,
+	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.toga_xplvlup then return { card = context.blueprint_card or card, odds = card.ability.extra.odds } end

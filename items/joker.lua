@@ -2176,6 +2176,55 @@ table.insert(jokers, {
 	end,
 })
 
+table.insert(jokers, {
+	key = 'toiletrock',
+	unlocked = true,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
+	end,
+	rarity = 2,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 0, y = 5 },
+	cost = 6,
+	blueprint_compat = false,
+	poweritem = true
+})
+
+table.insert(jokers, {
+	key = 'wishingstones',
+	unlocked = true,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
+	end,
+	rarity = 3,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 1, y = 5 },
+	cost = 8,
+	blueprint_compat = false,
+	poweritem = true
+})
+
+table.insert(jokers, {
+	key = 'stoneroad',
+	config = { extra = { hm = 1, odds = 2 } },
+	unlocked = true,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
+		return { vars = { card.ability.extra.hm, SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds) } }
+	end,
+	rarity = 1,
+	atlas = 'TOGAJokersOther',
+	pos = { x = 2, y = 5 },
+	cost = 6,
+	blueprint_compat = true,
+	calculate = function(self, card, context)
+		if context.cardarea == G.hand and context.other_card and not context.other_card.debuff and SMODS.has_enhancement(context.other_card, 'm_stone') and not context.repetition and not context.repetition_only
+		and not context.end_of_round and SMODS.pseudorandom_probability(card, "parkingonroad", 1, card.ability.extra.odds, "stoneroad") then
+			return { dollars = card.ability.extra.hm }
+		end
+	end
+})
+
 togabalatro.gethowmuch = function(div, inputxmult)
 	local dol, dolbuffer = G.GAME.dollars, G.GAME.dollar_buffer and G.GAME.dollar_buffer > 0 and G.GAME.dollar_buffer or 0
 	local amount = to_big(dol) + to_big(dolbuffer)
@@ -2302,16 +2351,14 @@ table.insert(jokers, {
 			local ecard = context.blueprint_card or card
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					local pcard = SMODS.create_card({ set = 'Playing Card', rank = '6' })
+					local pcard = SMODS.add_card({ set = 'Playing Card', rank = '6', area = G.play })
 					pcard:start_materialize({G.C.SECONDARY_SET.Enhanced})
-					G.play:emplace(pcard)
 					SMODS.calculate_effect({message = localize('toga_pluscard'), colour = G.C.SECONDARY_SET.Enhanced}, ecard)
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							draw_card(G.play, G.deck, 90, 'up', nil)
 							return true
 					end}))
-					table.insert(G.playing_cards, card)
 					playing_card_joker_effects({pcard})
 					return true
 				end}))
