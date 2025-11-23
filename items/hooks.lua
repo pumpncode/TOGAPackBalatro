@@ -743,7 +743,7 @@ end
 
 local calcperishref = Card.calculate_perishable
 function Card:calculate_perishable()
-	if self.ability.perish_tally > 0 and G.GAME.modifiers.toga_norentperish then return end
+	if self and self.ability and tonumber(self.ability.perish_tally) and self.ability.perish_tally > 0 and G.GAME.modifiers.toga_norentperish then return end
 	return calcperishref(self)
 end
 

@@ -328,7 +328,7 @@ end
 function togabalatro.albanianvirusnote()
 	local rtxt = G.localization.misc.ui_strings.toga_albavirusnote
 	play_sound('toga_chord', 1, 0.5)
-	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_needrestart'}, nodes = {
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_albavirusnote'}, nodes = {
 		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
 			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
 				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {

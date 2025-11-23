@@ -85,7 +85,7 @@ togabalatro.jd_def["j_toga_useraccounts"] = {
 		{
 			border_nodes = {
 				{ text = "X" },
-				{ ref_table = "card.ability.extra", ref_value = "totalXmult" },
+				{ ref_table = "card.ability.extra", ref_value = "totalXmult", retrigger_type = "exp" },
 			}
 		}
 	},
@@ -117,7 +117,7 @@ togabalatro.jd_def["j_toga_recyclebin"] = {
 		{
 			border_nodes = {
 				{ text = "X" },
-				{ ref_table = "card.ability.extra", ref_value = "xchip_mod" },
+				{ ref_table = "card.ability.extra", ref_value = "xchip_mod", retrigger_type = "exp" },
 			},
 			border_colour = G.C.CHIPS
 		}
@@ -153,7 +153,7 @@ togabalatro.jd_def["j_toga_skype"] = {
 		{
 			border_nodes = {
 				{ text = "X" },
-				{ ref_table = "card.joker_display_values", ref_value = "xmult" },
+				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" },
 			},
 		},
 	},
@@ -176,7 +176,7 @@ togabalatro.jd_def["j_toga_msn"] = {
 		{
 			border_nodes = {
 				{ text = "X" },
-				{ ref_table = "card.joker_display_values", ref_value = "xmult" },
+				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" },
 			},
 		},
 	},
@@ -446,7 +446,7 @@ togabalatro.jd_def["j_toga_wscript"] = {
 	extra = {
 		{
 			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "odds" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds", retrigger_type = "exp" },
 			{ text = ")" },
 		}
 	},

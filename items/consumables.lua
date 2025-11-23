@@ -437,9 +437,8 @@ local function toga_spbdeckwreck(card, failedchance)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
 		play_sound('tarot1')
 		card:juice_up(0.3, 0.5)
+		SMODS.destroy_cards(destroyed_cards, nil, true)
 	return true end }))
-	
-	SMODS.destroy_cards(destroyed_cards)
 end
 
 local spbdeckpart, spbcardmin = 0.75, 20
