@@ -28,7 +28,7 @@ return {
 				name = 'Spaceman Deck',
 				text = {
 					"Start the run with a",
-					"special {C:planet,T:j_space}Space Joker{}",
+					"{C:planet,T:j_space}Space Joker{}",
 					"{C:planet,T:v_planet_merchant}Planet Merchant{},",
 					"{C:planet,T:v_planet_tycoon}Planet Tycoon{}",
 					"{C:spectral,s:0.8}Spectral{s:0.8} cards",

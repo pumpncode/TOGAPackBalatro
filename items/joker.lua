@@ -1424,7 +1424,7 @@ table.insert(jokers, {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			local gc = love.joystick.getJoystickCount()
-			return gc > 1 and { xmult = card.ability.extra.xmult*gc }
+			return gc > 0 and { xmult = card.ability.extra.xmult*gc }
 		end
 	end,
 })
@@ -2767,14 +2767,18 @@ end
 togabalatro.bmpexclude = {
 	['monitor'] = true, ['chrome'] = true, ['firefox'] = true, ['jimboplus'] = true, ['gamecontrollers'] = true,
 	['notsosmileyface'] = true, ['dragndrop'] = true, ['nonebattery'] = true, ['cpu'] = true, ['pcmcia'] = true,
-	['pso2ironwill'] = true,
+	['pso2ironwill'] = true, ['drivespace'] = true, ['wscript'] = true, 
+}
+
+togabalatro.bmpbreakingitems = {
+	['drivespace'] = true, ['wscript'] = true, 
 }
 
 -- Actually go through the initialization of Jokers.
 local intjkrname = "j_toga_"
 togabalatro.canjokerload = function(key)
 	if type(key) ~= 'string' then return false end
-	if togabalatro.checkbmp() and togabalatro.bmpexclude[key] and not togabalatro.config.BMPAllItems then
+	if togabalatro.checkbmp() and togabalatro.bmpexclude[key] and not togabalatro.bmpbreakingitems[key] and not togabalatro.config.BMPAllItems then
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Skipping loading of "..intjkrname..key.." due to presence of Balatro Multiplayer.", "TOGAPack") end
 		return false
 	end

@@ -172,19 +172,7 @@ function CardArea:shuffle(_seed)
 	return r
 end
 
--- hooking draw_from_deck_to_hand to remove the 'calculate' from Notification enhancement, replicating it in this hook.
-sendInfoMessage("Hooking G.FUNCS.draw_from_deck_to_hand...", "TOGAPack")
-local dfwdthref = G.FUNCS.draw_from_deck_to_hand
-function G.FUNCS.draw_from_deck_to_hand(e)
-	dfwdthref(e)
-	if togabalatro.config.DoMoreLogging then sendInfoMessage("Executed original function or (potential) hook.", "TOGAPack") end
-	G.E_MANAGER:add_event(Event({
-		func = function()
-			togabalatro.drawextracards()
-			return true
-		end
-	}))
-end
+-- The G.FUNCS.draw_from_deck_to_hand hook has been moved to be a patch instead.
 
 -- for a Boss/Showdown Blind...
 sendInfoMessage("Hooking Blind:defeat...", "TOGAPack")
