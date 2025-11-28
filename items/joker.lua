@@ -544,7 +544,7 @@ local msncount = false
 
 table.insert(jokers, {
 	key = 'msn',
-	config = { extra = { perenhxmult = 1.5 } },
+	config = { extra = { perenhxmult = 1.25 } },
 	loc_vars = function(self, info_queue, card)
 		local enh, enhcount = {}, 0
 		if G.playing_cards then
@@ -799,7 +799,7 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'msagent',
-	config = { extra = { unbalance = 1.2 } },
+	config = { extra = { unbalance = 1.25 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (card.ability.extra.unbalance or 1)*100 } }
 	end,
@@ -1185,7 +1185,7 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'merlin',
-	config = { extra = { curxmult = 0, txmult = 0.1 } },
+	config = { extra = { curxmult = 0, txmult = 0.08 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { 1+card.ability.extra.curxmult, card.ability.extra.txmult } }
 	end,
@@ -1213,7 +1213,7 @@ table.insert(jokers, {
 	key = 'briefcase',
 	config = { extra = { curhchips = 10, ahchips = 5 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.curhchips, card.ability.extra.ahchips } }
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key, vars = { card.ability.extra.curhchips, card.ability.extra.ahchips } }
 	end,
 	unlocked = true,
 	rarity = 1,
@@ -1341,7 +1341,7 @@ table.insert(jokers, {
 	key = 'notsosmileyface',
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)
-		return { key = card.ability.thesmile and math.random(1,4) == 1 and self.key.."_full" or self.key, vars = { card.ability.extra.xmult } }
+		return { key = card.ability.thesmile and math.random(1,4) == 1 and not togabalatro.stjcheck() and self.key.."_full" or self.key, vars = { card.ability.extra.xmult } }
 	end,
 	unlocked = true,
 	in_pool = function()
@@ -1548,7 +1548,7 @@ table.insert(jokers, {
 		if self.discovered then
 			info_queue[#info_queue + 1] = {key = "toga_clippyorigin", set = 'Other'}
 		end
-		return { vars = { math.floor(card.ability.extra.rescores) } }
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key, vars = { math.floor(card.ability.extra.rescores) } }
 	end,
 	unlocked = true,
 	rarity = 4,
@@ -1867,7 +1867,7 @@ table.insert(jokers, {
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_toga_iron
 		card.ability.extra.steelxmult = math.max(card.ability.extra.steelxmult, 0.5)
-		return { vars = { 1+card.ability.extra.curxmult, card.ability.extra.steelxmult } }
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key, vars = { 1+card.ability.extra.curxmult, card.ability.extra.steelxmult } }
 	end,
 	unlocked = true,
 	rarity = 3,
@@ -1983,6 +1983,7 @@ table.insert(jokers, {
 	key = 'cavingjkr',
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -2274,7 +2275,7 @@ table.insert(jokers, {
 	config = { extra = { minicrit = 1.35, odds = 15 }},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = {key = "toga_chipmultmodinfo", set = 'Other'}
-		return { vars = { card.ability.extra.minicrit, SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds, 'tf2jarate') } }
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key, vars = { card.ability.extra.minicrit, SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.odds, 'tf2jarate') } }
 	end,
 	unlocked = true,
 	in_pool = function()
@@ -2406,6 +2407,7 @@ table.insert(jokers, {
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	pixel_size = { w = 69, h = 69 },
+	poweritem = true,
 	jokeitem = true
 })
 
@@ -2447,6 +2449,7 @@ table.insert(jokers, {
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
 	pixel_size = { w = 69, h = 67 },
+	poweritem = true,
 	jokeitem = true
 })
 
@@ -2497,7 +2500,7 @@ table.insert(jokers, {
 	key = 'tomscott',
 	config = { extra = { basexmult = 2 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.basexmult, card.ability.extra.basexmult ^ togabalatro.calccopiesofself(card.config.center.key) } }
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key, vars = { card.ability.extra.basexmult, card.ability.extra.basexmult ^ togabalatro.calccopiesofself(card.config.center.key) } }
 	end,
 	unlocked = true,
 	in_pool = function()
@@ -2767,11 +2770,12 @@ end
 togabalatro.bmpexclude = {
 	['monitor'] = true, ['chrome'] = true, ['firefox'] = true, ['jimboplus'] = true, ['gamecontrollers'] = true,
 	['notsosmileyface'] = true, ['dragndrop'] = true, ['nonebattery'] = true, ['cpu'] = true, ['pcmcia'] = true,
-	['pso2ironwill'] = true, ['drivespace'] = true, ['wscript'] = true, 
+	['pso2ironwill'] = true, ['drivespace'] = true, ['wscript'] = true, ['joker203'] = true, ['vga'] = true,
 }
 
+-- Absolute exclusions.
 togabalatro.bmpbreakingitems = {
-	['drivespace'] = true, ['wscript'] = true, 
+	['drivespace'] = true, ['wscript'] = true, ['joker203'] = true
 }
 
 -- Actually go through the initialization of Jokers.

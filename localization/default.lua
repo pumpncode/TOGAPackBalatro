@@ -230,6 +230,15 @@ return {
 					}
 				}
 			},
+			j_toga_mcanvil_stj = {
+				name = 'Anvil',
+				text = {
+					"This Joker {C:attention}converts{} scoring {C:attention}Steel Cards{}",
+					"to {C:attention}Iron Cards{} and gains {X:mult,C:white}X#2#{} Mult",
+					"for each one converted",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
+				}
+			},
 			j_toga_taskmgr = {
 				name = 'Task Manager',
 				text = {
@@ -244,7 +253,7 @@ return {
 				text = {
 					"{C:green}#2# in #3#{} chance for scoring cards to",
 					"give {X:mult,C:white}XMult{} based on half of calculated",
-					"average of current {C:chips}hands{} & {C:red}discards{} left",
+					"average of remaining {C:chips}hands{} & {C:red}discards{}",
 					"and {C:attention}Joker{} & {C:attention}Consumable{} slots.",
 					"{C:inactive,s:0.8}(Currently {}{X:mult,C:white,s:0.8}X#1#{}{C:inactive,s:0.8}){}",
 				}
@@ -402,6 +411,13 @@ return {
 					}
 				}
 			},
+			j_toga_clippit_stj = {
+				name = 'Clippit',
+				text = {
+					"Rescore all {C:attention}held in hand{}",
+					"card abilities {C:attention}#1#{} time(s).",
+				}
+			},
 			j_toga_asterism = {
 				name = 'Asterism',
 				text = {
@@ -549,6 +565,15 @@ return {
 					}
 				}
 			},
+			j_toga_tomscott_stj = {
+				name = 'Tom Scott',
+				text = {
+					"Gives {X:mult,C:white}X#1#{} Mult for every",
+					"{C:attention}copy{} of itself held",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{} {C:inactive}Mult){}",
+					"{C:inactive,s:0.8}Stacks multiplicatively.{}",
+				}
+			},
 			j_toga_megasxlr = {
 				name = 'Megas XLR',
 				text = {
@@ -568,6 +593,14 @@ return {
 					{
 						"{C:inactive}Ah... {C:inactive,E:1}piss!{}"
 					}
+				}
+			},
+			j_toga_jarate_stj = {
+				name = 'Jarate',
+				text = {
+					"{C:green}#2# in #3#{} chance to",
+					"{X:attention,C:white}X#1#{} operation amount",
+					"on {C:chips}Chips{} or {C:mult}Mult{}"
 				}
 			},
 			j_toga_goldenwrench = {
@@ -609,6 +642,17 @@ return {
 						"Becomes {C:attention}active{} when defeating {C:attention}Boss Blinds",
 						"{C:inactive}#1#{}"
 					},
+				}
+			},
+			j_toga_winvista_stj = {
+				name = 'Windows Vista',
+				text = {
+					"If active and played hand contains a single {C:attention}6{},",
+					"{C:red}destroys{} it, applies {C:dark_edition}Negative{} to a {C:attention}random",
+					"{C:attention}Editioned{} Joker and becomes inactive",
+					"{s:0.9}Recharges after defeating {C:attention,s:0.9}Boss Blinds",
+					"{C:inactive,s:0.8}(Cannot target already {C:dark_edition,s:0.8}Negative{C:inactive,s:0.8} Jokers.){}",
+					"{C:inactive}#1#{}"
 				}
 			},
 			j_toga_win7 = {
@@ -747,16 +791,6 @@ return {
 					"scoring cards give {X:mult,C:white}X#1#{} Mult per",
 					"{C:attention}additional{} base suit in played hand.",
 					"{C:inactive,s:0.8}(Ignores Wild Card, Smeared Joker, etc.){}"
-				}
-			},
-			j_toga_linux_slackware_cardsel = {
-				name = 'Slackware Linux',
-				text = {
-					"If more than 2 suits are {C:attention}played{},",
-					"scoring cards give {X:mult,C:white}X#1#{} Mult per",
-					"{C:attention}additional{} suit in played hand.",
-					"{C:inactive,s:0.9}(Current card selection gives {}{X:mult,C:white,s:0.9}X#2#{}{C:inactive,s:0.9}){}",
-					"{C:inactive,s:0.8}(Ignores Wild Card, Hearty Spades, etc.){}"
 				}
 			},
 			j_toga_linux_redhat = {
@@ -995,6 +1029,16 @@ return {
 					}
 				},
 			},
+			j_toga_cavingjkr_stj = {
+				name = 'Caving Joker',
+				text = {
+					"All played {C:attention}non-face{} cards",
+					"become {C:attention}Stone{} cards",
+					"afterwards",
+					"{C:inactive,s:0.75}May reveal rank or suit{}",
+					"{C:inactive,s:0.75}of certain cards...{}",
+				},
+			},
 			j_toga_miningjkr = {
 				name = 'Mining Joker',
 				text = {
@@ -1080,6 +1124,15 @@ return {
 						"When {C:attention}changing{} Antes,",
 						"increase amount by {C:blue}+#2#{}"
 					}
+				}
+			},
+			j_toga_briefcase_stj = {
+				name = 'Briefcase',
+				text = {
+					"{C:attention}Held in hand{} cards",
+					"give {C:blue}+#1#{} Chips",
+					"Amount increases by {C:blue}+#2#{}",
+					"when {C:attention}changing{} Antes"
 				}
 			},
 			j_toga_vga = {
@@ -2199,6 +2252,9 @@ return {
 				"the list of settings to configure the mod.", "", "Would you like to open the mod config menu?"
 			},
 			toga_needrestart = {
+				"Mod Config Change", "You must restart Balatro before changes to the", "mod config will take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_needrestartqe = {
 				"Mod Config Change", "You must restart Balatro before changes to the", "quantum enhancement deck will take effect.", "", "Do you want to restart Balatro now?"
 			},
 			toga_needrestartbmp = {
@@ -2211,7 +2267,7 @@ return {
 				"Mod Config Change", "You must restart Balatro before changes to the", "WIT Deck will take effect.", "", "Do you want to restart Balatro now?"
 			},
 			toga_albavirusnote = {
-				"WARNING", "You just obtained Albanian Virus for the first time!", "You are recommended to read the 'Heads Up!' tooltip", "for your own sake."
+				"WARNING", "You just obtained Albanian Virus for the first time!", "You are recommended to read the 'Heads Up!' tooltip", "when hovering over the Joker for your own sake."
 			},
 			toga_bmpnormal = {
 				"Balatro Multiplayer detected", "Because TOGA's Stuff has not been tested with Balatro Multiplayer,", "you may experience unexpected crashes with specific items.",
@@ -2221,6 +2277,13 @@ return {
 				"Balatro Multiplayer detected", "Because TOGA's Stuff has not been tested with Balatro Multiplayer, you may", "experience unexpected crashes with specific items. Per config, items that",
 				"would be usually omitted from loading are loaded regardless, potentially", "causing desynchronizations and/or unfair advantages.",
 				"Have fun, but don't try to cheat, will you?"
+			},
+			toga_stjnote = {
+				"Slay the Jokers detected", "Some items in TOGA's Stuff use multibox descriptions, which can", "crash Slay the Jokers. Those items will use slightly different",
+				"localization entries instead to try and prevent such crashes."
+			},
+			toga_talismanjoke = {
+				"Talisman detected", "Numbers WILL be compared to tables.", "You've been warned.",
 			},
 		},
 	}

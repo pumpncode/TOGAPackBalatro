@@ -122,7 +122,7 @@ SMODS.Back{
 	pos = { x = 5, y = 0 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
-	config = {ante_scaling = 1.25},
+	config = {ante_scaling = 1.5},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { self.config.ante_scaling } }
 	end,
@@ -274,7 +274,7 @@ if togabalatro.config.WTFDeck then
 		pos = { x = 13, y = 0 },
 		atlas = "TOGADeckBack",
 		unlocked = true,
-		config = { ante_scaling = 4, dollars = -4, hand_size = 18 },
+		config = { ante_scaling = 66.6666666666, dollars = -4, hand_size = 18 },
 		loc_vars = function(self, info_queue, center)
 			return { vars = { self.config.ante_scaling, self.config.dollars } }
 		end,
@@ -291,10 +291,10 @@ if togabalatro.config.WTFDeck then
 			G.GAME.toga_negchance = (G.GAME.toga_negchance or 1)*16
 			
 			for _, v in ipairs(G.handlist) do
-				G.GAME.hands[v].s_mult = G.GAME.hands[v].s_mult * (math.random(1, 1000)/100)
-				G.GAME.hands[v].l_mult = G.GAME.hands[v].l_mult * (math.random(1, 1000)/100)
-				G.GAME.hands[v].s_chips = G.GAME.hands[v].s_chips * (math.random(1, 200)/100)
-				G.GAME.hands[v].l_chips = G.GAME.hands[v].l_chips * (math.random(1, 200)/100)
+				G.GAME.hands[v].s_mult = G.GAME.hands[v].s_mult * (math.random(1, 2000)/100)
+				G.GAME.hands[v].l_mult = G.GAME.hands[v].l_mult * (math.random(1, 2000)/100)
+				G.GAME.hands[v].s_chips = G.GAME.hands[v].s_chips * (math.random(1, 400)/100)
+				G.GAME.hands[v].l_chips = G.GAME.hands[v].l_chips * (math.random(1, 400)/100)
 				G.GAME.hands[v].mult = math.max(G.GAME.hands[v].s_mult + G.GAME.hands[v].l_mult*(G.GAME.hands[v].level - 1), 1)
 				G.GAME.hands[v].chips = math.max(G.GAME.hands[v].s_chips + G.GAME.hands[v].l_chips*(G.GAME.hands[v].level - 1), 0)
 				G.GAME.hands[v].visible = true

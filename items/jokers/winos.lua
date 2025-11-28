@@ -51,7 +51,7 @@ end
 
 table.insert(winj, {
 	key = 'win98',
-	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.15 } },
+	config = { extra = { consslotbonus = 0.1, totalconsslotbonus = 0, percentage = 0.2 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.totalconsslotbonus = togabalatro.getconscount()*card.ability.extra.consslotbonus or 0
 		return { vars = { card.ability.extra.consslotbonus*100, card.ability.extra.totalconsslotbonus*100, card.ability.extra.percentage*100, togabalatro.gettotaljokervalue()*card.ability.extra.percentage } }
@@ -90,7 +90,7 @@ end
 
 table.insert(winj, {
 	key = 'winmillenium',
-	config = { extra = { basechips = 25, chipbonus = 5, totalbonus = 25 } },
+	config = { extra = { basechips = 25, chipbonus = 15, totalbonus = 25 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus * toga_vouchcount()
 		return { vars = { card.ability.extra.basechips, card.ability.extra.chipbonus, card.ability.extra.totalbonus } }
@@ -231,7 +231,7 @@ table.insert(winj, {
 	key = 'winvista',
 	config = { extra = { active = true } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { localize(card.ability.extra.active and 'toga_active' or 'toga_inactive') } }
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key, vars = { localize(card.ability.extra.active and 'toga_active' or 'toga_inactive') } }
 	end,
 	unlocked = true,
 	in_pool = function()

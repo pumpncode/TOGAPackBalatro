@@ -615,7 +615,7 @@ local oldcalcdestroycard = SMODS.calculate_destroying_cards
 function SMODS.calculate_destroying_cards(context, cards_destroyed, scoring_hand)
 	oldcalcdestroycard(context, cards_destroyed, scoring_hand)
 	for i,card in ipairs((context.cardarea or {}).cards or {}) do
-		if card.atomsmashed then
+		if card and card.atomsmashed then
 			card.getting_sliced = true
 			if SMODS.shatters(card) then
 				card.shattered = true
@@ -687,23 +687,23 @@ function love.update( dt )
 	
 	if togabalatro.config.EnableQE ~= qeval and not notifyrestart then
 		notifyrestart = true
-		togabalatro.systemchanges()
+		togabalatro.systemchanges({ source = 'qe', uifunc = togabalatro.needrestartqeui })
 	end
 	
 	if togabalatro.config.BMPAllItems ~= bmpcurval and not notifyitemreinit then
 		notifyitemreinit = true
 		togabalatro.config.mpnotice = nil
-		togabalatro.systemchanges({ bmp = true })
+		togabalatro.systemchanges({ source = 'bmp', uifunc = togabalatro.needrestartbmpui })
 	end
 	
 	if togabalatro.config.KingCDIDeck ~= kingcdival and not notifykingcdi then
 		notifykingcdi = true
-		togabalatro.systemchanges({ kingcdi = true })
+		togabalatro.systemchanges({ source = 'kingcdi', uifunc = togabalatro.needrestartkingcdi })
 	end
 	
 	if togabalatro.config.WTFDeck ~= wtfdeckval and not notifywtfdeck then
 		notifywtfdeck = true
-		togabalatro.systemchanges({ wtfdeck = true })
+		togabalatro.systemchanges({ source = 'wtfdeck', uifunc = togabalatro.needrestartwtfdeck })
 	end
 	
 	loveupdref(dt)
@@ -718,6 +718,11 @@ function Game:main_menu(ctx)
 	if togabalatro.checkbmp() then
 		G.E_MANAGER:add_event(Event({
 			func = function() togabalatro.bmpnote() return true end
+		}))
+	end
+	if togabalatro.stjcheck() then
+		G.E_MANAGER:add_event(Event({
+			func = function() togabalatro.stjnotice() return true end
 		}))
 	end
     return r

@@ -205,9 +205,10 @@ togabalatro.debug_info = {
 	MainlineItems = togabalatro.config.ShowPower,
 	NerfedItems = togabalatro.config.UseNerfed,
 	Logging = togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging and "Full" or togabalatro.config.DoMoreLogging and "Normal" or false,
-	BMPForceAllItems = BMP and togabalatro.config.BMPAllItems or nil,
 	KingCDIDeck = togabalatro.config.KingCDIDeck,
 	WITDeck = togabalatro.config.WTFDeck,
+	BMPForceAllItems = BMP and togabalatro.config.BMPAllItems or nil,
+	SlayTheJokersCompat = SMODS.Mods['SlayTheJokers'] and SMODS.Mods['SlayTheJokers'].can_load or nil
 }
 
 togabalatro.optional_features = function()
@@ -245,7 +246,9 @@ togabalatro.rlt = function()
 end
 
 togabalatro.mancrash = function()
-	error('Manually initiated crash.', 0)
+	G.E_MANAGER:add_event(Event({
+		func = function() error('Manually initiated crash.', 0) return true end
+	}))
 end
 
 togabalatro.getrandcons = function(seed)
@@ -328,7 +331,6 @@ if not togabalatro.tasklisttable then togabalatro.tasklisttable = {} end
 -- Check for specific process name.
 togabalatro.getprocessamount = function(process)
 	process = string.lower(process) or 'whereismysupersuit'
-	-- If a new table exists on the message queue on the Channel, set table to it. Otherwise, stay as-is.
 	local count = 0
 	for k, v in pairs(togabalatro.tasklisttable or {}) do
 		if string.find(v, process) then count = count + 1 end
@@ -1172,6 +1174,10 @@ togabalatro.stackingcompat = function(consumable)
 	elseif Incantation and consumable and consumable.ability and consumable.ability.qty then
 		return true, consumable.ability.qty
 	end
+end
+
+togabalatro.stjcheck = function()
+	return SMODS.Mods['SlayTheJokers'] and SMODS.Mods['SlayTheJokers'].can_load or false
 end
 
 -- In case Incantation is used, check if it is the specific fork version so that the consumeables don't do unintended things...
