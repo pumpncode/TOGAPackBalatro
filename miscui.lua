@@ -408,7 +408,7 @@ end
 function togabalatro.stjnoteui()
 	local stjtxt = G.localization.misc.ui_strings.toga_stjnote
 	play_sound('toga_dingy', 1, 0.8)
-	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_bmpnote'}, nodes = {
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_stjnote'}, nodes = {
 		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
 			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
 				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {

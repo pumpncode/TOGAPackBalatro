@@ -159,7 +159,7 @@ SMODS.Back{
 
 SMODS.Back{
 	key = "waitthatsillegaldeck",
-	pos = { x = 7, y = 0 },
+	pos = { x = 0, y = 1 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
 	apply = function(self, back)
@@ -171,12 +171,15 @@ if togabalatro.config.EnableQE then
 	SMODS.Back{
 		key = "blissful",
 		atlas = "TOGADeckBack",
-		pos = { x = 8, y = 0 },
+		pos = { x = 1, y = 1 },
 		config = {ante_scaling = 2, hands = -1, discards = -1, joker_slot = -1, consumable_slot = -1, extraante = 2},
 		loc_vars = function(self, info_queue, center)
 			return { vars = { self.config.hands, self.config.discards, self.config.joker_slot, self.config.consumable_slot, self.config.ante_scaling, self.config.extraante } }
 		end,
 		apply = function(self, back)
+			G.STATE = G.STATES.SHOP
+			G.GAME.shop_free = nil
+			G.GAME.shop_d6ed = nil
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					if G.GAME and G.GAME.win_ante then
@@ -203,7 +206,7 @@ end
 
 SMODS.Back{
 	key = "prairie",
-	pos = { x = 9, y = 0 },
+	pos = { x = 2, y = 1 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
 	config = {ante_scaling = 0.8},
@@ -217,7 +220,7 @@ SMODS.Back{
 
 SMODS.Back{
 	key = "betafish",
-	pos = { x = 10, y = 0 },
+	pos = { x = 3, y = 1 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
 	config = {ante_scaling = 0.8},
@@ -231,7 +234,7 @@ SMODS.Back{
 
 SMODS.Back{
 	key = "wharariki",
-	pos = { x = 11, y = 0 },
+	pos = { x = 4, y = 1 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
 	config = { ante_scaling = 2, opamtmod = 0.2 },
@@ -247,10 +250,29 @@ SMODS.Back{
 	end
 }
 
+SMODS.Back{
+	key = "alloydeck",
+	pos = { x = 0, y = 2 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.consumeables then
+					local alloy = SMODS.add_card({ key = "c_toga_alloyer" })
+					alloy.ability.extra.odds = 1
+					alloy.ability.extra.deckperk = true
+					return true
+				end
+			end,
+		}))
+	end,
+}
+
 if togabalatro.config.KingCDIDeck then
 	SMODS.Back{
 		key = "kingharkinian",
-		pos = { x = 12, y = 0 },
+		pos = { x = 5, y = 1 },
 		atlas = "TOGADeckBack",
 		unlocked = true,
 		config = { ante_scaling = 2 },
@@ -271,7 +293,7 @@ end
 if togabalatro.config.WTFDeck then
 	SMODS.Back{
 		key = "wtfdeck",
-		pos = { x = 13, y = 0 },
+		pos = { x = 6, y = 1 },
 		atlas = "TOGADeckBack",
 		unlocked = true,
 		config = { ante_scaling = 66.6666666666, dollars = -4, hand_size = 18 },

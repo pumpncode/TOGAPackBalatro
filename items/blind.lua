@@ -101,9 +101,11 @@ SMODS.Blind{
 	calculate = function(self, card, context)
 		if not G.GAME.blind.disabled then
 			if context.first_hand_drawn then
-				for i = 1, #G.hand.cards do
-					G.hand.highlighted[#G.hand.highlighted+1] = G.hand.cards[i]
-					G.hand.cards[i]:highlight(true)
+				for i, v in ipairs(G.hand.cards) do
+					if not v.highlighted then
+						G.hand.highlighted[#G.hand.highlighted+1] = v
+						v:highlight(true)
+					end
 				end
 				G.FUNCS.play_cards_from_highlighted()
 			end
@@ -172,5 +174,79 @@ SMODS.Blind{
 		if self.vars.activated then
 			G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.vars.chipamtred
 		end
+	end
+}
+
+SMODS.Blind{
+	key = 'bag',
+	atlas = 'TOGAOtherBlind',
+	boss_colour = HEX('a80054'),
+	pos = { x = 0, y = 3 },
+	dollars = 5,
+	mult = 2,
+	boss = { min = 3 },
+	press_play = function(self)
+		if G.hand.cards then
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			for i = 1, #G.hand.cards do
+				G.E_MANAGER:add_event(Event({func = function() G.hand.cards[i]:juice_up(); return true end })) 
+				ease_dollars(-1)
+				delay(0.23)
+			end
+			return true end })) 
+        end
+	end
+}
+
+SMODS.Blind{
+	key = 'filmreel',
+	atlas = 'TOGAOtherBlind',
+	boss_colour = HEX('54a8a8'),
+	pos = { x = 0, y = 4 },
+	dollars = 5,
+	mult = 2,
+	boss = { min = 4 },
+	debuff_hand = function(self, cards, hand, handname, check)
+		for k, v in ipairs(cards or {}) do
+			if SMODS.has_no_rank(v) then return false end
+		end
+		return true
+	end
+}
+
+SMODS.Blind{
+	key = 'stamp',
+	atlas = 'TOGAOtherBlind',
+	boss_colour = HEX('000000'),
+	pos = { x = 0, y = 5 },
+	dollars = 6,
+	mult = 2,
+	boss = { min = 5 },
+	debuff_hand = function(self, cards, hand, handname, check)
+		local ranks = {}
+		for k, v in ipairs(cards or {}) do
+			if not SMODS.has_no_rank(v) then
+				local rank = v:get_id()
+				if not (ranks[1] and ranks[1] == rank) then table.insert(ranks, rank) end
+			end
+		end
+		if #ranks ~= 1 then return true end
+	end
+}
+
+SMODS.Blind{
+	key = 'login',
+	atlas = 'TOGAOtherBlind',
+	boss_colour = HEX('808000'),
+	pos = { x = 0, y = 6 },
+	dollars = 6,
+	mult = 2,
+	boss = { min = 2 },
+	debuff_hand = function(self, cards, hand, handname, check)
+		if cards and #cards == 3 then return false end
+		for k, v in ipairs(cards or {}) do
+			if v:get_id() == 3 then return false end
+		end
+		return true
 	end
 }

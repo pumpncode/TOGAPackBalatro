@@ -631,12 +631,12 @@ SMODS.Consumable {
 	config = { extra = { max_highlighted = 1, odds = 4 } },
 	loc_vars = function(self, info_queue, card)
 		local alloypool = togabalatro.oredict.alloys
-		if alloypool and #alloypool > 0 and love.keyboard.isDown("lshift") then
+		if not card.fake_card and alloypool and #alloypool > 0 and love.keyboard.isDown("lshift") then
 			for k, v in pairs(alloypool) do
 				info_queue[#info_queue + 1] = G.P_CENTERS[v]
 			end
 		end
-		return {key = love.keyboard.isDown("lshift") and self.key.."_showalloys" or self.key, vars = { (card.ability.extra or self.config.extra).max_highlighted, SMODS.get_probability_vars(card or self, 1, (card.ability.extra or self.config.extra).odds) } }
+		return {key = card.fake_card and self.key.."_desconly" or love.keyboard.isDown("lshift") and self.key.."_showalloys" or self.key, vars = { (card.ability.extra or self.config.extra).max_highlighted, SMODS.get_probability_vars(card or self, 1, (card.ability.extra or self.config.extra).odds) } }
 	end,
 	in_pool = function()
 		return togabalatro.config.ShowPower
@@ -648,7 +648,7 @@ SMODS.Consumable {
 		return false
 	end,
 	use = function(self, card, area, copier)
-		if SMODS.pseudorandom_probability(card, "toga_alloyingmyingots", 1, card.ability.extra.odds, 'alloyer') then
+		if card.ability.extra.deckperk or SMODS.pseudorandom_probability(card, "toga_alloyingmyingots", 1, card.ability.extra.odds, 'alloyer') then
 			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
 				play_sound('tarot1')
 				card:juice_up(0.3, 0.5)

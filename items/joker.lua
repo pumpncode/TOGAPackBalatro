@@ -1410,7 +1410,7 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'gamecontrollers',
-	config = { extra = { xmult = 2 } },
+	config = { extra = { xmult = 1.5 } },
 	loc_vars = function(self, info_queue, card)
 		local gc = love.joystick.getJoystickCount()
 		return { vars = { card.ability.extra.xmult, gc, gc > 0 and card.ability.extra.xmult*gc or 1 } }
@@ -1813,7 +1813,7 @@ table.insert(jokers, {
 	key = 'bonusducks',
 	unlocked = true,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonushat
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
 	end,
 	rarity = 2,
 	atlas = 'TOGAJokersOther',
@@ -2636,13 +2636,13 @@ table.insert(jokers, {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if G.STAGE == G.STAGES.RUN and not G.screenwipe then
+		if G.STAGE == G.STAGES.RUN and not G.screenwipe and not from_debuff then
 			card.ability.albavirusactive = true
 			togabalatro.albavirusnoted()
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		if card.ability.albavirusactive then
+		if card.ability.albavirusactive and not from_debuff then
 			G.STATE = G.STATES.GAME_OVER
 			if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then 
 				G.PROFILES[G.SETTINGS.profile].high_scores.current_streak.amt = 0

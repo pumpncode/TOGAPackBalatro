@@ -71,6 +71,13 @@ return {
 					"{C:red}X#1#{} base Blind size"
 				}
 			},
+			b_toga_alloydeck = {
+				name = "Alloyer's Deck",
+				text = {
+					"Start with a",
+					"{C:attention}guaranteed{} {C:spectral,T:c_toga_alloyer}Alloy{}"
+				}
+			},
 			b_toga_drunkdeck = {
 				name = 'Drunk',
 				text = {
@@ -90,7 +97,8 @@ return {
 				text = {
 					"{C:attention}Enhancements{} are {C:dark_edition}shared{}",
 					"between {C:attention}playing cards{}",
-					"{C:red}X#5#{} base Blind size",
+					"{s:0.8}Start in the {C:attention,s:0.8}Shop",
+					"{C:red,s:0.8}X#5#{s:0.8} base Blind size",
 					"{C:red,s:0.8}#1# {s:0.8}hand, {C:red,s:0.8}#2# {s:0.8}discard, {C:attention,s:0.8}+#6#{s:0.8} Ante to win",
 					"{C:red,s:0.8}#3# {s:0.8}Joker slot, {C:red,s:0.8}#4# {s:0.8}Consumable slot",
 					"{C:inactive,s:0.8}Warning: game may lag heavily.{}",
@@ -183,6 +191,34 @@ return {
 				text = {
 					"-X#1# Chips",
 					"operation amount"
+				}
+			},
+			bl_toga_bag = {
+				name = "The Bag",
+				text = {
+					"Lose $1 per",
+                    "held in hand card"
+				}
+			},
+			bl_toga_filmreel = {
+				name = "The Film Reel",
+				text = {
+					"Must play a card",
+					"without a rank"
+				}
+			},
+			bl_toga_stamp = {
+				name = "The Stamp",
+				text = {
+					"Only 1 rank",
+					"can be played"
+				}
+			},
+			bl_toga_login = {
+				name = "The Login",
+				text = {
+					"Hand must contain",
+					"3 cards or a 3"
 				}
 			},
 		},
@@ -1492,6 +1528,13 @@ return {
 					"{C:attention}#1#{} card to an {C:attention}Alloy{} card.",
 				}
 			},
+			c_toga_alloyer_desconly = {
+				name = "Alloy",
+				text = {
+					"{C:green}#2# in #3#{} chance to enhance",
+					"{C:attention}#1#{} card to an {C:attention}Alloy{} card.",
+				}
+			},
 		},
 		Tag = {
 			tag_toga_togajokershop = {
@@ -2266,6 +2309,9 @@ return {
 			toga_needrestartwtfdeck = {
 				"Mod Config Change", "You must restart Balatro before changes to the", "WIT Deck will take effect.", "", "Do you want to restart Balatro now?"
 			},
+			toga_needrestartstjfix = {
+				"Mod Config Change", "You must restart Balatro before changes to the", "Slay the Jokers fix will take effect.", "", "Do you want to restart Balatro now?"
+			},
 			toga_albavirusnote = {
 				"WARNING", "You just obtained Albanian Virus for the first time!", "You are recommended to read the 'Heads Up!' tooltip", "when hovering over the Joker for your own sake."
 			},
@@ -2279,8 +2325,10 @@ return {
 				"Have fun, but don't try to cheat, will you?"
 			},
 			toga_stjnote = {
-				"Slay the Jokers detected", "Some items in TOGA's Stuff use multibox descriptions, which can", "crash Slay the Jokers. Those items will use slightly different",
-				"localization entries instead to try and prevent such crashes."
+				"Slay the Jokers detected",
+				"Releases of Slay the Jokers 0.2 or lower crash the game when a modded item",
+				"has multibox descriptions. As such, because some items in TOGA's Stuff use",
+				"them, they will use different localization entries instead."
 			},
 			toga_talismanjoke = {
 				"Talisman detected", "Numbers WILL be compared to tables.", "You've been warned.",
