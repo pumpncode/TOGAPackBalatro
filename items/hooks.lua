@@ -649,7 +649,7 @@ end
 
 local gotomenuref = G.FUNCS.go_to_menu
 function G.FUNCS.go_to_menu(e)
-	if G.jokers and next(SMODS.find_card('j_toga_notsosmileyface', true)) then
+	if G.jokers and next(SMODS.find_card('j_toga_notsosmileyface', true)) and not (G.STATE == G.STATES.GAME_OVER or G.GAME.won) then
 		local nssms = SMODS.find_card('j_toga_notsosmileyface', true)
 		local nssm = pseudorandom_element(nssms, pseudoseed('toga_:)'))
 		if nssm and (not togabalatro.smiletriggeronce or math.random(1, 2) == 1) then
@@ -672,7 +672,7 @@ local cfgrestartval = { ['EnableQE'] = true }
 function love.update(dt)
 	if togabalatro then
 		-- Hello everybody, my name is Windiplier.
-		if togabalatro.has_tried_startup then
+		if togabalatro.has_tried_startup and not silent then
 			if love.window.isMinimized() and not ismin then
 				ismin = true
 				togabalatro.playwindowsfx('min')

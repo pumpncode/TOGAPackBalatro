@@ -15,7 +15,7 @@ SMODS.Joker{
 		if context.other_consumeable then
 			local aheads, onlyspades = {}, true
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].config.center.rarity == "payasaka_ahead" then aheads[#aheads+1] = G.jokers.cards[i] end
+				if G.jokers.cards[i]:is_rarity("payasaka_ahead") then aheads[#aheads+1] = G.jokers.cards[i] end
 			end
 			if context.full_hand and #context.full_hand > 0 then
 				for i = 1, #context.full_hand do

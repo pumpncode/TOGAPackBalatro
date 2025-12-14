@@ -351,7 +351,7 @@ togabalatro.verifysfxconfig = function()
 	togabalatro.config.StartUpSFX.UseSelected = togabalatro.config.StartUpSFX.UseSelected or false
 end
 togabalatro.execstartupsfx = function(change_context)
-	if not togabalatro.has_tried_startup and togabalatro.config.StartUpSound then
+	if not togabalatro.has_tried_startup and togabalatro.config.StartUpSound and not silent then
 		togabalatro.verifysfxconfig()
 		if not togabalatro.config.StartUpSFX.UseSelected or togabalatro.config.StartUpSFX.Selected == nil then
 			togabalatro.config.StartUpSFX.Selected = math.random(1, #togabalatro.startupsfx)
@@ -560,6 +560,7 @@ togabalatro.playwindowsfx = function(_t)
 	if type(togabalatro.config.WindowSFXTheme) ~= 'number' then togabalatro.config.WindowSFXTheme = 1 end
 	if not togabalatro.config.WindowSFXUse then return end
 	if not togabalatro.plussfxtype[_t] then return end
+	if silent then return end
 	
 	local sfxtype = togabalatro.plussfxtype[_t]
 	local selectedsfx = togabalatro.plussfxtheme[togabalatro.config.WindowSFXTheme][togabalatro.plussfxtype[_t]]

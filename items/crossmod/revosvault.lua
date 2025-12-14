@@ -24,8 +24,7 @@ SMODS.Joker{
 	pools = { ["TOGAJKR"] = true },
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.other_joker and context.other_joker.config and context.other_joker.config.center and context.other_joker.config.center.rarity == "crv_p"
-		and SMODS.pseudorandom_probability(card, 'toga_bogosbinted', 1, card.ability.extra.odds, 'printersharing') then
+		if context.other_joker and context.other_joker:is_rarity("crv_p") and SMODS.pseudorandom_probability(card, 'toga_bogosbinted', 1, card.ability.extra.odds, 'printersharing') then
 			return { x_mult = card.ability.extra.printxmult, message_card = context.other_joker }
 		end
 	end,

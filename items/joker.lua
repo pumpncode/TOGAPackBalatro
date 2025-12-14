@@ -1448,7 +1448,7 @@ table.insert(jokers, {
 		if context.initial_scoring_step then
 			local commons = {}
 			for k, v in ipairs((G.jokers or {}).cards) do
-				if v.config.center.rarity == 1 then table.insert(commons, { mult = card.ability.extra.mult, card = context.blueprint_card or card, message_card = v }) end
+				if v:is_rarity("Common") then table.insert(commons, { mult = card.ability.extra.mult, card = context.blueprint_card or card, message_card = v }) end
 			end
 			if next(commons) then return SMODS.merge_effects(commons) end
 		end

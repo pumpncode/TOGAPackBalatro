@@ -489,7 +489,7 @@ togabalatro.jd_def["j_toga_gamecontrollers"] = {
 
 togabalatro.jd_def["j_toga_wincatalog"] = {
 	mod_function = function(card, mod_joker)
-		return { mult = card ~= mod_joker and card.config.center.rarity == 1 and mod_joker.ability.extra.mult*JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+		return { mult = card ~= mod_joker and card:is_rarity("Common") and mod_joker.ability.extra.mult*JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 	end
 }
 
@@ -1149,7 +1149,7 @@ togabalatro.jd_def["j_toga_nonebattery"] = {
 		{
 			border_nodes = {
 				{ text = "X" },
-				{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
+				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" },
 			},
 		},
 	},
@@ -1160,6 +1160,7 @@ togabalatro.jd_def["j_toga_nonebattery"] = {
 	},
 	calc_function = function(card)
 		card.joker_display_values.battery = love.system.getPowerInfo()
+		card.joker_display_values.xmult = card.joker_display_values.battery ~= 'nobattery' and 1 or card.ability.extra.xmult
 	end,
 	style_function = function(card, text, reminder_text, extra)
 		if reminder_text and reminder_text.children[1] and reminder_text.children[2] and card.joker_display_values then
@@ -1424,7 +1425,7 @@ if next(SMODS.find_mod('RevosVault')) then
 			card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds) } }
 		end,
 		mod_function = function(card, mod_joker)
-			return { x_mult = card.config.center.rarity == "crv_p" and mod_joker.ability.extra.printxmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+			return { x_mult = card:is_rarity("crv_p") and mod_joker.ability.extra.printxmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 		end
 	}
 end
@@ -1462,7 +1463,7 @@ if next(SMODS.find_mod('pta_saka')) then
 			local aheads = 0
 			if G.jokers then
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].config.center.rarity == "payasaka_ahead" then aheads = aheads + 1 end
+					if G.jokers.cards[i]:is_rarity("payasaka_ahead") then aheads = aheads + 1 end
 				end
 			end
 			local conscount = G.consumeables and G.consumeables.cards and G.consumeables.cards[1] and #G.consumeables.cards or 0
