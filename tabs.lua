@@ -121,7 +121,7 @@ togabalatro.logging_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_extraverboselog'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
-		{n = G.UIT.R, config = {align = "cm", padding = 0, outline = 0.5, outline_colour = HEX('491A19'), colour = HEX('7A2D29')}, nodes = {
+		{n = G.UIT.R, config = {align = "cm", colour = HEX('7A2D29')}, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0}, nodes = {
 				{n = G.UIT.O, config = { w = 0.66, h = 0.66, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 1, y = 0 }) } },
 			}},
@@ -180,7 +180,7 @@ togabalatro.startupsfx_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_windowsfxuse'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_windowsfx1'), localize('toga_desc_windowsfx2')} } }},
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = -0.2 }, nodes = {
-				create_option_cycle({w = 3.5, colour = HEX('808080'), w = 4.5, scale = 0.8, options = togabalatro.plussfxthemes, opt_callback = 'togabalatro_themeselect', current_option = togabalatro.config.WindowSFXTheme or 1}),
+				create_option_cycle({w = 3.5, colour = HEX('808080'), w = 4.5, scale = 0.8, options = togabalatro.plussfxthemeregistry, opt_callback = 'togabalatro_themeselect', current_option = togabalatro.getcurtheme() or 1}),
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
@@ -207,8 +207,8 @@ togabalatro.getitemsforoptions = function()
 end
 
 togabalatro.itemoptions_tab = function()
-	local cards, camount = togabalatro.getitemsforoptions() or {}, 1
-	return {n = G.UIT.ROOT, config = {align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 7, minh = 2}, nodes = {
+	local cards, camount = togabalatro.getitemsforoptions() or {}
+	return {n = G.UIT.ROOT, config = {align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 6, minh = 2}, nodes = {
 		{n = G.UIT.R, config = {align = "cl", colour = HEX('000082')}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
 				{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 4, y = 0 }) } },
@@ -222,14 +222,14 @@ togabalatro.itemoptions_tab = function()
 				togabalatro.cagen(nil, nil, {cards = cards, w = #cards}),
 			}},
 		}} or nil),
-		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
+		(cards and #cards > 0 and {n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "UseNerfed" },
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_usenerfedver'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_nerfver')} } }},
 			}},
-		}},
+		}} or nil),
 		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_jokeactive'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_jokeitems')} } }},

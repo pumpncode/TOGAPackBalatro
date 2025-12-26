@@ -6,177 +6,9 @@ sendInfoMessage("░▀▀▀░▀▀▀░▀░▀░▀▀░░▀░▀░
 sendInfoMessage("░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▄▄██▄▄░░░░░█████░░", "TOGAPack")
 sendInfoMessage("Hello World! Starting TOGAPack...", "TOGAPack")
 
--- Define thy map.
-SMODS.Atlas{key = "TOGAJokersMain", path = "togajokers.png", px = 72, py = 95}
-SMODS.Atlas{key = "TOGAJokersMainW", path = "togajokersw.png", px = 91, py = 95}
-SMODS.Atlas{key = "TOGAJokersOther", path = "togajokersother.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokersOtherDiffSize", path = "togajokersothersize.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokersWindows", path = "togajokerswinos.png", px = 72, py = 95}
-SMODS.Atlas{key = "TOGAJokersMac", path = "togamacos.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokersLinux", path = "togalinuxos.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokersUpdate", path = "togajokerupdate.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAJokerRover", path = "togarover.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGABoosterPack", path = "togabooster.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAConsumables", path = "togacons.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGADeckBack", path = "togadeck.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGATags", path = "togatags.png", px = 34, py = 34}
-SMODS.Atlas{key = "TOGASeals", path = "togaseal.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAEnhancements", path = "togaenh.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAStickers", path = "togastickers.png", px = 71, py = 95}
-SMODS.Atlas{key = "TOGAStakes", path = "togastake.png", px = 29, py = 29}
-SMODS.Atlas{key = "TOGADialUpBlind", path = "togadialupblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 24}
-SMODS.Atlas{key = "TOGAWWWBlind", path = "togawwwblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 32}
-SMODS.Atlas{key = "TOGAOtherBlind", path = "togaotherblind.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 1}
-SMODS.Atlas{key = "TOGAMoreIcons", path = "togamoricons.png", px = 36, py = 36, disable_mipmap = true}
-SMODS.Atlas{key = "TOGAFunny", path = "togazefunny.png", px = 64, py = 64, atlas_table = 'ANIMATION_ATLAS', frames = 9}
-SMODS.Atlas{key = "TOGAFunnyStatic", path = "togazefunny.png", px = 64, py = 64}
-SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 32, py = 32}
-
--- Hear me scream.
-SMODS.Sound({key = "win95start", path = "win95start.ogg"}) -- The Microsoft Sound (95 & NT4)
-SMODS.Sound({key = "win95tada", path = "win95tada.ogg"}) -- tada.wav (3.x, 95 & NT4)
-SMODS.Sound({key = "bells", path = "startup/bells.wav"}) -- Windows 3.0 MME
-SMODS.Sound({key = "gong", path = "startup/GONG.WAV"}) -- Windows 3.0 MME
-SMODS.Sound({key = "w96", path = "startup/w96.wav"}) -- Custom Windows Startup
-SMODS.Sound({key = "w94", path = "startup/w94.wav"}) -- Custom Windows Startup
-SMODS.Sound({key = "money9597", path = "startup/mm9597.wav"}) -- Microsoft Money 95/97
-SMODS.Sound({key = "money9899", path = "startup/mm9899.ogg"}) -- Microsoft Money 98/99
-SMODS.Sound({key = "longhorn", path = "startup/longhorn.wav"}) -- "Longhorn Startup" / Samsung Theme for Windows XP
-SMODS.Sound({key = "ntreskit", path = "startup/ntreskit.ogg"}) -- Windows NT4 Resource Kit
-SMODS.Sound({key = "chordold", path = "chordold.wav"}) -- chord.wav (95 & NT4)
-SMODS.Sound({key = "chord", path = "chord.wav"}) -- chord.wav (98, ME, 2000 and XP)
-SMODS.Sound({key = "win98start", path = "win98start.ogg"}) -- The Microsoft Sound (98) [edited]
-SMODS.Sound({key = "win98tada", path = "win98tada.ogg"}) -- tada.wav (98, ME, 2000 and XP)
-SMODS.Sound({key = "winme2000start", path = "winmestart.ogg"}) -- Windows Logon Sound for ME/2000 [edited]
-SMODS.Sound({key = "winme2000shutdown", path = "winmeshutdown.ogg"}) -- Windows Logoff Sound for ME/2000 [edited]
-SMODS.Sound({key = "winnt4startorig", path = "Windows NT Logon Sound.wav"}) -- Windows Logon Sound for NT4 [original]
-SMODS.Sound({key = "winnt4start", path = "winnt4start.ogg"}) -- Windows Logon Sound for NT4 [edited]
-SMODS.Sound({key = "winnt4shutdown", path = "winnt4shutdown.ogg"}) -- Windows Logoff Sound for NT4 [edited]
-SMODS.Sound({key = "winxplogon", path = "Windows XP Logon Sound.wav"}) -- Windows Logon Sound, XP
-SMODS.Sound({key = "winxplogoff", path = "Windows XP Logoff Sound.wav"}) -- Windows Logoff Sound, XP
-SMODS.Sound({key = "winxpyesyoucan", path = "theexperience.ogg"}) -- Snippet from Windows XP Tour
-SMODS.Sound({key = "winxpcritstop", path = "Windows XP Critical Stop.wav"}) -- Critical Stop, XP
-SMODS.Sound({key = "winxpballoon", path = "Windows XP Balloon.wav"}) -- Critical Stop, XP
-SMODS.Sound({key = "winxpinfobar", path = "Windows XP Information Bar.wav"}) -- Information Bar, XP
-SMODS.Sound({key = "winvista78logon", path = "winvista78logon.wav"}) -- Startup/Logon, Vista, 7 & 8.x
-SMODS.Sound({key = "winvista78logoff", path = "winvista78logoff.wav"}) -- Logoff, Vista, 7 & 8.x
-SMODS.Sound({key = "winvista7critstop", path = "winvista7critstop.wav"}) -- Critical Stop, Vista, 7
-SMODS.Sound({key = "win8error", path = "win8bg.wav"}) -- Windows Background, 8.x
-SMODS.Sound({key = "ssb64crowdohh", path = "Crowd Ohhh.ogg"}) -- Crowd Ohhh from Super Smash Bros 64
-SMODS.Sound({key = "duck", path = "duck.ogg"}) -- Mac OS 9 Quack
-SMODS.Sound({key = "kcud", path = "kcud.ogg"}) -- kcauQ 9 SO caM
-SMODS.Sound({key = "ie31", path = "1.wav"}) -- Internet Explorer 3 Administration Kit Autorun
-SMODS.Sound({key = "access97", path = "Microsoft Access 97 Sound.wav"}) -- Microsoft Access 97
-SMODS.Sound({key = "recyclebinsfx", path = "recycle.ogg"}) -- recycle.wav (98, ME, 2000) 
-SMODS.Sound({key = "plus98emptybin", path = "WI_EMPTY.WAV"}) -- Plus! 98, Windows 98 Empty Recycle Bin
-SMODS.Sound({key = "infraredbegin", path = "ir_begin.ogg"}) -- Infrared Begin (starting infrared activity?)
-SMODS.Sound({key = "infraredend", path = "ir_end.ogg"}) -- Infrared End (ending infrared activity?)
-SMODS.Sound({key = "o97doorbell", path = "doorbell.wav"}) -- doorbell.wav from Office 97 Multimedia
-SMODS.Sound({key = "o97glide", path = "glide.wav"}) -- glide.wav from Office 97 Multimedia
-SMODS.Sound({key = "mmeclap", path = "CLAP.WAV"}) -- clap.wav from Windows 3.0 MME
-SMODS.Sound({key = "officehammer", path = "HAMMER.WAV"}) -- hammer.wav from Microsoft Office sounds, unused as of 1.7.1-RC1
-SMODS.Sound({key = "roverbark", path = "roverbark.ogg"}) -- 0002.wav, Microsoft Agent - Rover
-SMODS.Sound({key = "mscmenucmd", path = "Musica Menu Command.ogg"}) -- Musica Sound Scheme (95 & NT4)
-SMODS.Sound({key = "spb", path = "kc57.ogg"}) -- Unused in Knuckles Chaotix, Self-Propelled Bomb targeting first place in SRB2Kart/Dr. Robotnik's Ring Racers.
-SMODS.Sound({key = "thundershield", path = "DSZIO3.ogg"}) -- Thunder Shield
-SMODS.Sound({key = "anviluse", path = "mcanviluse.ogg"}) -- Snippet of block.anvil.use, Minecraft
-SMODS.Sound({key = "xporb", path = "mcxp.ogg"}) -- Experience, Minecraft
-SMODS.Sound({key = "pinballstart", path = "SOUND4.WAV"}) -- Round Start, Plus! 98 - Space Cadet Pinball Demo
-SMODS.Sound({key = "pinballshutdown", path = "SOUND68.WAV"}) -- Board Shut Down - Space Cadet Pinball Demo
-SMODS.Sound({key = "pinballloseball", path = "SOUND27.WAV"}) -- Lose Ball, Plus! 98 - Space Cadet Pinball Demo
-SMODS.Sound({key = "pinballsfx8", path = "pinball/SOUND8.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx14", path = "pinball/SOUND14.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx16", path = "pinball/SOUND16.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx21", path = "pinball/SOUND21.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx24", path = "pinball/SOUND24.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx26", path = "pinball/SOUND26.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx43", path = "pinball/SOUND43.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx49", path = "pinball/SOUND49.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx53", path = "pinball/SOUND53.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "pinballsfx55", path = "pinball/SOUND55.WAV"}) -- Space Cadet Pinball Demo SFX
-SMODS.Sound({key = "rosenclick", path = "rosenclick.ogg"}) -- *click* Nice. - Michael Rosen
-SMODS.Sound({key = "rosenhello", path = "rosenhello.ogg"}) -- self explanatory, same as above.
-SMODS.Sound({key = "rosenbye", path = "rosenthatsashame.ogg"}) -- self explanatory, same as above.
-SMODS.Sound({key = "rosenah", path = "rosenah.ogg"}) -- self explanatory, same as above.
-SMODS.Sound({key = "scalesofjustice", path = "ScalesOfJustice.wav"}) -- self explanatory, Worms Armageddon/World Party.
-SMODS.Sound({key = "failsfx", path = "comedicfail.ogg"}) -- fart.mp3
-SMODS.Sound({key = "goldenhit", path = "Saxxy_impact_gen_06.ogg"}) -- getting a kill with a Golden Wrench, Saxxy or Golden Frying Pan, TF2
-SMODS.Sound({key = "jaratehit", path = "crit_hit_mini.wav"}) -- Minicrits, TF2
-SMODS.Sound({key = "soldierscream", path = "screm.ogg"}) -- TF2 Soldier screaming?
-SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass Soundfont (2007) / Zero-G Sample Disc Bass 4 (1990s)
-SMODS.Sound({key = "mcprf5400", path = "macperforma5400.ogg"}) -- Mac Performa 5400 (Death Chime)
-SMODS.Sound({key = "dingy", path = "ding.wav"}) -- ding.wav (98, ME, 2000 and XP)
-
--- I command you to execute.
-SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd2", path = "plus95/Inside your Computer menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd3", path = "plus95/Jungle menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd4", path = "plus95/Leonardo da Vinci menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd5", path = "plus95/Mystery menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd6", path = "plus95/Nature menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd7", path = "plus95/Science menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd8", path = "plus95/Space menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd9", path = "plus95/Sports menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd10", path = "plus95/The 60's USA menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd11", path = "plus95/The Golden Era menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd12", path = "plus95/Windows 95 menu command.ogg"})
-SMODS.Sound({key = "win95pluscmd13", path = "plus95/Travel menu command.ogg"})
-
--- wmplayer.exe > balatro♠ost.mid
-SMODS.Sound({
-	key = "music_balatro98",
-	path = "balatro98.ogg",
-	select_music_track = function()
-		return (not togabalatro.checksiiva()) and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU
-		or togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
-		and (SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togazipboosterpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaziparchivepack'
-		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togararpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togacardcabpack'
-		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaxcopydnapack') and 2
-	end,
-})
-
-SMODS.Sound({
-	key = "music_spbattacklose",
-	path = "O_SPBA_L.ogg",
-	select_music_track = function()
-		return G.STATE == G.STATES.GAME_OVER and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck'
-		and G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('game_over_UI') and not togabalatro.checksiiva() and 69420
-	end,
-	sync = false,
-	pitch = 1,
-	volume = 0.2
-})
-
-SMODS.Sound({
-	key = "music_spbattackwin",
-	path = "O_SPBA_W.ogg",
-	select_music_track = function()
-		return G.SETTINGS.paused and G.GAME.won and togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck'
-		and G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('you_win_UI') and not togabalatro.checksiiva() and 69420
-	end,
-	sync = false,
-	pitch = 1,
-	volume = 0.2
-})
-
-SMODS.Sound({
-	key = "music_upgradestation",
-	path = "upgradestation.ogg",
-	pitch = 1,
-	select_music_track = function()
-		return togabalatro.config.UseCustomModTabMusic and SMODS.LAST_SELECTED_MOD_TAB and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "TOGAPack" and not togabalatro.checksiiva() and 2
-	end,
-})
-
-SMODS.Sound({
-	key = "music_shhh",
-	path = "silence.ogg",
-	pitch = 1,
-	select_music_track = function()
-		return G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('toga_intro') and 69e42
-	end,
-	sync = false,
-})
+-- Initialize assets...
+sendDebugMessage("Executing assets.lua", "TOGAPack")
+assert(SMODS.load_file("assets.lua"))()
 
 -- I think, therefore, I am.
 togabalatro = SMODS.current_mod
@@ -222,6 +54,21 @@ end
 
 togabalatro.set_debuff = function(card)
 	if SMODS.has_enhancement(card, 'm_toga_nickel') then return 'prevent_debuff' end
+end
+
+togabalatro.calculate = function(self, context)
+	if context.initial_scoring_step and context.scoring_name then
+		local hasplanet = false
+		for i, v in ipairs((G.consumeables or {}).cards) do
+			if v.ability.set == 'Planet' and v.ability.consumeable.hand_type == context.scoring_name then hasplanet = true; break end
+		end
+		if hasplanet then
+			local shifta = SMODS.find_card('j_toga_pso2shifta')
+			if shifta[1] then
+				return { xchips = 1.97, xmult = 1.97, message_card = shifta[1] }
+			end
+		end
+	end
 end
 
 togabalatro.nfs = require('nativefs')
@@ -425,7 +272,17 @@ SMODS.ObjectType{
 		["j_toga_gamecontrollers"] = true, ["j_toga_wincatalog"] = true, ["j_toga_monitor"] = true,
 		["j_toga_notsosmileyface"] = true, ["j_toga_rloctane"] = true, ["j_toga_wscript"] = true,
 		["j_toga_toiletrock"] = true, ["j_toga_wishingstones"] = true, ["j_toga_stoneroad"] = true,
+		["j_toga_pso2shifta"] = true, ["j_toga_pso2deband"] = true, ["j_toga_pso2ironwill"] = true,
+		["j_toga_skifree_skier"] = true, ["j_toga_skifree_yeti"] = true, ["j_toga_mmc"] = true,
+		["j_toga_chipchallenge"] = true, ["j_toga_franziska"] = true, ["j_toga_beos"] = true,
 	}
+}
+
+SMODS.ConsumableType{
+	key = "togaitem",
+	primary_colour = HEX('5f0000'),
+	secondary_colour = HEX('5f0000'),
+	no_collection = true,
 }
 
 G.FUNCS.togabalatro_startupsfx = function(args)
@@ -457,11 +314,6 @@ G.FUNCS.togabalatro_poweritems = function(args)
 	SMODS.save_mod_config(togabalatro)
 	G.FUNCS.openModUI_TOGAPack()
 end
-G.FUNCS.togabalatro_themeselect = function(args)
-	if not args or args.to_key == nil then return end
-	togabalatro.config.WindowSFXTheme = args.to_key
-	SMODS.save_mod_config(togabalatro)
-end
 
 togabalatro.updatecollectionitems = function()
 	for _, t in ipairs{G.P_CENTERS, G.P_TAGS, G.P_SEALS} do
@@ -478,95 +330,9 @@ togabalatro.updatecollectionitems = function()
 	end
 end
 
--- The window do be moving.
-SMODS.Sound({key = "win95plusmin1", path = "plus95/Dangerous Creatures minimize.ogg"})
-SMODS.Sound({key = "win95plusmax1", path = "plus95/Dangerous Creatures maximize.ogg"})
-
-SMODS.Sound({key = "win95plusmin2", path = "plus95/Inside your Computer minimize.ogg"})
-SMODS.Sound({key = "win95plusmax2", path = "plus95/Inside your Computer maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup2", path = "plus95/Inside your Computer restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw2", path = "plus95/Inside your Computer restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin3", path = "plus95/Jungle minimize.ogg"})
-SMODS.Sound({key = "win95plusmax3", path = "plus95/Jungle maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup3", path = "plus95/Jungle restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw3", path = "plus95/Jungle restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin4", path = "plus95/Leonardo da Vinci minimize.ogg"})
-SMODS.Sound({key = "win95plusmax4", path = "plus95/Leonardo da Vinci maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup4", path = "plus95/Leonardo da Vinci restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw4", path = "plus95/Leonardo da Vinci restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin5", path = "plus95/Mystery minimize.ogg"})
-SMODS.Sound({key = "win95plusmax5", path = "plus95/Mystery maximize.ogg"})
-
-SMODS.Sound({key = "win95plusmin6", path = "plus95/Nature minimize.ogg"})
-SMODS.Sound({key = "win95plusmax6", path = "plus95/Nature maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup6", path = "plus95/Nature restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw6", path = "plus95/Nature restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin7", path = "plus95/Science minimize.ogg"})
-SMODS.Sound({key = "win95plusmax7", path = "plus95/Science maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup7", path = "plus95/Science restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw7", path = "plus95/Science restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin8", path = "plus95/Space minimize.ogg"})
-SMODS.Sound({key = "win95plusmax8", path = "plus95/Space maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup8", path = "plus95/Space restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw8", path = "plus95/Space restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin9", path = "plus95/Sports minimize.ogg"})
-SMODS.Sound({key = "win95plusmax9", path = "plus95/Sports maximize.ogg"})
-
-SMODS.Sound({key = "win95plusmin10", path = "plus95/The 60's USA minimize.ogg"})
-SMODS.Sound({key = "win95plusmax10", path = "plus95/The 60's USA maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup10", path = "plus95/The 60's USA restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw10", path = "plus95/The 60's USA restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin11", path = "plus95/The Golden Era minimize.ogg"})
-SMODS.Sound({key = "win95plusmax11", path = "plus95/The Golden Era maximize.ogg"})
-
-SMODS.Sound({key = "win95plusmin12", path = "plus95/Travel minimize.ogg"})
-SMODS.Sound({key = "win95plusmax12", path = "plus95/Travel maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup12", path = "plus95/Travel restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw12", path = "plus95/Travel restore down.ogg"})
-
-SMODS.Sound({key = "win95plusmin13", path = "plus95/Windows 95 minimize.ogg"})
-SMODS.Sound({key = "win95plusmax13", path = "plus95/Windows 95 maximize.ogg"})
-SMODS.Sound({key = "win95plusrestup13", path = "plus95/Windows 95 restore up.ogg"})
-SMODS.Sound({key = "win95plusrestdw13", path = "plus95/Windows 95 restore down.ogg"})
-
-togabalatro.plussfxthemes = {"Dangerous Creatures", "Inside Your Computer", "Jungle", "Leonardo Da Vinci", "Mystery", "Nature", "Science", "Space", "Sports", "The 60's USA", "The Golden Era", "Travel", "Windows 95"}
-togabalatro.plussfxtype = { min = 1, max = 2, restup = 3, restdw = 4 }
-
-togabalatro.plussfxtheme = {
-	{"toga_win95plusmin1", "toga_win95plusmax1"},
-	{"toga_win95plusmin2", "toga_win95plusmax2", "toga_win95plusrestup2", "toga_win95plusrestdw2"},
-	{"toga_win95plusmin3", "toga_win95plusmax3", "toga_win95plusrestup3", "toga_win95plusrestdw3"},
-	{"toga_win95plusmin4", "toga_win95plusmax4", "toga_win95plusrestup4", "toga_win95plusrestdw4"},
-	{"toga_win95plusmin5", "toga_win95plusmax5"},
-	{"toga_win95plusmin6", "toga_win95plusmax6", "toga_win95plusrestup6", "toga_win95plusrestdw6"},
-	{"toga_win95plusmin7", "toga_win95plusmax7", "toga_win95plusrestup7", "toga_win95plusrestdw7"},
-	{"toga_win95plusmin8", "toga_win95plusmax8", "toga_win95plusrestup8", "toga_win95plusrestdw8"},
-	{"toga_win95plusmin9", "toga_win95plusmax9", "toga_win95plusrestup9", "toga_win95plusrestdw9"},
-	{"toga_win95plusmin10", "toga_win95plusmax10", "toga_win95plusrestup10", "toga_win95plusrestdw10"},
-	{"toga_win95plusmin11", "toga_win95plusmax11"},
-	{"toga_win95plusmin12", "toga_win95plusmax12", "toga_win95plusrestup12", "toga_win95plusrestdw12"},
-	{"toga_win95plusmin13", "toga_win95plusmax13", "toga_win95plusrestup13", "toga_win95plusrestdw13"},
-}
-
-togabalatro.playwindowsfx = function(_t)
-	if type(togabalatro.config.WindowSFXUse) ~= 'boolean' then togabalatro.config.WindowSFXUse = false end
-	if type(togabalatro.config.WindowSFXTheme) ~= 'number' then togabalatro.config.WindowSFXTheme = 1 end
-	if not togabalatro.config.WindowSFXUse then return end
-	if not togabalatro.plussfxtype[_t] then return end
-	if silent then return end
-	
-	local sfxtype = togabalatro.plussfxtype[_t]
-	local selectedsfx = togabalatro.plussfxtheme[togabalatro.config.WindowSFXTheme][togabalatro.plussfxtype[_t]]
-	
-	if sfxtype and selectedsfx and SMODS.Sounds[selectedsfx] then play_sound(selectedsfx) end
-end
+-- Load other UI stuff.
+sendDebugMessage("Executing winsfx.lua", "TOGAPack")
+assert(SMODS.load_file("winsfx.lua"))()
 
 -- Yoinked from Aikoyori.
 togabalatro.cagen = function(cardArea, desc_nodes, config)
@@ -666,26 +432,6 @@ end
 to_big = to_big or function(a) return a end
 to_number = to_number or function(a) return a end
 
--- Choose rank for drawing if meeting conditions for Solitaire Joker.
-togabalatro.reset_solitaire = function(run_start)
-	if run_start then G.GAME.current_round.togabalatro.solitaire = {} end
-	G.GAME.current_round.togabalatro.solitaire.rank = 'Ace'
-	G.GAME.current_round.togabalatro.solitaire.id = 14
-	local valid_soli_cards = {}
-	for k, v in ipairs(G.playing_cards) do
-		if v.ability.effect ~= 'Stone Card' then
-			if not SMODS.has_no_rank(v) then
-				valid_soli_cards[#valid_soli_cards+1] = v
-			end
-		end
-	end
-	if valid_soli_cards[1] then
-		local soli_card = pseudorandom_element(valid_soli_cards, pseudoseed('solitaire'..G.GAME.round_resets.ante))
-		G.GAME.current_round.togabalatro.solitaire.rank = soli_card.base.value
-		G.GAME.current_round.togabalatro.solitaire.id = soli_card.base.id
-	end
-end
-
 -- Choose suit for Disk Cleanup Joker.
 togabalatro.reset_diskcleanup = function(run_start)
 	if run_start then G.GAME.current_round.togabalatro.diskcleanup = {}; G.GAME.current_round.togabalatro.diskcleanup.suit = 'Hearts' end
@@ -730,12 +476,24 @@ end
 togabalatro.reset_game_globals = function(run_start)
 	if run_start then G.GAME.current_round.togabalatro = {} end
 	
-	togabalatro.reset_solitaire(run_start)
 	togabalatro.reset_diskcleanup(run_start)
 	togabalatro.reset_regedit(run_start)
 	togabalatro.reset_certificateserver(run_start)
 	
 	if togabalatro.config.DoMoreLogging then sendInfoMessage("Reset own round variables.", "TOGAPack") end
+end
+
+-- Choose poker hand for Chip's Challenge.
+togabalatro.chipchallenge_handchoice = function(joker)
+	if not (joker and joker.ability and type(joker.ability.extra) == 'table') then return end
+	local names = {}
+	for k, v in ipairs(G.handlist) do
+		if G.GAME.hands[v] and G.GAME.hands[v].visible then names[#names+1] = v end
+	end
+	if next(names) then
+		local hand = pseudorandom_element(names, pseudoseed('challengedchips'))
+		joker.ability.extra.chand = hand
+	end
 end
 
 -- Random pitch...
@@ -1099,21 +857,17 @@ togabalatro.triggereof = function(context)
 	end
 end
 
--- Check for HandLimitAPI...
-togabalatro.handlimitapi = function()
-	return (SMODS.change_play_limit and SMODS.change_discard_limit and SMODS.update_hand_limit_text) or false
-end
-
--- Using HandLimitAPI if possible.
-togabalatro.handlimitchange = function(val, set_to)
+togabalatro.handlimitchange = function(val, set_to, ptype)
 	val = val or 0
-	if togabalatro.handlimitapi() then
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("Using HandLimitAPI. "..tostring(set_to).." "..val, "TOGAPack") end
+	if not (ptype and next(ptype)) then
 		SMODS.change_play_limit(set_to and G.GAME.starting_params.play_limit - val or val)
 		SMODS.change_discard_limit(set_to and G.GAME.starting_params.discard_limit - val or val)
 	else
-		if togabalatro.config.DoMoreLogging then sendInfoMessage("How did you even trigger this? "..val, "TOGAPack") end
-		G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit + val, val < 0 and 1 or 5)
+		if ptype.play then
+			SMODS.change_play_limit(set_to and G.GAME.starting_params.play_limit - val or val)
+		elseif ptype.discard then
+			SMODS.change_discard_limit(set_to and G.GAME.starting_params.discard_limit - val or val)
+		end
 	end
 end
 
@@ -1141,19 +895,6 @@ togabalatro.playextracards = function()
 			end
 		end
 	end
-	-- Draw cards to hand by Solitaire Joker... if we actually have a Straight.
-	if next(SMODS.find_card('j_toga_solitairejoker')) then
-		local _, _, pokerhands = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-		if next(pokerhands['Straight']) then
-			local curcards = {}
-			for i = 1, #G.deck.cards do
-				if G.deck.cards[i]:get_id() == G.GAME.current_round.togabalatro.solitaire.id then curcards[#curcards+1] = G.deck.cards[i] end
-			end
-			for c = 1, #curcards do
-				if curcards[c] then draw_card(G.deck, G.hand, c*100/#curcards, 'up', true, curcards[c]) end
-			end
-		end
-	end
 	-- Draw cards to hand by (attempting to be) played Redstone cards.
 	for i = 1, #G.hand.highlighted do
 		if not G.hand.highlighted[i].debuff and SMODS.has_enhancement(G.hand.highlighted[i], 'm_toga_redstone') then draw_card(G.deck, G.hand, 1, 'up') end
@@ -1172,19 +913,30 @@ togabalatro.getconscount = function()
 	return count
 end
 
+local overflowcheck, incantationcheck = next(SMODS.find_mod('Overflow')) and Overflow, next(SMODS.find_mod('Incantation')) and Incantation
 -- Check for Overflow or Incantation...
 togabalatro.stackingcompat = function(consumable)
 	-- The new and shiny Overflow!
-	if Overflow and consumable and consumable.ability and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
+	if overflowcheck and consumable and consumable.ability and consumable.ability.immutable and consumable.ability.immutable.overflow_amount then
 		return true, consumable.ability.immutable.overflow_amount
-	-- ...though, backwards compatibility wouldn't hurt...
-	elseif Incantation and consumable and consumable.ability and consumable.ability.qty then
+	-- ...but Incantation exists too, I guess.
+	elseif incantationcheck and consumable and consumable.ability and consumable.ability.qty then
 		return true, consumable.ability.qty
 	end
 end
 
 togabalatro.stjcheck = function()
 	return SMODS.Mods['SlayTheJokers'] and SMODS.Mods['SlayTheJokers'].can_load or false
+end
+
+togabalatro.postloadinit = function()
+	togabalatro.updatecollectionitems()
+	if overflowcheck and Overflow and type(Overflow.blacklist) == 'table' then
+		for k, v in pairs({'c_toga_selfpropelledbomb', 'c_toga_alloyer', 'c_toga_inbox', 'c_toga_miningprospect', 'c_toga_furnace'}) do
+			if not Overflow.blacklist[v] then Overflow.blacklist[v] = true end
+		end
+	end
+	-- TOGA-TARGET: post-mod-init
 end
 
 -- In case Incantation is used, check if it is the specific fork version so that the consumeables don't do unintended things...

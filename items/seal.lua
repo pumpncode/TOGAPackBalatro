@@ -13,18 +13,17 @@ SMODS.Seal{
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_egg
 		
 		if G and G.GAME and G.GAME.used_vouchers then
-			return { key = G.GAME.used_vouchers['v_toga_caniofferyouanegg'] == true and self.key..'_alt2' or G.GAME.used_vouchers['v_toga_sealegg'] == true and self.key..'_alt1'
-				or self.key, vars = G.GAME.used_vouchers['v_toga_sealegg'] == true and { SMODS.get_probability_vars(card or self, 1, (card.ability.seal or self.config).odds or 25) } }
+			return { key = G.GAME.used_vouchers['v_toga_sealegg'] == true and self.key..'_alt1' or self.key,
+					 vars = G.GAME.used_vouchers['v_toga_sealegg'] == true and { SMODS.get_probability_vars(card or self, 1, (card.ability.seal or self.config).odds or 25) } }
 		end
 	end,
 	sound = { sound = "gold_seal", per = 1.2, vol = 0.4 },
 	calculate = function(self, card, context)
 		if context.main_scoring and context.cardarea == G.play and card and card.ability.seal then
-			local negativeroll = SMODS.pseudorandom_probability(context.other_card or card or self, "sealseal", 1, card.ability.seal.odds, 'sealseal')
 			return {
 				func = function()
 					local createnegative = false
-					if G.GAME.used_vouchers['v_toga_caniofferyouanegg'] == true or (negativeroll and G.GAME.used_vouchers['v_toga_sealegg'] == true) then createnegative = true end
+					if (SMODS.pseudorandom_probability(context.other_card or card or self, "sealseal", 1, card.ability.seal.odds, 'sealseal') and G.GAME.used_vouchers['v_toga_sealegg'] == true) then createnegative = true end
 					if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit or createnegative then
 						G.GAME.joker_buffer = G.GAME.joker_buffer + 1
 						G.E_MANAGER:add_event(Event({

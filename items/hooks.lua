@@ -24,6 +24,8 @@ sendInfoMessage("Hooking SMODS.showman...", "TOGAPack")
 local showmansmodsref = SMODS.showman
 function SMODS.showman(card_key)
 	if card_key == 'j_toga_tomscott' and next(SMODS.find_card('j_toga_tomscott')) then return true end
+	if card_key == 'j_toga_pso2shifta' and next(SMODS.find_card('j_toga_pso2shifta')) then return false end
+	if card_key == 'j_toga_pso2deband' and next(SMODS.find_card('j_toga_pso2deband')) then return false end
 	
 	return showmansmodsref(card_key)
 end
@@ -37,13 +39,10 @@ function G.FUNCS.can_play(e)
 	if #G.hand.highlighted <= G.hand.config.highlighted_limit then
 		if #G.hand.highlighted >= 52 then -- Cryptid?
 			e.config.colour = G.C.EDITION
-			if not togabalatro.handlimitapi() then e.config.button = 'play_cards_from_highlighted' end
 		elseif #G.hand.highlighted >= 10 and #G.hand.highlighted < 52 then -- 2x the base and more.
 			e.config.colour = G.C.DARK_EDITION
-			if not togabalatro.handlimitapi() then e.config.button = 'play_cards_from_highlighted' end
 		elseif #G.hand.highlighted > 5 and #G.hand.highlighted < 10 then -- more than base.
 			e.config.colour = G.C.PURPLE
-			if not togabalatro.handlimitapi() then e.config.button = 'play_cards_from_highlighted' end
 		end
 	end
 end
@@ -370,7 +369,7 @@ function SMODS.change_base(card, suit, rank, manual_sprites)
 	if next(SMODS.find_card('j_toga_regedit')) and G.GAME.current_round.togabalatro and G.GAME.current_round.togabalatro.regedit and G.GAME.current_round.togabalatro.regedit.suit and suit ~= nil then
 		suit = G.GAME.current_round.togabalatro.regedit.suit
 	end
-    return changebaseref(card, suit, rank, manual_sprites)
+	return changebaseref(card, suit, rank, manual_sprites)
 end
 
 -- Voucher redeem calculation.
@@ -494,8 +493,9 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 		end
 		local jarate = SMODS.find_card('j_toga_jarate')
 		if next(jarate) and amount then
+			local coated = false
 			for i = 1, #jarate do
-				if SMODS.pseudorandom_probability(jarate[i], "tf2jarate", 1, jarate[i].ability.extra.odds or 15, 'tf2jarate') then
+				if not coated and SMODS.pseudorandom_probability(jarate[i], "tf2jarate", 1, jarate[i].ability.extra.odds or 15, 'tf2jarate') then
 					if not (Talisman and Talisman.config_file.disable_anims) then
 						card_eval_status_text(jarate[i], 'extra', nil, nil, nil, {
 							message = localize('toga_jarated'),
@@ -506,18 +506,25 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 						})
 					end
 					amount = amount*jarate[i].ability.extra.minicrit
+					coated = true
+				end
+			end
+		end
+		if (togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key]) then
+			local chipmodeff = {}
+			-- Calculate against base amount... or what's parsed to us from a hook, if such exist.
+			SMODS.calculate_context({ toga_affectchipmult = true, opkey = key, optype = togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key], opamount = amount, misc = { effect = effect, score_card = scored_card, from_edition = from_edition } }, chipmodeff)
+			for _, eval in ipairs(chipmodeff) do
+				for key, eval2 in pairs(eval) do
+					if (eval2.amtmult or eval2.amount) and not (eval2.retrigger_flag or eval2.retrigger_card) then
+						if eval2.amtset then amount = eval2.amtset end
+						if eval2.amtmult then amount = amount*(eval2.amtmult or 1) end
+					end
 				end
 			end
 		end
 	end
-	if not tonumber(G.GAME.modifiers.toga_chipamtmod) then G.GAME.modifiers.toga_chipamtmod = 1 end
-	if not tonumber(G.GAME.modifiers.toga_multamtmod) then G.GAME.modifiers.toga_multamtmod = 1 end
-	local chipmod, multmod = 0+tonumber(G.GAME.modifiers.toga_chipamtmod), 0+tonumber(G.GAME.modifiers.toga_multamtmod)
-	if togabalatro.chipmodkeys[key] and tonumber(chipmod) then
-		amount = amount*chipmod
-	elseif togabalatro.multmodkeys[key] and tonumber(multmod) then
-		amount = amount*multmod
-	end
+	
 	local ret = calcindiveffectref(effect, scored_card, key, amount, from_edition)
 	if ret then return ret end
 end
@@ -608,9 +615,10 @@ local setdebuffref = Card.set_debuff
 function Card:set_debuff(should_debuff)
 	local prevstate = self.debuff
 	setdebuffref(self, should_debuff)
-    if self.debuff ~= prevstate and self.debuff == true then SMODS.calculate_context({ debuffed_ups = true, card = self }) end
+	if self.debuff ~= prevstate and self.debuff == true then SMODS.calculate_context({ debuffed_ups = true, card = self }) end
 end
 
+sendInfoMessage("Hooking SMODS.calculate_destroying_cards...", "TOGAPack")
 local oldcalcdestroycard = SMODS.calculate_destroying_cards
 function SMODS.calculate_destroying_cards(context, cards_destroyed, scoring_hand)
 	oldcalcdestroycard(context, cards_destroyed, scoring_hand)
@@ -627,39 +635,11 @@ function SMODS.calculate_destroying_cards(context, cards_destroyed, scoring_hand
 	end
 end
 
+sendInfoMessage("Hooking ease_dollars...", "TOGAPack")
 local easedolref = ease_dollars
 function ease_dollars(mod, instant)
 	if next(SMODS.find_card('j_toga_mswallet')) and G.STATE ~= G.STATES.SHOP and not G.shop then mod = mod * -1 end
-    easedolref(mod, instant)
-end
-
-local quitref = love.quit
-function love.quit()
-	if G.jokers and next(SMODS.find_card('j_toga_notsosmileyface', true)) then
-		local nssms = SMODS.find_card('j_toga_notsosmileyface', true)
-		local nssm = pseudorandom_element(nssms, pseudoseed('toga_:)'))
-		if nssm then
-			G.FUNCS:exit_overlay_menu()
-			card_eval_status_text(nssm, 'extra', nil, nil, nil, {message = localize('k_nope_ex'), colour = G.C.PURPLE, sound = 'tarot2'})
-			return true
-		end
-	end
-	quitref()
-end
-
-local gotomenuref = G.FUNCS.go_to_menu
-function G.FUNCS.go_to_menu(e)
-	if G.jokers and next(SMODS.find_card('j_toga_notsosmileyface', true)) and not (G.STATE == G.STATES.GAME_OVER or G.GAME.won) then
-		local nssms = SMODS.find_card('j_toga_notsosmileyface', true)
-		local nssm = pseudorandom_element(nssms, pseudoseed('toga_:)'))
-		if nssm and (not togabalatro.smiletriggeronce or math.random(1, 2) == 1) then
-			togabalatro.smiletriggeronce = true
-			G.FUNCS:exit_overlay_menu()
-			card_eval_status_text(nssm, 'extra', nil, nil, nil, {message = localize('k_nope_ex'), colour = G.C.PURPLE, sound = 'tarot2'})
-			return true
-		end
-	end
-	gotomenuref(e)
+	easedolref(mod, instant)
 end
 
 local ismin, ismax = false, false
@@ -715,7 +695,7 @@ end
 
 local mmhook = Game.main_menu
 function Game:main_menu(ctx)
-    local r = mmhook(self,ctx)
+	local r = mmhook(self,ctx)
 	G.E_MANAGER:add_event(Event({
 		func = function() togabalatro.msoobe() return true end
 	}))
@@ -734,12 +714,12 @@ function Game:main_menu(ctx)
 			func = function() togabalatro.qualatronotice() return true end
 		}))
 	end
-    return r
+	return r
 end
 
 local calcrentref = Card.calculate_rental
 function Card:calculate_rental()
-    if G.GAME.modifiers.toga_norentperish then return end
+	if G.GAME.modifiers.toga_norentperish then return end
 	return calcrentref(self)
 end
 
@@ -780,9 +760,9 @@ function get_straight(hand, min_length, skip, wrap)
 	
 	if not next(SMODS.find_card('j_toga_wishingstones')) then return {} end
 	
-    min_length = min_length or 5
-    if min_length < 2 then min_length = 2 end
-    if #hand < min_length then return {} end
+	min_length = min_length or 5
+	if min_length < 2 then min_length = 2 end
+	if #hand < min_length then return {} end
 	
 	ret = {}
 	local stone_count, t = 0, {}
@@ -794,5 +774,46 @@ function get_straight(hand, min_length, skip, wrap)
 		return ret
 	end
 
-    return {}
+	return {}
+end
+
+local wasref = SMODS.wrap_around_straight
+function SMODS.wrap_around_straight()
+	if next(SMODS.find_card('j_toga_solitairejoker')) then return true end
+	return wasref()
+end
+
+local israrref = Card.is_rarity
+function Card:is_rarity(rarity)
+	if self.ability.set ~= "Joker" then return false end
+	local mmc = next(SMODS.find_card('j_toga_mmc')) and (rarity == "Common" or rarity == "Uncommon" or rarity == SMODS.Rarities['Common'] or rarity == SMODS.Rarities['Uncommon'])
+	local ret = israrref(self, rarity)
+	if mmc and not ret then return true end
+	return ret
+end
+
+local getblindamtref = get_blind_amount
+function get_blind_amount(ante)
+	local amt, deband = getblindamtref(ante), SMODS.find_card('j_toga_pso2deband')
+	if deband[1] then
+		amt = amt*0.8
+	end
+	return amt
+end
+
+local cestref = card_eval_status_text
+function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
+	if next(SMODS.find_card('j_toga_notsosmileyface')) then
+		local cards, careas = {}, {G.jokers, G.consumeables, G.play, G.hand}
+		for _, a in pairs(careas) do
+			if a.cards and next(a.cards) then
+				for k, v in pairs(a.cards) do
+					if v then table.insert(cards, v) end
+				end
+			end
+		end
+		local selcard = pseudorandom_element(cards, pseudoseed(':)'))
+		if selcard and not selcard.getting_sliced then card = selcard end
+	end
+	return cestref(card, eval_type, amt, percent, dir, extra)
 end

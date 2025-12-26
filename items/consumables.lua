@@ -35,6 +35,7 @@ togabalatro.oredict.nickel = {'m_toga_nickel'}
 togabalatro.oredict.invar = {'m_toga_invar'}
 togabalatro.oredict.glowstone = {'m_toga_glowstone'}
 togabalatro.oredict.lumium = {'m_toga_lumium'}
+togabalatro.oredict.chocolate = {'m_toga_chocolate'}
 
 -- Set up a global pool of 'minerals' in our OreDictionary.
 togabalatro.oredict.minerals = {'m_gold', 'm_toga_coalcoke', 'm_toga_iron', 'm_toga_copper', 'm_toga_tin', 'm_toga_silver', 'm_toga_osmium', 'm_toga_redstone', 'm_toga_nickel', 'm_toga_glowstone'}
@@ -684,5 +685,29 @@ SMODS.Consumable {
 		end
 	end,
 	pixel_size = { w = 71, h = 77 },
-	poweritem = true
+	poweritem = true,
+	can_stack = false
+}
+
+SMODS.Consumable {
+	key = 'glteapot',
+	set = 'togaitem',
+	atlas = "TOGAJokersBeOS",
+	pos = {x = 1, y = 0},
+	cost = 1,
+	config = { extra = { money = 3 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.money } }
+	end,
+	in_pool = function()
+		return false
+	end,
+	can_use = function()
+		return false
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then return { dollars = card.ability.extra.money } end
+	end,
+	no_collection = true,
+	pixel_size = { w = 56, h = 95 },
 }

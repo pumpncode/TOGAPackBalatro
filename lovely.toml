@@ -16,7 +16,7 @@ match_indent = true
 target = "game.lua"
 pattern = "if G.SETTINGS.skip_splash == 'Yes' then"
 position = "before"
-payload = "if togabalatro then togabalatro.updatecollectionitems() end"
+payload = "if togabalatro then togabalatro.postloadinit(true) end"
 match_indent = true
 
 [[patches]]
@@ -146,7 +146,7 @@ match_indent = true
 target = '=[SMODS _ "src/loader.lua"]'
 pattern = "love.graphics.setColor(1, 1, 1, 1)"
 position = "after"
-payload = "toga_smodscatloadscreen()"
+payload = "toga_extraimgdraw(progress)"
 match_indent = true
 
 [[patches]]

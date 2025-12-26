@@ -125,7 +125,7 @@ return {
 			b_toga_wharariki = {
 				name = "Wharariki Deck",
 				text = {
-					"{X:attention,C:white}+X#2#{} {C:blue}Chips{} and {C:red}Mult",
+					"{X:attention,C:white}X#2#{} to {C:blue}Chips{} and {C:red}Mult",
 					"operation amount",
 					"Start in the {C:attention}Shop",
 					"{C:red}X#1#{} base Blind size"
@@ -262,7 +262,7 @@ return {
 						"This Joker gains {X:mult,C:white}X#2#{} Mult",
 						"for every {C:attention}Steel Card{}",
 						"converted this way",
-						"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
+						"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}"
 					}
 				}
 			},
@@ -272,18 +272,17 @@ return {
 					"This Joker {C:attention}converts{} scoring {C:attention}Steel Cards{}",
 					"to {C:attention}Iron Cards{} and gains {X:mult,C:white}X#2#{} Mult",
 					"for each one converted",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}"
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}"
 				}
 			},
 			j_toga_taskmgr = {
 				name = 'Task Manager',
 				text = {
 					"On {C:attention}last discard{}, {C:red}destroy{}",
-					"{C:attention}all{} discarded cards.",
+					"{C:attention}all{} discarded cards",
 					"{C:inactive,s:0.8}I want to speak to your Manager!{}"
 				}
 			},
-			-- Old Task Manager ability, tweaked.
 			j_toga_useraccounts = {
 				name = 'User Accounts',
 				text = {
@@ -291,7 +290,7 @@ return {
 					"give {X:mult,C:white}XMult{} based on half of calculated",
 					"average of remaining {C:chips}hands{} & {C:red}discards{}",
 					"and {C:attention}Joker{} & {C:attention}Consumable{} slots.",
-					"{C:inactive,s:0.8}(Currently {}{X:mult,C:white,s:0.8}X#1#{}{C:inactive,s:0.8}){}",
+					"{C:inactive,s:0.9}(Currently {}{X:mult,C:white,s:0.9}X#1#{}{C:inactive,s:0.9} Mult){}",
 				}
 			},
 			j_toga_jimbo95 = {
@@ -306,16 +305,15 @@ return {
 			j_toga_solitairejoker = {
 				name = 'Solitaire Joker',
 				text = {
-					"When playing a hand {C:attention}containing{} a {C:attention}Straight{},",
-					"draw remaining {C:attention}#1#s{} in the deck to hand.",
-					"Rank changes every round.",
+					"{C:attention}Straights{} can wrap around",
+					"{C:inactive}(ex: {C:attention}3{C:inactive}, {C:attention}2{C:inactive}, {C:attention}A{C:inactive}, {C:attention}K{C:inactive}, {C:attention}Q{C:inactive}){}",
 					"{C:inactive,s:0.8}An Office regular.{}"
 				}
 			},
 			j_toga_drivespace = {
 				name = 'DriveSpace',
 				text = {
-					"{X:attention,C:white}X#1#{} Blind requirement",
+					"{X:attention,C:white}X#1#{} Blind requirements",
 					"when a card {C:attention}scores{}.",
 					"{C:inactive,s:0.8}Back when hard drives were{}",
 					"{C:inactive,s:0.8}smaller than CDs...{}"
@@ -338,9 +336,9 @@ return {
 				}
 			},
 			j_toga_winmillenium = {
-				name = 'Windows ME',
+				name = 'Windows {C:green}ME{}',
 				text = {
-					"Each {C:attention}Joker{} held gives {C:chips}+#1#{} Chips, with",
+					"Jokers and Consumables give {C:chips}+#1#{} Chips, with",
 					"additional {C:chips}+#2#{} Chips per {C:attention}Voucher{} redeemed.",
 					"{C:inactive,s:0.8}(Currently {}{C:chips,s:0.8}+#3#{}{C:inactive,s:0.8} per Joker){}"
 				}
@@ -363,7 +361,7 @@ return {
 				}
 			},
 			j_toga_winxp = {
-				name = 'Windows XP',
+				name = 'Windows {C:attention}XP{}',
 				text = {
 					"{C:green}#1# in #2#{} chance to {X:attention,C:white}X2{}",
 					"leveling amount before",
@@ -486,21 +484,18 @@ return {
 			j_toga_bonusducks = {
 				name = 'Bonus Ducks',
 				text = {
-					"All played {C:attention}face{}",
-					"cards become",
-					"{C:chips}Bonus{} cards",
+					"All played {C:attention}face{} cards",
+					"become {C:chips}Bonus{} cards",
 					"when scored",
 					"{C:inactive,s:0.8}Merasmus!{}"
 				}
 			},
 			j_toga_pso2ironwill = {
-				name = 'Skill: Iron Will',
+				name = 'Iron Will',
 				text = {
-					"Prevents death if active and at",
-					"least {C:money}$1{} is held, sets money to {C:money}$0{}",
-					"and becomes inactive. {C:attention}Recharges{}",
-					"upon {C:attention}defeating{} a Boss Blind.",
-					"{C:inactive,s:0.8}Currently: #2#{}"
+					"Prevents death and",
+					"{C:attention}sets{} money to {C:money}$1{}",
+					"{C:red}self-destructs{}"
 				}
 			},
 			j_toga_systemrestore = {
@@ -508,8 +503,8 @@ return {
 				text = {
 					"When {C:attention}playing cards{} are {C:red}destroyed{}, copy a",
 					"{C:attention}random{} destroyed card into the deck",
-					"with {C:attention}additional duplicates{} for every",
-					"{C:attention}other{} {C:red}destroyed{} card"
+					"with {C:green}#1# in #2#{} chance for an {C:attention}additional{} copy",
+					"for every {C:attention}other{} {C:red}destroyed{} card"
 				}
 			},
 			j_toga_spacecadetpinball = {
@@ -518,7 +513,7 @@ return {
 					"After the played cards are {C:attention}scored{},",
 					"{C:green}#3# in 3{} chance to perform {C:attention}additional scoring{}",
 					"of a {C:attention}random{} card in the scoring hand.",
-					"{s:0.9}For every {C:money,s:0.9}$20{s:0.9} held, this is done {C:attention,s:0.9}once{s:0.9} more.",
+					"{s:0.9}For every {C:money,s:0.9}$20{s:0.9} held, try {C:attention,s:0.9}once{s:0.9} more.",
 					"{C:inactive,s:0.8}Currently #2# attempts.{}"
 				}
 			},
@@ -624,7 +619,7 @@ return {
 					{
 						"{C:green}#2# in #3#{} chance to",
 						"{X:attention,C:white}X#1#{} operation amount",
-						"on {C:chips}Chips{} or {C:mult}Mult{}"
+						"on {C:chips}Chips{} or {C:mult}Mult{}",
 					},
 					{
 						"{C:inactive}Ah... {C:inactive,E:1}piss!{}"
@@ -778,7 +773,7 @@ return {
 					"{C:attention}stacking{} {X:mult,C:white}X#1#{} Mult",
 					"per {C:attention}unique{} enhancement",
 					"in the {C:attention}full{} deck.",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive} Mult){}",
 				}
 			},
 			j_toga_albanianvirus = {
@@ -792,14 +787,14 @@ return {
 				}
 			},
 			j_toga_mac_os_9 = {
-				name = 'Mac OS 9',
+				name = 'Mac OS {C:attention}9{}',
 				text = {
 					"Held in hand {C:clubs}Clubs{}",
 					"give {X:mult,C:white}X#1#{} Mult"
 				}
 			},
 			j_toga_mac_os_x = {
-				name = 'Mac OS X',
+				name = 'Mac OS {C:blue}X{}',
 				text = {
 					"Held in hand {C:attention}10s{}",
 					"give {X:chips,C:white}X#1#{} Chips"
@@ -834,17 +829,8 @@ return {
 				text = {
 					"For every {C:attention}poker hand{} in",
 					"played hand, gain {X:mult,C:white}X#1#{} Mult.",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive} Mult){}",
 					"{C:inactive,s:0.8}(High Card excluded.){}"
-				}
-			},
-			j_toga_linux_redhat_cardsel = {
-				name = 'Red Hat Linux',
-				text = {
-					"For every {C:attention}poker hand{} in",
-					"played hand, gain {X:mult,C:white}X#1#{} Mult.",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
-					"{C:inactive,s:0.8}(Poker hands: #3#, High Card excluded.){}"
 				}
 			},
 			j_toga_horseconch = {
@@ -867,7 +853,7 @@ return {
 				text = {
 					"Gains {X:mult,C:white}X#2#{} Mult when a card is drawn.",
 					"Resets if {C:blue}played{}/{C:red}discarded{} hand contains a {C:attention}Flush{}.",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}",
 				}
 			},
 			j_toga_google = {
@@ -996,7 +982,7 @@ return {
 				name = 'Uninterruptable Power Supply',
 				text = {
 					"When a {C:attention}card{} is {C:red}debuffed{}, gain {X:mult,C:white}X#1#{} Mult",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}){}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive} Mult){}",
 				}
 			},
 			j_toga_hammer = {
@@ -1012,8 +998,8 @@ return {
 			j_toga_joker203 = {
 				name = 'Joker 2.03',
 				text = {
-					"{X:purple,C:white}=0{} Score if {C:attention}scored hand{}",
-					"{C:red}does not{} beat the Blind.",
+					"{C:attention}Upgrade{} first hand of round",
+					"if it contains a scoring {C:attention}2"
 				}
 			},
 			j_toga_activesync = {
@@ -1217,18 +1203,6 @@ return {
 					"{X:mult,C:white}X#1#{} Mult..?",
 				}
 			},
-			j_toga_notsosmileyface_full = {
-				name = 'Smiley Face?',
-				text = {
-					{
-						"{X:mult,C:white}X#1#{} Mult..?",
-					},
-					{
-						"{C:inactive,s:0.75}Is it just me or",
-						"{C:inactive,s:0.75}the game won't close?",
-					}
-				}
-			},
 			j_toga_rloctane = {
 				name = 'Octane',
 				text = {
@@ -1266,6 +1240,93 @@ return {
 					"held in hand has",
 					"a {C:green}#2# in #3#{} chance",
 					"to give {C:money}$#1#{}",
+				},
+			},
+			j_toga_pso2shifta = {
+				name = '{C:red}Shifta{}',
+				text = {
+					"If a {C:planet}Planet{} card for",
+					"{C:attention}scoring poker hand{} is held,",
+					"{X:purple,C:white}X1.97{} {C:attention}base{} Chips and Mult",
+					"{C:inactive,s:0.8}(Does not stack with copies.)"
+				}
+			},
+			j_toga_pso2deband = {
+				name = '{C:blue}Deband{}',
+				text = {
+					"{X:attention,C:white}X0.8{} Blind requirements",
+					"{C:inactive,s:0.8}(Does not stack with copies.)"
+				}
+			},
+			j_toga_skifree_skier = {
+				name = 'Skier ({C:blue}Ski{C:gold}Free{})',
+				text = {
+					"This Joker gains {C:red}+#2#{} Mult",
+					"when a card {C:attention}scores{}",
+					"{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult){}",
+					"{C:inactive,s:0.9}(Resets at end of round.)",
+				},
+			},
+			j_toga_skifree_yeti = {
+				name = 'Yeti ({C:blue}Ski{C:gold}Free{})',
+				text = {
+					"When {C:attention}Blind{} is selected, gain {X:mult,C:white}X#2#{} Mult",
+					"and {C:attention}destroy{} a random card in the {C:attention}deck{}",
+					"{C:inactive}(Currently {X:mult,C:white}X#1#{}{C:inactive} Mult)",
+				},
+			},
+			j_toga_mmc = {
+				name = "Microsoft Management Console",
+				text = {
+					"{C:common}Common{} and {C:uncommon}Uncommon{} Jokers",
+					"{C:attention}share{} their {C:attention}rarities",
+				},
+			},
+			j_toga_chipchallenge = {
+				name = "{C:blue}Chip's Challenge{}",
+				text = {
+					{
+						"Gain {C:chips}+#2#{} Chips when playing a {C:attention}#3#",
+						"{C:inactive,s:0.8}(Hand changes after playing any hand)",
+						"{C:inactive}(Currently {C:chips}+#1#{}{C:inactive} Chips)",
+					},
+					{
+						"{C:green}#4# in #5#{} chance to reset",
+						"when {C:attention}skipping{} Blinds"
+					}
+				},
+			},
+			j_toga_chipchallenge_stj = {
+				name = "{C:blue}Chip's Challenge{}",
+				text = {
+					"Gain {C:chips}+#2#{} Chips when playing a {C:attention}#3#",
+					"{C:green,s:0.8}#4# in #5#{s:0.8} chance to reset when {C:attention,s:0.8}skipping{s:0.8} Blinds",
+					"{C:inactive,s:0.8}(Hand changes after playing any hand)",
+					"{C:inactive}(Currently {C:chips}+#1#{}{C:inactive} Chips)",
+				},
+			},
+			j_toga_franziska = {
+				name = "Franziska von Karma",
+				text = {
+					"Create {C:tarot}The Fool{} on last discard",
+					"{C:inactive}(Must have room)",
+				},
+			},
+			j_toga_beos = {
+				name = "{C:blue}Be{C:red}OS{}",
+				text = {
+					"Create a {C:red}GLTeapot{}",
+					"at end of shop",
+					"{C:inactive}(Must have room)",
+				},
+			},
+			j_toga_choccymilk = {
+				name = "Chocolate Milk",
+				text = {
+					"This Joker gains {X:chips,C:white}X#2#{} Chips",
+					"for every {C:attention}Chocolate Card{}",
+					"that is destroyed",
+					"{C:inactive}(Currently {}{X:chips,C:white}X#1#{}{C:inactive} Chips){}",
 				},
 			},
 		},
@@ -1392,6 +1453,15 @@ return {
 				text = {
 					"{X:chips,C:white}X#1#{} Chips",
 					"{X:mult,C:white}X#2#{} Mult",
+				},
+			},
+			m_toga_chocolate = {
+				name = "Chocolate Card",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips",
+					"{C:green}#2# in #3#{} chance",
+					"to {C:red}destroy{} card",
+					"No rank or suit",
 				},
 			},
 		},
@@ -1660,9 +1730,8 @@ return {
 			v_toga_mspaint = {
 				name = "Microsoft Paint",
 				text = {
-					"{X:attention,C:white}+X#1#{} {C:blue}Chips{} and {C:red}Mult",
+					"{X:attention,C:white}X#1#{} to {C:blue}Chips{} and {C:red}Mult",
 					"operation amount",
-					"{C:inactive}(Currently {X:blue,C:white}X#2#{C:inactive}/{X:red,C:white}X#3#{C:inactive})"
 				},
 			},
 			v_toga_dataflush = {
@@ -1698,14 +1767,14 @@ return {
 			v_toga_sealegg = {
 				name = "Sealing Egg",
 				text = {
-					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} have a",
-					"{C:green}#1# in #2#{} chance to be {C:dark_edition}Negative{}.",
+					"{C:attention}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} have a",
+					"{C:green}#1# in #2#{} chance to be {C:dark_edition}Negative{}",
 				},
 			},
 			v_toga_caniofferyouanegg = {
 				name = "Can I Offer You An Egg In These Times",
 				text = {
-					"{C:attention,T:j_egg}Eggs{} created by {C:attention,T:toga_sealseal_seal}Seal^2{} {E:1,C:green}will{} be {C:dark_edition}Negative{}.",
+					"Held {C:attention}Eggs{} give {X:mult,C:white}X#1#{} Mult",
 				},
 			},
 			v_toga_spectralzipper = {
@@ -1735,8 +1804,8 @@ return {
 			stake_toga_togateal = {
 				name = "Teal Stake (TOGA)",
 				text = {
-					"{X:attention,C:white}-X0.1{} {C:blue}Chip{} and {C:red}Mult{} operation amount",
-					"{s:0.75}Applies all previous Stakes. {s:0.75,C:inactive}Some sources of {s:0.75,C:blue}Chips{s:0.75,C:inactive}/{s:0.75,C:red}Mult",
+					"{X:attention,C:white}X0.9{} {C:blue}Chip{} and {C:red}Mult{} operation amount",
+					"{s:0.75}Applies Gold Stake. {s:0.75,C:inactive}Some sources of {s:0.75,C:blue}Chips{s:0.75,C:inactive}/{s:0.75,C:red}Mult",
 					"{s:0.75,C:inactive}may {s:0.75,C:red}not{s:0.75,C:inactive} {s:0.75,C:attention}display modified{s:0.75,C:inactive} values"
 				},
 			}
@@ -1763,13 +1832,6 @@ return {
 					"Creates an {C:attention,T:j_egg}Egg{} when scored",
 					"{C:green}#1# in #2#{} chance to be {C:dark_edition}Negative{}",
 					"{C:inactive}(Must have room){}",
-				},
-			},
-			toga_sealseal_alt2 = {
-				name = "Seal^2 - Upgraded",
-				text = {
-					"Creates a {C:dark_edition}Negative{}",
-					"{C:attention,T:j_egg}Egg{} when scored",
 				},
 			},
 			toga_urlseal_seal = {
@@ -2103,6 +2165,15 @@ return {
 					"{C:inactive,s:0.8}Wait...{}"
 				},
 			},
+		},
+		togaitem = {
+			c_toga_glteapot = {
+				name = "GLTeapot",
+				text = {
+					"{C:money}$#1#{} when held",
+					"at end of round"
+				},
+			}
 		}
 	},
 	misc = {
@@ -2197,6 +2268,12 @@ return {
 			toga_leech = "Leech",
 			toga_bonziinvert = "Inverted",
 			toga_hammersmash = "Smash!",
+			toga_bummer = "Bummer.",
+			toga_firetech = "Fire Technique",
+			toga_icetech = "Ice Technique",
+			toga_skillhunter = "Skill (Hunter)",
+			k_togaitem = 'Item?',
+			b_toga_togaitem_cards = 'Item? Cards',
 			toga_nerfedver = "Toned Down",
 			toga_itemon = "Enabled",
 			toga_itemoff = "Disabled",
@@ -2256,15 +2333,15 @@ return {
 		},
 		labels = {
 			toga_sealseal_seal = "Seal^2",
-			toga_urlseal_seal = "Hyperlink Seal"
+			toga_urlseal_seal = "Hyperlink Seal",
 		},
 		v_dictionary = {
-			toga_Echip = {"^#1# Chips"},
-			toga_EEchip = {"^^#1# Chips"},
-			toga_EEEchip = {"^^^#1# Chips"},
-			toga_Emult = {"^#1# Mult"},
-			toga_EEmult = {"^^#1# Mult"},
-			toga_EEEmult = {"^^^#1# Mult"},
+			toga_Echip = "^#1# Chips",
+			toga_EEchip = "^^#1# Chips",
+			toga_EEEchip = "^^^#1# Chips",
+			toga_Emult = "^#1# Mult",
+			toga_EEmult = "^^#1# Mult",
+			toga_EEEmult = "^^^#1# Mult",
 		},
 		challenge_names = {
 			c_toga_jokerful = "Jokerful..?"

@@ -215,3 +215,23 @@ SMODS.Enhancement{
     end,
 	poweritem = true
 }
+
+SMODS.Enhancement{
+	key = 'chocolate',
+	atlas = "TOGAEnhancements",
+	pos = { x = 7, y = 1 },
+	config = { x_chips = 1.25, extra = { chodds = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.x_chips, SMODS.get_probability_vars(card, 1, (card.ability or self.config).extra.chodds) } }
+	end,
+	replace_base_card = true,
+	no_rank = true,
+	no_suit = true,
+	always_scores = true,
+	calculate = function(self, card, context)
+		if context.destroy_card and context.cardarea == G.play and context.destroy_card == card and SMODS.pseudorandom_probability(card, 'toga_chocolate', 1, card.ability.extra.chodds) then
+			card.choccy_trigger = true
+			return { remove = true }
+		end
+	end
+}

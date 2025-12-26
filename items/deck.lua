@@ -106,7 +106,7 @@ SMODS.Back{
 			end,
 		}))
 	end,
-	calculate = function(self, card, context)
+	calculate = function(self, back, context)
 		local iter, iterlimit = 0, 65535 -- Just so we don't freeze the game.
 		while G.GAME.round_resets.blind_choices.Boss == 'bl_psychic' do
 			G.GAME.round_resets.blind_choices.Boss = get_new_boss()
@@ -189,7 +189,7 @@ if togabalatro.config.EnableQE then
 				end,
 			}))
 		end,
-		calculate = function(self, card, context)
+		calculate = function(self, back, context)
 			if (context.retrigger_joker_check or context.retrigger_joker or context.blueprint) then return end
 			if context.check_enhancement and context.other_card and context.no_blueprint then
 				local curenh = {}
@@ -237,16 +237,21 @@ SMODS.Back{
 	pos = { x = 4, y = 1 },
 	atlas = "TOGADeckBack",
 	unlocked = true,
-	config = { ante_scaling = 2, opamtmod = 0.2 },
+	config = { ante_scaling = 2, opamtmod = 1.2 },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { self.config.ante_scaling, self.config.opamtmod } }
 	end,
 	apply = function(self, back)
-		G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.config.opamtmod
-		G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + self.config.opamtmod
+		-- G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.config.opamtmod
+		-- G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + self.config.opamtmod
 		G.STATE = G.STATES.SHOP
 		G.GAME.shop_free = nil
 		G.GAME.shop_d6ed = nil
+	end,
+	calculate = function(self, back, context)
+		if context.toga_affectchipmult and context.opamount and tonumber(to_number(back.effect.config.opamtmod)) and not context.retrigger_joker then
+			return { amtmult = back.effect.config.opamtmod, card = back }
+		end
 	end
 }
 

@@ -165,18 +165,18 @@ SMODS.Voucher{
 	unlocked = true,
 	cost = 20,
 	rarity = 3,
-	config = { rarity = 3, extra = { opamtincr = 0.1 } },
+	config = { rarity = 3, extra = { opamtincr = 1.1 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = {key = "toga_chipmultmodinfo", set = 'Other'}
-		local chipmod, multmod = tonumber(G.GAME.modifiers.toga_chipamtmod) or 1, tonumber(G.GAME.modifiers.toga_multamtmod) or 1
-		return { vars = { card.ability.extra.opamtincr, chipmod or 1, multmod or 1 } }
-	end,
-	redeem = function(self, card)
-		G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + (card and card.ability.extra or self.config.extra).opamtincr
-		G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + (card and card.ability.extra or self.config.extra).opamtincr
+		return { vars = { card.ability.extra.opamtincr } }
 	end,
 	in_pool = function()
 		return togabalatro.config.ShowPower
+	end,
+	calculate = function(self, card, context)
+		if context.toga_affectchipmult and context.opamount and not context.retrigger_joker then
+			return { amount = context.opamount*card.ability.extra.opamtincr, card = card }
+		end
 	end,
 	poweritem = true
 }
@@ -225,6 +225,7 @@ SMODS.Voucher{
 	rarity = 3,
 	config = { rarity = 3 },
 	loc_vars = function(self, info_queue, card)
+		if self.discovered then info_queue[#info_queue + 1] = G.P_CENTERS.j_egg end
 		return {vars = { SMODS.get_probability_vars(card or self, 1, G.P_SEALS.toga_sealseal.config.odds or 1337) }}
 	end,
 	in_pool = function()
@@ -238,19 +239,27 @@ SMODS.Voucher{
 	pos = { x = 4, y = 2 },
 	atlas = 'TOGAConsumables',
 	unlocked = true,
-	in_pool = function()
-		return togabalatro.config.JokeJokersActive -- Should only spawn if allowed to via config!
-	end,
 	cost = 20,
 	rarity = 4,
-	config = { rarity = 4 },
+	config = { rarity = 4, extra = { xmult = 1.75 } },
+	loc_vars = function(self, info_queue, card)
+		if self.discovered then info_queue[#info_queue + 1] = G.P_CENTERS.j_egg end
+		return { vars = { card.ability.extra.xmult } }
+	end,
 	requires = {'v_toga_sealegg'},
 	set_badges = function(self, card, badges)
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
-	in_pool = function()
-		return togabalatro.config.ShowPower
+	calculate = function(self, card, context)
+		local othjkr = context.other_joker or context.other_consumeable or nil
+		if othjkr and othjkr.config and othjkr.config.center and othjkr.config.center.key and othjkr.config.center.key == 'j_egg' then
+			return { xmult = card.ability.extra.xmult, message_card = othjkr }
+		end
 	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower and togabalatro.config.JokeJokersActive
+	end,
+	jokeitem = true,
 	poweritem = true
 }
 

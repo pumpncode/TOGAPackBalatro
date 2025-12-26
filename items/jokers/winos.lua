@@ -90,7 +90,7 @@ end
 
 table.insert(winj, {
 	key = 'winmillenium',
-	config = { extra = { basechips = 25, chipbonus = 15, totalbonus = 25 } },
+	config = { extra = { basechips = 10, chipbonus = 5, totalbonus = 15 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus * toga_vouchcount()
 		return { vars = { card.ability.extra.basechips, card.ability.extra.chipbonus, card.ability.extra.totalbonus } }
@@ -104,8 +104,8 @@ table.insert(winj, {
 	calculate = function(self, card, context)
 		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus * toga_vouchcount()
 		
-		if context.other_joker then
-			return { chips = card.ability.extra.totalbonus }
+		if context.other_joker or context.other_consumeable then
+			return { chips = card.ability.extra.totalbonus, message_card = context.other_joker or context.other_consumeable }
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
