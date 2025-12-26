@@ -340,7 +340,7 @@ return {
 				text = {
 					"Jokers and Consumables give {C:chips}+#1#{} Chips, with",
 					"additional {C:chips}+#2#{} Chips per {C:attention}Voucher{} redeemed.",
-					"{C:inactive,s:0.8}(Currently {}{C:chips,s:0.8}+#3#{}{C:inactive,s:0.8} per Joker){}"
+					"{C:inactive,s:0.8}(Currently {}{C:chips,s:0.8}+#3#{}{C:inactive,s:0.8} Chips){}"
 				}
 			},
 			j_toga_winnt4 = {
