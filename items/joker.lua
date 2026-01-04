@@ -434,9 +434,9 @@ end
 
 table.insert(jokers, {
 	key = 'ie',
-	config = { extra = { phchips = 5, phmult = 4 } },
+	config = { extra = { phchips = 0.2, phmult = 0.25 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { 100/card.ability.extra.phchips, 100/card.ability.extra.phmult } }
+		return { vars = { 100*card.ability.extra.phchips, 100*card.ability.extra.phmult } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -457,7 +457,7 @@ table.insert(jokers, {
 					end
 					if next(names) then
 						local hand = pseudorandom_element(names, pseudoseed('ie'))
-						togabalatro.modifyhandchipsmult(curcard, hand, false, cxt, nil, nil, G.GAME.hands[hand].s_chips/card.ability.extra.phchips, G.GAME.hands[hand].s_mult/card.ability.extra.phmult )
+						togabalatro.modifyhandchipsmult(curcard, hand, false, cxt, nil, nil, G.GAME.hands[hand].s_chips*card.ability.extra.phchips, G.GAME.hands[hand].s_mult*card.ability.extra.phmult )
 					end
 				end
 			}

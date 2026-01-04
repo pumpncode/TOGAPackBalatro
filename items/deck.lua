@@ -310,8 +310,7 @@ if togabalatro.config.WTFDeck then
 				math.random()
 			end
 			
-			G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + math.random(1, 1000)/100
-			G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + math.random(1, 1000)/100
+			back.effect.config.chipmultamt = (back.effect.config.chipamtmult or 1) + math.random(1, 1000)/100
 			G.GAME.modifiers.toga_randomscore = true
 			G.GAME.modifiers.toga_norentperish = true
 			
@@ -367,6 +366,10 @@ if togabalatro.config.WTFDeck then
 			if context.after then back.effect.config.repeatamount = 0 end
 			
 			if context.mod_probability then return { denominator = context.denominator / 2 } end
+			
+			if context.toga_affectchipmult and context.opamount and not context.retrigger_joker then
+				if back.effect and back.effect.config and back.effect.config.chipmultamt and tonumber(to_number(back.effect.config.chipmultamt)) then return { amtmult = back.effect.config.chipmultamt, card = back } end
+			end
 		end,
 	}
 end

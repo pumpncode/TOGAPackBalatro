@@ -182,14 +182,14 @@ return {
 			bl_toga_tasks = {
 				name = "The Tasks",
 				text = {
-					"-X#1# Mult",
+					"X#1# Mult",
 					"operation amount"
 				}
 			},
 			bl_toga_accountant = {
 				name = "The Accountant",
 				text = {
-					"-X#1# Chips",
+					"X#1# Chips",
 					"operation amount"
 				}
 			},
@@ -2411,8 +2411,13 @@ return {
 				"Qualatro detected",
 				"Custom music added by TOGA's Stuff may not play.",
 			},
+			toga_cryptid = {
+				"Cryptid detected",
+				"Please note that some of TOGA's Stuff items may cause",
+				"unexpected crashes and/or freezes with Cryptid.",
+			},
 			toga_talismanjoke = {
-				"Talisman detected", "Numbers WILL be compared to tables.", "You've been warned.",
+				"Talisman detected", "Pray nothing compares numbers to tables."
 			},
 		},
 	}

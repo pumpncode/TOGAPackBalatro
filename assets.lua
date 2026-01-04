@@ -26,7 +26,7 @@ SMODS.Atlas{key = "TOGAMoreIcons", path = "togamoricons.png", px = 36, py = 36, 
 SMODS.Atlas{key = "TOGAFunny", path = "togazefunny.png", px = 64, py = 64, atlas_table = 'ANIMATION_ATLAS', frames = 9}
 SMODS.Atlas{key = "TOGAFunnyStatic", path = "togazefunny.png", px = 64, py = 64}
 SMODS.Atlas{key = "TOGAJokersPSO2", path = "togapso2.png", px = 71, py = 95}
-SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 32, py = 32}
+SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 6, fps = 3}
 
 -- Hear me scream.
 SMODS.Sound({key = "win95start", path = "win95start.ogg"}) -- The Microsoft Sound (95 & NT4)

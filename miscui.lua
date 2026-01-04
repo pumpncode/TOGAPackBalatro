@@ -10,6 +10,17 @@ function G.FUNCS.toga_closeprompt(e)
 	if G.ACTIVE_MOD_UI == togabalatro then G.FUNCS.openModUI_TOGAPack(e) else G.FUNCS.exit_overlay_menu(e) end
 end
 
+-- Return a Sprite of a given mods' icon if present, otherwise use generic fallback.
+function togabalatro.getModIcon(modname)
+	local mod, pos = SMODS.Mods[modname], { x = 0, y = 0 }
+	local matlas = SMODS.get_atlas(mod and mod.prefix and mod.prefix .. '_modicon')
+	if not matlas then
+		matlas = SMODS.get_atlas('toga_TOGAMoreIcons')
+		pos = { x = 1, y = 0 }
+	end
+	return SMODS.create_sprite(0, 0, 0.8*1, 0.8*1, matlas, pos)
+end
+
 function togabalatro.oobeuifunc()
 	local introtext = G.localization.misc.ui_strings.toga_intro
 	play_sound('toga_chord', 1, 0.5)
@@ -165,7 +176,7 @@ function togabalatro.bmpnoteui_normal()
 			}},
 			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
 				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
-					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['mp_modicon'], { x = 0, y = 0 }) } },
+					{n = G.UIT.O, config = { w = 1, h = 1, object = togabalatro.getModIcon('Multiplayer') } },
 				}},
 				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
 					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
@@ -205,7 +216,7 @@ function togabalatro.bmpnoteui_allitems()
 			}},
 			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
 				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
-					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['mp_modicon'], { x = 0, y = 0 }) } },
+					{n = G.UIT.O, config = { w = 1, h = 1, object = togabalatro.getModIcon('Multiplayer') } },
 				}},
 				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
 					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
@@ -417,7 +428,7 @@ function togabalatro.stjnoteui()
 			}},
 			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
 				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
-					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['stj_modicon'], { x = 0, y = 0 }) } },
+					{n = G.UIT.O, config = { w = 1, h = 1, object = togabalatro.getModIcon('SlayTheJokers') } },
 				}},
 				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
 					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
@@ -454,7 +465,7 @@ function togabalatro.qualatronote()
 			}},
 			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
 				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
-					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['qualatro_modicon'], { x = 0, y = 0 }) } },
+					{n = G.UIT.O, config = { w = 1, h = 1, object = togabalatro.getModIcon('Qualatro') } },
 				}},
 				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
 					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
@@ -475,7 +486,7 @@ end
 
 function togabalatro.talismanjoke()
 	local rtxt = G.localization.misc.ui_strings.toga_talismanjoke
-	play_sound('toga_chord', 1, 0.5)
+	play_sound('toga_dingy', 1, 0.8)
 	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_talismanjoke'}, nodes = {
 		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
 			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
@@ -485,7 +496,38 @@ function togabalatro.talismanjoke()
 			}},
 			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
 				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
-					{n = G.UIT.O, config = { w = 1, h = 1, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['talisman_modicon'], { x = 0, y = 0 }) } },
+					{n = G.UIT.O, config = { w = 1, h = 1, object = togabalatro.getModIcon('Talisman') } },
+				}},
+				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
+					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
+						{n = G.UIT.R, config = { align = "cl", padding = -0.05 }, nodes = {
+							{n = G.UIT.T, config = { text = rtxt[2], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+						}},
+					}},
+				}},
+			}},
+			{n = G.UIT.R, config = {align = "cm", colour = HEX('c0c0c0'), padding = 0.15}, nodes = {
+				{n = G.UIT.C, config = { align = "cm" }, nodes = {
+					UIBox_button({label = { localize('toga_ok') }, button = "exit_overlay_menu", minw = 2, minh = 0.65, colour = HEX('555555')})
+				}},
+			}},
+		}},
+	}}
+end
+
+function togabalatro.cryptidnote()
+	local rtxt = G.localization.misc.ui_strings.toga_cryptid
+	play_sound('toga_dingy', 1, 0.8)
+	return { n = G.UIT.ROOT, config = { align = "cm", colour = clr, padding = 32.01, r = 0.1, minw = 5, id = 'toga_cryptid'}, nodes = {
+		{n = G.UIT.C, config = { align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), colour = G.C.UI.BACKGROUND_INACTIVE, padding = 0.035 }, nodes = {
+			{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 5}, nodes = {
+				{n = G.UIT.C, config = { align = "cl", padding = 0.1 }, nodes = {
+					{n = G.UIT.T, config = { text = rtxt[1], scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
+				}},
+			}},
+			{n = G.UIT.R, config = { align = "cl", minw = 5 }, nodes = {
+				{n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {
+					{n = G.UIT.O, config = { w = 1, h = 1, object = togabalatro.getModIcon('Cryptid') } },
 				}},
 				{n = G.UIT.C, config = { align = "cl", padding = -0.05}, nodes = {
 					{n = G.UIT.R, config = { align = "cl", padding = 0.2 }, nodes = {
@@ -600,6 +642,41 @@ function togabalatro.qualatronotice()
 		G.SETTINGS.paused = true
 		G.FUNCS.overlay_menu({
 			definition = togabalatro.qualatronote(),
+			config = {
+				align = "cm",
+				offset = {x = 0, y = 0},
+				bond = 'Weak',
+				no_esc = true,
+				no_back = true,
+			}
+		})
+	end
+end
+
+function togabalatro.cryptidnotice()
+	if not togabalatro.config.cryptidnotice then
+		togabalatro.config.cryptidnotice = true
+		G.SETTINGS.paused = true
+		G.FUNCS.overlay_menu({
+			definition = togabalatro.cryptidnote(),
+			config = {
+				align = "cm",
+				offset = {x = 0, y = 0},
+				bond = 'Weak',
+				no_esc = true,
+				no_back = true,
+			}
+		})
+	end
+end
+
+function togabalatro.talismanfunny()
+	if next(SMODS.find_mod('Amulet')) then return end
+	if next(SMODS.find_mod('Talisman')) and not togabalatro.config.talismannotice then
+		togabalatro.config.talismannotice = true
+		G.SETTINGS.paused = true
+		G.FUNCS.overlay_menu({
+			definition = togabalatro.talismanjoke(),
 			config = {
 				align = "cm",
 				offset = {x = 0, y = 0},

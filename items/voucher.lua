@@ -175,7 +175,7 @@ SMODS.Voucher{
 	end,
 	calculate = function(self, card, context)
 		if context.toga_affectchipmult and context.opamount and not context.retrigger_joker then
-			return { amount = context.opamount*card.ability.extra.opamtincr, card = card }
+			return { amtmult = card.ability.extra.opamtincr, card = card }
 		end
 	end,
 	poweritem = true

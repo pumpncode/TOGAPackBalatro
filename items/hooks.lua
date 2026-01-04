@@ -473,6 +473,10 @@ togabalatro.multmodkeys = {
 	-- Other mods can add their custom operations to this table.
 }
 
+togabalatro.waila = function(key)
+	return string.find(key, 'chip') and 'chips' or string.find(key, 'mult') and 'mult' or nil
+end
+
 sendInfoMessage("Hooking SMODS.calculate_individual_effect...", "TOGAPack")
 local calcindiveffectref = SMODS.calculate_individual_effect
 SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, from_edition)
@@ -513,10 +517,12 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 		if (togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key]) then
 			local chipmodeff = {}
 			-- Calculate against base amount... or what's parsed to us from a hook, if such exist.
-			SMODS.calculate_context({ toga_affectchipmult = true, opkey = key, optype = togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key], opamount = amount, misc = { effect = effect, score_card = scored_card, from_edition = from_edition } }, chipmodeff)
+			SMODS.calculate_context({ toga_affectchipmult = true, optarget = togabalatro.waila(key), opkey = key, optype = togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key], opamount = amount, misc = { effect = effect, score_card = scored_card, from_edition = from_edition } }, chipmodeff)
 			for _, eval in ipairs(chipmodeff) do
 				for key, eval2 in pairs(eval) do
 					if (eval2.amtmult or eval2.amount) and not (eval2.retrigger_flag or eval2.retrigger_card) then
+						-- Setting amount goes first, then multiply, if both are present.
+						-- Must be at root of return table.
 						if eval2.amtset then amount = eval2.amtset end
 						if eval2.amtmult then amount = amount*(eval2.amtmult or 1) end
 					end
@@ -649,6 +655,7 @@ local bmpcurval, notifyitemreinit = togabalatro.config.BMPAllItems, false
 local kingcdival, notifykingcdi = togabalatro.config.KingCDIDeck, false
 local wtfdeckval, notifywtfdeck = togabalatro.config.WTFDeck, false
 local cfgrestartval = { ['EnableQE'] = true }
+sendInfoMessage("Hooking love.update...", "TOGAPack")
 function love.update(dt)
 	if togabalatro then
 		-- Hello everybody, my name is Windiplier.
@@ -693,42 +700,56 @@ function love.update(dt)
 	loveupdref(dt)
 end
 
+sendInfoMessage("Hooking Game:main_menu...", "TOGAPack")
 local mmhook = Game.main_menu
 function Game:main_menu(ctx)
 	local r = mmhook(self,ctx)
+	-- Intro.
 	G.E_MANAGER:add_event(Event({
 		func = function() togabalatro.msoobe() return true end
 	}))
-	if togabalatro.checkbmp() then
-		G.E_MANAGER:add_event(Event({
-			func = function() togabalatro.bmpnote() return true end
-		}))
-	end
+	-- Slay the Jokers warning.
 	if togabalatro.stjcheck() then
 		G.E_MANAGER:add_event(Event({
 			func = function() togabalatro.stjnotice() return true end
 		}))
 	end
+	-- Balatro Multiplayer warning.
+	if togabalatro.checkbmp() then
+		G.E_MANAGER:add_event(Event({
+			func = function() togabalatro.bmpnote() return true end
+		}))
+	end
+	-- Qualatro note.
 	if togabalatro.checksiiva() then
 		G.E_MANAGER:add_event(Event({
 			func = function() togabalatro.qualatronotice() return true end
 		}))
 	end
+	-- Cryptid warning.
+	if next(SMODS.find_mod('Cryptid')) then
+		G.E_MANAGER:add_event(Event({
+			func = function() togabalatro.cryptidnotice() return true end
+		}))
+	end
 	return r
 end
 
+sendInfoMessage("Hooking Card:calculate_rental...", "TOGAPack")
 local calcrentref = Card.calculate_rental
 function Card:calculate_rental()
 	if G.GAME.modifiers.toga_norentperish then return end
 	return calcrentref(self)
 end
 
+sendInfoMessage("Hooking Card:calculate_perishable...", "TOGAPack")
 local calcperishref = Card.calculate_perishable
 function Card:calculate_perishable()
 	if self and self.ability and tonumber(self.ability.perish_tally) and self.ability.perish_tally > 0 and G.GAME.modifiers.toga_norentperish then return end
 	return calcperishref(self)
 end
 
+sendInfoMessage("Hooking get_flush...", "TOGAPack")
 local getflushref = get_flush
 function get_flush(hand)
 	local ret = getflushref(hand)
@@ -753,6 +774,7 @@ function get_flush(hand)
 	end
 end
 
+sendInfoMessage("Hooking get_straight...", "TOGAPack")
 local getstraightref = get_straight
 function get_straight(hand, min_length, skip, wrap)
 	local ret = getstraightref(hand, min_length, skip, wrap)
@@ -777,12 +799,14 @@ function get_straight(hand, min_length, skip, wrap)
 	return {}
 end
 
+sendInfoMessage("Hooking SMODS.wrap_around_straight...", "TOGAPack")
 local wasref = SMODS.wrap_around_straight
 function SMODS.wrap_around_straight()
 	if next(SMODS.find_card('j_toga_solitairejoker')) then return true end
 	return wasref()
 end
 
+sendInfoMessage("Hooking Card:is_rarity...", "TOGAPack")
 local israrref = Card.is_rarity
 function Card:is_rarity(rarity)
 	if self.ability.set ~= "Joker" then return false end
@@ -792,6 +816,7 @@ function Card:is_rarity(rarity)
 	return ret
 end
 
+sendInfoMessage("Hooking get_blind_amount...", "TOGAPack")
 local getblindamtref = get_blind_amount
 function get_blind_amount(ante)
 	local amt, deband = getblindamtref(ante), SMODS.find_card('j_toga_pso2deband')
@@ -801,6 +826,7 @@ function get_blind_amount(ante)
 	return amt
 end
 
+sendInfoMessage("Hooking card_eval_status_text...", "TOGAPack")
 local cestref = card_eval_status_text
 function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
 	if next(SMODS.find_card('j_toga_notsosmileyface')) then

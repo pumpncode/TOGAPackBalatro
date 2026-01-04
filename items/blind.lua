@@ -118,7 +118,7 @@ SMODS.Blind{
 	atlas = 'TOGAOtherBlind',
 	boss_colour = HEX('008080'),
 	pos = { x = 0, y = 1 },
-	vars = { multamtred = 0.2, activated = false },
+	vars = { multamtred = 0.8 },
 	dollars = 6,
 	mult = 2,
 	boss = { min = 3 },
@@ -128,21 +128,13 @@ SMODS.Blind{
 	collection_loc_vars = function(self)
 		return { vars = { self.vars.multamtred } }
 	end,
-	set_blind = function(self)
-		self.vars.activated = true
-		G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) - self.vars.multamtred
-	end,
-	disable = function(self)
-		if self.vars.activated then
-			self.vars.activated = false
-			G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + self.vars.multamtred
+	calculate = function(self, card, context)
+		if not G.GAME.blind.disabled then
+			if context.toga_affectchipmult and context.opamount and context.optarget and context.optarget == 'mult' and not context.retrigger_joker then
+				return { amtmult = self.vars.multamtred, card = card }
+			end
 		end
 	end,
-	defeat = function(self)
-		if self.vars.activated then
-			G.GAME.modifiers.toga_multamtmod = (G.GAME.modifiers.toga_multamtmod or 1) + self.vars.multamtred
-		end
-	end
 }
 
 SMODS.Blind{
@@ -150,7 +142,7 @@ SMODS.Blind{
 	atlas = 'TOGAOtherBlind',
 	boss_colour = HEX('808080'),
 	pos = { x = 0, y = 2 },
-	vars = { chipamtred = 0.25, activated = false },
+	vars = { chipamtred = 0.75 },
 	dollars = 6,
 	mult = 2,
 	boss = { min = 3 },
@@ -160,21 +152,13 @@ SMODS.Blind{
 	collection_loc_vars = function(self)
 		return { vars = { self.vars.chipamtred } }
 	end,
-	set_blind = function(self)
-		self.vars.activated = true
-		G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) - self.vars.chipamtred
-	end,
-	disable = function(self)
-		if self.vars.activated then
-			self.vars.activated = false
-			G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.vars.chipamtred
+	calculate = function(self, card, context)
+		if not G.GAME.blind.disabled then
+			if context.toga_affectchipmult and context.opamount and context.optarget and context.optarget == 'chips' and not context.retrigger_joker then
+				return { amtmult = self.vars.chipamtred, card = card }
+			end
 		end
 	end,
-	defeat = function(self)
-		if self.vars.activated then
-			G.GAME.modifiers.toga_chipamtmod = (G.GAME.modifiers.toga_chipamtmod or 1) + self.vars.chipamtred
-		end
-	end
 }
 
 SMODS.Blind{
