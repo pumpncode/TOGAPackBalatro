@@ -394,7 +394,7 @@ end
 sendInfoMessage("Hooking level_up_hand...", "TOGAPack")
 local lvluphandref = level_up_hand
 function level_up_hand(card, hand, instant, amount)
-	amount = amount or to_big(1)
+	amount = amount or 1
 	if to_big(amount) > to_big(0) then
 		local xpcalc = {}
 		SMODS.calculate_context({ toga_xplvlup = true }, xpcalc)
