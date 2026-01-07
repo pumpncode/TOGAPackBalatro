@@ -8,7 +8,7 @@ priority = 1
 target = "game.lua"
 pattern = "play_sound('whoosh1', 0.4, 0.8)"
 position = "before"
-payload = "togabalatro.execstartupsfx(change_context)"
+payload = "if togabalatro then togabalatro.execstartupsfx(change_context) end"
 match_indent = true
 
 [[patches]]
