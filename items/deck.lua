@@ -274,6 +274,23 @@ SMODS.Back{
 	end,
 }
 
+SMODS.Back{
+	key = "queresdeck",
+	pos = { x = 1, y = 2 },
+	atlas = "TOGADeckBack",
+	unlocked = true,
+	apply = function(self, back)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					SMODS.add_card({ set = 'TOGAJKR' })
+					return true
+				end
+			end,
+		}))
+	end,
+}
+
 if togabalatro.config.KingCDIDeck then
 	SMODS.Back{
 		key = "kingharkinian",

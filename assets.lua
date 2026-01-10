@@ -26,6 +26,9 @@ SMODS.Atlas{key = "TOGAMoreIcons", path = "togamoricons.png", px = 36, py = 36, 
 SMODS.Atlas{key = "TOGAFunny", path = "togazefunny.png", px = 64, py = 64, atlas_table = 'ANIMATION_ATLAS', frames = 9}
 SMODS.Atlas{key = "TOGAFunnyStatic", path = "togazefunny.png", px = 64, py = 64}
 SMODS.Atlas{key = "TOGAJokersPSO2", path = "togapso2.png", px = 71, py = 95}
+SMODS.Atlas{key = "TOGASonic", path = "togasonic.png", px = 75, py = 95}
+SMODS.Atlas{key = "TOGASuperSonic", path = "togasupersonic.png", px = 75, py = 95, atlas_table = 'ANIMATION_ATLAS', frames = 3, fps = 4}
+SMODS.Atlas{key = "TOGAHyperSonic", path = "togahypersonic.png", px = 75, py = 95, atlas_table = 'ANIMATION_ATLAS', frames = 12, fps = 4}
 SMODS.Atlas{key = "modicon", path = "togaicon.png", px = 34, py = 34, atlas_table = 'ANIMATION_ATLAS', frames = 6, fps = 3}
 
 -- Hear me scream.
@@ -103,6 +106,11 @@ SMODS.Sound({key = "bass", path = "bass.ogg"}) -- Roblox Bass / Kik-Arse Bass So
 SMODS.Sound({key = "mcprf5400", path = "macperforma5400.ogg"}) -- Mac Performa 5400 (Death Chime)
 SMODS.Sound({key = "dingy", path = "ding.wav"}) -- ding.wav (98, ME, 2000 and XP)
 SMODS.Sound({key = "bummer", path = "bummer.wav"}) -- bummer.wav (Chip's Challenge)
+SMODS.Sound({key = "sonicring", path = "sonicring.ogg"}) -- Ring Collect, Sonic games on Sega Genesis/Mega Drive
+SMODS.Sound({key = "sonicringloss", path = "sonicringloss.ogg"}) -- Losing Rings, Sonic games on Sega Genesis/Mega Drive
+SMODS.Sound({key = "sonictransform", path = "sonictransform.ogg"}) -- Transformation, Sonic games on Sega Genesis/Mega Drive
+SMODS.Sound({key = "soniccheckpoint", path = "soniccheckpoint.ogg"}) -- Checkpoint, Sonic games on Sega Genesis/Mega Drive
+SMODS.Sound({key = "sonictally", path = "sonictally.ogg"}) -- Score tally complete, Sonic games on Sega Genesis/Mega Drive
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})

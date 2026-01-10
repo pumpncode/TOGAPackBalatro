@@ -7,19 +7,19 @@ table.insert(winj, {
 	config = { extra = { hands = 1, discards = 1, xhd = 2, slots = 3 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xhd = math.max(card.ability.extra.xhd, 2)
-		return { vars = { card.ability.extra.hands, card.ability.extra.discards } }
+		return { key = togabalatro.stjcheck() and self.key.."_stj" or self.key, vars = { card.ability.extra.hands, card.ability.extra.discards } }
 	end,
 	unlocked = true,
 	discovered = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 0 },
-	cost = 7,
+	cost = 6,
 	blueprint_compat = true,
 	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if (context.setting_blind or context.forcetrigger) and not (context.blueprint_card or card).getting_sliced then
-			ease_hands_played(card.ability.extra.hands)
+			if context.blind and context.blind.boss then ease_hands_played(card.ability.extra.hands) end
 			ease_discard(card.ability.extra.discards)
 			return { message = localize('toga_32bits') }
 		end
@@ -123,15 +123,11 @@ table.insert(winj, {
 
 table.insert(winj, {
 	key = 'winnt4',
-	config = { extra = { repetitions = 1 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { math.floor(card.ability.extra.repetitions) } }
-	end,
 	unlocked = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersWindows',
 	pos = { x = 0, y = 1 },
-	cost = 10,
+	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.repetition and not context.repetition_only then
@@ -139,7 +135,7 @@ table.insert(winj, {
 				-- This is basically the inverse of Sock and Buskin...
 				return {
 					message = localize('k_again_ex'),
-					repetitions = card.ability.extra.repetitions,
+					repetitions = 1,
 					card = context.blueprint_card or card
 				}
 			end

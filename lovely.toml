@@ -146,7 +146,7 @@ match_indent = true
 target = '=[SMODS _ "src/loader.lua"]'
 pattern = "love.graphics.setColor(1, 1, 1, 1)"
 position = "after"
-payload = "toga_extraimgdraw(progress)"
+payload = "if type(toga_extraimgdraw) == 'function' then toga_extraimgdraw(progress) end"
 match_indent = true
 
 [[patches]]

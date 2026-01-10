@@ -19,5 +19,6 @@ return {
 	["UseNerfed"] = false,
 	["ShowPower"] = true,
 	["WindowSFXUse"] = true,
-	["WindowSFXTheme"] = 13
+	["WindowSFXTheme"] = 13,
+	["BonusLoadScreen"] = false,
 }

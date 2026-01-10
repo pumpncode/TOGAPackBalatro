@@ -208,6 +208,7 @@ togabalatro.randomwintext = function()
 	if togabalatro.config.SpecialDeckMusic then return localize('toga_srb2kartwin_'..math.random(1, 8)) end
 end
 
+sendInfoMessage("Hooking create_UIBox_win...", "TOGAPack")
 local cuiboxwinref = create_UIBox_win
 function create_UIBox_win()
 	if togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' then
@@ -258,6 +259,7 @@ function create_UIBox_win()
 	end
 end
 
+sendInfoMessage("Hooking create_UIBox_game_over...", "TOGAPack")
 local cuiboxgameoverref = create_UIBox_game_over
 function create_UIBox_game_over()
 	if togabalatro.config.SpecialDeckMusic and G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' and not togabalatro.checksiiva() then
@@ -410,6 +412,31 @@ function level_up_hand(card, hand, instant, amount)
 	lvluphandref(card, hand, instant, amount)
 end
 
+-- Idea from MyDreamJournal to allow values to be displayed correctly.
+sendInfoMessage("Hooking Card.calculate_joker...", "TOGAPack")
+local calcjkrref = Card.calculate_joker
+function Card.calculate_joker(self, context)
+    local ret = calcjkrref(self, context)
+    if not (self.config.center.mod or self.config.original_mod) and ret then
+        if ret.Xmult_mod then
+            ret.x_mult = ret.Xmult_mod
+            ret.Xmult_mod = nil
+            ret.message = nil
+        end
+        if ret.mult_mod then
+            ret.mult = ret.mult_mod
+            ret.mult_mod = nil
+            ret.message = nil
+        end
+        if ret.chip_mod then
+            ret.chips = ret.chip_mod
+            ret.chip_mod = nil
+            ret.message = nil
+        end
+    end
+    return ret
+end
+
 togabalatro.chipmultopswap = {
 	['chips'] = 'mult',
 	['h_chips'] = 'h_mult',
@@ -517,7 +544,7 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 		if (togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key]) then
 			local chipmodeff = {}
 			-- Calculate against base amount... or what's parsed to us from a hook, if such exist.
-			SMODS.calculate_context({ toga_affectchipmult = true, optarget = togabalatro.waila(key), opkey = key, optype = togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key], opamount = amount, misc = { effect = effect, score_card = scored_card, from_edition = from_edition } }, chipmodeff)
+			SMODS.calculate_context({ toga_affectchipmult = true, optarget = togabalatro.waila(key), opkey = key, optype = togabalatro.chipmodkeys[key] or togabalatro.multmodkeys[key], opamount = amount, misc = { effect = effect, scored_card = scored_card, from_edition = from_edition } }, chipmodeff)
 			for _, eval in ipairs(chipmodeff) do
 				for key, eval2 in pairs(eval) do
 					if (eval2.amtmult or eval2.amount) and not (eval2.retrigger_flag or eval2.retrigger_card) then
@@ -654,7 +681,6 @@ local qeval, notifyrestart = togabalatro.config.EnableQE, false
 local bmpcurval, notifyitemreinit = togabalatro.config.BMPAllItems, false
 local kingcdival, notifykingcdi = togabalatro.config.KingCDIDeck, false
 local wtfdeckval, notifywtfdeck = togabalatro.config.WTFDeck, false
-local cfgrestartval = { ['EnableQE'] = true }
 sendInfoMessage("Hooking love.update...", "TOGAPack")
 function love.update(dt)
 	if togabalatro then
@@ -829,6 +855,7 @@ end
 sendInfoMessage("Hooking card_eval_status_text...", "TOGAPack")
 local cestref = card_eval_status_text
 function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
+	if next(SMODS.find_card('j_toga_pcmcia')) then return end
 	if next(SMODS.find_card('j_toga_notsosmileyface')) then
 		local cards, careas = {}, {G.jokers, G.consumeables, G.play, G.hand}
 		for _, a in pairs(careas) do
@@ -842,4 +869,10 @@ function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
 		if selcard and not selcard.getting_sliced then card = selcard end
 	end
 	return cestref(card, eval_type, amt, percent, dir, extra)
+end
+
+sendInfoMessage("Hooking Card:juice_up...", "TOGAPack")
+local juref = Card.juice_up
+function Card:juice_up(...)
+    if not next(SMODS.find_card('j_toga_pcmcia')) then juref(self, ...) end
 end

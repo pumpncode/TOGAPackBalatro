@@ -54,6 +54,8 @@ end
 
 togabalatro.set_debuff = function(card)
 	if SMODS.has_enhancement(card, 'm_toga_nickel') then return 'prevent_debuff' end
+	if card and card.config and card.config.center and card.config.center.key and card.config.center.key == 'j_toga_supersonicthehedgehog' then return 'prevent_debuff' end
+	if card and card.ability and card.ability.set and card.ability.set == 'Joker' and next(SMODS.find_card('j_toga_hypersonicthehedgehog')) then return 'prevent_debuff' end
 end
 
 togabalatro.calculate = function(self, context)
@@ -117,22 +119,6 @@ togabalatro.iswindows = function(card)
 	or card.config.center.key == 'j_toga_win2000' or card.config.center.key == 'j_toga_winxp'
 	or card.config.center.key == 'j_toga_winvista' or card.config.center.key == 'j_toga_win7'
 	or card.config.center.key == 'j_toga_win8' then return true end
-end
-
-togabalatro.performpseudolag = function()
-	if not togabalatro.pseudolag then -- restrict so we don't go too crazy.
-		togabalatro.pseudolag = true
-		if togabalatro.cursorsupport then love.mouse.setCursor(love.mouse.getSystemCursor("waitarrow")) end
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			delay = math.random()*G.SETTINGS.GAMESPEED/2,
-			func = function()
-				togabalatro.pseudolag = nil
-				if togabalatro.cursorsupport then love.mouse.setCursor(love.mouse.getSystemCursor("arrow")) end
-				return true
-			end
-		}))
-	end
 end
 
 togabalatro.systemtype = function()
@@ -275,7 +261,7 @@ SMODS.ObjectType{
 		["j_toga_pso2shifta"] = true, ["j_toga_pso2deband"] = true, ["j_toga_pso2ironwill"] = true,
 		["j_toga_skifree_skier"] = true, ["j_toga_skifree_yeti"] = true, ["j_toga_mmc"] = true,
 		["j_toga_chipchallenge"] = true, ["j_toga_franziska"] = true, ["j_toga_beos"] = true,
-		["j_toga_choccymilk"] = true,
+		["j_toga_choccymilk"] = true, ["j_toga_sonicthehedgehog"] = true, 
 	}
 }
 
@@ -396,7 +382,7 @@ end
 local lastfilesizedropped, filedropref = 0, love.filedropped
 function love.filedropped(file)
 	togabalatro.updatelastfilesize(tonumber(file:getSize("r")))
-	if filedropref then return filedropref(file) end
+	if type(filedropref) == 'function' then return filedropref(file) end
 end
 
 -- Return number of bytes of last dropped file.

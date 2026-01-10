@@ -10,6 +10,21 @@ function JokerDisplay.get_display_areas()
     return ret
 end
 
+-- Prevent "incompatible" text on Sonic, Super Sonic and Hyper Sonic Jokers.
+local jd_copy_displayref = JokerDisplay.copy_display
+function JokerDisplay.copy_display(card, copied_joker, is_debuffed, bypass_debuff, stop_func_copy)
+	jd_copy_displayref(card, copied_joker, is_debuffed, bypass_debuff, stop_func_copy)
+	if copied_joker and copied_joker.config and copied_joker.config.center
+	and (copied_joker.config.center.key == 'j_toga_sonicthehedgehog' or copied_joker.config.center.key == 'j_toga_supersonicthehedgehog' or copied_joker.config.center.key == 'j_toga_hypersonicthehedgehog') then
+		card.children.joker_display:remove_text()
+		card.children.joker_display:remove_reminder_text()
+		card.children.joker_display:remove_extra()
+		card.children.joker_display_small:remove_text()
+		card.children.joker_display_small:remove_reminder_text()
+		card.children.joker_display_small:remove_extra()
+	end
+end
+
 togabalatro.jd_def["j_toga_y2kbug"] = {
 	text = {
 		{ text = "+",                              colour = G.C.CHIPS },
@@ -111,10 +126,14 @@ togabalatro.jd_def["j_toga_useraccounts"] = {
 }
 
 togabalatro.jd_def["j_toga_virtualmemory"] = {
-	text = {
-		{ ref_table = "card.joker_display_values", ref_value = "odds" },
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds" },
+			{ text = ")" },
+		}
 	},
-	text_config = { colour = G.C.GREEN, scale = 0.4 },
+	extra_config = { colour = G.C.GREEN, scale = 0.4 },
 	calc_function = function(card)
 		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds) } }
 	end,
@@ -396,7 +415,6 @@ togabalatro.jd_def["j_toga_pcmcia"] = {
 			border_nodes = {
 				{ text = "X" },
 				{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
-				{ text = "?" },
 			},
 		},
 	},
@@ -512,7 +530,7 @@ togabalatro.jd_def["j_toga_gamecontrollers"] = {
 
 togabalatro.jd_def["j_toga_wincatalog"] = {
 	mod_function = function(card, mod_joker)
-		return { mult = card ~= mod_joker and card:is_rarity("Common") and mod_joker.ability.extra.mult*JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+		return { mult = card.config.center.key ~= mod_joker.config.center.key and card:is_rarity("Common") and card.sell_cost*JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
 	end
 }
 
@@ -1488,6 +1506,91 @@ togabalatro.jd_def["j_toga_choccymilk"] = {
 		card.joker_display_values.xchips = 1+card.ability.extra.cxchips
 	end
 }
+
+togabalatro.jd_def["j_toga_sonicthehedgehog"] = {
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "rings" },
+			{ text = "/50) "},
+			{ text = "(", colour = G.C.GREEN, scale = 0.4 },
+			{ ref_table = "card.joker_display_values", ref_value = "odds", colour = G.C.GREEN, scale = 0.4 },
+			{ text = ")", colour = G.C.GREEN, scale = 0.4 },
+		}
+	},
+	calc_function = function(card)
+		local cards = G.hand and G.hand.highlighted or {}
+		local golds = 0
+		
+		if cards and next(cards) then
+			for k, v in pairs(cards) do
+				if SMODS.has_enhancement(v, 'm_gold') then golds = golds + 1 end
+			end
+		end
+		card.joker_display_values.rings = math.min((card.ability.extra.rings or 0) + golds, 50)
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'toga_7chaosemeralds') } }
+	end,
+	retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+		return SMODS.has_enhancement(playing_card, 'm_gold') and JokerDisplay.calculate_joker_triggers(joker_card) or 0
+	end
+}
+
+togabalatro.jd_def["j_toga_supersonicthehedgehog"] = {
+	text = {
+		{ text = "(", colour = G.C.GREEN },
+		{ ref_table = "card.joker_display_values", ref_value = "nodds" },
+		{ text = ")" },
+	},
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "rings" },
+			{ text = "/150) "},
+			{ text = "(", colour = G.C.GREEN, scale = 0.4 },
+			{ ref_table = "card.joker_display_values", ref_value = "odds", colour = G.C.GREEN, scale = 0.4 },
+			{ text = ")", colour = G.C.GREEN, scale = 0.4 },
+		}
+	},
+	text_config = { colour = G.C.GREEN, scale = 0.8 },
+	calc_function = function(card)
+		local text, _, shand = JokerDisplay.evaluate_hand()
+		local golds = 0
+		
+		if shand and next(shand) then
+			for k, v in pairs(shand) do
+				if SMODS.has_enhancement(v, 'm_gold') then
+					local triggers = JokerDisplay.calculate_card_triggers(v, shand)
+					golds = golds + triggers
+				end
+			end
+		end
+		card.joker_display_values.rings = math.min((card.ability.extra.rings or 0) + golds, 150)
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'toga_7superemeralds', nil, true) } }
+		card.joker_display_values.nodds = localize { type = 'variable', key = "jdis_odds", vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.nodds, 'toga_supersonicdestroy', nil) } }
+	end,
+	retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+		return JokerDisplay.calculate_joker_triggers(joker_card) or 0
+	end
+}
+
+togabalatro.jd_def["j_toga_hypersonicthehedgehog"] = {
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds" },
+			{ text = ")" },
+		}
+	},
+	extra_config = { colour = G.C.RED, scale = 0.4 },
+	calc_function = function(card)
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'toga_hypersonicdestroy', nil) } }
+	end,
+	retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+		return JokerDisplay.calculate_joker_triggers(joker_card)*2 or 0
+	end
+}
+
+-- CROSSMOD SECTION
 
 -- MoreFluff crossmod
 if next(SMODS.find_mod('MoreFluff')) and SMODS.Mods['MoreFluff'].config['Colour Cards'] then

@@ -144,6 +144,12 @@ return {
 					"{C:dark_edition,E:1,s:2}???"
 				}
 			},
+			b_toga_queresdeck = {
+				name = "Queres Deck",
+				text = {
+					"Start with a {C:attention}TOGA{} Joker",
+				}
+			},
 		},
 		Blind = {
 			bl_toga_dialupmodem = {
@@ -322,8 +328,23 @@ return {
 			j_toga_win95 = {
 				name = 'Windows 95',
 				text = {
-					"{C:chips}+#1#{} hand(s) & {C:red}+#2#{} discard(s)",
-					"upon selecting a {C:attention}Blind{}.",
+					{
+						"Gain {C:red}+#2#{} discard(s) when",
+						"selecting any {C:attention}Blind{}",
+					},
+					{
+						"If selected {C:attention}Blind{} is a {C:attention}Boss Blind{},",
+						"additionally gain {C:blue}+#1#{} hand(s)",
+					},
+				}
+			},
+			j_toga_win95_stj = {
+				name = 'Windows 95',
+				text = {
+					"Gain {C:red}+#2#{} discard(s) when",
+					"selecting any {C:attention}Blind{}",
+					"If selected {C:attention}Blind{} is a {C:attention}Boss Blind{},",
+					"additionally gain {C:blue}+#1#{} hand(s)",
 				}
 			},
 			j_toga_win98 = {
@@ -348,7 +369,6 @@ return {
 				text = {
 					"Retrigger all",
 					"played {C:attention}non-face{} cards",
-					"#1# time(s).",
 					"{C:inactive,s:0.6}Hang on, this is just a{}",
 					"{C:inactive,s:0.6}backwards Sock and Buskin!{}"
 				}
@@ -1184,9 +1204,10 @@ return {
 			j_toga_wincatalog = {
 				name = 'Windows Catalog',
 				text = {
-					"{C:blue}Common{} Jokers",
-					"give {C:red}+#1#{} Mult",
+					"{C:blue}Common{} Jokers give",
+					"their {C:gold}sell value{} as {C:red}Mult{}",
 					"before scoring",
+					"{C:inactive,s:0.8}(Excluding self or copies of self.)",
 				}
 			},
 			j_toga_monitor = {
@@ -1194,6 +1215,7 @@ return {
 				text = {
 					"{C:green}+1{} to {C:green}numerator",
 					"per {C:attention}monitor",
+					"{C:inactive}(Currently {C:green}+#1#{C:inactive})",
 					"{C:inactive,s:0.8}P2W Joker?{}"
 				}
 			},
@@ -1201,6 +1223,12 @@ return {
 				name = 'Smiley Face?',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult..?",
+				}
+			},
+			j_toga_notsosmileyface_alt = {
+				name = ':)',
+				text = {
+					":)",
 				}
 			},
 			j_toga_rloctane = {
@@ -1278,8 +1306,8 @@ return {
 			j_toga_mmc = {
 				name = "Microsoft Management Console",
 				text = {
-					"{C:common}Common{} and {C:uncommon}Uncommon{} Jokers",
-					"{C:attention}share{} their {C:attention}rarities",
+					"{C:common}Common{} and {C:uncommon}Uncommon{} {C:attention}rarities{} of Jokers",
+					"are {C:attention}considered{} as {C:uncommon}each{} {C:common}other{}",
 				},
 			},
 			j_toga_chipchallenge = {
@@ -1327,6 +1355,85 @@ return {
 					"for every {C:attention}Chocolate Card{}",
 					"that is destroyed",
 					"{C:inactive}(Currently {}{X:chips,C:white}X#1#{}{C:inactive} Chips){}",
+				},
+			},
+			j_toga_sonicthehedgehog = {
+				name = "{C:blue}Sonic",
+				text = {
+					{
+						"Retrigger {C:attention}Gold{} cards once",
+					},
+					{
+						"{C:green}#1# in #2#{} chance to become {C:attention}Super Sonic{}",
+						"after playing {C:attention}#4# Gold{} cards",
+						"{C:inactive}(Currently #3#/#4#)",
+					},
+				},
+			},
+			j_toga_sonicthehedgehog_stj = {
+				name = "{C:blue}Sonic",
+				text = {
+					"Retrigger {C:attention}Gold{} cards once",
+					"{C:green}#1# in #2#{} chance to become {C:attention}Super Sonic{}",
+					"after playing {C:attention}#4# Gold{} cards",
+					"{C:inactive}(Currently #3#/#4#)",
+				},
+			},
+			j_toga_supersonicthehedgehog = {
+				name = "{C:gold}Super Sonic{}",
+				text = {
+					{
+						"Retrigger {C:attention}all{} cards once",
+					},
+					{
+						"Played {C:attention}non-Gold{} cards have a",
+						"{C:green}#3# in #4#{} chance to be destroyed",
+					},
+					{
+						"{C:attention,E:1}Resists debuffs",
+						"Fixed {C:green}#1# in #2#{} chance to",
+						"become {C:attention}Hyper Sonic{} after",
+						"scoring {C:attention}#6# Gold{} cards",
+						"{C:inactive}(Currently #5#/#6#)",
+					},
+				},
+			},
+			j_toga_supersonicthehedgehog_stj = {
+				name = "{C:gold}Super Sonic{}",
+				text = {
+					"Retrigger {C:attention}all{} cards once",
+					"Played {C:attention}non-Gold{} cards have a",
+					"{C:green}#3# in #4#{} chance to be destroyed",
+					"{C:attention,E:1}Resists debuffs",
+					"Fixed {C:green}#1# in #2#{} chance to",
+					"become {C:attention}Hyper Sonic{}",
+					"when {C:attention}#6# Gold{} cards",
+					"have been scored",
+					"{C:inactive}(Currently #5#/#6#)",
+				},
+			},
+			j_toga_hypersonicthehedgehog = {
+				name = "{C:edition}Hyper Sonic{}",
+				text = {
+					{
+						"Retrigger {C:attention}all{} cards twice",
+					},
+					{
+						"Played cards have a {C:green}#1# in #2#{}",
+						"chance to be destroyed",
+					},
+					{
+						"{C:attention,E:1}Jokers cannot be debuffed",
+					},
+				},
+			},
+			j_toga_hypersonicthehedgehog_stj = {
+				name = "{C:edition}Hyper Sonic{}",
+				text = {
+					"Retrigger {C:attention}all{} cards twice",
+					"Played {C:attention}non-Gold{} cards have a",
+					"{C:green}#1# in #2#{} chance to be destroyed",
+					"{C:attention,E:1}Jokers cannot be debuffed",
 				},
 			},
 		},
@@ -2311,6 +2418,8 @@ return {
 			toga_sfxswapdefault = "Default",
 			toga_sfxswapall = "All",
 			toga_startupsfxtest = "Test",
+			toga_showintroagain = "Show Intro again",
+			toga_reseteverything = "Reset Config",
 			toga_yes = "Yes",
 			toga_no = "No",
 			toga_ok = "OK",
@@ -2344,7 +2453,8 @@ return {
 			toga_EEEmult = "^^^#1# Mult",
 		},
 		challenge_names = {
-			c_toga_jokerful = "Jokerful..?"
+			c_toga_jokerful = "Jokerful..?",
+			c_toga_chipschallenge = "Chip's Challenge"
 		},
 		v_text = {
 			ch_c_toga_noplayedscore = {
@@ -2388,6 +2498,18 @@ return {
 			},
 			toga_needrestartstjfix = {
 				"Mod Config Change", "You must restart Balatro before changes to the", "Slay the Jokers fix will take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_bonusloadscreenrestart = {
+				"Mod Config Change", "You must restart Balatro before changes to the", "loading screen will take effect.", "", "Do you want to restart Balatro now?"
+			},
+			toga_bonusloadscreenapplyerror = {
+				"ERROR", "An unexpected error occured when applying changes to the loading screen script.", "If Balatro does not launch after this, please reinstall TOGA's Stuff to fix it.",
+			},
+			toga_resetconfigtxt = {
+				"WARNING", "This action will reset everything back to default values.", "Intro sequence will also be performed again.", "Confirming the reset will immediately restart the game.", "", "Proceed?"
+			},
+			toga_resetcfgerror = {
+				"ERROR", "An unknown error has occured whilst writing to config file.", "Exit Balatro and delete the TOGAPack.jkr file manually."
 			},
 			toga_albavirusnote = {
 				"WARNING", "You just obtained Albanian Virus for the first time!", "You are recommended to read the 'Heads Up!' tooltip", "when hovering over the Joker for your own sake."

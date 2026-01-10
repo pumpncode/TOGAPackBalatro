@@ -933,12 +933,15 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'pcmcia',
-	config = { extra = { xmult = 3 } },
+	config = { extra = { xmult = 4 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xmult = math.max(card.ability.extra.xmult, 1)
 		return { vars = { card.ability.extra.xmult } }
 	end,
 	unlocked = true,
+	in_pool = function()
+		return togabalatro.config.JokeJokersActive
+	end,
 	rarity = 2,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 4, y = 4 },
@@ -947,14 +950,11 @@ table.insert(jokers, {
 	eternal_compat = false,
 	calculate = function(self, card, context)
 		if context.joker_main then return { xmult = math.max(card.ability.extra.xmult, 1) } end
-		if context and next(context) and not context.blueprint and math.random(1, 20) == 5 then togabalatro.performpseudolag() end
 	end,
-	add_to_deck = function(self, card, from_debuff)
-		togabalatro.pseudolag = nil
+	set_badges = function(self, card, badges)
+		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
 	end,
-	remove_from_deck = function(self, card, from_debuff)
-		togabalatro.pseudolag = nil
-	end,
+	jokeitem = true,
 })
 
 table.insert(jokers, {
@@ -1349,7 +1349,7 @@ table.insert(jokers, {
 	key = 'notsosmileyface',
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)
-		return { key = card.ability.thesmile and math.random(1,4) == 1 and not togabalatro.stjcheck() and self.key.."_full" or self.key, vars = { card.ability.extra.xmult } }
+		return { key = math.random(1,8) == 1 and not togabalatro.stjcheck() and self.key.."_alt" or self.key, vars = { card.ability.extra.xmult } }
 	end,
 	unlocked = true,
 	in_pool = function()
@@ -1363,9 +1363,6 @@ table.insert(jokers, {
 	perishable_compat = false,
 	calculate = function(self, card, context)
 		if context.joker_main then return { xmult = card.ability.extra.xmult } end
-	end,
-	add_to_deck = function(self, card, from_debuff)
-		card.ability.thesmile = true
 	end,
 	set_badges = function(self, card, badges)
 		badges[#badges+1] = create_badge("Joke (TOGA)", G.C.SECONDARY_SET.Tarot, G.C.WHITE, 1 )
@@ -1439,24 +1436,22 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'wincatalog',
-	config = { extra = { mult = 4 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.mult } }
-	end,
 	unlocked = true,
 	in_pool = function()
 		return togabalatro.config.ShowPower
 	end,
-	rarity = 2,
+	rarity = 1,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 1, y = 8 },
-	cost = 6,
+	cost = 4,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.initial_scoring_step then
 			local commons = {}
 			for k, v in ipairs((G.jokers or {}).cards) do
-				if v:is_rarity("Common") then table.insert(commons, { mult = card.ability.extra.mult, card = context.blueprint_card or card, message_card = v }) end
+				if v and v.config and v.config.center and v.config.center.key ~= card.config.center.key and v:is_rarity("Common") then
+					table.insert(commons, { mult = v.sell_cost, juice_card = context.blueprint_card or card, message_card = v, card = context.blueprint_card or card })
+				end
 			end
 			if next(commons) then return SMODS.merge_effects(commons) end
 		end
@@ -1484,10 +1479,10 @@ table.insert(jokers, {
 table.insert(jokers, {
 	key = 'mmc',
 	unlocked = true,
-	rarity = 2,
+	rarity = 1,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 0, y = 9 },
-	cost = 6,
+	cost = 4,
 	blueprint_compat = false,
 })
 
@@ -2274,10 +2269,10 @@ table.insert(jokers, {
 		return { vars = { card.ability.extra.leech } }
 	end,
 	unlocked = true,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 1, y = 2 },
-	cost = 8,
+	cost = 6,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.before then
@@ -2307,6 +2302,11 @@ table.insert(jokers, {
 -- exec pso2.
 local pso2j = assert(SMODS.load_file("items/jokers/pso2.lua"))()
 for k, j in ipairs(pso2j) do
+	table.insert(jokers, j)
+end
+
+local sj = assert(SMODS.load_file("items/jokers/sonic.lua"))()
+for k, j in ipairs(sj) do
 	table.insert(jokers, j)
 end
 
@@ -2775,7 +2775,6 @@ table.insert(jokers, {
 			return {
 				dollars = SMODS.pseudorandom_probability(card, "michaelrosen_money", 1, card.ability.extra.odds, "michaelrosen_money") and card.ability.extra.heldmoney or nil,
 				x_chips = SMODS.pseudorandom_probability(card, "michaelrosen_xchips", 1, card.ability.extra.odds, "michaelrosen_xchips") and card.ability.extra.heldxchip > 1 and card.ability.extra.heldxchip or nil,
-				xchip_message = {message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.extra.heldxchip } }, colour = G.C.CHIPS, sound = "xchips"} or nil,
 				x_mult = SMODS.pseudorandom_probability(card, "michaelrosen_xmult", 1, card.ability.extra.odds, "michaelrosen_xmult") and card.ability.extra.heldxmult > 1 and card.ability.extra.heldxmult or nil,
 				e_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_echips", 1, card.ability.extra.odds*10, "michaelrosen_echips") and card.ability.extra.heldechip > 1 and card.ability.extra.heldechip or nil,
 				echip_message = Talisman and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.heldechip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
