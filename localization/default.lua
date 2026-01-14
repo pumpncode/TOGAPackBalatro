@@ -781,7 +781,8 @@ return {
 				name = 'Skype',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult per {C:attention}each mod{} among",
-					"held {C:attention}Jokers{} and {C:attention}Consumables{}.",
+					"redeemed {C:attention}Vouchers{}, held {C:attention}Jokers{}",
+					"and {C:attention}Consumables{}.",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{}{C:inactive}, #3# mods.){}",
 					"{C:inactive,s:0.7}RIP Skype (2003 - 2025){}"
 				}

@@ -233,15 +233,15 @@ SMODS.ObjectType{
 	cards = {
 		["j_toga_win95"] = true, ["j_toga_win98"] = true, ["j_toga_winmillenium"] = true, ["j_toga_winnt4"] = true,
 		["j_toga_win2000"] = true, ["j_toga_winxp"] = true, ["j_toga_winvista"] = true, ["j_toga_win7"] = true,
-		["j_toga_win8"] = true, ["j_toga_useraccounts"] = true, ["j_toga_virtualmemory"] = true,
+		["j_toga_win8"] = true, ["j_toga_beos"] = true, ["j_toga_useraccounts"] = true,
 		["j_toga_computerlock"] = true, ["j_toga_recyclebin"] = true, ["j_toga_theinternet"] = true,
 		["j_toga_bonusducks"] = true, ["j_toga_spacecadetpinball"] = true, ["j_toga_jokersrb2kart"] = true,
 		["j_toga_heartyspades"] = true, ["j_toga_systemrestore"] = true, ["j_toga_mcanvil"] = true, 
-		["j_toga_bonusducks"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
-		["j_toga_megasxlr"] = true, ["j_toga_asterism"] = true, ["j_toga_theinternet"] = true,
+		["j_toga_mswallet"] = true, ["j_toga_speedsneakers"] = true, ["j_toga_internetexplorer"] = true,
+		["j_toga_megasxlr"] = true, ["j_toga_asterism"] = true, ["j_toga_virtualmemory"] = true,
 		["j_toga_binaryjkr"] = true, ["j_toga_hexadecimaljkr"] = true, ["j_toga_y2ksticker"] = true,
 		["j_toga_jimboplus"] = true, ["j_toga_tomscott"] = true, ["j_toga_goldenwrench"] = true,
-		["j_toga_skype"] = true, ["j_toga_msn"] = true, ["j_toga_mac_os_9"] = true, 
+		["j_toga_skype"] = true, ["j_toga_msn"] = true, ["j_toga_mac_os_9"] = true,
 		["j_toga_mac_os_x"] = true, ["j_toga_linux_ubuntu"] = true, ["j_toga_linux_debian"] = true,
 		["j_toga_linux_slackware"] = true, ["j_toga_linux_redhat"] = true, ["j_toga_tempinternetfiles"] = true,
 		["j_toga_google"] = true, ["j_toga_bonzibuddy"] = true, ["j_toga_netscapenavigator"] = true,
@@ -252,7 +252,7 @@ SMODS.ObjectType{
 		["j_toga_ups"] = true, ["j_toga_hammer"] = true, ["j_toga_joker203"] = true,
 		["j_toga_chrome"] = true, ["j_toga_firefox"] = true, ["j_toga_cavingjkr"] = true,
 		["j_toga_miningjkr"] = true, ["j_toga_virtualpc"] = true, ["j_toga_tuneupwizard"] = true,
-		["j_toga_desktop"] = true, ["j_toga_mswallet"] = true, ["j_toga_nonebattery"] = true,
+		["j_toga_desktop"] = true, ["j_toga_choccymilk"] = true, ["j_toga_nonebattery"] = true,
 		["j_toga_dragndrop"] = true, ["j_toga_repairdisk"] = true, ["j_toga_merlin"] = true,
 		["j_toga_briefcase"] = true, ["j_toga_vga"] = true, ["j_toga_mshome"] = true,
 		["j_toga_gamecontrollers"] = true, ["j_toga_wincatalog"] = true, ["j_toga_monitor"] = true,
@@ -260,8 +260,7 @@ SMODS.ObjectType{
 		["j_toga_toiletrock"] = true, ["j_toga_wishingstones"] = true, ["j_toga_stoneroad"] = true,
 		["j_toga_pso2shifta"] = true, ["j_toga_pso2deband"] = true, ["j_toga_pso2ironwill"] = true,
 		["j_toga_skifree_skier"] = true, ["j_toga_skifree_yeti"] = true, ["j_toga_mmc"] = true,
-		["j_toga_chipchallenge"] = true, ["j_toga_franziska"] = true, ["j_toga_beos"] = true,
-		["j_toga_choccymilk"] = true, ["j_toga_sonicthehedgehog"] = true, 
+		["j_toga_chipchallenge"] = true, ["j_toga_franziska"] = true, ["j_toga_sonicthehedgehog"] = true,
 	}
 }
 
