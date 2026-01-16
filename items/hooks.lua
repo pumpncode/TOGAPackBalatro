@@ -876,3 +876,9 @@ local juref = Card.juice_up
 function Card:juice_up(...)
     if not next(SMODS.find_card('j_toga_pcmcia')) then juref(self, ...) end
 end
+
+sendInfoMessage("Hooking DynaText:pulse...", "TOGAPack")
+local dtxtpulseref = DynaText.pulse
+function DynaText:pulse(...)
+	if not next(SMODS.find_card('j_toga_pcmcia')) then dtxtpulseref(self, ...) end
+end

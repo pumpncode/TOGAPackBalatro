@@ -2414,10 +2414,10 @@ table.insert(jokers, {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
 	end,
-	rarity = 3,
+	rarity = 2,
 	atlas = 'TOGAJokersOther',
 	pos = { x = 1, y = 5 },
-	cost = 8,
+	cost = 6,
 	blueprint_compat = false,
 	poweritem = true
 })
