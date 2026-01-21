@@ -771,7 +771,7 @@ end
 sendInfoMessage("Hooking Card:calculate_perishable...", "TOGAPack")
 local calcperishref = Card.calculate_perishable
 function Card:calculate_perishable()
-	if self and self.ability and tonumber(self.ability.perish_tally) and self.ability.perish_tally > 0 and G.GAME.modifiers.toga_norentperish then return end
+	if G.GAME.modifiers.toga_norentperish then return end
 	return calcperishref(self)
 end
 
@@ -852,21 +852,28 @@ function get_blind_amount(ante)
 	return amt
 end
 
+-- Return a random card object out of specific areas.
+local function selrndcard()
+	local cards, careas = {}, {G.jokers, G.consumeables, G.play, G.hand, G.shop_jokers, G.shop_booster, G.shop_vouchers, not G.shop and G.deck}
+	for _, a in pairs(careas) do
+		if a and a.cards and next(a.cards) then
+			for k, v in pairs(a.cards) do
+				if v then table.insert(cards, v) end
+			end
+		end
+	end
+	if next(cards) then
+		local selcard = pseudorandom_element(cards, pseudoseed(':)'))
+		if selcard and not selcard.getting_sliced and Object.is(selcard, Card) then return selcard end
+	end
+end
+
 sendInfoMessage("Hooking card_eval_status_text...", "TOGAPack")
 local cestref = card_eval_status_text
 function card_eval_status_text(card, eval_type, amt, percent, dir, extra)
 	if next(SMODS.find_card('j_toga_pcmcia')) then return end
 	if next(SMODS.find_card('j_toga_notsosmileyface')) then
-		local cards, careas = {}, {G.jokers, G.consumeables, G.play, G.hand}
-		for _, a in pairs(careas) do
-			if a.cards and next(a.cards) then
-				for k, v in pairs(a.cards) do
-					if v then table.insert(cards, v) end
-				end
-			end
-		end
-		local selcard = pseudorandom_element(cards, pseudoseed(':)'))
-		if selcard and not selcard.getting_sliced then card = selcard end
+		card = selrndcard() or card
 	end
 	return cestref(card, eval_type, amt, percent, dir, extra)
 end
@@ -874,11 +881,42 @@ end
 sendInfoMessage("Hooking Card:juice_up...", "TOGAPack")
 local juref = Card.juice_up
 function Card:juice_up(...)
-    if not next(SMODS.find_card('j_toga_pcmcia')) then juref(self, ...) end
+    if next(SMODS.find_card('j_toga_pcmcia')) then return end
+	local card
+	if next(SMODS.find_card('j_toga_notsosmileyface')) then
+		card = selrndcard()
+	end
+	return juref(Object.is(card, Card) and card or self, ...)
 end
 
 sendInfoMessage("Hooking DynaText:pulse...", "TOGAPack")
 local dtxtpulseref = DynaText.pulse
 function DynaText:pulse(...)
 	if not next(SMODS.find_card('j_toga_pcmcia')) then dtxtpulseref(self, ...) end
+end
+
+sendInfoMessage("Hooking Card:use_consumeable...", "TOGAPack")
+local carduseconsref = Card.use_consumeable
+local function toga_reusecons(self, area, copier, reuser)
+	if self:can_use_consumeable(true, true) and not self.config.center.toga_donotreuse then
+		if reuser then SMODS.calculate_effect({message = localize('k_again_ex')}, reuser) end
+		carduseconsref(self, area, copier)
+		SMODS.calculate_context({using_consumeable = true, consumeable = self, area = self.from_area})
+	end
+end
+
+function Card:use_consumeable(area, copier)
+	carduseconsref(self, area, copier)
+	-- Consumeable reuse/retrigger context.
+	local consusecalc = {}
+	SMODS.calculate_context({toga_reuse_consumeable = self}, consusecalc)
+	for _, eval in pairs(consusecalc) do
+		for key, eval2 in pairs(eval) do
+			if eval2.card and tonumber(eval2.amount) and math.floor(eval2.amount) >= 1 then
+				for i = 1, eval2.amount do
+					toga_reusecons(self, area, copier, eval2.card)
+				end
+			end
+		end
+	end
 end

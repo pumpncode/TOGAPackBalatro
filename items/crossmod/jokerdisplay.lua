@@ -609,7 +609,7 @@ togabalatro.jd_def["j_toga_winmillenium"] = {
 togabalatro.jd_def["j_toga_winnt4"] = {
 	retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
 		if held_in_hand then return 0 end
-		return not playing_card:is_face() and joker_card.ability.extra.repetitions * JokerDisplay.calculate_joker_triggers(joker_card) or 0
+		return not playing_card:is_face() and JokerDisplay.calculate_joker_triggers(joker_card) or 0
 	end
 }
 
@@ -1587,6 +1587,36 @@ togabalatro.jd_def["j_toga_hypersonicthehedgehog"] = {
 	end,
 	retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
 		return JokerDisplay.calculate_joker_triggers(joker_card)*2 or 0
+	end
+}
+
+togabalatro.jd_def["j_toga_genie"] = {
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds", retrigger_type = "exp" },
+			{ text = ")" },
+		}
+	},
+	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+	calc_function = function(card)
+		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'msagent_genie')
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { numerator, denominator } }
+	end
+}
+
+togabalatro.jd_def["j_toga_victor"] = {
+	extra = {
+		{
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds", retrigger_type = "exp" },
+			{ text = ")" },
+		}
+	},
+	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+	calc_function = function(card)
+		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'msagent_victor')
+		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { numerator, denominator } }
 	end
 }
 

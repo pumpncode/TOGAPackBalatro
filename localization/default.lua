@@ -251,7 +251,7 @@ return {
 				name = 'Control Panel',
 				text = {
 					"For every {C:attention}Joker{} and {C:attention}Consumable{}",
-					"slots, gain {C:money}$#1#{} at end of round.",
+					"slots, earn {C:money}$#1#{} at end of round.",
 					"{C:inactive,s:0.8}(Currently {}{C:money,s:0.8}$#3#{}{C:inactive,s:0.8}){}",
 					"{C:inactive,s:0.8}Look at all them settings!{}"
 				}
@@ -1436,6 +1436,34 @@ return {
 					"{C:green}#1# in #2#{} chance to be destroyed",
 					"{C:attention,E:1}Jokers cannot be debuffed",
 				},
+			},
+			j_toga_genie = {
+				name = 'Genie',
+				text = {
+					"{C:green}#1# in #2#{} chance to {C:attention}retrigger{}",
+					"used {C:tarot}Tarot{} cards if possible",
+				}
+			},
+			j_toga_victor = {
+				name = 'Victor',
+				text = {
+					"{C:green}#1# in #2#{} chance to {C:attention}retrigger{}",
+					"used {C:planet}Planet{} cards if possible",
+				}
+			},
+			j_toga_kauru = {
+				name = 'Kauru',
+				text = {
+					"{C:attention}#1#{} to {C:attention}Booster Pack{} selection",
+					"and contents",
+				}
+			},
+			j_toga_softram = {
+				name = 'SoftRAM',
+				text = {
+					"Earn {C:money}$#1#{} when any",
+					"{C:attention}Consumeable{} is used",
+				}
 			},
 		},
 		Enhanced = {

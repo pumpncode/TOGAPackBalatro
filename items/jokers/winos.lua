@@ -90,7 +90,7 @@ end
 
 table.insert(winj, {
 	key = 'winmillenium',
-	config = { extra = { basechips = 10, chipbonus = 5, totalbonus = 15 } },
+	config = { extra = { basechips = 10, chipbonus = 10, totalbonus = 20 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.totalbonus = card.ability.extra.basechips + card.ability.extra.chipbonus * toga_vouchcount()
 		return { vars = { card.ability.extra.basechips, card.ability.extra.chipbonus, card.ability.extra.totalbonus } }

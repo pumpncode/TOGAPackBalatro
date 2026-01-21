@@ -261,6 +261,8 @@ SMODS.ObjectType{
 		["j_toga_pso2shifta"] = true, ["j_toga_pso2deband"] = true, ["j_toga_pso2ironwill"] = true,
 		["j_toga_skifree_skier"] = true, ["j_toga_skifree_yeti"] = true, ["j_toga_mmc"] = true,
 		["j_toga_chipchallenge"] = true, ["j_toga_franziska"] = true, ["j_toga_sonicthehedgehog"] = true,
+		["j_toga_genie"] = true, ["j_toga_kauru"] = true, ["j_toga_victor"] = true,
+		["j_toga_softram"] = true,
 	}
 }
 

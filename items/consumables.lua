@@ -315,7 +315,8 @@ SMODS.Consumable{
 	eternal_compat = false,
 	can_stack = false,
 	select_card = 'consumeables',
-	poweritem = true
+	poweritem = true,
+	toga_donotreuse = true
 }
 
 -- Find the metal pages... wait what?
@@ -344,7 +345,12 @@ SMODS.Consumable {
 		return false
 	end,
 	can_use = function(self, card, area, copier)
-		return G.playing_cards and #G.playing_cards > 1
+		if G.playing_cards then
+			for i = 1, #G.playing_cards do
+				if SMODS.has_enhancement(G.playing_cards[i], "m_stone") then return true end
+			end
+		end
+		return false
 	end,
 	use = function(self, card, area, copier)
 		local cards = {}
@@ -375,7 +381,8 @@ SMODS.Consumable {
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
 	eternal_compat = false,
-	can_stack = false
+	can_stack = false,
+	toga_donotreuse = true
 }
 
 SMODS.Consumable {
@@ -421,7 +428,8 @@ SMODS.Consumable {
 	pixel_size = { w = 71, h = 77 },
 	perishable_compat = false,
 	eternal_compat = false,
-	poweritem = true
+	poweritem = true,
+	toga_donotreuse = true
 }
 
 -- SPB function.
@@ -471,7 +479,6 @@ SMODS.Consumable{
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		if card.ability.extra.activated then return end
-		--if pseudorandom("toga_selfpropelledbomb") < G.GAME.probabilities.normal/card.ability.extra.odds then
 		if SMODS.pseudorandom_probability(card, "toga_selfpropelledbomb", 1, card.ability.extra.odds, 'theselfpropelledbomb') then
 			toga_spbdeckwreck(card, true)
 		else
@@ -480,7 +487,8 @@ SMODS.Consumable{
 	end,
 	perishable_compat = false,
 	eternal_compat = false,
-	can_stack = false
+	can_stack = false,
+	toga_donotreuse = true
 }
 
 SMODS.Consumable {
@@ -496,6 +504,12 @@ SMODS.Consumable {
 	end,
 	in_pool = function()
 		return togabalatro.config.ShowPower
+	end,
+	can_use = function(self, card)
+		if G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.max_highlighted then 
+			return true
+		end
+		return false
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, math.min(#G.hand.highlighted, card.ability.max_highlighted) do
@@ -604,6 +618,12 @@ SMODS.Consumable {
 	end,
 	in_pool = function()
 		return togabalatro.config.ShowPower
+	end,
+	can_use = function(self, card)
+		if G and G.hand and #G.hand.highlighted ~= 0 and #G.hand.highlighted <= card.ability.max_highlighted then 
+			return true
+		end
+		return false
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, math.min(#G.hand.highlighted, card.ability.max_highlighted) do
