@@ -1208,7 +1208,7 @@ return {
 					"{C:blue}Common{} Jokers give",
 					"their {C:gold}sell value{} as {C:red}Mult{}",
 					"before scoring",
-					"{C:inactive,s:0.8}(Excluding self or copies of self.)",
+					"{C:inactive,s:0.8}(Windows Catalog excluded)",
 				}
 			},
 			j_toga_monitor = {
@@ -2441,6 +2441,7 @@ return {
 			toga_qestuff = "Quantum enhancement / Blissful Deck*",
 			toga_kingcdideck = "Harkinian Deck*",
 			toga_wtfdecktoggle = "WIT Deck*",
+			toga_titlescreencard = "Add 'Windows 95' card to main menu",
 			toga_restartrequire = "* Restart required",
 			toga_sfxswaptext = "SFX Swap Level:",
 			toga_sfxswapnone = "None",
@@ -2468,6 +2469,8 @@ return {
 			toga_desc_nerfver = "Changes functionality/values",
 			toga_desc_windowsfx1 = "When window is minimized or maximized",
 			toga_desc_windowsfx2 = "(Uses sounds from Plus! 95)",
+			toga_desc_titlescreen1 = "The card also acts as shortcut",
+			toga_desc_titlescreen2 = "to this mods' config",
 		},
 		labels = {
 			toga_sealseal_seal = "Seal^2",
