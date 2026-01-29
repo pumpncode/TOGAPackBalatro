@@ -611,9 +611,13 @@ return {
 						"{C:inactive,s:0.8}Stacks multiplicatively.{}",
 					},
 					{
+						"{C:inactive,s:0.8}Copies of this Joker{}",
+						"{C:inactive,s:0.8}can appear when held{}",
+					},
+					{
 						"{C:inactive,s:0.8}I am currently a Joker{}",
 						"{C:inactive,s:0.8}in the Balatro video game.{}"
-					}
+					},
 				}
 			},
 			j_toga_tomscott_stj = {
@@ -623,6 +627,8 @@ return {
 					"{C:attention}copy{} of itself held",
 					"{C:inactive}(Currently {}{X:mult,C:white}X#2#{} {C:inactive}Mult){}",
 					"{C:inactive,s:0.8}Stacks multiplicatively.{}",
+					"{C:inactive,s:0.8}Copies of this Joker{}",
+					"{C:inactive,s:0.8}can appear when held{}",
 				}
 			},
 			j_toga_megasxlr = {

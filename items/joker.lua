@@ -2281,7 +2281,7 @@ table.insert(jokers, {
 	calculate = function(self, card, context)
 		if context.after then
 			local cardsplayed = context.full_hand or G.play and G.play.cards
-			if #cardsplayed > 1 then
+			if #cardsplayed > 0 then
 				for i = 1, #cardsplayed do
 					if cardsplayed[i].config.center.key ~= 'm_stone' and not cardsplayed[i]:is_face() then
 						G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()

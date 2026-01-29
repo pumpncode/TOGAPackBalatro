@@ -350,7 +350,7 @@ table.insert(winj, {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.before and context.full_hand and #context.full_hand > 1 then
+		if context.before and context.full_hand and #context.full_hand > 0 then
 			local hastriggered = false
 			for i = 1, #context.full_hand do
 				local pcard = context.full_hand[i]

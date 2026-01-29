@@ -134,9 +134,7 @@ SMODS.Sound({
 	select_music_track = function()
 		return (not togabalatro.checksiiva()) and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU
 		or togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
-		and (SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togazipboosterpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaziparchivepack'
-		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togararpack' or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togacardcabpack'
-		or SMODS.OPENED_BOOSTER.config.center.key == 'p_toga_togaxcopydnapack') and 2
+		and SMODS.OPENED_BOOSTER.config.center.kind == 'TOGABoostPack' and 2
 	end,
 })
 
