@@ -59,6 +59,10 @@ togabalatro.set_debuff = function(card)
 end
 
 togabalatro.calculate = function(self, context)
+	if context.before then
+		togabalatro.scorehookactive = nil
+		togabalatro.eolhookactive = nil
+	end
 	if context.initial_scoring_step and context.scoring_name then
 		local hasplanet = false
 		for i, v in ipairs((G.consumeables or {}).cards) do
@@ -588,10 +592,16 @@ end
 sendInfoMessage("Hooking SMODS.calculate_main_scoring...", "TOGAPack")
 local calcmainscoreref = SMODS.calculate_main_scoring
 function SMODS.calculate_main_scoring(context, scoring_hand)
-	if togabalatro.canareascore(context.cardarea) then calcmainscoreref(context, scoring_hand) end
-	togabalatro.kartsleevescoring(context, scoring_hand)
-	togabalatro.extrascoring(context, scoring_hand)
-	togabalatro.heldinhandscoring(context, scoring_hand)
+	local canareascore = togabalatro.canareascore(context.cardarea)
+	if not togabalatro.scorehookactive then
+		togabalatro.scorehookactive = true
+		if canareascore then calcmainscoreref(context, scoring_hand) end
+		togabalatro.kartsleevescoring(context, scoring_hand)
+		togabalatro.extrascoring(context, scoring_hand)
+		togabalatro.heldinhandscoring(context, scoring_hand)
+	else
+		if canareascore then calcmainscoreref(context, scoring_hand) end
+	end
 end
 
 -- Hooking to run it back.
@@ -599,27 +609,33 @@ end
 sendInfoMessage("Hooking SMODS.calculate_end_of_round_effects...", "TOGAPack")
 local calcendroundref = SMODS.calculate_end_of_round_effects
 function SMODS.calculate_end_of_round_effects(context)
-	if togabalatro.canareascore(context.cardarea) then calcendroundref(context) end
-	if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
-		togabalatro.forcereverse = true
-		calcendroundref(context)
-		togabalatro.forcereverse = false
-	end
-	
-	if context.cardarea == G.hand and context.end_of_round then
-		togabalatro.triggereof(context) -- initial end of round scoring of cards with Hyperlink Seals
-		local clippitcalc = {}
-		SMODS.calculate_context({clippitscore_eor = true, cardarea = context.cardarea}, clippitcalc)
-		for _, eval in pairs(clippitcalc) do
-			for key, eval2 in pairs(eval) do
-				if eval2.card then
-					for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
-						calcendroundref(context)
-						togabalatro.triggereof(context) -- rescore...
+	local canareascore = togabalatro.canareascore(context.cardarea)
+	if not togabalatro.eorhookactive then
+		togabalatro.eorhookactive = true
+		if canareascore then calcendroundref(context) end
+		if G.GAME and G.GAME.modifiers and G.GAME.modifiers.toga_reversedscore_special_kart then
+			togabalatro.forcereverse = true
+			calcendroundref(context)
+			togabalatro.forcereverse = false
+		end
+		
+		if context.cardarea == G.hand and context.end_of_round then
+			togabalatro.triggereof(context) -- initial end of round scoring of cards with Hyperlink Seals
+			local clippitcalc = {}
+			SMODS.calculate_context({clippitscore_eor = true, cardarea = context.cardarea}, clippitcalc)
+			for _, eval in pairs(clippitcalc) do
+				for key, eval2 in pairs(eval) do
+					if eval2.card then
+						for i = 1, math.floor(eval2.rescores or eval2.card.ability.extra and eval2.card.ability.extra.rescores or 1) do
+							calcendroundref(context)
+							togabalatro.triggereof(context) -- rescore...
+						end
 					end
 				end
 			end
 		end
+	else
+		if canareascore then calcendroundref(context) end
 	end
 end
 
