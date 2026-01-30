@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://files.catbox.moe/vo9000.png">
+  <img src="https://files.catbox.moe/h0f32y.png">
 </p>
 
 # TOGA's Stuff
