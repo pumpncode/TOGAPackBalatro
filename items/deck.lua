@@ -193,10 +193,8 @@ if togabalatro.config.EnableQE then
 			if (context.retrigger_joker_check or context.retrigger_joker or context.blueprint) then return end
 			if context.check_enhancement and context.other_card and context.no_blueprint then
 				local curenh = {}
-				if G.playing_cards and #G.playing_cards > 0 then
-					for i = 1, #G.playing_cards do
-						if G.playing_cards[i].ability.set == 'Enhanced' and G.playing_cards[i].config and not curenh[G.playing_cards[i].config.center_key] then curenh[G.playing_cards[i].config.center_key] = true end
-					end
+				for i, pcard in pairs(G.playing_cards or {}) do
+					if pcard and pcard.ability.set == 'Enhanced' and pcard.config and not curenh[pcard.config.center.key] then curenh[pcard.config.center.key] = true end
 				end
 				return curenh
 			end
