@@ -22,6 +22,11 @@ function G.FUNCS.toga_clearallconfig(e)
 	if e then togabalatro.clearconfig() end
 end
 
+function G.FUNCS.toga_mancrash()
+	togabalatro.mancrashed = true
+	togabalatro.mancrash()
+end
+
 local function writeloadscreenscript(bonus)
 	local fpath = bonus and togabalatro.path.."misc/win31/loads.lua" or togabalatro.path.."misc/filecopy/loads.lua"
 	if not NFS.getInfo(fpath) then return false end

@@ -8,10 +8,12 @@ togabalatro.config_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_configtab'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
 		}},
-		{n = G.UIT.R, config = {align = "cl", padding = 0.1 }, nodes = {
+		{n = G.UIT.R, config = {align = "cl", padding = 0.15 }, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_sfxwhenmain'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT }},
 			}},
+		}},
+		{n = G.UIT.R, config = {align = "cl" }, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SFXWhenAdding" },
 			}},
@@ -63,14 +65,6 @@ togabalatro.config_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_titlescreencard'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_titlescreen1'), localize('toga_desc_titlescreen2')} } }},
 			}},
 		}},
-		not togabalatro.checksiiva() and {n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
-			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
-				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SpecialDeckMusic" },
-			}},
-			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
-				{n = G.UIT.T, config = { text = localize('toga_specialdecktunes'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_kartingdeckextras1'), localize('toga_desc_kartingdeckextras2')} } }},
-			}},
-		}} or nil,
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "EnableQE" },
@@ -97,6 +91,9 @@ togabalatro.config_tab = function()
 			}},
 			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
 				UIBox_button({label = {localize('toga_reseteverything')}, button = "toga_resetdialogprompt", minw = 3.5, minh = 0.7})
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				UIBox_button({label = {localize('toga_mancrash')}, button = "toga_mancrash", minw = 2.3, minh = 0.7})
 			}},
 		}},
 		{n = G.UIT.R, config = {align = "cr", padding = 0}, nodes = {
@@ -207,11 +204,12 @@ togabalatro.startupsfx_tab = function()
 end
 
 togabalatro.getitemsforoptions = function()
-	local items, list = {}, {"j_toga_jokersrb2kart", "j_toga_speedsneakers"}
+	local items, list = {}, {"j_toga_jokersrb2kart"}
 	for i, v in ipairs(list) do
 		if G.P_CENTERS[v] and not G.P_CENTERS[v].no_collection then
 			local gencard = Card(G.CARD_W, G.CARD_H, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[v], { bypass_discovery_center = true, bypass_discovery_ui = true })
 			gencard.no_ui = true
+			gencard.states.drag.can = false
 			items[#items+1] = gencard
 		end
 	end
@@ -221,7 +219,7 @@ end
 togabalatro.itemoptions_tab = function()
 	local cards, camount = togabalatro.getitemsforoptions() or {}
 	return {n = G.UIT.ROOT, config = {align = "cl", outline = 1, outline_colour = HEX('C3C3C3'), padding = 0.025, colour = G.C.UI.BACKGROUND_INACTIVE, minw = 6, minh = 2}, nodes = {
-		{n = G.UIT.R, config = {align = "cl", colour = HEX('000082')}, nodes = {
+		{n = G.UIT.R, config = {align = "cl", colour = HEX('000082'), minw = 8}, nodes = {
 			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
 				{n = G.UIT.O, config = { w = 0.75, h = 0.75, object = Sprite(36, 36, 36, 36, G.ASSET_ATLAS['toga_TOGAMoreIcons'], { x = 4, y = 0 }) } },
 			}},
@@ -242,6 +240,14 @@ togabalatro.itemoptions_tab = function()
 				{n = G.UIT.T, config = { text = localize('toga_usenerfedver'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_nerfver')} } }},
 			}},
 		}} or nil),
+		not togabalatro.checksiiva() and {n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "cl", padding = -0.25 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0.15, shadow = true, ref_table = togabalatro.config, ref_value = "SpecialDeckMusic" },
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.2 }, nodes = {
+				{n = G.UIT.T, config = { text = localize('toga_specialdecktunes'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_kartingdeckextras1'), localize('toga_desc_kartingdeckextras2')} } }},
+			}},
+		}} or nil,
 		{n = G.UIT.R, config = {align = "cm", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "cm", padding = 0 }, nodes = {
 				{n = G.UIT.T, config = { text = localize('toga_jokeactive'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, tooltip = { title = localize('toga_description'), text = {localize('toga_desc_jokeitems')} } }},

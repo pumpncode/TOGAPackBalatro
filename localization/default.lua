@@ -392,10 +392,9 @@ return {
 			j_toga_jokersrb2kart = {
 				name = 'Karting Joker',
 				text = {
-					"Gains {X:mult,C:white}XMult{} when",
-					"performing {C:attention}actions{}.",
-					"{C:red,s:0.8}Self debuffs if {X:mult,C:white,s:0.8}XMult{C:red,s:0.8} goes below {X:mult,C:white,s:0.8}X1{}{C:red,s:0.8}.{}",
-					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive}){}",
+					"Gains {X:mult,C:white}XMult{} when performing {C:attention}actions{}",
+					"{C:red,s:0.8}Self debuffs if {X:mult,C:white,s:0.8}XMult{C:red,s:0.8} goes below {X:mult,C:white,s:0.8}X1{}{C:red,s:0.8}{}",
+					"{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}",
 					"{C:inactive,s:0.7}I am literally a racer, what's your excuse?{}"
 				}
 			},
@@ -1343,7 +1342,8 @@ return {
 			j_toga_franziska = {
 				name = "Franziska von Karma",
 				text = {
-					"Create {C:tarot}The Fool{} on last discard",
+					"Create {C:tarot}The Fool{} when {C:attention}discarding",
+					"with {C:attention}1{} discard remaining",
 					"{C:inactive}(Must have room)",
 				},
 			},
@@ -2063,13 +2063,21 @@ return {
 					"{C:attention}leaving{} shop. ({X:mult,C:white}X#2#{})",
 				},
 			},
+			toga_kartjokerengine = {
+				name = "Engine Whirring:",
+				text = {
+					"{C:green}#2# in #3#{} chance to {C:attention}lose{} {C:red}#1#%{}",
+					"of current {X:mult,C:white}XMult{} after",
+					"playing any hand"
+				},
+			},
 			toga_kartjokershortcut = {
 				name = "Shortcut:",
 				text = {
 					"Skipping {C:attention}blinds{} or {C:attention}booster packs{}",
 					"has a {C:green}#1# in #2#{} chance to gain",
 					"{X:mult,C:white}X#3#{} instead of {C:attention}losing{} {C:red}#4#%{}",
-					"of currently accumulated {X:mult,C:white}XMult{}.",
+					"of current {X:mult,C:white}XMult{}",
 				},
 			},
 			toga_kartjokershortcutspecial = {
@@ -2456,6 +2464,7 @@ return {
 			toga_startupsfxtest = "Test",
 			toga_showintroagain = "Show Intro again",
 			toga_reseteverything = "Reset Config",
+			toga_mancrash = "Crash?",
 			toga_yes = "Yes",
 			toga_no = "No",
 			toga_ok = "OK",

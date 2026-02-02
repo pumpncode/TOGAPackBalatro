@@ -73,7 +73,8 @@ SMODS.Sound({key = "infraredend", path = "ir_end.ogg"}) -- Infrared End (ending 
 SMODS.Sound({key = "o97doorbell", path = "doorbell.wav"}) -- doorbell.wav from Office 97 Multimedia
 SMODS.Sound({key = "o97glide", path = "glide.wav"}) -- glide.wav from Office 97 Multimedia
 SMODS.Sound({key = "mmeclap", path = "CLAP.WAV"}) -- clap.wav from Windows 3.0 MME
-SMODS.Sound({key = "officehammer", path = "HAMMER.WAV"}) -- hammer.wav from Microsoft Office sounds, unused as of 1.7.1-RC1
+SMODS.Sound({key = "officehammer", path = "HAMMER.WAV"}) -- hammer.wav from Microsoft Office sounds
+SMODS.Sound({key = "glassbreak", path = "GLASS.WAV"}) -- glass.wav from Microsoft Office sounds
 SMODS.Sound({key = "roverbark", path = "roverbark.ogg"}) -- 0002.wav, Microsoft Agent - Rover
 SMODS.Sound({key = "mscmenucmd", path = "Musica Menu Command.ogg"}) -- Musica Sound Scheme (95 & NT4)
 SMODS.Sound({key = "spb", path = "kc57.ogg"}) -- Unused in Knuckles Chaotix, Self-Propelled Bomb targeting first place in SRB2Kart/Dr. Robotnik's Ring Racers.
@@ -111,6 +112,7 @@ SMODS.Sound({key = "sonicringloss", path = "sonicringloss.ogg"}) -- Losing Rings
 SMODS.Sound({key = "sonictransform", path = "sonictransform.ogg"}) -- Transformation, Sonic games on Sega Genesis/Mega Drive
 SMODS.Sound({key = "soniccheckpoint", path = "soniccheckpoint.ogg"}) -- Checkpoint, Sonic games on Sega Genesis/Mega Drive
 SMODS.Sound({key = "sonictally", path = "sonictally.ogg"}) -- Score tally complete, Sonic games on Sega Genesis/Mega Drive
+SMODS.Sound({key = "awwcrap", path = "awwcrap.ogg"}) -- *boom* Awww, crap!
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})

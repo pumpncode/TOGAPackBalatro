@@ -1938,18 +1938,22 @@ table.insert(jokers, {
 	blueprint_compat = false,
 })
 
-togabalatro.checkxmultsafe = function(card)
-	local xmultcheck = card.ability.extra.Xmult_current / card.ability.extra.shortcutfailmult
+togabalatro.checkxmultsafe = function(card, val)
+	if not (card or tonumber(to_number(val))) then return end
+	local xmultcheck = card.ability.extra.Xmult_current - (card.ability.extra.Xmult_current*val)
 	if xmultcheck < 1 then return false else return true end
 end
 
 table.insert(jokers, {
 	key = 'jokersrb2kart',
-	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.75, shortcutfailmult = 1.33, maxchance = 3} },
+	config = { extra = { Xmult_current = 1, add_shop = 0.05, addshortcut = 0.75, shortcutfailmult = 0.33, maxchance = 3, losexmhand = 0.25, handodds = 8,} },
 	loc_vars = function(self, info_queue, card)
-		if self.discovered then
+		if self.discovered and not (card.debuff or card.ability.extra.eliminated or card.fake_card) then
 			if togabalatro.config.UseNerfed then
 				if G.GAME.selected_back.effect.center.key == 'b_toga_srb2kartdeck' then info_queue[#info_queue + 1] = {key = "toga_kartjokershortcutspecial", set = 'Other', vars = { card.ability.extra.addshortcut/2.5 } } end
+				info_queue[#info_queue + 1] = {key = "toga_kartjokerengine", set = 'Other', vars =
+					{ card.ability.extra.losexmhand*100, SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.handodds) }
+				}
 				return { key = self.key.."_lite", vars = { card.ability.extra.Xmult_current, card.ability.extra.add_shop*8 } }
 			else
 				info_queue[#info_queue + 1] = {key = "toga_kartjokerlist", set = 'Other', vars = { card.ability.extra.add_shop, card.ability.extra.add_shop*8 } }
@@ -1957,9 +1961,12 @@ table.insert(jokers, {
 				else
 					local num, dem = SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.maxchance)
 					info_queue[#info_queue + 1] = {key = "toga_kartjokershortcut", set = 'Other', vars =
-						{ num, dem, card.ability.extra.addshortcut, math.abs((1-card.ability.extra.shortcutfailmult)*100) }
+						{ num, dem, card.ability.extra.addshortcut, card.ability.extra.shortcutfailmult*100 }
 					}
 				end
+				info_queue[#info_queue + 1] = {key = "toga_kartjokerengine", set = 'Other', vars =
+					{ card.ability.extra.losexmhand*100, SMODS.get_probability_vars(card or self, 1, (card.ability or self.config).extra.handodds) }
+				}
 			end
 		end
 		return { vars = { card.ability.extra.Xmult_current } }
@@ -1972,6 +1979,7 @@ table.insert(jokers, {
 	atlas = 'TOGAJokersOther',
 	pos = { x = 1, y = 0 },
 	cost = 10,
+	eternal_compat = false,
 	blueprint_compat = true,
 	perishable_compat = false,
 	demicolon_compat = true,
@@ -1998,7 +2006,6 @@ table.insert(jokers, {
 					ref_table[ref_value] = initial + valmodify*change
 				end,
 			})
-			return nil, true
 		end
 		
 		if (context.starting_shop or context.ending_shop) and togabalatro.config.UseNerfed then
@@ -2010,13 +2017,12 @@ table.insert(jokers, {
 					ref_table[ref_value] = initial + 8*change
 				end,
 			})
-			return nil, true
 		end
 		
 		if (context.skip_blind or context.skipping_booster) and not context.blueprint then
 			if not togabalatro.config.UseNerfed then
 				if not SMODS.pseudorandom_probability(card, 'j_toga_jokersrb2kart', 1, card.ability.extra.maxchance, 'srb2kart') and G.GAME.selected_back.effect.center.key ~= 'b_toga_srb2kartdeck' then
-					if not togabalatro.checkxmultsafe(card) then
+					if not togabalatro.checkxmultsafe(card, card.ability.extra.shortcutfailmult) then
 						-- Eliminated!
 						card.ability.extra.Xmult_current = 0
 						card.ability.extra.eliminated = true
@@ -2028,7 +2034,7 @@ table.insert(jokers, {
 							ref_value = "Xmult_current",
 							scalar_value = "shortcutfailmult",
 							operation = function(ref_table, ref_value, initial, change)
-								ref_table[ref_value] = initial / change
+								ref_table[ref_value] = initial - (initial*change)
 							end,
 							scaling_message = {message = localize('toga_kartouch'), colour = G.C.RED}
 						})
@@ -2058,6 +2064,32 @@ table.insert(jokers, {
 					})
 					return nil, true
 				end
+			end
+		end
+		
+		if context.after then
+			if SMODS.pseudorandom_probability(card, 'j_toga_jokersrb2kart', 1, card.ability.extra.handodds, 'srb2kartengine') then
+				if togabalatro.checkxmultsafe(card, card.ability.extra.losexmhand) then
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "Xmult_current",
+						scalar_value = "losexmhand",
+						operation = function(ref_table, ref_value, initial, change)
+							ref_table[ref_value] = initial - (initial*change)
+						end,
+						scaling_message = {message = localize('toga_kartouch'), colour = G.C.RED}
+					})
+				else
+					G.E_MANAGER:add_event(Event({func = function()
+						card.ability.extra.Xmult_current = 0
+						card.ability.extra.eliminated = true
+						SMODS.debuff_card(card, true, card)
+						SMODS.calculate_effect({message = localize('toga_karteliminated'), colour = G.C.RED, sound = not silent and togabalatro.config.SFXWhenTriggered and 'toga_ssb64crowdohh'}, card)
+						return true
+					end}))
+				end
+			else
+				return {message = localize('k_safe_ex')}
 			end
 		end
 		
@@ -2342,17 +2374,17 @@ table.insert(jokers, {
 table.insert(jokers, {
 	key = 'y2ksticker',
 	unlocked = true,
-	rarity = 3,
+	rarity = 1,
 	atlas = 'TOGAJokersOtherDiffSize',
 	pos = { x = 2, y = 0 },
-	cost = 7,
+	cost = 4,
 	blueprint_compat = false,
 	pixel_size = { w = 69, h = 38 }
 })
 
 table.insert(jokers, {
 	key = 'jimboplus',
-	config = { extra = { leech = 0.05 } },
+	config = { extra = { leech = 0.1 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.leech } }
 	end,
@@ -2539,11 +2571,10 @@ end
 
 table.insert(jokers, {
 	key = 'speedsneakers',
-	config = { extra = { xmultpart = 0.16, dollars = 5 } },
+	config = { extra = { xmultpart = 0.12, dollars = 5 } },
 	loc_vars = function(self, info_queue, card)
-		local xmultnerfval = card.ability.extra.xmultpart*(togabalatro.config.UseNerfed and 0.5 or 1)
-		local total = togabalatro.gethowmuch(card.ability.extra.dollars, xmultnerfval)*xmultnerfval
-		return { vars = { xmultnerfval, card.ability.extra.dollars, to_big(1)+to_big(total) > to_big(1) and to_big(1)+to_big(total) or to_big(1) } }
+		local total = togabalatro.gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart)
+		return { vars = { card.ability.extra.xmultpart, card.ability.extra.dollars, to_big(1)+to_big(total) > to_big(1) and to_big(1)+to_big(total) or to_big(1) } }
 	end,
 	unlocked = true,
 	rarity = 2,
@@ -2551,18 +2582,12 @@ table.insert(jokers, {
 	pos = { x = 1, y = 0 },
 	cost = 5,
 	blueprint_compat = true,
-	demicolon_compat = true,
 	pixel_size = { w = 69, h = 74 },
 	calculate = function(self, card, context)
-		if context.joker_main or context.forcetrigger then
-			local xmultnerfval = card.ability.extra.xmultpart*(togabalatro.config.UseNerfed and 0.5 or 1)
-			local total = togabalatro.gethowmuch(card.ability.extra.dollars, xmultnerfval)*xmultnerfval
+		if context.joker_main then
+			local total = togabalatro.gethowmuch(card.ability.extra.dollars, card.ability.extra.xmultpart)
 			return { xmult = to_big(1)+to_big(total) > to_big(1) and to_big(1)+to_big(total) or 1 }
 		end
-	end,
-	nerfable = true,
-	set_badges = function(self, card, badges)
-		if togabalatro.config.UseNerfed then badges[#badges+1] = create_badge(localize('toga_nerfedver'), G.C.UI.TEXT_DARK, G.C.WHITE, 1 ) end
 	end,
 })
 
@@ -3062,19 +3087,19 @@ end
 togabalatro.bmpexclude = {
 	['monitor'] = true, ['chrome'] = true, ['firefox'] = true, ['jimboplus'] = true, ['gamecontrollers'] = true,
 	['dragndrop'] = true, ['nonebattery'] = true, ['cpu'] = true, ['pcmcia'] = true, ['pso2ironwill'] = true,
-	['drivespace'] = true, ['wscript'] = true, ['albanianvirus'] = true
+	['drivespace'] = true, ['wscript'] = true, ['albanianvirus'] = true, ['jokersrb2kart'] = true
 }
 
 -- Absolute exclusions.
 togabalatro.bmpbreakingitems = {
-	['pso2ironwill'] = true, ['drivespace'] = true, ['wscript'] = true, ['albanianvirus'] = true
+	['pso2ironwill'] = true, ['drivespace'] = true, ['wscript'] = true, ['albanianvirus'] = true, ['jokersrb2kart'] = true
 }
 
 -- Actually go through the initialization of Jokers.
 local intjkrname = "j_toga_"
 togabalatro.canjokerload = function(key)
 	if type(key) ~= 'string' then return false end
-	if togabalatro.checkbmp() and (togabalatro.bmpexclude[key] or togabalatro.bmpbreakingitems[key]) and not togabalatro.config.BMPAllItems then
+	if togabalatro.checkbmp() and (togabalatro.bmpexclude[key] or (togabalatro.bmpbreakingitems[key] and not togabalatro.config.BMPAllItems)) then
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Skipping loading of "..intjkrname..key.." due to presence of Balatro Multiplayer.", "TOGAPack") end
 		return false
 	end

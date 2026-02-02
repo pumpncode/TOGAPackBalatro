@@ -583,7 +583,7 @@ togabalatro.jd_def["j_toga_win98"] = {
 }
 
 togabalatro.jd_def["j_toga_winmillenium"] = {
-	text = {
+	reminder_text = {
 		{ text = "(", colour = G.C.UI.TEXT_INACTIVE },
 		{ text = "+", colour = G.C.CHIPS },
 		{ ref_table = "card.ability.extra", ref_value = "basechips", colour = G.C.CHIPS },
@@ -595,14 +595,13 @@ togabalatro.jd_def["j_toga_winmillenium"] = {
 		{ text = ")", colour = G.C.UI.TEXT_INACTIVE },
 	},
 	calc_function = function(card)
-		local nerfy = togabalatro.config.UseNerfed and 0.2 or 1
 		local vouchcount = G.vouchers and G.vouchers.cards and #G.vouchers.cards or 0
 		card.joker_display_values.vouchcount = vouchcount
-		card.joker_display_values.bonuschips = (card.ability.extra.chipbonus*nerfy)
-		card.joker_display_values.totalchips = card.ability.extra.basechips + (card.ability.extra.chipbonus*nerfy)*vouchcount
+		card.joker_display_values.bonuschips = card.ability.extra.chipbonus
+		card.joker_display_values.totalchips = card.ability.extra.basechips + card.ability.extra.chipbonus*vouchcount
 	end,
 	mod_function = function(card, mod_joker)
-		return { chips = card ~= mod_joker and mod_joker.ability.extra.totalbonus*JokerDisplay.calculate_joker_triggers(mod_joker) or nil }
+		return { chips = mod_joker.ability.extra.totalbonus*JokerDisplay.calculate_joker_triggers(mod_joker) }
 	end
 }
 

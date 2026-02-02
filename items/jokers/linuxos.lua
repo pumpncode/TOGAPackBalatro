@@ -78,6 +78,7 @@ table.insert(lj, {
 	pos = { x = 3, y = 0 },
 	cost = 5,
 	blueprint_compat = true,
+	perishable_compat = false,
 	demicolon_compat = true,
 	calculate = function(self, card, context)
 		if context.before and context.poker_hands then

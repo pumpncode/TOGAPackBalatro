@@ -51,13 +51,18 @@ end
 togabalatro.rosensfx = { chips1 = true, multhit1 = true, multhit2 = true, coin1 = true, generic1 = true, foil2 = true, xchips = true,
 						talisman_xchip = true, talisman_echip = true, talisman_eechip = true, talisman_eeechip = true,
 						talisman_emult = true, talisman_eemult = true, talisman_eeemult = true }
+						
+togabalatro.glasssfx = { glass1 = true, glass2 = true, glass3 = true, glass4 = true, glass5 = true, glass6 = true }
 
 sendInfoMessage("Hooking play_sound...", "TOGAPack")
 local playsoundref = play_sound
 function play_sound(sound_code, per, vol)
-	-- ...only if config is set to allow it.
 	if togabalatro.config.DoMoreLogging and togabalatro.config.DoEvenMoreLogging then sendDebugMessage("play_sound hook.", "TOGAPack") end
-	if togabalatro.config.SFXWhenTriggered and next(SMODS.find_card('j_toga_michaelrosen')) and ((togabalatro.config.SFXSwapLevel == 3) or (togabalatro.config.SFXSwapLevel == 2 and togabalatro.rosensfx[sound_code])) then sound_code = 'toga_rosenclick' end
+	-- ...only if config is set to allow it.
+	if togabalatro.config.SFXWhenTriggered then
+		if next(SMODS.find_card('j_toga_hammer')) and togabalatro.config.SFXSwapLevel >= 2 and togabalatro.glasssfx[sound_code] then sound_code = 'toga_glassbreak' end
+		if next(SMODS.find_card('j_toga_michaelrosen')) and ((togabalatro.config.SFXSwapLevel == 3) or (togabalatro.config.SFXSwapLevel == 2 and togabalatro.rosensfx[sound_code])) then sound_code = 'toga_rosenclick' end
+	end
 	if G and G.GAME and G.GAME.blind and G.GAME.blind.boss and G.GAME.blind.config.blind.key == 'bl_toga_xpboss' and (togabalatro.config.SFXSwapLevel >= 2) then sound_code = 'toga_winxpcritstop' end
 	
 	playsoundref(sound_code, per, vol)
@@ -417,7 +422,7 @@ sendInfoMessage("Hooking Card.calculate_joker...", "TOGAPack")
 local calcjkrref = Card.calculate_joker
 function Card.calculate_joker(self, context)
     local ret = calcjkrref(self, context)
-    if not (self.config.center.mod or self.config.original_mod) and ret then
+    if not (self.config.center.mod or self.config.original_mod) and ret and type(ret) == 'table' then
         if ret.Xmult_mod then
             ret.x_mult = ret.Xmult_mod
             ret.Xmult_mod = nil

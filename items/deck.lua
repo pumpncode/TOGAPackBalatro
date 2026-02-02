@@ -30,29 +30,32 @@ SMODS.Back{
 	end
 }
 
-SMODS.Back{
-	key = "srb2kartdeck",
-	pos = { x = 2, y = 0 },
-	atlas = "TOGADeckBack",
-	unlocked = true,
-	config = {spectral_rate = 1},
-	loc_vars = function(self, info_queue, center)
-		return { vars = { self.config.ante_scaling or 1 } }
-	end,
-	apply = function(self, back)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				if G.jokers then
-					SMODS.add_card({ key = "j_toga_jokersrb2kart", stickers = { "eternal" }, force_stickers = true })
-					return true
-				end
-			end,
-		}))
-	end,
-	quip_filter = function(quip, type)
-		if (quip.mod and quip.mod.id == 'TOGAPack' and togabalatro.config.SpecialDeckMusic) or not togabalatro.config.SpecialDeckMusic then return true else return false end
-	end
-}
+if not togabalatro.checkbmp() then
+	SMODS.Back{
+		key = "srb2kartdeck",
+		pos = { x = 2, y = 0 },
+		atlas = "TOGADeckBack",
+		unlocked = true,
+		config = {spectral_rate = 1},
+		loc_vars = function(self, info_queue, center)
+			return { vars = { self.config.ante_scaling or 1 } }
+		end,
+		apply = function(self, back)
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.jokers then
+						local j = SMODS.add_card({ key = "j_toga_jokersrb2kart" })
+						j.ability.extra.Xmult_current = 1.25
+						return true
+					end
+				end,
+			}))
+		end,
+		quip_filter = function(quip, type)
+			if (quip.mod and quip.mod.id == 'TOGAPack' and togabalatro.config.SpecialDeckMusic) or not togabalatro.config.SpecialDeckMusic then return true else return false end
+		end
+	}
+end
 
 SMODS.Back{
 	key = "againdeck",
@@ -91,9 +94,7 @@ SMODS.Back{
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for _, v in ipairs(G.handlist) do
-					G.GAME.hands[v].level = G.GAME.hands[v].level + self.config.pokerhandlvlup
-					G.GAME.hands[v].mult = math.max(G.GAME.hands[v].s_mult + G.GAME.hands[v].l_mult*(G.GAME.hands[v].level - 1), 1)
-					G.GAME.hands[v].chips = math.max(G.GAME.hands[v].s_chips + G.GAME.hands[v].l_chips*(G.GAME.hands[v].level - 1), 0)
+					level_up_hand(G.deck.cards[1] or G.deck, v, true)
 					if v ~= "High Card" and v ~= "Pair" and v ~= "Three of a Kind" then
 						G.GAME.hands[v].visible = false
 					end
