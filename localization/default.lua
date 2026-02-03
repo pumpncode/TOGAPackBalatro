@@ -209,15 +209,15 @@ return {
 			bl_toga_filmreel = {
 				name = "The Film Reel",
 				text = {
-					"Must play a card",
-					"without a rank"
+					"Hand must contain",
+					"a card without a rank"
 				}
 			},
 			bl_toga_stamp = {
 				name = "The Stamp",
 				text = {
-					"Only 1 rank",
-					"can be played"
+					"Hand must contain",
+					"only 1 rank"
 				}
 			},
 			bl_toga_login = {
