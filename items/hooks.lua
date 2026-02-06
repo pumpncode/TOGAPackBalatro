@@ -763,6 +763,18 @@ function Game:main_menu(ctx)
 			func = function() togabalatro.cryptidnotice() return true end
 		}))
 	end
+	-- PWX warning.
+	if next(SMODS.find_mod('jen')) then
+		G.E_MANAGER:add_event(Event({
+			func = function() togabalatro.pwxnotice() return true end
+		}))
+	end
+	-- Incantation w/o PWX.
+	if not next(SMODS.find_mod('jen')) and next(SMODS.find_mod('incantation')) then
+		G.E_MANAGER:add_event(Event({
+			func = function() togabalatro.incantationnotice() return true end
+		}))
+	end
 	return r
 end
 
@@ -854,6 +866,9 @@ function get_blind_amount(ante)
 	if deband[1] then
 		amt = amt*0.8
 	end
+	for k, v in pairs(G.playing_cards or {}) do
+		if SMODS.has_enhancement(v, 'm_toga_lead') and tonumber(v.ability.toga_blindredamt) then amt = amt*v.ability.toga_blindredamt end
+	end
 	return amt
 end
 
@@ -911,7 +926,7 @@ local function toga_reusecons(self, area, copier, reuser)
 end
 
 function Card:use_consumeable(area, copier)
-	carduseconsref(self, area, copier)
+	local ret = carduseconsref(self, area, copier)
 	-- Consumeable reuse/retrigger context.
 	local consusecalc = {}
 	SMODS.calculate_context({toga_reuse_consumeable = self}, consusecalc)
@@ -924,4 +939,13 @@ function Card:use_consumeable(area, copier)
 			end
 		end
 	end
+	return ret
+end
+
+sendInfoMessage("Hooking Full House evaluation...", "TOGAPack")
+local fullhouse = SMODS.PokerHands['Full House']
+local fullhouseeval = SMODS.PokerHands['Full House'].evaluate
+function fullhouse.evaluate(parts)
+	if next(SMODS.find_card('j_toga_achemoth')) then return not (#parts._2 < 2) and parts._all_pairs end
+	return fullhouseeval(parts)
 end
