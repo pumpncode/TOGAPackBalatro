@@ -699,7 +699,7 @@ togabalatro.extrascoring = function(context, scoring_hand)
 		-- Space Cadet scoring.
 		local spacecadetcalc = {}
 		SMODS.calculate_context({spacecadetscore = true}, spacecadetcalc)
-		if next(context.scoring_hand) then
+		if context.scoring_hand and next(context.scoring_hand) then
 			for _, eval in pairs(spacecadetcalc) do
 				for key, eval2 in pairs(eval) do
 					local notyetscored = true
@@ -717,16 +717,18 @@ togabalatro.extrascoring = function(context, scoring_hand)
 		-- Hammer scoring.
 		local hammercalc = {}
 		SMODS.calculate_context({hammerscore = true}, hammercalc)
-		for _, eval in pairs(hammercalc) do
-			for key, eval2 in pairs(eval) do
-				local notyetscored = true
-				if eval2.card and not (eval2.retrigger_flag or eval2.retrigger_card) then -- prevent unintended extra execution when retriggering.
-					for i = 1, #G.hand.cards do
-						if SMODS.has_enhancement(G.hand.cards[i], "m_glass") and G.hand.cards[i]:can_calculate() then
-							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_hammersmash'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_officehammer"}) end
-							SMODS.score_card(G.hand.cards[i], context)
-							local smashchance = G.hand.cards[i].ability.name == 'Glass Card' and G.hand.cards[i].ability.extra or G.P_CENTERS.m_glass.config.extra
-							if SMODS.pseudorandom_probability(G.hand.cards[i], 'glass', 1, smashchance/2, 'atomsmashererrorgenerator') then G.hand.cards[i].atomsmashed = true end
+		if G.hand and G.hand.cards and next(G.hand.cards) then
+			for _, eval in pairs(hammercalc) do
+				for key, eval2 in pairs(eval) do
+					local notyetscored = true
+					if eval2.card and not (eval2.retrigger_flag or eval2.retrigger_card) then -- prevent unintended extra execution when retriggering.
+						for i = 1, #G.hand.cards do
+							if SMODS.has_enhancement(G.hand.cards[i], "m_glass") and G.hand.cards[i]:can_calculate() then
+								if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_hammersmash'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_officehammer"}) end
+								SMODS.score_card(G.hand.cards[i], context)
+								local smashchance = G.hand.cards[i].ability.name == 'Glass Card' and G.hand.cards[i].ability.extra or G.P_CENTERS.m_glass.config.extra
+								if SMODS.pseudorandom_probability(G.hand.cards[i], 'glass', 1, smashchance/2, 'atomsmashererrorgenerator') then G.hand.cards[i].atomsmashed = true end
+							end
 						end
 					end
 				end
@@ -735,14 +737,16 @@ togabalatro.extrascoring = function(context, scoring_hand)
 		-- Rover scoring.
 		local rovercalc = {}
 		SMODS.calculate_context({roverscore = true}, rovercalc)
-		for _, eval in pairs(rovercalc) do
-			for key, eval2 in pairs(eval) do
-				local notyetscored = true
-				if eval2.card and not (eval2.retrigger_flag or eval2.retrigger_card) then -- prevent unintended extra execution when retriggering.
-					for i = 1, #G.deck.cards do
-						if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.rover or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8), 'searchwithrover') or eval2.card.ability.cry_rigged) then
-							if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_roverbark"}) end
-							SMODS.score_card(G.deck.cards[i], context)
+		if G.deck and G.deck.cards and next(G.deck.cards) then
+			for _, eval in pairs(rovercalc) do
+				for key, eval2 in pairs(eval) do
+					local notyetscored = true
+					if eval2.card and not (eval2.retrigger_flag or eval2.retrigger_card) then -- prevent unintended extra execution when retriggering.
+						for i = 1, #G.deck.cards do
+							if (SMODS.pseudorandom_probability(card, "toga_rover", 1, (eval2.rover or eval2.card.ability.extra and eval2.card.ability.extra.odds or 8), 'searchwithrover') or eval2.card.ability.cry_rigged) then
+								if notyetscored then notyetscored = false; card_eval_status_text(eval2.card, 'extra', nil, nil, nil, {message = localize('toga_roverwoof'), sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_roverbark"}) end
+								SMODS.score_card(G.deck.cards[i], context)
+							end
 						end
 					end
 				end
@@ -896,7 +900,7 @@ end
 togabalatro.playextracards = function()
 	-- SMS enhancement.
 	local sms_deck = {}
-	if G.deck.cards and #G.deck.cards > 0 then
+	if G.deck and G.deck.cards and #G.deck.cards > 0 then
 		for i = 1, #G.deck.cards do
 			if SMODS.has_enhancement(G.deck.cards[i], 'm_toga_sms') then
 				sms_deck[#sms_deck+1] = G.deck.cards[i]
@@ -917,8 +921,10 @@ togabalatro.playextracards = function()
 		end
 	end
 	-- Draw cards to hand by (attempting to be) played Redstone cards.
-	for i = 1, #G.hand.highlighted do
-		if not G.hand.highlighted[i].debuff and SMODS.has_enhancement(G.hand.highlighted[i], 'm_toga_redstone') then draw_card(G.deck, G.hand, 1, 'up') end
+	if G.hand and G.hand.highlighted then
+		for i = 1, #G.hand.highlighted do
+			if not G.hand.highlighted[i].debuff and SMODS.has_enhancement(G.hand.highlighted[i], 'm_toga_redstone') then draw_card(G.deck, G.hand, 1, 'up') end
+		end
 	end
 end
 

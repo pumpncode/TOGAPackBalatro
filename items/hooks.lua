@@ -915,6 +915,27 @@ function DynaText:pulse(...)
 	if not next(SMODS.find_card('j_toga_pcmcia')) then dtxtpulseref(self, ...) end
 end
 
+sendInfoMessage("Hooking juice_card...", "TOGAPack")
+local jcref = juice_card
+function juice_card(card)
+	if next(SMODS.find_card('j_toga_pcmcia')) then return end
+	return jcref(card)
+end
+
+sendInfoMessage("Hooking SMODS.calculate_effect...", "TOGAPack")
+local smce = SMODS.calculate_effect
+function SMODS.calculate_effect(e, ...)
+	if next(SMODS.find_card('j_toga_pcmcia')) then e.juice_card = nil end
+	return smce(e, ...)
+end
+
+sendInfoMessage("Hooking G.FUNCS.text_super_juice...", "TOGAPack")
+local tsjref = G.FUNCS.text_super_juice
+function G.FUNCS.text_super_juice(e, amt)
+	if next(SMODS.find_card('j_toga_pcmcia')) then return end
+	return tsjref(e, amt)
+end
+
 sendInfoMessage("Hooking Card:use_consumeable...", "TOGAPack")
 local carduseconsref = Card.use_consumeable
 local function toga_reusecons(self, area, copier, reuser)

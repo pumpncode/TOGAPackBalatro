@@ -1055,7 +1055,7 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'pcmcia',
-	config = { extra = { xmult = 4 } },
+	config = { extra = { xmult = 2.5 } },
 	loc_vars = function(self, info_queue, card)
 		card.ability.extra.xmult = math.max(card.ability.extra.xmult, 1)
 		return { vars = { card.ability.extra.xmult } }
