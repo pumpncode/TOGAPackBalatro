@@ -1436,18 +1436,14 @@ togabalatro.jd_def["j_toga_pso2shifta"] = {
 	end
 }
 
-togabalatro.jd_def["c_toga_glteapot"] = {
+togabalatro.jd_def["c_toga_glteapot"] = { -- Egg
 	text = {
-		{ text = "+$" },
-		{ ref_table = "card.ability.extra", ref_value = "money" },
+		{ text = "(", colour = G.C.UI.TEXT_INACTIVE },
+		{ text = "$", colour = G.C.GOLD },
+		{ ref_table = "card", ref_value = "sell_cost", colour = G.C.GOLD },
+		{ text = ")", colour = G.C.UI.TEXT_INACTIVE },
 	},
-	text_config = { colour = G.C.GOLD },
-	reminder_text = {
-		{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
-	},
-	calc_function = function(card)
-		card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-	end
+	text_config = { scale = 0.35 }
 }
 
 togabalatro.jd_def["j_toga_choccymilk"] = {

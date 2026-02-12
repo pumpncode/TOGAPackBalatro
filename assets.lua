@@ -135,7 +135,7 @@ SMODS.Sound({
 	key = "music_balatro98",
 	path = "balatro98.ogg",
 	select_music_track = function()
-		return (not togabalatro.checksiiva()) and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU
+		return (not togabalatro.checksiiva()) and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and not togabalatro.mmm and 69420
 		or togabalatro.config.BoosterPackMusic and G.pack_cards and not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER
 		and SMODS.OPENED_BOOSTER.config.center.kind == 'TOGABoostPack' and 2
 	end,
@@ -166,6 +166,16 @@ SMODS.Sound({
 })
 
 SMODS.Sound({
+	key = "music_shhh",
+	path = "silence.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('toga_intro') and 69e42
+	end,
+	sync = false,
+})
+
+SMODS.Sound({
 	key = "music_upgradestation",
 	path = "upgradestation.ogg",
 	pitch = 1,
@@ -175,11 +185,61 @@ SMODS.Sound({
 })
 
 SMODS.Sound({
-	key = "music_shhh",
-	path = "silence.ogg",
+	key = "music_canyonmidi",
+	path = "midi/canyon.ogg",
 	pitch = 1,
 	select_music_track = function()
-		return G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('toga_intro') and 69e42
+		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'canyon' and 69420
+	end,
+	sync = false,
+})
+
+SMODS.Sound({
+	key = "music_cloudsmidi",
+	path = "midi/clouds.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'clouds' and 69420
+	end,
+	sync = false,
+})
+
+SMODS.Sound({
+	key = "music_flourishmidi",
+	path = "midi/flourish.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'flourish' and 69420
+	end,
+	sync = false,
+})
+
+SMODS.Sound({
+	key = "music_onestopmidi",
+	path = "midi/onestop.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'onestop' and 69420
+	end,
+	sync = false,
+})
+
+SMODS.Sound({
+	key = "music_passportmidi",
+	path = "midi/passport.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'passport' and 69420
+	end,
+	sync = false,
+})
+
+SMODS.Sound({
+	key = "music_townmidi",
+	path = "midi/town.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'town' and 69420
 	end,
 	sync = false,
 })

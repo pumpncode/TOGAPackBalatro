@@ -68,6 +68,18 @@ SMODS.Keybind({
 	end
 })
 
+SMODS.Keybind({
+	key_pressed = 'delete',
+	event = 'pressed',
+	action = function(self)
+		if love.keyboard.isDown('0') then togabalatro.mmm = nil
+		else
+			togabalatro.mmm = love.keyboard.isDown('1') and 'canyon' or love.keyboard.isDown('2') and 'clouds' or love.keyboard.isDown('3') and 'flourish' or love.keyboard.isDown('4') and 'onestop'
+						   or love.keyboard.isDown('5') and 'passport' or love.keyboard.isDown('6') and 'town' or togabalatro.mmm
+		end
+	end
+})
+
 function togabalatro.clearconfig(only_intro)
 	if only_intro then
 		togabalatro.config.oobe = nil

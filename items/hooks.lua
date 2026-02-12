@@ -336,6 +336,7 @@ function Game:start_run(args)
 	local ret = gsrref(self, args)
 	if self.toga_customdeckmusic then self.toga_customdeckmusic = nil; self.normal_music_speed = nil end
 	if togabalatro.smiletriggeronce then togabalatro.smiletriggeronce = nil end
+	if togabalatro.mmm then togabalatro.mmm = nil end
 	return ret
 end
 

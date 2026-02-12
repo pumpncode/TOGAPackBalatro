@@ -785,9 +785,9 @@ SMODS.Consumable {
 	atlas = "TOGAJokersBeOS",
 	pos = {x = 1, y = 0},
 	cost = 1,
-	config = { extra = { money = 3 } },
+	config = { extra = { gsv = 2 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.money } }
+		return { vars = { card.ability.extra.gsv } }
 	end,
 	in_pool = function()
 		return false
@@ -796,11 +796,18 @@ SMODS.Consumable {
 		return false
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round and context.main_eval then
-			local isstack, qty = togabalatro.stackingcompat(card)
-			return { dollars = isstack and qty and card.ability.extra.money*qty or card.ability.extra.money }
+		if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+			card.ability.extra_value = card.ability.extra_value + card.ability.extra.gsv
+			card:set_cost()
+			return {
+				message = localize('k_val_up'),
+				colour = G.C.MONEY
+			}
 		end
 	end,
 	no_collection = true,
 	pixel_size = { w = 56, h = 95 },
+	can_stack = false,
+	no_bulkuse = true,
+	can_mass_use = false,
 }

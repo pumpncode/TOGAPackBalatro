@@ -2425,8 +2425,9 @@ return {
 			c_toga_glteapot = {
 				name = "GLTeapot",
 				text = {
-					"{C:money}$#1#{} when held",
-					"at end of round"
+					"Gains {C:money}$#1#{} of",
+					"{C:attention}sell value{} at",
+					"end of round",
 				},
 			}
 		}
