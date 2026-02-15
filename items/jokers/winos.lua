@@ -25,8 +25,8 @@ table.insert(winj, {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
-			play_sound("toga_win95start")
+		if not from_debuff and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			if togabalatro.config.SFXWhenAdding then play_sound("toga_win95start") end
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
@@ -72,8 +72,8 @@ table.insert(winj, {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
-			play_sound("toga_win98start")
+		if not from_debuff and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			if togabalatro.config.SFXWhenAdding then play_sound("toga_win98start") end
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
@@ -109,14 +109,14 @@ table.insert(winj, {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		if not from_debuff and togabalatro.config.SFXWhenAdding and G.STAGE == G.STAGES.RUN and not G.screenwipe then
-			play_sound("toga_winme2000start")
+		if not from_debuff and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			if togabalatro.config.SFXWhenAdding then play_sound("toga_winme2000start") end
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		if togabalatro.config.SFXWhenRemoving and G.STAGE == G.STAGES.RUN and not G.screenwipe then
 			if not from_debuff then play_sound("toga_winme2000shutdown")
-			else play_sound("toga_chord") end
+			else play_sound("toga_chord"); check_for_unlock({ type = 'winmedebuff' }) end
 		end
 	end,
 })

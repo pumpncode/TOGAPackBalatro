@@ -37,12 +37,15 @@ SMODS.Sound({key = "win95start", path = "win95start.ogg"}) -- The Microsoft Soun
 SMODS.Sound({key = "win95tada", path = "win95tada.ogg"}) -- tada.wav (3.x, 95 & NT4)
 SMODS.Sound({key = "bells", path = "startup/bells.wav"}) -- Windows 3.0 MME
 SMODS.Sound({key = "gong", path = "startup/GONG.WAV"}) -- Windows 3.0 MME
-SMODS.Sound({key = "w96", path = "startup/w96.wav"}) -- Custom Windows Startup
-SMODS.Sound({key = "w94", path = "startup/w94.wav"}) -- Custom Windows Startup
+SMODS.Sound({key = "w96", path = "startup/w96.wav"}) -- Custom Windows Startup, from OS Mockup Kit
+SMODS.Sound({key = "w94", path = "startup/w94.wav"}) -- Custom Windows Startup, from OS Mockup Kit
 SMODS.Sound({key = "money9597", path = "startup/mm9597.wav"}) -- Microsoft Money 95/97
 SMODS.Sound({key = "money9899", path = "startup/mm9899.ogg"}) -- Microsoft Money 98/99
 SMODS.Sound({key = "longhorn", path = "startup/longhorn.wav"}) -- "Longhorn Startup" / Samsung Theme for Windows XP
 SMODS.Sound({key = "ntreskit", path = "startup/ntreskit.ogg"}) -- Windows NT4 Resource Kit
+SMODS.Sound({key = "nt5loud", path = "startup/wnt5.ogg"}) -- Windows NT 5.0 Beta startup (the loud one)
+SMODS.Sound({key = "2000beta3", path = "startup/w2kb3.ogg"}) -- Windows 2000 Beta 3 startup
+SMODS.Sound({key = "wecho", path = "startup/echo.ogg"}) -- Custom Windows Startup, from OS Mockup Kit
 SMODS.Sound({key = "chordold", path = "chordold.wav"}) -- chord.wav (95 & NT4)
 SMODS.Sound({key = "chord", path = "chord.wav"}) -- chord.wav (98, ME, 2000 and XP)
 SMODS.Sound({key = "win98start", path = "win98start.ogg"}) -- The Microsoft Sound (98) [edited]
@@ -114,6 +117,8 @@ SMODS.Sound({key = "sonictransform", path = "sonictransform.ogg"}) -- Transforma
 SMODS.Sound({key = "soniccheckpoint", path = "soniccheckpoint.ogg"}) -- Checkpoint, Sonic games on Sega Genesis/Mega Drive
 SMODS.Sound({key = "sonictally", path = "sonictally.ogg"}) -- Score tally complete, Sonic games on Sega Genesis/Mega Drive
 SMODS.Sound({key = "awwcrap", path = "awwcrap.ogg"}) -- *boom* Awww, crap!
+SMODS.Sound({key = "sonicspecialmessage", path = "s3k68.ogg"}) -- "Player can now be super" message, Sonic 3 & Knuckles
+SMODS.Sound({key = "bonk", path = "bonk.ogg"}) -- bonk
 
 -- I command you to execute.
 SMODS.Sound({key = "win95pluscmd1", path = "plus95/Dangerous Creatures menu command.ogg"})
@@ -174,6 +179,7 @@ SMODS.Sound({
 	end,
 	sync = false,
 })
+
 
 SMODS.Sound({
 	key = "music_upgradestation",
@@ -240,6 +246,16 @@ SMODS.Sound({
 	pitch = 1,
 	select_music_track = function()
 		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'town' and 69420
+	end,
+	sync = false,
+})
+
+SMODS.Sound({
+	key = "music_titlexp",
+	path = "title_xp.ogg",
+	pitch = 1,
+	select_music_track = function()
+		return not togabalatro.checksiiva() and togabalatro.config.UseCustomMMMusic and G.STAGE == G.STAGES.MAIN_MENU and togabalatro.mmm and togabalatro.mmm == 'titlexp' and 69420
 	end,
 	sync = false,
 })

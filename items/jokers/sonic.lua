@@ -63,6 +63,7 @@ table.insert(sj, {
 							card.ability.cantransform = false
 							card.ability.istransforming = false
 							card:set_ability('j_toga_supersonicthehedgehog')
+							check_for_unlock({ type = 'supersoniccheck_toga', card = card })
 						return true end }))
 						G.E_MANAGER:add_event(Event({delay = 2, func = function()
 							card:flip()
@@ -178,6 +179,7 @@ table.insert(sj, {
 							card.ability.cantransform = false
 							card.ability.istransforming = false
 							card:set_ability('j_toga_hypersonicthehedgehog')
+							check_for_unlock({ type = 'hypersoniccheck_toga', card = card })
 						return true end }))
 						G.E_MANAGER:add_event(Event({delay = 2, func = function()
 							card:flip()

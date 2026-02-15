@@ -125,7 +125,7 @@ return {
 			b_toga_wharariki = {
 				name = "Wharariki Deck",
 				text = {
-					"{X:attention,C:white}X#2#{} to {C:blue}Chips{} and {C:red}Mult",
+					"{X:attention,C:white}X#2#{} to {C:blue}Chips{}/{C:red}Mult",
 					"operation amount",
 					"Start in the {C:attention}Shop",
 					"{C:red}X#1#{} base Blind size"
@@ -411,8 +411,9 @@ return {
 			j_toga_whatisthis = {
 				name = '65 52 72 6F 52',
 				text = {
-					"Held {C:attention}Consumables{} give",
-					"{X:dark_edition,C:white}^^#1#{} Mult each.",
+					"Held {C:attention}Consumables{}",
+					"{C:attention}without{} an {C:dark_edition}edition{}",
+					"give {X:dark_edition,C:white}^#1#{} Mult each",
 					"{C:inactive,s:0.8}What is this?!{}"
 				}
 			},
@@ -420,7 +421,7 @@ return {
 				name = 'Duck?',
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Chips per card",
-					"in the {C:attention}full deck{}",
+					"in {C:attention}played hand{}",
 					"{C:inactive,s:0.8}(Currently {}{X:dark_edition,C:white,s:0.8}^#2#{} {C:inactive,s:0.8}Chips){}",
 					"{C:inactive,s:0.8,E:1}Quack.{}"
 				}
@@ -645,7 +646,7 @@ return {
 					{
 						"{C:green}#2# in #3#{} chance to",
 						"{X:attention,C:white}X#1#{} operation amount",
-						"on {C:chips}Chips{} or {C:mult}Mult{}",
+						"on {C:chips}Chips{}/{C:mult}Mult{}",
 					},
 					{
 						"{C:inactive}Ah... {C:inactive,E:1}piss!{}"
@@ -657,7 +658,7 @@ return {
 				text = {
 					"{C:green}#2# in #3#{} chance to",
 					"{X:attention,C:white}X#1#{} operation amount",
-					"on {C:chips}Chips{} or {C:mult}Mult{}"
+					"on {C:chips}Chips{}/{C:mult}Mult{}"
 				}
 			},
 			j_toga_goldenwrench = {
@@ -901,8 +902,8 @@ return {
 			j_toga_netscapenavigator = {
 				name = 'Netscape Navigator',
 				text = {
-					"{C:dark_edition}Holographic{} {C:attention}held in hand{} cards",
-					"give {X:mult,C:white}X#1#{} Mult",
+					"Retrigger {C:dark_edition}Holographic{} cards once",
+					"{C:inactive,s:0.8}(Netscape Navigator excluded)",
 				},
 			},
 			j_toga_diskcleanup = {
@@ -1134,9 +1135,8 @@ return {
 			j_toga_mswallet = {
 				name = 'Microsoft Wallet',
 				text = {
-					"{C:attention}Inverts{} {C:gold}money{} change",
-					"{C:attention}outside{} of {C:attention}Shop",
-					"{C:inactive,s:0.8}Does not stack with copies{}"
+					"{C:gold}Shops{} have an extra",
+					"{C:attention}card slot"
 				}
 			},
 			j_toga_nonebattery = {
@@ -1258,10 +1258,10 @@ return {
 			j_toga_rloctane = {
 				name = 'Octane',
 				text = {
-					"{C:red}+#1#{} Mult",
-					"{C:red}self destructs{}",
-					"after {C:attention}last hand{}",
-					"is played"
+                    "This Joker gains {C:red}+#2#{} Mult",
+                    "at end of round",
+                    "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)",
+                    "{C:red,s:0.85}self-destructs if debuffed",
 				}
 			},
 			j_toga_wscript = {
@@ -1940,7 +1940,7 @@ return {
 			v_toga_mspaint = {
 				name = "Microsoft Paint",
 				text = {
-					"{X:attention,C:white}X#1#{} to {C:blue}Chips{} and {C:red}Mult",
+					"{X:attention,C:white}X#1#{} to {C:blue}Chips{}/{C:red}Mult",
 					"operation amount",
 				},
 			},
@@ -2009,12 +2009,19 @@ return {
 					"more likely to appear"
 				},
 			},
+			v_toga_bigbonk = {
+				name = "Big Bonk",
+				text = {
+					"{C:attention}Fixed {C:green}#2# in #3#{} chance to",
+					"{X:attention,C:white}X#1#{} {C:blue}Chips{}/{C:red}Mult{} operation amount"
+				},
+			},
 		},
 		Stake = {
 			stake_toga_togateal = {
 				name = "Teal Stake (TOGA)",
 				text = {
-					"{X:attention,C:white}X0.9{} {C:blue}Chip{} and {C:red}Mult{} operation amount",
+					"{X:attention,C:white}X0.9{} {C:blue}Chips{}/{C:red}Mult{} operation amount",
 					"{s:0.75}Applies Gold Stake. {s:0.75,C:inactive}Some sources of {s:0.75,C:blue}Chips{s:0.75,C:inactive}/{s:0.75,C:red}Mult",
 					"{s:0.75,C:inactive}may {s:0.75,C:red}not{s:0.75,C:inactive} {s:0.75,C:attention}display modified{s:0.75,C:inactive} values"
 				},
@@ -2174,7 +2181,7 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Chips, {X:dark_edition,C:white}^^#2#{} Chips, {X:dark_edition,C:white}^^^#3#{} Chips",
 					"{X:dark_edition,C:white}^#4#{} Mult, {X:dark_edition,C:white}^^#5#{} Mult, {X:dark_edition,C:white}^^^#6#{} Mult",
-					"{C:inactive,s:0.7}(10x, 20x and 40x less likely to be rolled respectively.){}",
+					"{C:inactive,s:0.7}(20x, 40x and 80x less likely to be rolled respectively.){}",
 				},
 			},
 			toga_jokerzipupgrade = {
@@ -2470,6 +2477,7 @@ return {
 			toga_floppypartner = "Floppy!",
 			toga_suspartner = "amogus.",
 			toga_rlwas = "What a save!",
+			toga_rlsry = "Sorry!",
 			--
 			toga_furnaceprocess = "Smelted...",
 			toga_novalidrecipe = "No recipes match selected cards.",
@@ -2554,7 +2562,7 @@ return {
 			toga_verboselog = "Enable extra logs - [INFO]",
 			toga_extraverboselog = "Increase log verbosity - [DEBUG]",
 			toga_extraverboselogwarn = "Warning: including [DEBUG] messages may lag your game!",
-			toga_mainmenumusicswap = "MIDI-fy the Main Menu music",
+			toga_mainmenumusicswap = "Replace the Main Menu music",
 			toga_modtabmusicswap = "Custom music for own mod config menu",
 			toga_specialdecktunes = "Karting Deck: enable win/lose extras",
 			toga_startupsfx = "Enable mod startup sound on initial load",
@@ -2565,6 +2573,7 @@ return {
 			toga_kingcdideck = "Harkinian Deck*",
 			toga_wtfdecktoggle = "WIT Deck*",
 			toga_titlescreencard = "Add 'Windows 95' card to main menu",
+			toga_achievementsfxuse = "Play custom sound when getting mods' achievements",
 			toga_restartrequire = "* Restart required",
 			toga_sfxswaptext = "SFX Swap Level:",
 			toga_sfxswapnone = "None",
@@ -2619,6 +2628,47 @@ return {
 			ch_c_toga_nohandscore = {
 				"{C:attention}Vanilla{} scoring of {C:attention}held in hand{} cards does not occur",
 			},
+		},
+		achievement_names = {
+			ach_toga_win9x = 'The 9x Family',
+			ach_toga_win9x_hidden = 'Windows 4.x',
+			ach_toga_win10k = 'Windows 10000',
+			ach_toga_win10k_hidden = '5 of 2000',
+			ach_toga_winmecrash = 'Windows Mistake Edition',
+			ach_toga_winmecrash_hidden = 'The Unstable Millenium',
+			ach_toga_teapots = 'Utah Teapots',
+			ach_toga_teapots_hidden = 'Triple Tea Time',
+			ach_toga_sfrock = 'Straight Flushing It',
+			ach_toga_sfrock_hidden = 'Wishing upon a Toilet Rock',
+			ach_toga_altloadscrn = 'Balatro For Workgroups',
+			ach_toga_altloadscrn_hidden = 'GUI for DOS',
+			ach_toga_manualcrash = 'What Did You Expect?',
+			ach_toga_manualcrash_hidden = 'Why?',
+			ach_toga_alloytime = 'The Alloyer',
+			ach_toga_alloytime_hidden = 'Modding my crafts',
+			ach_toga_negativebrass = 'Negative and a half',
+			ach_toga_negativebrass_hidden = 'Now the Brass is sad',
+			ach_toga_supersonic = '7 of Emeralds',
+			ach_toga_supersonic_hidden = '04 01 02 06',
+			ach_toga_hypersonic = 'Powerscalers Hate Him',
+			ach_toga_hypersonic_hidden = 'Lock-on Technology',
+			ach_toga_titlexp = 'Out Of Box Experience',
+			ach_toga_titlexp_hidden = 'Sound Card Drivers',
+		},
+		achievement_descriptions = {
+			ach_toga_win9x = 'Have Windows 95, 98 and ME together',
+			ach_toga_win10k = 'Have 5 copies of Windows 2000',
+			ach_toga_winmecrash = 'Get Windows ME debuffed',
+			ach_toga_teapots = 'Have 3 or more GLTeapots',
+			ach_toga_sfrock = 'Play a Straight Flush with only Stone Cards',
+			ach_toga_altloadscrn = 'Activate a different loading screen',
+			ach_toga_altloadscrn_hidden = 'Rumors speak of "ALT" + "D" held together',
+			ach_toga_manualcrash = 'Use the "Crash?" button',
+			ach_toga_alloytime = 'Get an Alloy enhancement',
+			ach_toga_negativebrass = 'Have both Brass Alloy enhancement and Negative edition on a card',
+			ach_toga_supersonic = 'Have Sonic transform into Super Sonic',
+			ach_toga_hypersonic = 'Have Super Sonic transform into Hyper Sonic',
+			ach_toga_titlexp = 'Trigger the Windows XP OOBE music on main menu',
 		},
 		collab_palettes = {
 			toga_oldschool_Spades = { "Original", "Low Contrast (Recoloured)", "High Contrast (Recoloured)", },

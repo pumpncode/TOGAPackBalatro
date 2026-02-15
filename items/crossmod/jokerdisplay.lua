@@ -272,30 +272,11 @@ togabalatro.jd_def["j_toga_drivespace"] = {
 }
 
 togabalatro.jd_def["j_toga_netscapenavigator"] = {
-	text = {
-		{
-			border_nodes = {
-				{ text = "X" },
-				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
-			}
-		}
-	},
-	calc_function = function(card)
-		local playing_hand, jokers = next(G.hand.cards), G.jokers.cards
-		local count = 0
-		for _, playing_card in ipairs(G.hand.cards) do
-			if playing_hand or not playing_card.highlighted then
-				if not (playing_card.facing == 'back') and not playing_card.debuff and playing_card.edition and playing_card.edition.holo then
-					count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
-				end
-			end
-		end
-		for _, j in ipairs(jokers) do
-			if not j.debuff and j.edition and j.edition.holo then
-				count = count + 1
-			end
-		end
-		card.joker_display_values.xmult = card.ability.extra.holoxmult ^ count
+	retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+		return playing_card.edition and playing_card.edition.holo and JokerDisplay.calculate_joker_triggers(joker_card) or 0
+	end,
+	retrigger_joker_function = function(card, retrigger_joker)
+		return card ~= retrigger_joker and card.edition and card.edition.holo or 0
 	end
 }
 
@@ -987,7 +968,7 @@ togabalatro.jd_def["j_toga_whatisthis"] = {
 	text = {
 		{
 			border_nodes = {
-				{ text = "^^" },
+				{ text = "^" },
 				{ ref_table = "card.ability.extra", ref_value = "part" },
 			},
 			border_colour = G.C.MULT
@@ -999,11 +980,13 @@ togabalatro.jd_def["j_toga_whatisthis"] = {
 		local cons = 0
 		if G.consumeables and G.consumeables.cards and G.consumeables.cards[1] then
 			for i = 1, #G.consumeables.cards do
-				local stacked, stackamount = togabalatro.stackingcompat(G.consumeables.cards[i])
-				if stacked then
-					for i = 1, stackamount do cons = cons + 1 end
-				else
-					cons = cons + 1
+				if not G.consumeables.cards[i].edition then
+					local stacked, stackamount = togabalatro.stackingcompat(G.consumeables.cards[i])
+					if stacked then
+						for i = 1, stackamount do cons = cons + 1 end
+					else
+						cons = cons + 1
+					end
 				end
 			end
 		end
@@ -1021,23 +1004,20 @@ togabalatro.jd_def["j_toga_quacksoft"] = {
 			border_colour = G.C.CHIPS
 		},
 	},
-	reminder_text = {
-		{ text = "(" },
-		{ ref_table = "card.joker_display_values", ref_value = "fulldeckcards" },
-		{ text = ")" },
-	},
 	calc_function = function(card)
-		card.joker_display_values.totalechips = G.playing_cards and 1 + (card.ability.extra.cardechip*#G.playing_cards) or 1
-		card.joker_display_values.fulldeckcards = G.playing_cards and #G.playing_cards or 0
+		-- local hand = G.hand and G.hand.highlighted
+		-- local played = G.play and G.play.cards
+		local c = JokerDisplay.current_hand
+		local amt = type(c) == 'table' and #c or 0
+		card.joker_display_values.totalechips = 1 + amt*card.ability.extra.cardechip
 	end,
 }
 
 togabalatro.jd_def["j_toga_rloctane"] = {
 	text = {
-		{ text = "+" },
-		{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" }
+		{ text = "+",	colour = G.C.MULT },
+		{ ref_table = "card.ability.extra", ref_value = "mult", colour = G.C.MULT, retrigger_type = "add" }
 	},
-	text_config = { colour = G.C.MULT },
 }
 
 togabalatro.jd_def["j_toga_chrome"] = {
@@ -1093,32 +1073,6 @@ togabalatro.jd_def["j_toga_desktop"] = {
 	calc_function = function(card)
 		card.joker_display_values.curxmult = 1+card.ability.extra.curxmult
 	end,
-}
-
-togabalatro.jd_def["j_toga_nonebattery"] = {
-	text = {
-		{
-			border_nodes = {
-				{ text = "X" },
-				{ ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" },
-			},
-		},
-	},
-	reminder_text = {
-		{ text = "(" },
-		{ ref_table = "card.joker_display_values", ref_value = "battery" },
-		{ text = ")" },
-	},
-	calc_function = function(card)
-		card.joker_display_values.battery = love.system.getPowerInfo()
-		card.joker_display_values.xmult = card.joker_display_values.battery ~= 'nobattery' and 1 or card.ability.extra.xmult
-	end,
-	style_function = function(card, text, reminder_text, extra)
-		if reminder_text and reminder_text.children[1] and reminder_text.children[2] and card.joker_display_values then
-			reminder_text.children[2].config.colour = card.joker_display_values.battery == 'nobattery' and G.C.FILTER or G.C.UI.TEXT_INACTIVE
-		end
-		return false
-	end
 }
 
 togabalatro.jd_def["j_toga_dragndrop"] = {

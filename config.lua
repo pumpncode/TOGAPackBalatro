@@ -21,5 +21,6 @@ return {
 	["WindowSFXUse"] = true,
 	["WindowSFXTheme"] = 13,
 	["BonusLoadScreen"] = false,
-	["TitleScreenCard"] = true
+	["TitleScreenCard"] = true,
+	["AchievementSFX"] = true
 }
