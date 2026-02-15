@@ -564,6 +564,18 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 		end
 	end
 	
+	-- text message go brr.
+	if not effect.remove_default_message then
+		-- No hyperchips/hypermult, that's out of scope here anyway.
+		if key == 'e_chips' or key == 'echips' then effect.echip_message = {message = localize{ type = "variable", key = "toga_Echip", vars = { amount } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} end
+		if key == 'ee_chips' or key == 'eechips' then effect.eechip_message = {message = localize{ type = "variable", key = "toga_EEchip", vars = { amount } }, colour = G.C.DARK_EDITION, sound = "talisman_eechip"} end
+		if key == 'eee_chips' or key == 'eeechips' then effect.eeechip_message = {message = localize{ type = "variable", key = "toga_EEEchip", vars = { amount } }, colour = G.C.DARK_EDITION, sound = "talisman_eeechip"} end
+		
+		if key == 'e_mult' or key == 'emult' then effect.emult_message = {message = localize{ type = "variable", key = "toga_Emult", vars = { amount } }, colour = G.C.DARK_EDITION, sound = "talisman_emult"} end
+		if key == 'ee_mult' or key == 'eemult' then effect.eemult_message = {message = localize{ type = "variable", key = "toga_EEmult", vars = { amount } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} end
+		if key == 'eee_mult' or key == 'eeemult' then effect.eeemult_message = {message = localize{ type = "variable", key = "toga_EEEmult", vars = { amount } }, colour = G.C.DARK_EDITION, sound = "talisman_eeemult"} end
+	end
+	
 	local ret = calcindiveffectref(effect, scored_card, key, amount, from_edition)
 	if ret then return ret end
 end
@@ -672,13 +684,6 @@ function SMODS.calculate_destroying_cards(context, cards_destroyed, scoring_hand
 			cards_destroyed[#cards_destroyed+1] = card
 		end
 	end
-end
-
-sendInfoMessage("Hooking ease_dollars...", "TOGAPack")
-local easedolref = ease_dollars
-function ease_dollars(mod, instant)
-	if next(SMODS.find_card('j_toga_mswallet')) and G.STATE ~= G.STATES.SHOP and not G.shop then mod = mod * -1 end
-	easedolref(mod, instant)
 end
 
 local ismin, ismax = false, false
@@ -937,6 +942,13 @@ function G.FUNCS.text_super_juice(e, amt)
 	return tsjref(e, amt)
 end
 
+sendInfoMessage("Hooking UIElement:juice_up...", "TOGAPack")
+local uieju = UIElement.juice_up
+function UIElement:juice_up(amount, rot_amt)
+	if next(SMODS.find_card('j_toga_pcmcia')) then return end
+    return uieju(self, amount, rot_amt)
+end
+
 sendInfoMessage("Hooking Card:use_consumeable...", "TOGAPack")
 local carduseconsref = Card.use_consumeable
 local function toga_reusecons(self, area, copier, reuser)
@@ -970,4 +982,12 @@ local fullhouseeval = SMODS.PokerHands['Full House'].evaluate
 function fullhouse.evaluate(parts)
 	if next(SMODS.find_card('j_toga_achemoth')) then return not (#parts._2 < 2) and parts._all_pairs end
 	return fullhouseeval(parts)
+end
+
+sendInfoMessage("Hooking Card:set_edition...", "TOGAPack")
+local seref = Card.set_edition
+function Card:set_edition(...)
+	local ret = seref(self, ...)
+	if self.edition and self.edition.negative then check_for_unlock({ type = 'negativecheck_toga', card = self }) end
+	return ret
 end

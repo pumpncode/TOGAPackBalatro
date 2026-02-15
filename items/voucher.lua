@@ -317,3 +317,27 @@ SMODS.Voucher{
 		if togabalatro.config.DoMoreLogging then sendInfoMessage("Spectral Zipper chance set to "..G.GAME.spectralzipper_chance..".", "TOGAPack") end
 	end,
 }
+
+SMODS.Voucher{
+	key = 'bigbonk',
+	pos = { x = 6, y = 2 },
+	atlas = 'TOGAConsumables',
+	unlocked = true,
+	cost = 20,
+	rarity = 4,
+	config = { rarity = 4, extra = { odds = 100, cmopamt = 20 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.cmopamt, SMODS.get_probability_vars(card or self, 2, card.ability.extra.odds or 100, "bigbonk", nil, true) } }
+	end,
+	calculate = function(self, card, context)
+		if context.toga_affectchipmult and context.opamount and not context.retrigger_joker and SMODS.pseudorandom_probability(card, "bigbonk", 2, card.ability.extra.odds, "bigbonk", true) then
+			SMODS.calculate_effect({ message = '!', sound = not silent and togabalatro.config.SFXWhenTriggered and "toga_bonk", pitch = not silent and togabalatro.config.SFXWhenTriggered and togabalatro.randompitch() }, card)
+			return { amtmult = card.ability.extra.cmopamt, card = card }
+		end
+	end,
+	in_pool = function()
+		return togabalatro.config.ShowPower
+	end,
+	pixel_size = { w = 71, h = 79 },
+	poweritem = true
+}

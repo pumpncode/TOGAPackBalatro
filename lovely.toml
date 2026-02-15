@@ -150,6 +150,25 @@ payload = "if type(toga_extraimgdraw) == 'function' then toga_extraimgdraw(progr
 match_indent = true
 
 [[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+play_sound('highlight1', nil, 0.5)
+play_sound('foil2', 0.5, 0.4)
+'''
+position = "after"
+payload = "if togabalatro then togabalatro.achievementproc(_achievement, _type) end"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.playing_card and not initial then check_for_unlock({type = 'modify_deck'}) end"
+position = "after"
+payload = "if togabalatro then check_for_unlock({ type = 'alloycheck_toga', card = self }) end"
+match_indent = true
+
+[[patches]]
 [patches.copy]
 target = '=[SMODS _ "src/utils.lua"]'
 position = "append"

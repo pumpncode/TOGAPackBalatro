@@ -784,15 +784,18 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'netscapenavigator',
-	config = { extra = { holoxmult = 1.5 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.holoxmult } }
-	end,
 	unlocked = true,
 	in_pool = function()
 		if G.playing_cards then
 			for i = 1, #G.playing_cards do
 				if G.playing_cards[i] and G.playing_cards[i].edition and G.playing_cards[i].edition.holo then return true end
+			end
+		end
+		for k, v in pairs(G.jokers, G.consumeables, G.vouchers) do
+			if type(v) == 'table' and v.cards then
+				for _, c in pairs(v.cards) do
+					if c and c.edition and c.edition.holo then return true end
+				end
 			end
 		end
 	end,
@@ -802,9 +805,13 @@ table.insert(jokers, {
 	cost = 8,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.hand and context.other_card and context.other_card.edition and context.other_card.edition.holo
-		and not context.other_card.debuff and not context.repetition and not context.repetition_only and not context.end_of_round then
-			return { xmult = card.ability.extra.holoxmult, message_card = context.other_card }
+		if (context.retrigger_joker_check and not context.retrigger_joker) or context.repetition then
+			local othcrd = context.other_card
+			if othcrd and othcrd ~= card and othcrd.edition and othcrd.edition.holo then
+				if not (context.retrigger_joker_check and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key == 'j_toga_netscapenavigator') then
+					return { repetitions = 1 }
+				end
+			end
 		end
 	end,
 })
@@ -1216,14 +1223,30 @@ table.insert(jokers, {
 table.insert(jokers, {
 	key = 'mswallet',
 	unlocked = true,
-	rarity = 3,
+	rarity = 1,
 	atlas = 'TOGAJokersMain',
 	pos = { x = 4, y = 6 },
-	cost = 8,
-	poweritem = true,
-	in_pool = function()
-		return togabalatro.config.ShowPower
+	cost = 6,
+	add_to_deck = function(self, card, from_debuff)
+		if G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					change_shop_size(1)
+					return true
+				end
+			}))
+		end
 	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					change_shop_size(-1)
+					return true
+				end
+			}))
+		end
+	end
 })
 
 table.insert(jokers, {
@@ -1664,7 +1687,7 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'skifree_yeti',
-	config = { extra = { cxmult = 0, gxmult = 0.25 } },
+	config = { extra = { cxmult = 0, gxmult = 0.2 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { 1+card.ability.extra.cxmult, card.ability.extra.gxmult } }
 	end,
@@ -1779,14 +1802,16 @@ table.insert(jokers, {
 				x_mult = card.ability.extra.x_mult > 1 and card.ability.extra.x_mult or nil
 			}
 		end
-		local othcrd = context.other_card
-		if context.retrigger_joker_check and not context.retrigger_joker and othcrd and othcrd ~= card and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_jimbo95' then
-			if card.ability.extra.retriggers < 1 then card.ability.extra.retriggers = 1 end -- always at least once.
-			return {
-				message = togabalatro.randomruntext() or localize('k_again_ex'),
-				repetitions = math.floor(card.ability.extra.retriggers),
-				card = context.blueprint_card or card,
-			}
+		if context.retrigger_joker_check and not context.retrigger_joker then
+			local othcrd = context.other_card
+			if othcrd and othcrd ~= card and othcrd.config and othcrd.config.center and othcrd.config.center.key and othcrd.config.center.key ~= 'j_toga_jimbo95' then
+				if card.ability.extra.retriggers < 1 then card.ability.extra.retriggers = 1 end -- always at least once.
+				return {
+					message = togabalatro.randomruntext() or localize('k_again_ex'),
+					repetitions = math.floor(card.ability.extra.retriggers),
+					card = context.blueprint_card or card,
+				}
+			end
 		end
 	end
 })
@@ -2638,9 +2663,9 @@ table.insert(jokers, {
 
 table.insert(jokers, {
 	key = 'rloctane',
-	config = { extra = { mult = 15 } },
+	config = { extra = { mult = 0, mgain = 2 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.mult } }
+		return { vars = { card.ability.extra.mult, card.ability.extra.mgain } }
 	end,
 	unlocked = true,
 	rarity = 1,
@@ -2651,15 +2676,23 @@ table.insert(jokers, {
 	pixel_size = { w = 69, h = 74 },
 	calculate = function(self, card, context)
 		if context.joker_main then return { mult = card.ability.extra.mult } end
-		if context.after and G.GAME.current_round.hands_left == 0 and not SMODS.is_eternal(card) and not context.blueprint then
-			G.E_MANAGER:add_event(Event({delay = 1, func = function()
-				SMODS.calculate_effect({ message = localize('toga_rlwas'), card = card })
-				return true
-			end}))
-			G.E_MANAGER:add_event(Event({func = function()
-				SMODS.destroy_cards(card)
-				return true
-			end}))
+		
+		if context.blueprint or context.retrigger_joker then return end
+		
+		if context.end_of_round and context.main_eval then
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "mult",
+				scalar_value = "mgain",
+			})
+			if context.beat_boss then return { message = localize('toga_rlwas') } end
+		end
+		
+		if context.blind_disabled then return { message = localize('toga_rlsry') } end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if from_debuff and G.STAGE == G.STAGES.RUN and not G.screenwipe then
+			SMODS.destroy_cards(card)
 		end
 	end,
 })
@@ -2848,24 +2881,11 @@ table.insert(jokers, {
 	jokeitem = true
 })
 
-togabalatro.rosencheck = function(card)
-	card.ability.extra.heldmoney = math.max(card.ability.extra.heldmoney, 10)
-	card.ability.extra.heldxchip = math.max(card.ability.extra.heldxchip, 1.75)
-	card.ability.extra.heldxmult = math.max(card.ability.extra.heldxmult, 2)
-	card.ability.extra.heldechip = math.max(card.ability.extra.heldechip, 1.3)
-	card.ability.extra.heldeechip = math.max(card.ability.extra.heldeechip, 1.1)
-	card.ability.extra.heldeeechip = math.max(card.ability.extra.heldeeechip, 1.05)
-	card.ability.extra.heldemult = math.max(card.ability.extra.heldemult, 1.2)
-	card.ability.extra.heldeemult = math.max(card.ability.extra.heldeemult, 1.08)
-	card.ability.extra.heldeeemult = math.max(card.ability.extra.heldeeemult, 1.04)
-end
-
 -- The plumtastic man himself. Joke Joker.
 table.insert(jokers, {
 	key = 'michaelrosen',
-	config = { extra = { heldmoney = 10, heldxchip = 1.75, heldxmult = 2, heldechip = 1.3, heldeechip = 1.1, heldeeechip = 1.05, heldemult = 1.2, heldeemult = 1.08, heldeeemult = 1.04, odds = 25 } },
+	config = { extra = { heldmoney = 10, heldxchip = 1.75, heldxmult = 2, heldechip = 1.2, heldeechip = 1.08, heldeeechip = 1.04, heldemult = 1.15, heldeemult = 1.06, heldeeemult = 1.03, odds = 15 } },
 	loc_vars = function(self, info_queue, card)
-		togabalatro.rosencheck(card)
 		if not card.debuff then
 			info_queue[#info_queue + 1] = {key = "toga_roseneffects", set = 'Other', vars = { card.ability.extra.heldmoney, card.ability.extra.heldxchip, card.ability.extra.heldxmult }}
 			if Talisman then
@@ -2888,25 +2908,23 @@ table.insert(jokers, {
 	blueprint_compat = true,
 	calculate = function(self, card, context)
 		if context.cardarea == G.hand and context.other_card and not context.other_card.debuff and not context.repetition and not context.repetition_only and not context.end_of_round then
-			-- Making sure we don't give less than default should we be Glitched or something else changes our values...
-			togabalatro.rosencheck(card)
 			-- Still, dear god...
 			return {
 				dollars = SMODS.pseudorandom_probability(card, "michaelrosen_money", 1, card.ability.extra.odds, "michaelrosen_money") and card.ability.extra.heldmoney or nil,
 				x_chips = SMODS.pseudorandom_probability(card, "michaelrosen_xchips", 1, card.ability.extra.odds, "michaelrosen_xchips") and card.ability.extra.heldxchip > 1 and card.ability.extra.heldxchip or nil,
 				x_mult = SMODS.pseudorandom_probability(card, "michaelrosen_xmult", 1, card.ability.extra.odds, "michaelrosen_xmult") and card.ability.extra.heldxmult > 1 and card.ability.extra.heldxmult or nil,
-				e_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_echips", 1, card.ability.extra.odds*10, "michaelrosen_echips") and card.ability.extra.heldechip > 1 and card.ability.extra.heldechip or nil,
-				echip_message = Talisman and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.heldechip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
-				ee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eechips", 1, card.ability.extra.odds*20, "michaelrosen_eechips") and card.ability.extra.heldeechip > 1 and card.ability.extra.heldeechip or nil,
-				eechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEchip", vars = { card.ability.extra.heldeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eechip"} or nil,
-				eee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeechips", 1, card.ability.extra.odds*40, "michaelrosen_eeechips") and card.ability.extra.heldeeechip > 1 and card.ability.extra.heldeeechip or nil,
-				eeechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEchip", vars = { card.ability.extra.heldeeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eeechip"} or nil,
-				e_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_emult", 1, card.ability.extra.odds*10, "michaelrosen_emult") and card.ability.extra.heldemult > 1 and card.ability.extra.heldemult or nil,
-				emult_message = Talisman and {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.heldemult } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
-				ee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eemult", 1, card.ability.extra.odds*20, "michaelrosen_eemult") and card.ability.extra.heldeemult > 1 and card.ability.extra.heldeemult or nil,
-				eemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.heldeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
-				eee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeemult", 1, card.ability.extra.odds*40, "michaelrosen_eeemult") and card.ability.extra.heldeeemult > 1 and card.ability.extra.heldeeemult or nil,
-				eeemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEmult", vars = { card.ability.extra.heldeeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eeemult"} or nil,
+				e_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_echips", 1, card.ability.extra.odds*20, "michaelrosen_echips") and card.ability.extra.heldechip > 1 and card.ability.extra.heldechip or nil,
+				-- echip_message = Talisman and {message = localize{ type = "variable", key = "toga_Echip", vars = { card.ability.extra.heldechip } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
+				ee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eechips", 1, card.ability.extra.odds*40, "michaelrosen_eechips") and card.ability.extra.heldeechip > 1 and card.ability.extra.heldeechip or nil,
+				-- eechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEchip", vars = { card.ability.extra.heldeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eechip"} or nil,
+				eee_chips = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeechips", 1, card.ability.extra.odds*80, "michaelrosen_eeechips") and card.ability.extra.heldeeechip > 1 and card.ability.extra.heldeeechip or nil,
+				-- eeechip_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEchip", vars = { card.ability.extra.heldeeechip } }, colour = G.C.DARK_EDITION, sound = "talisman_eeechip"} or nil,
+				e_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_emult", 1, card.ability.extra.odds*20, "michaelrosen_emult") and card.ability.extra.heldemult > 1 and card.ability.extra.heldemult or nil,
+				-- emult_message = Talisman and {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.heldemult } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil,
+				ee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eemult", 1, card.ability.extra.odds*40, "michaelrosen_eemult") and card.ability.extra.heldeemult > 1 and card.ability.extra.heldeemult or nil,
+				-- eemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.heldeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eemult"} or nil,
+				eee_mult = Talisman and SMODS.pseudorandom_probability(card, "michaelrosen_eeemult", 1, card.ability.extra.odds*80, "michaelrosen_eeemult") and card.ability.extra.heldeeemult > 1 and card.ability.extra.heldeeemult or nil,
+				-- eeemult_message = Talisman and {message = localize{ type = "variable", key = "toga_EEEmult", vars = { card.ability.extra.heldeeemult } }, colour = G.C.DARK_EDITION, sound = "talisman_eeemult"} or nil,
 			}
 		end
 	end,
@@ -3001,7 +3019,7 @@ table.insert(jokers, {
 if Talisman then
 	table.insert(jokers, {
 		key = 'whatisthis',
-		config = { extra = { part = 1.04 } },
+		config = { extra = { part = 1.25 } },
 		loc_vars = function(self, info_queue, card)
 			return { vars = { card.ability.extra.part } }
 		end,
@@ -3017,14 +3035,14 @@ if Talisman then
 		blueprint_compat = true,
 		perishable_compat = false,
 		calculate = function(self, card, context)
-			if context.other_consumeable then
+			if context.other_consumeable and not context.other_consumeable.edition then
 				local stacked, stackamount = togabalatro.stackingcompat(context.other_consumeable)
 				if stacked and stackamount then
 					local results = {}
 					for i = 1, stackamount do
 						table.insert(results, {
-							ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
-							eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.MULT, sound = "talisman_eemult"} or nil,
+							e_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
+							-- emult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_emult"} or nil,
 							card = context.blueprint_card or card,
 							message_card = context.other_consumeable
 						})
@@ -3032,8 +3050,8 @@ if Talisman then
 					return SMODS.merge_effects(results)
 				else
 					return {
-						ee_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
-						eemult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_EEmult", vars = { card.ability.extra.part } }, colour = G.C.MULT, sound = "talisman_eemult"} or nil,
+						e_mult = card.ability.extra.part > 1 and card.ability.extra.part or nil,
+						-- emult_message = card.ability.extra.part > 1 and {message = localize{ type = "variable", key = "toga_Emult", vars = { card.ability.extra.part } }, colour = G.C.DARK_EDITION, sound = "talisman_emult"} or nil,
 						card = context.blueprint_card or card,
 						message_card = context.other_consumeable
 					}
@@ -3064,9 +3082,11 @@ end
 if Talisman then
 	table.insert(jokers, {
 		key = 'quacksoft',
-		config = { extra = { cardechip = 0.02 } },
+		config = { extra = { cardechip = 0.1 } },
 		loc_vars = function(self, info_queue, card)
-			return { vars = { card.ability.extra.cardechip, G.playing_cards and 1 + (card.ability.extra.cardechip*#G.playing_cards) or 1 } }
+			local c = G.play and G.play.cards or G.hand and G.hand.highlighted or {}
+			local amt = type(c) == 'table' and #c or 0
+			return { vars = { card.ability.extra.cardechip, 1 + amt } }
 		end,
 		unlocked = true,
 		in_pool = function()
@@ -3081,10 +3101,12 @@ if Talisman then
 		perishable_compat = false,
 		calculate = function(self, card, context)
 			if context.joker_main then
-				local echipcalc = G.playing_cards and 1 + (card.ability.extra.cardechip*#G.playing_cards) or 1
+				local cxt = context
+				--local echipcalc = G.playing_cards and 1 + (card.ability.extra.cardechip*#G.playing_cards) or 1
+				local echipcalc = 1 + (cxt.full_hand and #cxt.full_hand or 0)*card.ability.extra.cardechip
 				return {
 					e_chips = echipcalc > 1 and echipcalc or nil,
-					echip_message = echipcalc > 1 and {message = localize{ type = "variable", key = "toga_Echip", vars = { echipcalc } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil
+					-- echip_message = echipcalc > 1 and {message = localize{ type = "variable", key = "toga_Echip", vars = { echipcalc } }, colour = G.C.DARK_EDITION, sound = "talisman_echip"} or nil
 				}
 			end
 		end,

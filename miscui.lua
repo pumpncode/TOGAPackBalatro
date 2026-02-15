@@ -24,7 +24,9 @@ end
 
 function G.FUNCS.toga_mancrash()
 	togabalatro.mancrashed = true
-	togabalatro.mancrash()
+	G.E_MANAGER:add_event(Event({
+		func = function() togabalatro.mancrash() return true end
+	}))
 end
 
 local function writeloadscreenscript(bonus)
@@ -51,6 +53,7 @@ function G.FUNCS.toga_bonusloadscreenapply()
 		print(msg)
 		return false
 	else
+		check_for_unlock({ type = 'altloadscreen' })
 		successwrite = true
 		SMODS.save_mod_config(togabalatro)
 		togabalatro.systemchanges({ source = 'bonusloadscreenapply', uifunc = togabalatro.bonusloadscreenrestart})
@@ -72,11 +75,17 @@ SMODS.Keybind({
 	key_pressed = 'delete',
 	event = 'pressed',
 	action = function(self)
+		if togabalatro.checksiiva() then return end
+		
+		if not (G.SETTINGS and G.SETTINGS.SOUND and G.SETTINGS.SOUND.music_volume > 0 and G.SETTINGS.SOUND.volume > 0) then return end
+		
 		if love.keyboard.isDown('0') then togabalatro.mmm = nil
 		else
 			togabalatro.mmm = love.keyboard.isDown('1') and 'canyon' or love.keyboard.isDown('2') and 'clouds' or love.keyboard.isDown('3') and 'flourish' or love.keyboard.isDown('4') and 'onestop'
-						   or love.keyboard.isDown('5') and 'passport' or love.keyboard.isDown('6') and 'town' or togabalatro.mmm
+						   or love.keyboard.isDown('5') and 'passport' or love.keyboard.isDown('6') and 'town' or love.keyboard.isDown('7') and 'titlexp' or togabalatro.mmm
 		end
+		
+		check_for_unlock({ type = 'mmm_toga' })
 	end
 })
 

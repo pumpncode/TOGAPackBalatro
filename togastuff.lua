@@ -125,6 +125,9 @@ end
 
 togabalatro.mancrash = function()
 	G.E_MANAGER:add_event(Event({
+		func = function() check_for_unlock({ type = 'manualcrash_toga' }) return true end
+	}))
+	G.E_MANAGER:add_event(Event({
 		func = function() error('Manually initiated crash.', 0) return true end
 	}))
 end
@@ -204,7 +207,7 @@ togabalatro.processcounts = {}
 togabalatro.processcounts.chrome = togabalatro.getprocessamount('Chrome')
 togabalatro.processcounts.firefox = togabalatro.getprocessamount('Firefox')
 
-togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit', 'toga_longhorn', 'toga_gong', 'toga_money9597', 'toga_money9899'}
+togabalatro.startupsfx = {'toga_w96', 'toga_w94', 'toga_bells', 'toga_ntreskit', 'toga_longhorn', 'toga_gong', 'toga_money9597', 'toga_money9899', 'toga_nt5loud', 'toga_2000beta3', 'toga_wecho'}
 togabalatro.verifysfxconfig = function()
 	togabalatro.config.StartUpSFX = type(togabalatro.config.StartUpSFX) == 'table' and togabalatro.config.StartUpSFX or {}
 	togabalatro.config.StartUpSFX.Selected = togabalatro.config.StartUpSFX.Selected or 1
@@ -970,9 +973,19 @@ togabalatro.postloadinit = function()
 	-- TOGA-TARGET: post-mod-init
 end
 
+togabalatro.achievementproc = function(a, t)
+	if t and t == 'achievement' then
+		if a then
+			if G.ACHIEVEMENTS[a].original_mod == togabalatro and togabalatro.config.AchievementSFX then
+				play_sound('toga_sonicspecialmessage', 1, 0.3)
+			end
+		end
+	end
+end
+
 -- I've not done such loading since making Windows for SRB2, but as the content is split off from this main file, gotta do it!
 -- This loads the actual content...
-for _, file in ipairs{"hooks.lua", "joker.lua", "deck.lua", "quips.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "stakes.lua", "crossmod.lua"} do
+for _, file in ipairs{"hooks.lua", "joker.lua", "deck.lua", "quips.lua", "voucher.lua", "enhancement.lua", "consumables.lua", "seal.lua", "booster.lua", "tag.lua", "deckskin.lua", "blind.lua", "challenges.lua", "stakes.lua", "achievements.lua", "crossmod.lua"} do
 	sendDebugMessage("Executing items/"..file, "TOGAPack")
 	assert(SMODS.load_file("items/"..file))()
 end
